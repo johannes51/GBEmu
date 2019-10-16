@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
 
-add_subdirectory(division)
-add_subdirectory(divider)
+add_subdirectory(gb-app)
+add_subdirectory(gb-lib)
 
