@@ -6,7 +6,13 @@ include(GoogleTest)
 
 include_directories(${DIVISION_HEADERS_DIR})
 
-set(SOURCE_FILES main.cpp gbelib_tests/divider_tests.cpp)
+set(SOURCE_FILES
+  main.cpp
+  gbelib_tests/util/helpers_tests.cpp
+  gbelib_tests/util/location_tests.cpp
+  gbelib_tests/util/ops_tests.cpp
+  gbelib_tests/sys/systemmanager_tests.cpp
+)
 
 add_executable(gbelib_tests ${SOURCE_FILES})
 target_link_libraries(gbelib_tests gbelib gtest gtest_main pthread)

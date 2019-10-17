@@ -1,6 +1,8 @@
 #include "locationimpl.h"
 
-LocationImpl::LocationImpl(LocationByte&& lower, LocationByte &&upper)
+LocationImpl::LocationImpl(LocationByte&& lower, LocationByte&& upper)
+  : lower_(lower)
+  ,upper_(upper)
 {
 }
 
@@ -11,5 +13,7 @@ uint8_t LocationImpl::getByte() const
 
 uint16_t LocationImpl::getWord() const
 {
+  uint16_t result = *upper_;
+
   return 0;
 }

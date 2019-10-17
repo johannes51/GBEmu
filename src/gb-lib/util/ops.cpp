@@ -3,7 +3,7 @@
 #include "location.h"
 
 
-Operation ops::toOperation(Location<uint16_t> &&location)
+Operation ops::toOperation(Location<uint8_t>&& location)
 {
   return Operation(location.operator *());
 }

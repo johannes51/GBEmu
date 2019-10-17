@@ -15,7 +15,7 @@ Cpu::Cpu(RegistersInterfaceUP&& registers, const MemoryViewSP &mem)
 
 void Cpu::clock()
 {
-  auto nextOperation = ops::toOperation(mem_->getWord(hlp::indirect(registers_->sp())));
+  auto nextOperation = ops::toOperation(mem_->getByte(hlp::indirect(registers_->sp())));
   if (nextOperation.lowerNibble() >= 0x4 && nextOperation.lowerNibble() < 0x7) {
     decodeLoad(nextOperation);
   }

@@ -8,6 +8,8 @@ class SimpleLocation : public LocationByte
 {
 public:
   SimpleLocation();
+
+  uint8_t operator *();
 };
 
 #endif // SIMPLELOCATION_H

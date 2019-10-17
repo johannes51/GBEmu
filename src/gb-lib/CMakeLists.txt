@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.2)
-project(division C CXX)
+project(gbelib C CXX)
 
 set(SOURCE_FILES
     cpu/cpu.h
@@ -33,6 +33,8 @@ set(SOURCE_FILES
     util/locationbyte.cpp
     util/locationimpl.h
     util/locationimpl.cpp
+    util/nullbyte.h
+    util/nullbyte.cpp
     sys/systemmanager.h
     sys/systemmanager.cpp
 )

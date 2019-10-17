@@ -3,3 +3,8 @@
 LocationByte::LocationByte()
 {
 }
+
+LocationByte::~LocationByte()
+{
+}
+

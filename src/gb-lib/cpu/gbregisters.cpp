@@ -16,69 +16,82 @@ GBRegisters::GBRegisters()
   registers_[RegisterFlags::PC] = 0;
 }
 
-Location<uint16_t>&& GBRegisters::af()
+Location<uint16_t>& GBRegisters::af()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::a()
+Location<uint8_t>& GBRegisters::a()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint16_t>&& GBRegisters::bc()
+Location<uint16_t>& GBRegisters::bc()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::b()
+Location<uint8_t>& GBRegisters::b()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::c()
+Location<uint8_t>& GBRegisters::c()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint16_t>&& GBRegisters::de()
+Location<uint16_t>& GBRegisters::de()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::d()
+Location<uint8_t>& GBRegisters::d()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::e()
+Location<uint8_t>& GBRegisters::e()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint16_t>&& GBRegisters::hl()
+Location<uint16_t>& GBRegisters::hl()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::h()
+Location<uint8_t>& GBRegisters::h()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint8_t>&& GBRegisters::l()
+Location<uint8_t>& GBRegisters::l()
 {
-  return Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint8_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint16_t>&& GBRegisters::sp()
+Location<uint16_t>& GBRegisters::sp()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
-Location<uint16_t>&& GBRegisters::pc()
+Location<uint16_t>& GBRegisters::pc()
 {
-  return Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  auto a = Location<uint16_t>::generate(SimpleLocation(), SimpleLocation());
+  return a;
 }
 
 FlagsView& GBRegisters::getFlags()
