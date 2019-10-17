@@ -9,7 +9,7 @@
 using namespace std;
 
 TEST(OpsTest, testIndirect) {
-  auto loc = Location<uint8_t>::generate(SimpleLocation());
+  auto loc = Location<uint8_t>::generate(std::make_unique<SimpleLocation>());
   auto op = ops::toOperation(std::move(loc));
 
   ASSERT_EQ(0x0, op.lowerNibble());

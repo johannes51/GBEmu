@@ -8,8 +8,17 @@ include_directories(${DIVISION_HEADERS_DIR})
 
 set(SOURCE_FILES
   main.cpp
+  gbelib_tests/cpu/cpu_tests.cpp
+  gbelib_tests/cpu/operation_tests.cpp
+  gbelib_tests/cpu/cpuflags_tests.cpp
+  gbelib_tests/cpu/cpuregisters_tests.cpp
+  gbelib_tests/cpu/registerbyte_tests.cpp
+  gbelib_tests/mem/gbmemory_tests.cpp
+  gbelib_tests/mem/ramlocation_tests.cpp
   gbelib_tests/util/helpers_tests.cpp
   gbelib_tests/util/location_tests.cpp
+  gbelib_tests/util/locationimpl_tests.cpp
+  gbelib_tests/util/nullbyte_tests.cpp
   gbelib_tests/util/ops_tests.cpp
   gbelib_tests/sys/systemmanager_tests.cpp
 )
