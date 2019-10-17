@@ -4,26 +4,35 @@
 #include "util_defines.h"
 #include "mem/mem_defines.h"
 #include "locationimpl.h"
+#include "nullbyte.h"
 
 
 template<class T>
 class Location : LocationImpl
 {
 public:
-  static Location generate(LocationByte&& lower, LocationByte&& upper = NullByte());
+  static LocationUP<T> generate(LocationByteUP lower, LocationByteUP upper = std::make_unique<NullByte>());
 
+  Location();
   Location(const Location& rhs) = delete;
+  Location(Location&& rhs) = default;
 
   T operator *() const;
 
 private:
-  Location(LocationByte&& lower, LocationByte&& upper);
+  Location(LocationByteUP lower, LocationByteUP upper);
 };
 
 template<class T>
-Location<T> Location<T>::generate(LocationByte&& lower, LocationByte&& upper)
+Location<T>::Location(LocationByteUP lower, LocationByteUP upper)
+  : LocationImpl(std::move(lower), std::move(upper))
 {
-  return Location<T>(std::move(lower), std::move(upper));
+}
+
+template<class T>
+LocationUP<T> Location<T>::generate(LocationByteUP lower, LocationByteUP upper)
+{
+  return std::unique_ptr<Location<T>>(new Location<T>(std::move(lower), std::move(upper)));
 }
 
 

@@ -3,12 +3,12 @@
 
 enum class RegisterFlags
 {
-  AF,
-  BC,
-  DE,
-  HL,
-  SP,
-  PC,
+  A, F,
+  B, C,
+  D, E,
+  H, L,
+  SPu, SPl,
+  PCu, PCl,
 };
 
 #endif // REGISTER_FLAGS_H

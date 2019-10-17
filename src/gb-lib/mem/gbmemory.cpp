@@ -11,12 +11,13 @@ GBMemory::GBMemory()
 
 }
 
-Location<uint8_t> GBMemory::getByte(const address_type address)
+LocationUP<uint8_t> GBMemory::getByte(const address_type address)
 {
-  return Location<uint8_t>::generate(RamLocation(address), SimpleLocation());
+  return Location<uint8_t>::generate(std::make_unique<RamLocation>(address));
 }
 
-Location<uint16_t> GBMemory::getWord(const address_type address)
+LocationUP<uint16_t> GBMemory::getWord(const address_type address)
 {
-  return Location<uint16_t>::generate(RamLocation(address), RamLocation(address + 1));
+  return Location<uint16_t>::generate(std::make_unique<RamLocation>(address),
+                                      std::make_unique<RamLocation>(address + 1));
 }

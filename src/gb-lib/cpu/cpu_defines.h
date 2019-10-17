@@ -12,5 +12,6 @@ class RegistersInterface;
 using RegistersInterfaceUP = std::unique_ptr<RegistersInterface>;
 
 class FlagsView;
+using FlagsViewUP = std::unique_ptr<FlagsView>;
 
 #endif // CPU_DEFINES_H

@@ -3,8 +3,7 @@
 
 #include <stdint.h>
 
-#include "locationbyte.h"
-#include "nullbyte.h"
+#include "util_defines.h"
 
 
 class LocationImpl
@@ -14,11 +13,11 @@ public:
   uint16_t getWord() const;
 
 protected:
-  LocationImpl(LocationByte&& lower, LocationByte&& upper = NullByte());
+  LocationImpl(LocationByteUP lower, LocationByteUP upper);
 
 private:
-  LocationByte& lower_;
-  LocationByte& upper_;
+  LocationByteUP lower_;
+  LocationByteUP upper_;
 };
 
 #endif // LOCATIONIMPL_H

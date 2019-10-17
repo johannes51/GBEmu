@@ -7,16 +7,20 @@ set(SOURCE_FILES
     cpu/cpu_defines.h
     cpu/cpuflags.h
     cpu/cpuflags.cpp
+    cpu/cpuregisters.h
+    cpu/cpuregisters.cpp
     cpu/flagsview.h
     cpu/flagsview.cpp
-    cpu/gbregisters.h
-    cpu/gbregisters.cpp
     cpu/operation.h
     cpu/operation.cpp
     cpu/register_flags.h
+    cpu/registerbyte.h
+    cpu/registerbyte.cpp
     cpu/registersinterface.h
     debug/simplelocation.h
     debug/simplelocation.cpp
+    debug/variablelocation.h
+    debug/variablelocation.cpp
     mem/gbmemory.h
     mem/gbmemory.cpp
     mem/ramlocation.h
@@ -35,6 +39,7 @@ set(SOURCE_FILES
     util/locationimpl.cpp
     util/nullbyte.h
     util/nullbyte.cpp
+    util/util_defines.h
     sys/systemmanager.h
     sys/systemmanager.cpp
 )

@@ -4,7 +4,6 @@
 #include <stdint.h>
 
 #include "cpu_defines.h"
-#include "mem/mem_defines.h"
 #include "util/util_defines.h"
 
 
@@ -29,6 +28,9 @@ public:
   virtual Location<uint16_t>& pc() = 0;
 
   virtual FlagsView& getFlags() = 0;
+
+protected:
+  RegistersInterface() = default;
 };
 
 #endif // REGISTERS_H

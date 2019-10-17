@@ -9,7 +9,7 @@
 namespace ops
 {
 
-Operation toOperation(Location<uint8_t>&& location);
+Operation toOperation(LocationUP<uint8_t> &&location);
 
 }
 
