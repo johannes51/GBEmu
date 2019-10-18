@@ -1,7 +1,10 @@
 #ifndef REGISTER_FLAGS_H
 #define REGISTER_FLAGS_H
 
-enum class RegisterFlags
+#include <cstddef>
+
+
+enum RegisterFlags : std::size_t
 {
   A, F,
   B, C,
@@ -9,6 +12,7 @@ enum class RegisterFlags
   H, L,
   SPu, SPl,
   PCu, PCl,
+  SIZE
 };
 
 #endif // REGISTER_FLAGS_H

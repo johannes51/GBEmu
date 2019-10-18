@@ -19,8 +19,13 @@ TEST(LocationImplTest, testgetByte) {
   ASSERT_EQ(a.getByte(), 5);
 }
 
-TEST(LocationImplTest, testgetWord) {
+TEST(LocationImplTest, testgetWord1) {
   auto a = LocationImplMock(make_unique<VariableLocation>(0xAB), make_unique<VariableLocation>(0x5E));
   ASSERT_EQ(a.getWord(), 0x5EAB);
+}
+
+TEST(LocationImplTest, testgetWord2) {
+  auto a = LocationImplMock(make_unique<VariableLocation>(0xFF), make_unique<VariableLocation>(0xFF));
+  ASSERT_EQ(a.getWord(), 0xFFFF);
 }
 

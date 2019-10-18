@@ -3,7 +3,7 @@
 
 #include "registersinterface.h"
 
-#include <map>
+#include <vector>
 
 #include "register_flags.h"
 #include "util/util_defines.h"
@@ -32,7 +32,7 @@ public:
   FlagsView& getFlags();
 
 private:
-  std::map<RegisterFlags, uint8_t> registers_;
+  std::array<uint8_t, RegisterFlags::SIZE> registers_;
   LocationUP<uint16_t> af_;
   LocationUP<uint8_t> a_;
   LocationUP<uint16_t> bc_;
