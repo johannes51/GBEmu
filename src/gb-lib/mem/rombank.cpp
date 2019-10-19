@@ -12,7 +12,6 @@ RomBank::RomBank(MemoryArea area, std::vector<uint8_t>&& buffer)
 
 LocationUP<uint8_t> RomBank::getByte(address_type address)
 {
-  auto addr = mem_tools::translateAdressSafe(address, singleArea());
   return Location<uint8_t>::generate(
         std::make_unique<RomByte>(buffer_.at(mem_tools::translateAdressSafe(address, singleArea())))
       );
