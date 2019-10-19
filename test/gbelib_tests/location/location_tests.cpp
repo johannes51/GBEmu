@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "util/location.h"
+#include "location/location.h"
 
 #include "debug/simplelocation.h"
 
