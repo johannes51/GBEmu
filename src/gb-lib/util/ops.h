@@ -3,7 +3,7 @@
 
 #include "cpu/operation.h"
 #include "mem/mem_defines.h"
-#include "util/util_defines.h"
+#include "location/location_defines.h"
 
 
 namespace ops

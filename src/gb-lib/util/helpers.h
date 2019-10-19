@@ -2,7 +2,7 @@
 #define HELPERS_H
 
 #include "mem/mem_defines.h"
-#include "location.h"
+#include "location/location.h"
 
 
 namespace hlp

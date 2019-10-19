@@ -1,7 +1,6 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include "util_defines.h"
 #include "mem/mem_defines.h"
 #include "locationimpl.h"
 #include "nullbyte.h"
@@ -13,11 +12,11 @@ class Location : LocationImpl
 public:
   static LocationUP<T> generate(LocationByteUP lower, LocationByteUP upper = std::make_unique<NullByte>());
 
-  Location();
   Location(const Location& rhs) = delete;
   Location(Location&& rhs) = default;
 
   T operator *() const;
+  Location<T>& operator <<(const T& value);
 
 private:
   Location(LocationByteUP lower, LocationByteUP upper);

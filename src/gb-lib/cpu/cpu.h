@@ -8,14 +8,14 @@
 class Cpu
 {
 public:
-  Cpu(RegistersInterfaceUP&& registers, const MemoryViewSP& mem);
+  Cpu(RegistersInterfaceUP&& registers, const IMemoryViewSP& mem);
 
   void clock();
 
 private:
   void decodeLoad(const Operation& operation);
 
-  MemoryViewSP mem_;
+  IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
 };
 

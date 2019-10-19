@@ -21,25 +21,49 @@ set(SOURCE_FILES
     debug/simplelocation.cpp
     debug/variablelocation.h
     debug/variablelocation.cpp
-    mem/gbmemory.h
-    mem/gbmemory.cpp
-    mem/ramlocation.h
-    mem/ramlocation.cpp
+    gb_factories/cartloader.h
+    gb_factories/cartloader.cpp
+    gb_factories/gb_defines.h
+    gb_factories/memoryfactory.h
+    gb_factories/memoryfactory.cpp
+    mem/imemoryview.h
+    mem/imemorymanager.h
     mem/mem_defines.h
-    mem/memoryview.h
+    mem/mirrorbank.h
+    mem/mirrorbank.cpp
+    mem/memorymanifold.h
+    mem/memorymanifold.cpp
+    mem/mem_tools.h
+    mem/mem_tools.cpp
+    mem/nullbank.h
+    mem/nullbank.cpp
+    mem/rambank.h
+    mem/rambank.cpp
+    mem/rombank.h
+    mem/rombank.cpp
+    mem/singleareamanager.h
+    mem/singleareamanager.cpp
+    location/bufferbyte.h
+    location/bufferbyte.cpp
+    location/location.h
+    location/location.cpp
+    location/location_defines
+    location/locationbyte.h
+    location/locationbyte.cpp
+    location/locationimpl.h
+    location/locationimpl.cpp
+    location/nullbyte.h
+    location/nullbyte.cpp
+    location/rambyte.h
+    location/rambyte.cpp
+    location/rombyte.h
+    location/rombyte.cpp
+    location/zerobyte.h
+    location/zerobyte.cpp
     util/helpers.h
     util/helpers.cpp
     util/ops.h
     util/ops.cpp
-    util/location.h
-    util/location.cpp
-    util/locationbyte.h
-    util/locationbyte.cpp
-    util/locationimpl.h
-    util/locationimpl.cpp
-    util/nullbyte.h
-    util/nullbyte.cpp
-    util/util_defines.h
     sys/systemmanager.h
     sys/systemmanager.cpp
 )

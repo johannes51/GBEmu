@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #include "cpu_defines.h"
-#include "util/util_defines.h"
+#include "location/location_defines.h"
 
 
 class RegistersInterface

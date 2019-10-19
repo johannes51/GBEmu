@@ -8,12 +8,12 @@
 class SystemManager
 {
 public:
-  SystemManager();
+  SystemManager(IMemoryViewSP memory);
   ~SystemManager();
 
   void clock();
 
-  MemoryViewSP mem_;
+  IMemoryViewSP memory_;
   CpuUP cpu_;
 };
 

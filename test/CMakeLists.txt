@@ -13,15 +13,23 @@ set(SOURCE_FILES
   gbelib_tests/cpu/cpuflags_tests.cpp
   gbelib_tests/cpu/cpuregisters_tests.cpp
   gbelib_tests/cpu/registerbyte_tests.cpp
-  gbelib_tests/mem/gbmemory_tests.cpp
-  gbelib_tests/mem/ramlocation_tests.cpp
+  gbelib_tests/location/location_tests.cpp
+  gbelib_tests/location/locationimpl_tests.cpp
+  gbelib_tests/location/nullbyte_tests.cpp
+  gbelib_tests/location/ramlocation_tests.cpp
+  gbelib_tests/gb/gbmemoryfactory_tests.cpp
+  gbelib_tests/mem/nullbank_tests.cpp
+  gbelib_tests/mem/mirrorbank_tests.cpp
+  gbelib_tests/mem/rambank_tests.cpp
   gbelib_tests/util/helpers_tests.cpp
-  gbelib_tests/util/location_tests.cpp
-  gbelib_tests/util/locationimpl_tests.cpp
-  gbelib_tests/util/nullbyte_tests.cpp
   gbelib_tests/util/ops_tests.cpp
   gbelib_tests/sys/systemmanager_tests.cpp
 )
+
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/gbelib_tests/gb/Tetris.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/Tetris.gb"
+  COPYONLY)
 
 add_executable(gbelib_tests ${SOURCE_FILES})
 target_link_libraries(gbelib_tests gbelib gtest gtest_main pthread)

@@ -1,7 +1,7 @@
 #include "cpuregisters.h"
 
 #include "cpuflags.h"
-#include "util/location.h"
+#include "location/location.h"
 #include "registerbyte.h"
 
 #include "debug/simplelocation.h"

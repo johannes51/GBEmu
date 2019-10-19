@@ -1,21 +1,20 @@
-#ifndef MEMORYVIEW_H
-#define MEMORYVIEW_H
+#ifndef IMEMORYVIEW_H
+#define IMEMORYVIEW_H
 
 #include <stdint.h>
-#include <vector>
 
 #include "mem_defines.h"
-#include "util/util_defines.h"
+#include "location/location_defines.h"
 
 
-class MemoryView
+class IMemoryView
 {
 public:
-  virtual ~MemoryView() = default;
+  virtual ~IMemoryView() = default;
 
   virtual LocationUP<uint8_t> getByte(address_type address) = 0;
   virtual LocationUP<uint16_t> getWord(address_type address) = 0;
 };
 
-#endif // MEMORYVIEW_H
+#endif // IMEMORYVIEW_H
 

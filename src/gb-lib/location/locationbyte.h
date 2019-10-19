@@ -11,6 +11,7 @@ public:
   virtual ~LocationByte();
 
   virtual uint8_t operator*() = 0;
+  virtual LocationByte& operator<<(const uint8_t& value) = 0;
 };
 
 #endif // LOCATIONBYTE_H

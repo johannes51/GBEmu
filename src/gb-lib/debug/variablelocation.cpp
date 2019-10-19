@@ -10,3 +10,9 @@ uint8_t VariableLocation::operator *()
 {
   return variable_;
 }
+
+VariableLocation& VariableLocation::operator <<(const uint8_t& value)
+{
+  variable_ = value;
+  return *this;
+}

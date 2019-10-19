@@ -1,13 +1,13 @@
 #include "cpu.h"
 
 #include "registersinterface.h"
-#include "mem/memoryview.h"
+#include "mem/imemoryview.h"
+#include "location/location.h"
 #include "util/helpers.h"
-#include "util/location.h"
 #include "util/ops.h"
 
 
-Cpu::Cpu(RegistersInterfaceUP&& registers, const MemoryViewSP &mem)
+Cpu::Cpu(RegistersInterfaceUP&& registers, const IMemoryViewSP &mem)
   : registers_(std::move(registers))
   , mem_(std::move(mem))
 {
@@ -15,7 +15,7 @@ Cpu::Cpu(RegistersInterfaceUP&& registers, const MemoryViewSP &mem)
 
 void Cpu::clock()
 {
-  auto a = std::move(registers_->sp());
+  auto a = std::move(registers_->pc());
   auto b = hlp::indirect(a);
   auto c = mem_->getByte(b);
   auto nextOperation = ops::toOperation(std::move(c));
@@ -26,4 +26,5 @@ void Cpu::clock()
 
 void Cpu::decodeLoad(const Operation& operation)
 {
+  throw false;
 }

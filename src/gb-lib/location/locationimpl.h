@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "util_defines.h"
+#include "location_defines.h"
 
 
 class LocationImpl
@@ -11,6 +11,9 @@ class LocationImpl
 public:
   uint8_t getByte() const;
   uint16_t getWord() const;
+
+  void setByte(uint8_t value);
+  void setWord(uint16_t value);
 
 protected:
   LocationImpl(LocationByteUP lower, LocationByteUP upper);
