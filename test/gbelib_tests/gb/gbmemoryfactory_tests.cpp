@@ -9,6 +9,10 @@
 using namespace std;
 using namespace gb;
 
+address_type startROM0 = 0x0000;
+address_type endROM0 = 0x3FFF;
+address_type startROM1 = 0x4000;
+address_type endROM1 = 0x7FFF;
 address_type startWRAM0 = 0xC000;
 address_type endWRAM0 = 0xCFFF;
 address_type startWRAM1 = 0xD000;
@@ -58,10 +62,50 @@ TEST(GBMemoryFactoryTest, testROM0_1) {
                                                        | std::ios_base::out}
                            ));
   auto mem = f.constructMemoryLayout();
+  ASSERT_EQ(0xC3, **mem->getByte(startROM0));
+  ASSERT_EQ(0x0C, **mem->getByte(startROM0 + 1));
+  ASSERT_ANY_THROW(*mem->getByte(startROM0) << 0x00);
+}
+
+TEST(GBMemoryFactoryTest, testROM0_2) {
+  auto f = MemoryFactory(std::make_unique<CartLoader>(
+                           std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
+                           std::basic_fstream<uint8_t>{"Tetris.sav", std::ios_base::binary
+                                                       | std::ios_base::in
+                                                       | std::ios_base::out}
+                           ));
+  auto mem = f.constructMemoryLayout();
   ASSERT_EQ(0x00, **mem->getByte(startPC));
   ASSERT_EQ(0xC3, **mem->getByte(startPC + 1));
   ASSERT_EQ(0x50, **mem->getByte(startPC + 2));
   ASSERT_EQ(0x01, **mem->getByte(startPC + 3));
+  ASSERT_ANY_THROW(*mem->getByte(startPC) << 0x00);
+}
+
+TEST(GBMemoryFactoryTest, testROM0_3) {
+  auto f = MemoryFactory(std::make_unique<CartLoader>(
+                           std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
+                           std::basic_fstream<uint8_t>{"Tetris.sav", std::ios_base::binary
+                                                       | std::ios_base::in
+                                                       | std::ios_base::out}
+                           ));
+  auto mem = f.constructMemoryLayout();
+  uint val = **mem->getWord(endROM0 - 1);
+  ASSERT_EQ(0x2F2F, val);
+  ASSERT_ANY_THROW(*mem->getByte(endROM0) << 0x00);
+}
+
+TEST(GBMemoryFactoryTest, testROM1_1) {
+  auto f = MemoryFactory(std::make_unique<CartLoader>(
+                           std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
+                           std::basic_fstream<uint8_t>{"Tetris.sav", std::ios_base::binary
+                                                       | std::ios_base::in
+                                                       | std::ios_base::out}
+                           ));
+  auto mem = f.constructMemoryLayout();
+  ASSERT_EQ(0x2F, **mem->getByte(endROM0 + 1));
+  ASSERT_EQ(0x2F, **mem->getByte(endROM0 + 2));
+  ASSERT_ANY_THROW(*mem->getByte(endROM0 + 1) << 0x00);
 }
 
 TEST(GBMemoryFactoryTest, testWRAM0_1) {
