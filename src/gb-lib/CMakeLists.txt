@@ -52,4 +52,4 @@ add_library(gbelib SHARED STATIC ${SOURCE_FILES})
 
 target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-install(TARGETS gbelib DESTINATION ${PROJECT_INSTALL_LIB_DIR})
+#install(TARGETS gbelib DESTINATION ${PROJECT_INSTALL_LIB_DIR})
