@@ -1,13 +1,15 @@
 cmake_minimum_required(VERSION 3.2)
 project(app)
 
+# qt libs
+find_package(Qt5 COMPONENTS Core Widgets REQUIRED)
+
 # The usual stuff for QT
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
 SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
-# Source files
 set( SRCS
     main.cpp
     widgets/mainwindow.cpp
@@ -15,10 +17,8 @@ set( SRCS
     widgets/mainwindow.ui
     )
 
-# mathlib and qt libs
-find_package(Qt5 COMPONENTS Widgets REQUIRED)
-
-add_executable(app ${SRCS})
-target_link_libraries(app gbelib Qt5::Widgets)
-install(TARGETS app DESTINATION ${PROJECT_INSTALL_BIN_DIR})
+add_executable(app)
+target_sources(app PRIVATE ${SRCS})
+target_link_libraries(app PRIVATE gbelib Qt5::Widgets)
+install(TARGETS app RUNTIME DESTINATION CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 
