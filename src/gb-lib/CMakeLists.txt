@@ -68,6 +68,8 @@ set(SOURCE_FILES
     sys/systemmanager.cpp
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 if(${CMAKE_BUILD_TYPE} STREQUAL "Debug")
   add_definitions(-DDEBUG)
 endif()

@@ -26,6 +26,8 @@ set(SOURCE_FILES
   gbelib_tests/sys/systemmanager_tests.cpp
 )
 
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
 configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/gbelib_tests/gb/Tetris.gb"
   "${CMAKE_CURRENT_BINARY_DIR}/Tetris.gb"
