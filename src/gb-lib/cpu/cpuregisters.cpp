@@ -9,6 +9,7 @@
 
 CpuRegisters::CpuRegisters()
 {
+  registers_.resize(RegisterFlags::SIZE);
   registers_.at(RegisterFlags::A) = 0x01;
   registers_.at(RegisterFlags::F) = 0xB0;
   registers_.at(RegisterFlags::B) = 0x00;
@@ -23,7 +24,8 @@ CpuRegisters::CpuRegisters()
   registers_.at(RegisterFlags::PCl) = 0x00;
 }
 
-CpuRegisters::~CpuRegisters() {}
+CpuRegisters::~CpuRegisters() = default;
+
 LocationUP<uint16_t> CpuRegisters::af()
 {
   return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::F)),

@@ -35,7 +35,7 @@ public:
   FlagsView& getFlags();
 
 private:
-  std::array<uint8_t, RegisterFlags::SIZE> registers_;
+  std::vector<uint8_t> registers_;
   FlagsViewUP flags_;
 };
 

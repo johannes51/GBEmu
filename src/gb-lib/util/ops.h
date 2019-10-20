@@ -1,8 +1,6 @@
 #ifndef OPS_H
 #define OPS_H
 
-#include "cpu/operation.h"
-#include "mem/mem_defines.h"
 #include "location/location_defines.h"
 
 

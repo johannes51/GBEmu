@@ -17,7 +17,7 @@ TEST(CpuTest, testClock) {
                            ));
   auto mem = f.constructMemoryLayout();
   auto reg = std::make_unique<CpuRegisters>();
-  auto cpu = Cpu(std::move(reg), mem);
+  Cpu cpu(std::move(reg), mem);
   ASSERT_NO_THROW(cpu.clock());
 }
 

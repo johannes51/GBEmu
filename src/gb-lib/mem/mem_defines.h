@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "defines.h"
+
 
 using address_type = uint16_t;
 

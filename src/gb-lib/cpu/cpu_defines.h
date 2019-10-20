@@ -3,10 +3,13 @@
 
 #include <memory>
 
+#include "defines.h"
+
 class Cpu;
 using CpuUP = std::unique_ptr<Cpu>;
 
 class Operation;
+using OperationUP = std::unique_ptr<Operation>;
 
 class RegistersInterface;
 using RegistersInterfaceUP = std::unique_ptr<RegistersInterface>;
