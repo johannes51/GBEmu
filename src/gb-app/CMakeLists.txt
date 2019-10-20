@@ -20,5 +20,5 @@ find_package(Qt5 COMPONENTS Widgets REQUIRED)
 
 add_executable(app ${SRCS})
 target_link_libraries(app gbelib Qt5::Widgets)
-#install(TARGETS app DESTINATION ${PROJECT_INSTALL_BIN_DIR})
+install(TARGETS app DESTINATION ${PROJECT_INSTALL_BIN_DIR})
 

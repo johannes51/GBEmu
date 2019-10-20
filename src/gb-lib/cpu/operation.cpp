@@ -1,19 +1,11 @@
 #include "operation.h"
 
-Operation::Operation(uint8_t value)
-  : value_(value)
-  , lower_(value & 0x0F)
-  , upper_((value & 0xF0) >> 4)
+Operation::Operation()
 {
 }
 
-
-const uint8_t& Operation::lowerNibble()
+bool Operation::nextOpcode(const uint8_t opcode)
 {
-  return lower_;
+  return true;
 }
 
-const uint8_t &Operation::upperNibble()
-{
-  return upper_;
-}

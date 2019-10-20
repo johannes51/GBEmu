@@ -7,15 +7,11 @@
 class Operation
 {
 public:
-  Operation(uint8_t value);
+  Operation();
 
-  const uint8_t& lowerNibble();
-  const uint8_t& upperNibble();
+  bool nextOpcode(const uint8_t opcode);
 
 private:
-  const uint8_t value_;
-  const uint8_t lower_;
-  const uint8_t upper_;
 };
 
 #endif // OPERATION_H

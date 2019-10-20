@@ -13,8 +13,6 @@ public:
   void clock();
 
 private:
-  void decodeLoad(const Operation& operation);
-
   IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
 };

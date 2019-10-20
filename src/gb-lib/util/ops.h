@@ -9,7 +9,11 @@
 namespace ops
 {
 
-Operation toOperation(LocationUP<uint8_t> &&location);
+template<class T>
+void increment(Location<T>& location)
+{
+  location << *location + 1;
+}
 
 }
 
