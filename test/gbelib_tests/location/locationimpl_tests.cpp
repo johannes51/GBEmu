@@ -2,7 +2,7 @@
 
 #include "location/locationimpl.h"
 
-#include "debug/variablelocation.h"
+#include "debug/variablebyte.h"
 
 
 using namespace std;
@@ -15,17 +15,17 @@ public:
 };
 
 TEST(LocationImplTest, testgetByte) {
-  auto a = LocationImplMock(make_unique<VariableLocation>(5), make_unique<VariableLocation>());
+  auto a = LocationImplMock(make_unique<VariableByte>(5), make_unique<VariableByte>());
   ASSERT_EQ(a.getByte(), 5);
 }
 
 TEST(LocationImplTest, testgetWord1) {
-  auto a = LocationImplMock(make_unique<VariableLocation>(0xAB), make_unique<VariableLocation>(0x5E));
+  auto a = LocationImplMock(make_unique<VariableByte>(0xAB), make_unique<VariableByte>(0x5E));
   ASSERT_EQ(a.getWord(), 0x5EAB);
 }
 
 TEST(LocationImplTest, testgetWord2) {
-  auto a = LocationImplMock(make_unique<VariableLocation>(0xFF), make_unique<VariableLocation>(0xFF));
+  auto a = LocationImplMock(make_unique<VariableByte>(0xFF), make_unique<VariableByte>(0xFF));
   ASSERT_EQ(a.getWord(), 0xFFFF);
 }
 

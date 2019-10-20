@@ -10,9 +10,9 @@ namespace ops
 {
 
 template<class T>
-void increment(Location<T>& location)
+void increment(LocationUP<T> location)
 {
-  location << *location + 1;
+  *location << **location + 1;
 }
 
 }

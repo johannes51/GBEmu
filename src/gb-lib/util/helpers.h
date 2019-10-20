@@ -8,7 +8,7 @@
 namespace hlp
 {
 
-address_type indirect(const Location<address_type>& location);
+address_type indirect(const LocationUP<address_type> location);
 
 }
 

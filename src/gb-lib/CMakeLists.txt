@@ -18,13 +18,11 @@ target_sources(gbelib PRIVATE
   cpu/operation.h
   cpu/operation.cpp
   cpu/register_flags.h
-    cpu/registerbyte.h
-    cpu/registerbyte.cpp
   cpu/registersinterface.h
   debug/simplelocation.h
   debug/simplelocation.cpp
-    debug/variablelocation.h
-    debug/variablelocation.cpp
+  debug/variablebyte.h
+  debug/variablebyte.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/gb_defines.h

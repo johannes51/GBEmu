@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "cpu/registerbyte.h"
+#include "location/registerbyte.h"
 
 
 using namespace std;

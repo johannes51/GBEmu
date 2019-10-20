@@ -16,36 +16,23 @@ public:
   CpuRegisters();
   virtual ~CpuRegisters();
 
-  Location<uint16_t>& af();
-  Location<uint8_t>& a();
-  Location<uint16_t>& bc();
-  Location<uint8_t>& b();
-  Location<uint8_t>& c();
-  Location<uint16_t>& de();
-  Location<uint8_t>& d();
-  Location<uint8_t>& e();
-  Location<uint16_t>& hl();
-  Location<uint8_t>& h();
-  Location<uint8_t>& l();
-  Location<uint16_t>& sp();
-  Location<uint16_t>& pc();
+  LocationUP<uint16_t> af();
+  LocationUP<uint8_t> a();
+  LocationUP<uint16_t> bc();
+  LocationUP<uint8_t> b();
+  LocationUP<uint8_t> c();
+  LocationUP<uint16_t> de();
+  LocationUP<uint8_t> d();
+  LocationUP<uint8_t> e();
+  LocationUP<uint16_t> hl();
+  LocationUP<uint8_t> h();
+  LocationUP<uint8_t> l();
+  LocationUP<uint16_t> sp();
+  LocationUP<uint16_t> pc();
   FlagsView& getFlags();
 
 private:
   std::array<uint8_t, RegisterFlags::SIZE> registers_;
-  LocationUP<uint16_t> af_;
-  LocationUP<uint8_t> a_;
-  LocationUP<uint16_t> bc_;
-  LocationUP<uint8_t> b_;
-  LocationUP<uint8_t> c_;
-  LocationUP<uint16_t> de_;
-  LocationUP<uint8_t> d_;
-  LocationUP<uint8_t> e_;
-  LocationUP<uint16_t> hl_;
-  LocationUP<uint8_t> h_;
-  LocationUP<uint8_t> l_;
-  LocationUP<uint16_t> sp_;
-  LocationUP<uint16_t> pc_;
   FlagsViewUP flags_;
 };
 
