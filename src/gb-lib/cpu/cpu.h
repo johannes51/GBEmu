@@ -8,13 +8,17 @@
 class Cpu
 {
 public:
-  Cpu(RegistersInterfaceUP&& registers, const IMemoryViewSP& mem);
+  Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem);
+  ~Cpu();
+  DISABLE_COPY(Cpu)
+  DISABLE_MOVE(Cpu)
 
   void clock();
 
 private:
   IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
+  OperationUP nextOperation_;
 };
 
 #endif // CPU_H

@@ -6,6 +6,7 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
+  defines.h
   cpu/cpu.h
   cpu/cpu.cpp
   cpu/cpu_defines.h
@@ -71,8 +72,7 @@ target_sources(gbelib PRIVATE
   sys/systemmanager.cpp
   sys/systemmanager.h
   )
-target_sources(gbelib PUBLIC
-  )
+
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
