@@ -2,7 +2,7 @@
 
 #include "cpuflags.h"
 #include "location/location.h"
-#include "registerbyte.h"
+#include "location/registerbyte.h"
 
 #include "debug/simplelocation.h"
 
@@ -21,93 +21,78 @@ CpuRegisters::CpuRegisters()
   registers_.at(RegisterFlags::SPl) = 0xFF;
   registers_.at(RegisterFlags::PCu) = 0x01;
   registers_.at(RegisterFlags::PCl) = 0x00;
-  sp_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::SPl)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::SPu)));
-  pc_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::PCl)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::PCu)));
-  af_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::F)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::A)));
-  flags_ = std::make_unique<CpuFlags>(registers_.at(RegisterFlags::F));
-  bc_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::C)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::B)));
-  de_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::E)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::D)));
-  hl_ = Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::L)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::H)));
 }
 
 CpuRegisters::~CpuRegisters() {}
-
-Location<uint16_t>& CpuRegisters::af()
+LocationUP<uint16_t> CpuRegisters::af()
 {
-  return *af_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::F)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::A)));
 }
 
-Location<uint8_t>& CpuRegisters::a()
+LocationUP<uint8_t> CpuRegisters::a()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::A)));
 }
 
-Location<uint16_t>& CpuRegisters::bc()
+LocationUP<uint16_t> CpuRegisters::bc()
 {
-  return *bc_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::C)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::B)));
 }
 
-Location<uint8_t>& CpuRegisters::b()
+LocationUP<uint8_t> CpuRegisters::b()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::B)));
 }
 
-Location<uint8_t>& CpuRegisters::c()
+LocationUP<uint8_t> CpuRegisters::c()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::C)));
 }
 
-Location<uint16_t>& CpuRegisters::de()
+LocationUP<uint16_t> CpuRegisters::de()
 {
-  return *de_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::E)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::D)));
 }
 
-Location<uint8_t>& CpuRegisters::d()
+LocationUP<uint8_t> CpuRegisters::d()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::D)));
 }
 
-Location<uint8_t>& CpuRegisters::e()
+LocationUP<uint8_t> CpuRegisters::e()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::E)));
 }
 
-Location<uint16_t>& CpuRegisters::hl()
+LocationUP<uint16_t> CpuRegisters::hl()
 {
-  return *hl_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::L)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::H)));
 }
 
-Location<uint8_t>& CpuRegisters::h()
+LocationUP<uint8_t> CpuRegisters::h()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::H)));
 }
 
-Location<uint8_t>& CpuRegisters::l()
+LocationUP<uint8_t> CpuRegisters::l()
 {
-  auto a = Location<uint8_t>::generate(std::make_unique<SimpleLocation>(), std::make_unique<SimpleLocation>());
-  return *a;
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::L)));
 }
 
-Location<uint16_t>& CpuRegisters::sp()
+LocationUP<uint16_t> CpuRegisters::sp()
 {
-  return *sp_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::SPl)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::SPu)));
 }
 
-Location<uint16_t>& CpuRegisters::pc()
+LocationUP<uint16_t> CpuRegisters::pc()
 {
-  return *pc_;
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(RegisterFlags::PCl)),
+                                      std::make_unique<RegisterByte>(registers_.at(RegisterFlags::PCu)));
 }
 
 FlagsView& CpuRegisters::getFlags()
