@@ -12,11 +12,8 @@ using namespace std;
 using namespace gb;
 
 TEST(CpuTest, testClock) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(
-                           std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
-                           std::basic_fstream<uint8_t>{"Tetris.sav", std::ios_base::binary
-                                                       | std::ios_base::in
-                                                       | std::ios_base::out}
+  auto f = MemoryFactory(std::make_unique<CartLoader>(std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
+                                                      std::fstream{"Tetris.sav", std::ios_base::binary | std::ios_base::in}
                            ));
   auto mem = f.constructMemoryLayout();
   auto reg = std::make_unique<CpuRegisters>();

@@ -77,6 +77,8 @@ set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+set_property(TARGET gbelib PROPERTY CXX_STANDARD 17)
+
 install(TARGETS gbelib
   ARCHIVE DESTINATION CMAKE_ARCHIVE_OUTPUT_DIRECTORY
   PUBLIC_HEADER DESTINATION include/gbelib
