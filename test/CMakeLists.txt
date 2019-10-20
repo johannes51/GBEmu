@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.2)
-project(divider_tests)
+project(gbe_tests)
 
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
-include_directories(${DIVISION_HEADERS_DIR})
+include_directories(${PROJECT_INSTALL_INCLUDE_DIR})
 
 set(SOURCE_FILES
   main.cpp
