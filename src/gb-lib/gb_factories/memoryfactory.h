@@ -1,5 +1,5 @@
-#ifndef GBMEMORY_H
-#define GBMEMORY_H
+#ifndef MEMORYFACTORY_H
+#define MEMORYFACTORY_H
 
 #include <vector>
 
@@ -34,4 +34,4 @@ private:
 
 } // namespace gb
 
-#endif // GBMEMORY_H
+#endif // MEMORYFACTORY_H

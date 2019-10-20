@@ -4,10 +4,12 @@
 
 #include "mem/rombank.h"
 
-gb::CartLoader::CartLoader(std::ifstream&& romFile, std::basic_fstream<uint8_t>&& ramFile)
+gb::CartLoader::CartLoader(std::ifstream&& romFile, std::fstream&& ramFile)
   : romFile_(std::move(romFile))
   , ramFile_(std::move(ramFile))
 {
+  romFile_.unsetf(std::ios::skipws);
+  ramFile_.unsetf(std::ios::skipws);
 }
 
 std::vector<IMemoryManagerSP> gb::CartLoader::constructBanks()
@@ -26,18 +28,10 @@ std::vector<IMemoryManagerSP> gb::CartLoader::constructBanks()
 
 std::vector<uint8_t> gb::CartLoader::read16K(std::ifstream& file)
 {
-  file.unsetf(std::ios::skipws);
   static constexpr address_type Size = 0x4000;
-  std::vector<uint8_t> result{};
-  result.resize(Size);
-  auto it = std::istream_iterator<uint8_t>{file};
-  for (int pos = 0; pos < Size; ++pos) {
-    if (it == std::istream_iterator<uint8_t>{}) {
-      break;
-    }
-    result.at(pos) = *it;
-    ++it;
-  }
+  std::vector<uint8_t> result(Size);
+
+  file.read(reinterpret_cast<char*>(result.data()), Size * sizeof(uint8_t));
 
   return result;
 }

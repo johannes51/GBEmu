@@ -16,6 +16,9 @@ public:
   CpuRegisters();
   virtual ~CpuRegisters();
 
+  CpuRegisters(const CpuRegisters&) = delete;
+  CpuRegisters& operator =(const CpuRegisters&) = delete;
+
   LocationUP<uint16_t> af();
   LocationUP<uint8_t> a();
   LocationUP<uint16_t> bc();
