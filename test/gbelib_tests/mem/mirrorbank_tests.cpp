@@ -13,7 +13,7 @@ TEST(MirrorBankTest, testIndirect) {
   uint8_t value = 0xA2;
   *writeByte << value;
 
-  auto m = MirrorBank({16, 31}, {0, 15}, b);
+  MirrorBank m{{16, 31}, {0, 15}, b};
 
   auto readByte = m.getByte(16 + 4);
   ASSERT_EQ(value, **readByte);

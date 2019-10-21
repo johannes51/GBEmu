@@ -6,6 +6,7 @@
 class RegisterByte : public LocationByte {
 public:
   RegisterByte(uint8_t &byte);
+  DISABLE_COPY_AND_MOVE(RegisterByte)
 
   uint8_t operator*();
   RegisterByte &operator<<(const uint8_t &value);

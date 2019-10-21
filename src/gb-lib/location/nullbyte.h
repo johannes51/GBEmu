@@ -3,8 +3,11 @@
 
 #include "locationbyte.h"
 
-class NullByte : public LocationByte {
+class NullByte final : public LocationByte {
 public:
+  NullByte() = default;
+  DISABLE_COPY_AND_MOVE(NullByte)
+
   uint8_t operator*();
   NullByte &operator<<(const uint8_t &value);
 };

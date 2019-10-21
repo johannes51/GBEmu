@@ -3,6 +3,8 @@
 
 #include <memory>
 
+#include "defines.h"
+
 
 template<class T>
 class Location;

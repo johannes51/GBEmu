@@ -3,9 +3,13 @@
 
 #include <stdint.h>
 
+#include "defines.h"
+
 class LocationByte {
 public:
+  LocationByte() = default;
   virtual ~LocationByte() = default;
+  DISABLE_COPY_AND_MOVE(LocationByte)
 
   virtual uint8_t operator*() = 0;
   virtual LocationByte &operator<<(const uint8_t &value) = 0;

@@ -7,7 +7,7 @@ using namespace std;
 
 TEST(CpuFlagsTest, testCarry) {
   uint8_t buf;
-  auto flags = CpuFlags(buf);
+  CpuFlags flags(buf);
   flags.setCarry();
   ASSERT_EQ(true, flags.carry());
   flags.clearCarry();

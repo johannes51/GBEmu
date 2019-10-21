@@ -7,7 +7,7 @@
 using namespace std;
 
 TEST(NullBankTest, testWrite) {
-  auto b = NullBank({0, 16});
+  NullBank b{{0, 16}};
   auto writeByte = b.getByte(3);
   uint8_t value = 0xA2;
   *writeByte << value;

@@ -6,6 +6,7 @@
 class BufferByte : public LocationByte {
 public:
   virtual ~BufferByte() = default;
+  DISABLE_COPY_AND_MOVE(BufferByte)
 
   virtual uint8_t operator*() override;
   virtual LocationByte &operator<<(const uint8_t &value) override;

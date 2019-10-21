@@ -8,8 +8,7 @@ class Cpu {
 public:
   Cpu(RegistersInterfaceUP &&registers, IMemoryViewSP mem);
   ~Cpu();
-  DISABLE_COPY(Cpu)
-  DISABLE_MOVE(Cpu)
+  DISABLE_COPY_AND_MOVE(Cpu)
 
   void clock();
 

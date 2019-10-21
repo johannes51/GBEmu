@@ -6,12 +6,12 @@
 using namespace std;
 
 TEST(NullByteTest, testRead) {
-  auto a = NullByte();
+  NullByte a;
   ASSERT_ANY_THROW(*a);
 }
 
 TEST(NullByteTest, testWrite) {
-  auto a = NullByte();
+  NullByte a;
   ASSERT_ANY_THROW(a << 0x3);
 }
 
