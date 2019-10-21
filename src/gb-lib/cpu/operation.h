@@ -4,9 +4,12 @@
 #include <stdint.h>
 #include <vector>
 
-class Operation {
+#include "defines.h"
+
+class Operation final {
 public:
   Operation();
+  DISABLE_COPY_AND_MOVE(Operation)
 
   bool nextOpcode(const uint8_t opcode);
   void clock();

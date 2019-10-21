@@ -7,7 +7,7 @@
 using namespace std;
 
 TEST(RamBankTest, testIndirect) {
-  auto b = RamBank({0, 16});
+  RamBank b({0, 16});
   auto writeByte = b.getByte(4);
   uint8_t value = 0xA2;
   *writeByte << value;

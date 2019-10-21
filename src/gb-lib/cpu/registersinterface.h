@@ -8,7 +8,9 @@
 
 class RegistersInterface {
 public:
+  RegistersInterface() = default;
   virtual ~RegistersInterface() = default;
+  DISABLE_COPY_AND_MOVE(RegistersInterface)
 
   virtual LocationUP<uint16_t> af() = 0;
   virtual LocationUP<uint8_t> a() = 0;
@@ -26,9 +28,6 @@ public:
   virtual LocationUP<uint16_t> pc() = 0;
 
   virtual FlagsView &getFlags() = 0;
-
-protected:
-  RegistersInterface() = default;
 };
 
 #endif // REGISTERS_H

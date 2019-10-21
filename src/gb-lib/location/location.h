@@ -5,7 +5,7 @@
 #include "mem/mem_defines.h"
 #include "nullbyte.h"
 
-template <class T> class Location : LocationImpl {
+template <class T> class Location final : LocationImpl {
 public:
   static LocationUP<T>
   generate(LocationByteUP lower,

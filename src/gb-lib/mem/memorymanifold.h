@@ -8,7 +8,7 @@
 class MemoryManifold final : public IMemoryManager {
 public:
   MemoryManifold();
-  ~MemoryManifold() = default;
+  DISABLE_COPY_AND_MOVE(MemoryManifold)
 
   void addSubManager(const IMemoryManagerSP &newSubManager);
 

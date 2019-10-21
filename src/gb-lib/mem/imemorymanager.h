@@ -8,7 +8,9 @@
 
 class IMemoryManager : public IMemoryView {
 public:
+  IMemoryManager() = default;
   virtual ~IMemoryManager() = default;
+  DISABLE_COPY_AND_MOVE(IMemoryManager)
 
   virtual std::vector<MemoryArea> availableAreas() = 0;
 };

@@ -6,13 +6,11 @@
 #include "location/location_defines.h"
 #include "registersinterface.h"
 
-class CpuRegisters : public RegistersInterface {
+class CpuRegisters final : public RegistersInterface {
 public:
   CpuRegisters();
-  virtual ~CpuRegisters();
-
-  CpuRegisters(const CpuRegisters &) = delete;
-  CpuRegisters &operator=(const CpuRegisters &) = delete;
+  ~CpuRegisters();
+  DISABLE_COPY_AND_MOVE(CpuRegisters)
 
   LocationUP<uint16_t> af();
   LocationUP<uint8_t> a();

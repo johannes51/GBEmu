@@ -5,6 +5,9 @@
 
 class SingleAreaManager : public IMemoryManager {
 public:
+  virtual ~SingleAreaManager() = default;
+  DISABLE_COPY_AND_MOVE(SingleAreaManager)
+
   virtual std::vector<MemoryArea> availableAreas() override;
 
   const MemoryArea &singleArea() const;
