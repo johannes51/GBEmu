@@ -73,11 +73,25 @@ target_sources(gbelib PRIVATE
   sys/systemmanager.h
   )
 
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/script;")
+include(compiler-options)
+include(c++-standards)
+include(doxygen)
+include(formatting)
+include(tools)
+
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
-
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+enable_wall(gbelib)
+enable_effcpp(gbelib)
+cxx_17(gbelib)
+clang_format(format_gbelib gbelib)
+clang_tidy(gbelib
+  "-checks=clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*,cppcoreguidelines-*,google-*,bugprone-*,-google-build-using-namespace")
+include_what_you_use(gbelib)
+cppcheck(gbelib)
 
-set_property(TARGET gbelib PROPERTY CXX_STANDARD 17)
+build_docs()
 
 install(TARGETS gbelib
   ARCHIVE DESTINATION CMAKE_ARCHIVE_OUTPUT_DIRECTORY
