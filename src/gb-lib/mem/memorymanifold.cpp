@@ -4,10 +4,7 @@
 
 
 MemoryManifold::MemoryManifold()
-{
-}
-
-MemoryManifold::~MemoryManifold()
+  : subManagers_()
 {
 }
 

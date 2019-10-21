@@ -10,7 +10,7 @@ class MemoryManifold : public IMemoryManager
 {
 public:
   MemoryManifold();
-  ~MemoryManifold();
+  ~MemoryManifold() = default;
 
   void addSubManager(IMemoryManagerSP newSubManager);
 
