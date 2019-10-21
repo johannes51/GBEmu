@@ -18,7 +18,7 @@ target_sources(gbelib PRIVATE
   cpu/flagsview.cpp
   cpu/operation.h
   cpu/operation.cpp
-  cpu/register_flags.h
+  cpu/registername.h
   cpu/registersinterface.h
   debug/simplelocation.h
   debug/simplelocation.cpp

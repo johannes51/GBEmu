@@ -1,8 +1,6 @@
 #ifndef IMEMORYMANAGER_H
 #define IMEMORYMANAGER_H
 
-#include <stdexcept>
-#include <stdint.h>
 #include <vector>
 
 #include "imemoryview.h"

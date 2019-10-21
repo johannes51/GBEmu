@@ -2,8 +2,6 @@
 
 #include "cpu/cpu.h"
 #include "cpu/cpuregisters.h"
-#include "cpu/flagsview.h"
-#include "location/location.h"
 
 SystemManager::SystemManager(const IMemoryViewSP &memory)
     : memory_(memory),

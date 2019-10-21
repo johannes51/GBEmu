@@ -1,12 +1,10 @@
 #ifndef REGISTERSIMPL_H
 #define REGISTERSIMPL_H
 
-#include "registersinterface.h"
-
 #include <vector>
 
 #include "location/location_defines.h"
-#include "register_flags.h"
+#include "registersinterface.h"
 
 class CpuRegisters : public RegistersInterface {
 public:

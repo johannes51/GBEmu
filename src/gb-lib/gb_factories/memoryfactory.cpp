@@ -2,12 +2,11 @@
 
 #include <algorithm>
 
+#include "cartloader.h"
 #include "mem/memorymanifold.h"
 #include "mem/mirrorbank.h"
 #include "mem/nullbank.h"
 #include "mem/rambank.h"
-
-#include "cartloader.h"
 
 gb::MemoryFactory::MemoryFactory(RomLoaderUP &&romLoader)
     : loader_(std::move(romLoader)) {}

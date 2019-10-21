@@ -1,8 +1,6 @@
 #ifndef IMEMORYVIEW_H
 #define IMEMORYVIEW_H
 
-#include <stdint.h>
-
 #include "location/location_defines.h"
 #include "mem_defines.h"
 
