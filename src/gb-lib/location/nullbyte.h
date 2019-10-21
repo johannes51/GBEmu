@@ -8,8 +8,8 @@ public:
   NullByte() = default;
   DISABLE_COPY_AND_MOVE(NullByte)
 
-  uint8_t operator*();
-  NullByte &operator<<(const uint8_t &value);
+  uint8_t get() const override;
+  void set(const uint8_t &value) override;
 };
 
 #endif // NULLBYTE_H

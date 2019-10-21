@@ -4,14 +4,14 @@
 #include <stdint.h>
 #include <vector>
 
-#include "defines.h"
+#include "location/location_defines.h"
 
 class Operation final {
 public:
   Operation();
   DISABLE_COPY_AND_MOVE(Operation)
 
-  bool nextOpcode(const uint8_t opcode);
+  bool nextOpcode(LocationUP<uint8_t> opcode);
   void clock();
   bool isDone();
 

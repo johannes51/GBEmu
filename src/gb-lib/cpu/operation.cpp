@@ -1,9 +1,11 @@
 #include "operation.h"
 
+#include "location/location.h"
+
 Operation::Operation() : opcodes_() {}
 
-bool Operation::nextOpcode(const uint8_t opcode) {
-  opcodes_.push_back(opcode);
+bool Operation::nextOpcode(LocationUP<uint8_t> opcode) {
+  opcodes_.push_back(opcode->get());
   return false;
 }
 

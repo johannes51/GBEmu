@@ -14,8 +14,8 @@ public:
   Location(const Location &rhs) = delete;
   Location(Location &&rhs) = default;
 
-  T operator*() const;
-  Location<T> &operator<<(const T &value);
+  T get() const;
+  void set(const T &value);
 
 private:
   Location(LocationByteUP lower, LocationByteUP upper);

@@ -2,9 +2,8 @@
 
 RegisterByte::RegisterByte(uint8_t &byte) : byte_(byte) {}
 
-uint8_t RegisterByte::operator*() { return byte_; }
+uint8_t RegisterByte::get() const { return byte_; }
 
-RegisterByte &RegisterByte::operator<<(const uint8_t &value) {
+void RegisterByte::set(const uint8_t &value) {
   byte_ = value;
-  return *this;
 }

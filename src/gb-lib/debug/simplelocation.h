@@ -8,8 +8,8 @@ public:
   SimpleLocation() = default;
   DISABLE_COPY_AND_MOVE(SimpleLocation)
 
-  uint8_t operator*();
-  SimpleLocation &operator<<(const uint8_t &value);
+  uint8_t get() const override;
+  void set(const uint8_t &value) override;
 };
 
 #endif // SIMPLELOCATION_H
