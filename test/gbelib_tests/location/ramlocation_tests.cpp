@@ -9,7 +9,7 @@ TEST(RamLocationTest, testIndirect) {
   uint8_t buffer;
   RamByte a(buffer);
   uint8_t value = 0x17;
-  a << value;
-  ASSERT_EQ(value, *a);
+  a.set(value);
+  ASSERT_EQ(value, a.get());
 }
 

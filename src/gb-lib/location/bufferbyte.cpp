@@ -2,9 +2,8 @@
 
 BufferByte::BufferByte(uint8_t &reference) : reference_(reference) {}
 
-uint8_t BufferByte::operator*() { return reference_; }
+uint8_t BufferByte::get() const { return reference_; }
 
-LocationByte &BufferByte::operator<<(const uint8_t &value) {
+void BufferByte::set(const uint8_t &value) {
   reference_ = value;
-  return *this;
 }

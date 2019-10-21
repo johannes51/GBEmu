@@ -3,11 +3,11 @@
 
 #include "bufferbyte.h"
 
-class RomByte : public BufferByte {
+class RomByte final : public BufferByte {
 public:
   RomByte(uint8_t &reference);
 
-  virtual LocationByte &operator<<(const uint8_t &value) override;
+  void set(const uint8_t &value) override;
 };
 
 #endif // ROMBYTE_H

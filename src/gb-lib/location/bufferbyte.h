@@ -8,8 +8,8 @@ public:
   virtual ~BufferByte() = default;
   DISABLE_COPY_AND_MOVE(BufferByte)
 
-  virtual uint8_t operator*() override;
-  virtual LocationByte &operator<<(const uint8_t &value) override;
+  uint8_t get() const override;
+  virtual void set(const uint8_t &value) override;
 
 protected:
   BufferByte(uint8_t &reference);

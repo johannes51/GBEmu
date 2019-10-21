@@ -5,15 +5,15 @@
 
 class SingleAreaManager : public IMemoryManager {
 public:
+  SingleAreaManager(MemoryArea area);
   virtual ~SingleAreaManager() = default;
   DISABLE_COPY_AND_MOVE(SingleAreaManager)
 
+  virtual LocationUP<uint8_t> getByte(const address_type address) override = 0;
+  virtual LocationUP<uint16_t> getWord(const address_type address) override = 0;
   virtual std::vector<MemoryArea> availableAreas() override;
 
   const MemoryArea &singleArea() const;
-
-protected:
-  SingleAreaManager(MemoryArea area);
 
 private:
   std::vector<MemoryArea> availableAreas_;

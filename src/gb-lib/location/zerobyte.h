@@ -3,13 +3,13 @@
 
 #include "locationbyte.h"
 
-class ZeroByte : public LocationByte {
+class ZeroByte final : public LocationByte {
 public:
   ZeroByte() = default;
   DISABLE_COPY_AND_MOVE(ZeroByte)
 
-  uint8_t operator*();
-  LocationByte &operator<<(const uint8_t &value);
+  uint8_t get() const override;
+  void set(const uint8_t &value) override;
 };
 
 #endif // ZEROBYTE_H

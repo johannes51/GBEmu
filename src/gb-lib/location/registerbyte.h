@@ -3,13 +3,13 @@
 
 #include "location/locationbyte.h"
 
-class RegisterByte : public LocationByte {
+class RegisterByte final : public LocationByte {
 public:
   RegisterByte(uint8_t &byte);
   DISABLE_COPY_AND_MOVE(RegisterByte)
 
-  uint8_t operator*();
-  RegisterByte &operator<<(const uint8_t &value);
+  uint8_t get() const override;
+  void set(const uint8_t &value) override;
 
 private:
   uint8_t &byte_;

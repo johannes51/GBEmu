@@ -6,7 +6,7 @@
 namespace ops {
 
 template <class T> void increment(LocationUP<T> location) {
-  *location << **location + 1;
+  location->set(location->get() + 1);
 }
 
 } // namespace ops

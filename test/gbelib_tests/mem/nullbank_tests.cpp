@@ -10,8 +10,8 @@ TEST(NullBankTest, testWrite) {
   NullBank b{{0, 16}};
   auto writeByte = b.getByte(3);
   uint8_t value = 0xA2;
-  *writeByte << value;
+  writeByte->set(value);
   auto readByte = b.getByte(3);
-  ASSERT_EQ(0, **readByte);
+  ASSERT_EQ(0, readByte->get());
 }
 

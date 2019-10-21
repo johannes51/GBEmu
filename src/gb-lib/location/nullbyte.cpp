@@ -2,10 +2,9 @@
 
 #include <stdexcept>
 
-uint8_t NullByte::operator*() { throw std::logic_error("Read on null byte"); }
+uint8_t NullByte::get() const { throw std::logic_error("Read on null byte"); }
 
-NullByte &NullByte::operator<<(const uint8_t &value) {
+void NullByte::set(const uint8_t &value) {
   (void)value;
   throw std::logic_error("Write on null byte");
-  return *this;
 }

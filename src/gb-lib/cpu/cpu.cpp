@@ -18,7 +18,7 @@ void Cpu::clock() {
   if (!nextOperation_) {
     nextOperation_ = std::make_unique<Operation>();
     while (nextOperation_->nextOpcode(
-        **mem_->getByte(hlp::indirect(registers_->pc())))) {
+        mem_->getByte(hlp::indirect(registers_->pc())))) {
       ops::increment(registers_->pc());
     }
   }
