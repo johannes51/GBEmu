@@ -5,8 +5,9 @@
 
 MirrorBank::MirrorBank(MemoryArea mirrorArea, MemoryArea originalArea,
                        IMemoryManagerSP mirrored)
-    : SingleAreaManager(mirrorArea), mirrored_(mirrored),
-      offset_(originalArea.from - mirrorArea.from) {
+    : SingleAreaManager(mirrorArea),
+      offset_(originalArea.from - mirrorArea.from),
+      mirrored_(std::move(mirrored)) {
   if (mirrorArea.to - mirrorArea.from > originalArea.to - originalArea.from) {
     throw std::invalid_argument("Mirror bigger than original");
   }

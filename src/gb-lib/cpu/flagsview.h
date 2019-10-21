@@ -12,7 +12,7 @@ public:
   virtual bool carry() = 0;
 
 protected:
-  FlagsView();
+  FlagsView() = default;
 };
 
 using FlagsViewUP = std::unique_ptr<FlagsView>;

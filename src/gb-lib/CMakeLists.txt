@@ -52,7 +52,6 @@ target_sources(gbelib PRIVATE
   location/location.cpp
   location/location_defines
   location/locationbyte.h
-  location/locationbyte.cpp
   location/locationimpl.h
   location/locationimpl.cpp
   location/nullbyte.h
@@ -87,7 +86,7 @@ enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib
-  "-checks=clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*,cppcoreguidelines-*,google-*,bugprone-*,-google-build-using-namespace")
+  "-checks=clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*,-readability-redundant-member-init,cppcoreguidelines-*,-cppcoreguidelines-pro-type-reinterpret-cast,google-*,bugprone-*,-google-build-using-namespace")
 include_what_you_use(gbelib)
 cppcheck(gbelib)
 

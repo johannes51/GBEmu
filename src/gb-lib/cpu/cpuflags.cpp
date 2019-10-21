@@ -6,4 +6,7 @@ void CpuFlags::setCarry() { carry_ = true; }
 
 void CpuFlags::clearCarry() { carry_ = false; }
 
-bool CpuFlags::carry() { return carry_; }
+bool CpuFlags::carry() {
+  (void)buffer_;
+  return carry_;
+}

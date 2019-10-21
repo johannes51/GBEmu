@@ -12,6 +12,8 @@ LocationUP<uint8_t> NullBank::getByte(address_type address) {
 }
 
 LocationUP<uint16_t> NullBank::getWord(address_type address) {
+  mem_tools::translateAdressSafe(address, singleArea());
+  mem_tools::translateAdressSafe(address + 1, singleArea());
   return Location<uint16_t>::generate(std::make_unique<ZeroByte>(),
                                       std::make_unique<ZeroByte>());
 }

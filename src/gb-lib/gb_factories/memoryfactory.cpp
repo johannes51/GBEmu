@@ -38,7 +38,8 @@ IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area) {
 IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea,
                                                     MemoryArea originArea,
                                                     IMemoryManagerSP origin) {
-  return std::make_shared<MirrorBank>(mirrorArea, originArea, origin);
+  return std::make_shared<MirrorBank>(mirrorArea, originArea,
+                                      std::move(origin));
 }
 
 IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) {
@@ -46,9 +47,9 @@ IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) {
 }
 
 std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks() {
+  std::vector<IMemoryManagerSP> result{};
   if (loader_) {
-    return loader_->constructBanks();
-  } else {
-    return std::vector<IMemoryManagerSP>{};
+    result = loader_->constructBanks();
   }
+  return result;
 }
