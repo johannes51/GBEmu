@@ -8,7 +8,7 @@
 class SystemManager
 {
 public:
-  SystemManager(IMemoryViewSP memory);
+  SystemManager(const IMemoryViewSP& memory);
   ~SystemManager();
 
   void clock();
