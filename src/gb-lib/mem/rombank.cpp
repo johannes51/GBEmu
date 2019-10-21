@@ -2,6 +2,7 @@
 
 #include "location/location.h"
 #include "location/rombyte.h"
+#include "mem_tools.h"
 
 RomBank::RomBank(MemoryArea area, std::vector<uint8_t> &&buffer)
     : SingleAreaManager(area), buffer_(std::move(buffer)) {}

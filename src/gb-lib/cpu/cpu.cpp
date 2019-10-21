@@ -1,5 +1,6 @@
 #include "cpu.h"
 
+#include "cpu_defines.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "operation.h"

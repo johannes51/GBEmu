@@ -1,7 +1,5 @@
 #include "cartloader.h"
 
-#include <iterator>
-
 #include "mem/rombank.h"
 
 gb::CartLoader::CartLoader(std::ifstream &&romFile, std::fstream &&ramFile)

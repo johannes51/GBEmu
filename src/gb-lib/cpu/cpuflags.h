@@ -3,8 +3,6 @@
 
 #include "flagsview.h"
 
-#include <stdint.h>
-
 class CpuFlags : public FlagsView {
 public:
   CpuFlags(uint8_t &buffer);

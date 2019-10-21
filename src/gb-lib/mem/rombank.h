@@ -3,8 +3,6 @@
 
 #include "singleareamanager.h"
 
-#include "mem_tools.h"
-
 class RomBank final : public SingleAreaManager {
 public:
   RomBank(MemoryArea area, std::vector<uint8_t> &&buffer);

@@ -20,13 +20,6 @@ else()
   message(STATUS "clang-tidy not found!")
   set(CMAKE_CXX_CLANG_TIDY "" CACHE STRING "" FORCE) # delete it
 endif()
-find_program(IWYU_EXE NAMES "include-what-you-use")
-if(IWYU_EXE)
-  message(STATUS "include-what-you-use found: ${IWYU_EXE}")
-else()
-  message(STATUS "include-what-you-use not found!")
-  set(CMAKE_CXX_INCLUDE_WHAT_YOU_USE "" CACHE STRING "" FORCE) # delete it
-endif()
 find_program(CPPCHECK_EXE NAMES "cppcheck")
 if(CPPCHECK_EXE)
   message(STATUS "cppcheck found: ${CPPCHECK_EXE}")
@@ -43,16 +36,6 @@ function(clang_tidy TARGET_NAME)
     set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE};${ARGN}")
   else()
     message(FATAL_ERROR "clang-tidy is needed.")
-  endif()
-endfunction()
-
-# Adds include_what_you_use to the compilation, with the given arguments being
-# used as the options set.
-function(include_what_you_use TARGET_NAME)
-  if(IWYU_EXE)
-    set_target_properties(${TARGET_NAME} PROPERTIES CXX_INCLUDE_WHAT_YOU_USE "${IWYU_EXE};${IWYU_STRING}")
-  else()
-    message(FATAL_ERROR "include-what-you-use is needed.")
   endif()
 endfunction()
 
