@@ -3,17 +3,15 @@
 
 #include "location/locationbyte.h"
 
-
-class RegisterByte : public LocationByte
-{
+class RegisterByte : public LocationByte {
 public:
-  RegisterByte(uint8_t& byte);
+  RegisterByte(uint8_t &byte);
 
-  uint8_t operator *();
-  RegisterByte& operator <<(const uint8_t& value);
+  uint8_t operator*();
+  RegisterByte &operator<<(const uint8_t &value);
 
 private:
-  uint8_t& byte_;
+  uint8_t &byte_;
 };
 
 #endif // REGISTERBYTE_H

@@ -3,9 +3,7 @@
 
 #include <memory>
 
-
-class FlagsView
-{
+class FlagsView {
 public:
   virtual ~FlagsView() = default;
 

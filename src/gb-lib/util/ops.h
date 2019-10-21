@@ -3,16 +3,12 @@
 
 #include "location/location_defines.h"
 
+namespace ops {
 
-namespace ops
-{
-
-template<class T>
-void increment(LocationUP<T> location)
-{
+template <class T> void increment(LocationUP<T> location) {
   *location << **location + 1;
 }
 
-}
+} // namespace ops
 
 #endif // OPS_H

@@ -1,6 +1,3 @@
 #include "flagsview.h"
 
-FlagsView::FlagsView()
-{
-
-}
+FlagsView::FlagsView() {}

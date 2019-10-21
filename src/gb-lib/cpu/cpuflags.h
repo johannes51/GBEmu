@@ -5,18 +5,16 @@
 
 #include <stdint.h>
 
-
-class CpuFlags : public FlagsView
-{
+class CpuFlags : public FlagsView {
 public:
-  CpuFlags(uint8_t& buffer);
+  CpuFlags(uint8_t &buffer);
 
   void setCarry();
   void clearCarry();
   bool carry();
 
 private:
-  uint8_t& buffer_;
+  uint8_t &buffer_;
   bool carry_;
 };
 

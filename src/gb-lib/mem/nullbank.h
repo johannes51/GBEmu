@@ -3,9 +3,7 @@
 
 #include "singleareamanager.h"
 
-
-class NullBank : public SingleAreaManager
-{
+class NullBank : public SingleAreaManager {
 public:
   NullBank(MemoryArea area);
 

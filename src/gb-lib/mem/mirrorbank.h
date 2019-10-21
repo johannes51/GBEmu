@@ -3,11 +3,10 @@
 
 #include "singleareamanager.h"
 
-
-class MirrorBank : public SingleAreaManager
-{
+class MirrorBank : public SingleAreaManager {
 public:
-  MirrorBank(MemoryArea mirrorArea, MemoryArea originalArea, IMemoryManagerSP mirrored);
+  MirrorBank(MemoryArea mirrorArea, MemoryArea originalArea,
+             IMemoryManagerSP mirrored);
 
   LocationUP<uint8_t> getByte(address_type address);
   LocationUP<uint16_t> getWord(address_type address);

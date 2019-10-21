@@ -4,9 +4,7 @@
 #include <stdint.h>
 #include <vector>
 
-
-class Operation
-{
+class Operation {
 public:
   Operation() = default;
 

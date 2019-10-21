@@ -3,7 +3,6 @@
 
 #include <memory>
 
-
 namespace gb {
 
 class CartLoader;
