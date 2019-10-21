@@ -41,7 +41,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_
 {
   auto writeLocation = memory.getByte(writeAdress);
   writeLocation->set(value);
-  ASSERT_EQ(value, memory.getWord(readAdress)->get());
+  ASSERT_EQ(value, memory.getByte(readAdress)->get());
 }
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t value)
