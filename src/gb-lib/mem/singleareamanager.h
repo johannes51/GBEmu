@@ -5,7 +5,7 @@
 
 class SingleAreaManager : public IMemoryManager {
 public:
-  const std::vector<MemoryArea> &availableAreas();
+  virtual std::vector<MemoryArea> availableAreas() override;
 
   const MemoryArea &singleArea() const;
 

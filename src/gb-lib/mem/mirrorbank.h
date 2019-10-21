@@ -8,8 +8,8 @@ public:
   MirrorBank(MemoryArea mirrorArea, MemoryArea originalArea,
              IMemoryManagerSP mirrored);
 
-  LocationUP<uint8_t> getByte(address_type address);
-  LocationUP<uint16_t> getWord(address_type address);
+  virtual LocationUP<uint8_t> getByte(const address_type address) override;
+  virtual LocationUP<uint16_t> getWord(const address_type address) override;
 
 private:
   int offset_;

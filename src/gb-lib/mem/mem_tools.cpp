@@ -1,17 +1,16 @@
 #include "mem_tools.h"
 
-address_type mem_tools::translateAdressSafe(address_type inputAdress,
+address_type mem_tools::translateAdressSafe(const address_type inputAdress,
                                             MemoryArea area) {
-  auto result = inputAdress - area.from;
-  if (result < 0 || inputAdress > area.to) {
+  if (!isSafe(inputAdress, area)) {
     throw std::invalid_argument("Out of bounds");
   }
-  return result;
+  return inputAdress - area.from;
 }
 
-address_type mem_tools::translateAdressSafe(address_type inputAdress,
-                                            address_type startAdress,
-                                            address_type size) {
+address_type mem_tools::translateAdressSafe(const address_type inputAdress,
+                                            const address_type startAdress,
+                                            const address_type size) {
   auto result = static_cast<int>(inputAdress) - static_cast<int>(startAdress);
   if (result < 0 || result > size) {
     throw std::invalid_argument("Out of bounds");
@@ -19,10 +18,14 @@ address_type mem_tools::translateAdressSafe(address_type inputAdress,
   return result;
 }
 
-address_type mem_tools::translateAdressSafe(address_type inputAdress,
+address_type mem_tools::translateAdressSafe(const address_type inputAdress,
                                             MemoryArea mirror, int offset) {
-  if (inputAdress < mirror.from || inputAdress > mirror.to) {
+  if (!isSafe(inputAdress, mirror)) {
     throw std::invalid_argument("Out of bounds");
   }
   return inputAdress + offset;
+}
+
+bool mem_tools::isSafe(const address_type &address, const MemoryArea &area) {
+  return (address >= area.from && address <= area.to);
 }

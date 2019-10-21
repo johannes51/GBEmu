@@ -12,7 +12,7 @@ class IMemoryManager : public IMemoryView {
 public:
   virtual ~IMemoryManager() = default;
 
-  virtual const std::vector<MemoryArea> &availableAreas() = 0;
+  virtual std::vector<MemoryArea> availableAreas() = 0;
 };
 
 #endif // IMEMORYMANAGER_H
