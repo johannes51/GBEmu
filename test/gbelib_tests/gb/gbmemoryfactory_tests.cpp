@@ -188,7 +188,7 @@ TEST(GBMemoryFactoryTest, testECHO_3) {
   value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO, value8);
 
-//  testMemoryThrows(*gbLayout, endECHO);  somehow doesn't on echo
+  testMemoryThrows(*gbLayout, endECHO);
 }
 
 TEST(GBMemoryFactoryTest, testNOTUSED_1) {
