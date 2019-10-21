@@ -6,7 +6,7 @@
 
 class Operation {
 public:
-  Operation() = default;
+  Operation();
 
   bool nextOpcode(const uint8_t opcode);
   void clock();

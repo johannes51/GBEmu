@@ -10,7 +10,7 @@ public:
   MemoryManifold();
   ~MemoryManifold() = default;
 
-  void addSubManager(IMemoryManagerSP newSubManager);
+  void addSubManager(const IMemoryManagerSP &newSubManager);
 
   LocationUP<uint8_t> getByte(address_type address);
   LocationUP<uint16_t> getWord(address_type address);

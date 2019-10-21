@@ -5,7 +5,7 @@
 
 class SimpleLocation : public LocationByte {
 public:
-  SimpleLocation();
+  SimpleLocation() = default;
 
   uint8_t operator*();
   SimpleLocation &operator<<(const uint8_t &value);

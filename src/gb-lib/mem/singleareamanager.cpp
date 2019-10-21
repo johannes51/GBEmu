@@ -8,6 +8,6 @@ const MemoryArea &SingleAreaManager::singleArea() const {
   return availableAreas_.front();
 }
 
-SingleAreaManager::SingleAreaManager(MemoryArea area) {
+SingleAreaManager::SingleAreaManager(MemoryArea area) : availableAreas_() {
   availableAreas_.push_back(area);
 }

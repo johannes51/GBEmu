@@ -6,20 +6,33 @@
 
 #include "debug/simplelocation.h"
 
-CpuRegisters::CpuRegisters() {
+const uint8_t INITIAL_A = 0x01;
+const uint8_t INITIAL_F = 0xB0;
+const uint8_t INITIAL_B = 0x00;
+const uint8_t INITIAL_C = 0x13;
+const uint8_t INITIAL_D = 0x00;
+const uint8_t INITIAL_E = 0xD8;
+const uint8_t INITIAL_H = 0x01;
+const uint8_t INITIAL_L = 0x4D;
+const uint8_t INITIAL_SPu = 0xFF;
+const uint8_t INITIAL_SPl = 0xFF;
+const uint8_t INITIAL_PCu = 0x01;
+const uint8_t INITIAL_PCl = 0x00;
+
+CpuRegisters::CpuRegisters() : registers_(), flags_() {
   registers_.resize(RegisterFlags::SIZE);
-  registers_.at(RegisterFlags::A) = 0x01;
-  registers_.at(RegisterFlags::F) = 0xB0;
-  registers_.at(RegisterFlags::B) = 0x00;
-  registers_.at(RegisterFlags::C) = 0x13;
-  registers_.at(RegisterFlags::D) = 0x00;
-  registers_.at(RegisterFlags::E) = 0xD8;
-  registers_.at(RegisterFlags::H) = 0x01;
-  registers_.at(RegisterFlags::L) = 0x4D;
-  registers_.at(RegisterFlags::SPu) = 0xFF;
-  registers_.at(RegisterFlags::SPl) = 0xFF;
-  registers_.at(RegisterFlags::PCu) = 0x01;
-  registers_.at(RegisterFlags::PCl) = 0x00;
+  registers_.at(RegisterFlags::A) = INITIAL_A;
+  registers_.at(RegisterFlags::F) = INITIAL_F;
+  registers_.at(RegisterFlags::B) = INITIAL_B;
+  registers_.at(RegisterFlags::C) = INITIAL_C;
+  registers_.at(RegisterFlags::D) = INITIAL_D;
+  registers_.at(RegisterFlags::E) = INITIAL_E;
+  registers_.at(RegisterFlags::H) = INITIAL_H;
+  registers_.at(RegisterFlags::L) = INITIAL_L;
+  registers_.at(RegisterFlags::SPu) = INITIAL_SPu;
+  registers_.at(RegisterFlags::SPl) = INITIAL_SPl;
+  registers_.at(RegisterFlags::PCu) = INITIAL_PCu;
+  registers_.at(RegisterFlags::PCl) = INITIAL_PCl;
 }
 
 CpuRegisters::~CpuRegisters() = default;

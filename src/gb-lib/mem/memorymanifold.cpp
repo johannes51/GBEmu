@@ -4,7 +4,7 @@
 
 MemoryManifold::MemoryManifold() : subManagers_() {}
 
-void MemoryManifold::addSubManager(IMemoryManagerSP newSubManager) {
+void MemoryManifold::addSubManager(const IMemoryManagerSP &newSubManager) {
   auto areas = newSubManager->availableAreas();
   for (auto area : areas) {
     subManagers_[area] = newSubManager;
@@ -12,7 +12,7 @@ void MemoryManifold::addSubManager(IMemoryManagerSP newSubManager) {
 }
 
 LocationUP<uint8_t> MemoryManifold::getByte(address_type address) {
-  for (auto areaAndManager : subManagers_) {
+  for (const auto &areaAndManager : subManagers_) {
     if (areaAndManager.first.from <= address &&
         areaAndManager.first.to >= address) {
       return areaAndManager.second->getByte(address);
@@ -22,7 +22,7 @@ LocationUP<uint8_t> MemoryManifold::getByte(address_type address) {
 }
 
 LocationUP<uint16_t> MemoryManifold::getWord(address_type address) {
-  for (auto areaAndManager : subManagers_) {
+  for (const auto &areaAndManager : subManagers_) {
     if (areaAndManager.first.from <= address &&
         areaAndManager.first.to - 1 >= address) {
       return areaAndManager.second->getWord(address);

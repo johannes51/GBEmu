@@ -8,7 +8,8 @@
 #include "util/ops.h"
 
 Cpu::Cpu(RegistersInterfaceUP &&registers, IMemoryViewSP mem)
-    : registers_(std::move(registers)), mem_(mem), nextOperation_(nullptr) {}
+    : mem_(std::move(mem)), registers_(std::move(registers)),
+      nextOperation_(nullptr) {}
 
 Cpu::~Cpu() = default;
 
