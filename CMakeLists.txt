@@ -8,4 +8,8 @@ set(PROJECT_INSTALL_LIB_DIR ${PROJECT_SOURCE_DIR}/lib)
 add_subdirectory(src)
 add_subdirectory(test)
 
+add_subdirectory(script)
+set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/script;")
+include(dependency-graph)
+gen_dep_graph(png)
 
