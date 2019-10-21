@@ -3,26 +3,21 @@
 #include <algorithm>
 
 #include "mem/memorymanifold.h"
-#include "mem/rambank.h"
 #include "mem/mirrorbank.h"
 #include "mem/nullbank.h"
+#include "mem/rambank.h"
 
 #include "cartloader.h"
 
+gb::MemoryFactory::MemoryFactory(RomLoaderUP &&romLoader)
+    : loader_(std::move(romLoader)) {}
 
-gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
-  : loader_(std::move(romLoader))
-{
-}
-
-IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
-{
+IMemoryViewSP gb::MemoryFactory::constructMemoryLayout() {
   auto manifold = std::make_shared<MemoryManifold>();
 
   auto cartBanks = buildCartBanks();
-  std::for_each(cartBanks.begin(), cartBanks.end(), [&](const auto& elem) {
-    manifold->addSubManager(elem);
-  });
+  std::for_each(cartBanks.begin(), cartBanks.end(),
+                [&](const auto &elem) { manifold->addSubManager(elem); });
 
   auto wram0 = buildRamBank(WRAM0);
   auto wram1 = buildRamBank(WRAM1);
@@ -36,27 +31,24 @@ IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
   return manifold;
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area)
-{
+IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area) {
   return std::make_shared<RamBank>(area);
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
-{
+IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea,
+                                                    MemoryArea originArea,
+                                                    IMemoryManagerSP origin) {
   return std::make_shared<MirrorBank>(mirrorArea, originArea, origin);
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area)
-{
+IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) {
   return std::make_shared<NullBank>(area);
 }
 
-std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks()
-{
+std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks() {
   if (loader_) {
     return loader_->constructBanks();
   } else {
     return std::vector<IMemoryManagerSP>{};
   }
 }
-

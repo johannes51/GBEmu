@@ -3,14 +3,12 @@
 
 #include "location/locationbyte.h"
 
-
-class SimpleLocation : public LocationByte
-{
+class SimpleLocation : public LocationByte {
 public:
   SimpleLocation();
 
-  uint8_t operator *();
-  SimpleLocation& operator <<(const uint8_t& value);
+  uint8_t operator*();
+  SimpleLocation &operator<<(const uint8_t &value);
 };
 
 #endif // SIMPLELOCATION_H

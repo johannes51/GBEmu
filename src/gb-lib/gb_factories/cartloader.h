@@ -1,17 +1,16 @@
 #ifndef CARTLOADER_H
 #define CARTLOADER_H
 
-#include <vector>
 #include <fstream>
+#include <vector>
 
 #include "mem/mem_defines.h"
 
 namespace gb {
 
-class CartLoader
-{
+class CartLoader {
 public:
-  CartLoader(std::ifstream&& romFile, std::fstream&& ramFile);
+  CartLoader(std::ifstream &&romFile, std::fstream &&ramFile);
 
   std::vector<IMemoryManagerSP> constructBanks();
 
@@ -21,7 +20,7 @@ private:
   static constexpr address_type StartROM1 = 0x4000;
   static constexpr address_type EndROM1 = 0x7FFF;
 
-  std::vector<uint8_t> read16K(std::ifstream& file);
+  std::vector<uint8_t> read16K(std::ifstream &file);
 
   std::ifstream romFile_;
   std::fstream ramFile_;

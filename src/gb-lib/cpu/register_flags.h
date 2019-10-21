@@ -3,15 +3,19 @@
 
 #include <cstddef>
 
-
-enum RegisterFlags : std::size_t
-{
-  A, F,
-  B, C,
-  D, E,
-  H, L,
-  SPu, SPl,
-  PCu, PCl,
+enum RegisterFlags : std::size_t {
+  A,
+  F,
+  B,
+  C,
+  D,
+  E,
+  H,
+  L,
+  SPu,
+  SPl,
+  PCu,
+  PCl,
   SIZE
 };
 

@@ -5,9 +5,7 @@
 
 #include "imemorymanager.h"
 
-
-class MemoryManifold : public IMemoryManager
-{
+class MemoryManifold : public IMemoryManager {
 public:
   MemoryManifold();
   ~MemoryManifold() = default;
@@ -16,7 +14,7 @@ public:
 
   LocationUP<uint8_t> getByte(address_type address);
   LocationUP<uint16_t> getWord(address_type address);
-  const std::vector<MemoryArea>& availableAreas();
+  const std::vector<MemoryArea> &availableAreas();
 
 private:
   std::map<MemoryArea, IMemoryManagerSP> subManagers_;

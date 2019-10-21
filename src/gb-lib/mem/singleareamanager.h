@@ -3,13 +3,11 @@
 
 #include "imemorymanager.h"
 
-
-class SingleAreaManager : public IMemoryManager
-{
+class SingleAreaManager : public IMemoryManager {
 public:
-  const std::vector<MemoryArea>& availableAreas();
+  const std::vector<MemoryArea> &availableAreas();
 
-  const MemoryArea& singleArea() const;
+  const MemoryArea &singleArea() const;
 
 protected:
   SingleAreaManager(MemoryArea area);

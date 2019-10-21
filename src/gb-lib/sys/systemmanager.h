@@ -4,11 +4,9 @@
 #include "cpu/cpu_defines.h"
 #include "mem/mem_defines.h"
 
-
-class SystemManager
-{
+class SystemManager {
 public:
-  SystemManager(const IMemoryViewSP& memory);
+  SystemManager(const IMemoryViewSP &memory);
   ~SystemManager();
 
   void clock();

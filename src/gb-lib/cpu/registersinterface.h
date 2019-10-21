@@ -6,9 +6,7 @@
 #include "cpu_defines.h"
 #include "location/location_defines.h"
 
-
-class RegistersInterface
-{
+class RegistersInterface {
 public:
   virtual ~RegistersInterface() = default;
 
@@ -27,7 +25,7 @@ public:
   virtual LocationUP<uint16_t> sp() = 0;
   virtual LocationUP<uint16_t> pc() = 0;
 
-  virtual FlagsView& getFlags() = 0;
+  virtual FlagsView &getFlags() = 0;
 
 protected:
   RegistersInterface() = default;

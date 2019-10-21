@@ -5,9 +5,7 @@
 
 #include "location_defines.h"
 
-
-class LocationImpl
-{
+class LocationImpl {
 public:
   uint8_t getByte() const;
   uint16_t getWord() const;

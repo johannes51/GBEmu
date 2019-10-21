@@ -5,19 +5,16 @@
 
 #include <vector>
 
-#include "register_flags.h"
 #include "location/location_defines.h"
+#include "register_flags.h"
 
-
-
-class CpuRegisters : public RegistersInterface
-{
+class CpuRegisters : public RegistersInterface {
 public:
   CpuRegisters();
   virtual ~CpuRegisters();
 
-  CpuRegisters(const CpuRegisters&) = delete;
-  CpuRegisters& operator =(const CpuRegisters&) = delete;
+  CpuRegisters(const CpuRegisters &) = delete;
+  CpuRegisters &operator=(const CpuRegisters &) = delete;
 
   LocationUP<uint16_t> af();
   LocationUP<uint8_t> a();
@@ -32,7 +29,7 @@ public:
   LocationUP<uint8_t> l();
   LocationUP<uint16_t> sp();
   LocationUP<uint16_t> pc();
-  FlagsView& getFlags();
+  FlagsView &getFlags();
 
 private:
   std::vector<uint8_t> registers_;

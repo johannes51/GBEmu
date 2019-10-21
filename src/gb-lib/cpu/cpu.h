@@ -4,11 +4,9 @@
 #include "cpu_defines.h"
 #include "mem/mem_defines.h"
 
-
-class Cpu
-{
+class Cpu {
 public:
-  Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem);
+  Cpu(RegistersInterfaceUP &&registers, IMemoryViewSP mem);
   ~Cpu();
   DISABLE_COPY(Cpu)
   DISABLE_MOVE(Cpu)

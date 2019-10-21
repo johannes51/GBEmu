@@ -3,9 +3,7 @@
 
 #include "singleareamanager.h"
 
-
-class RamBank : public SingleAreaManager
-{
+class RamBank : public SingleAreaManager {
 public:
   RamBank(MemoryArea area);
 

@@ -3,12 +3,10 @@
 
 #include <stdint.h>
 
-#include "mem_defines.h"
 #include "location/location_defines.h"
+#include "mem_defines.h"
 
-
-class IMemoryView
-{
+class IMemoryView {
 public:
   virtual ~IMemoryView() = default;
 
@@ -17,4 +15,3 @@ public:
 };
 
 #endif // IMEMORYVIEW_H
-
