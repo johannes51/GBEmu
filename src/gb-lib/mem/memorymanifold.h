@@ -1,23 +1,25 @@
 #ifndef MEMORYMANIFOLD_H
 #define MEMORYMANIFOLD_H
 
-#include <map>
+#include <vector>
 
 #include "imemorymanager.h"
 
-class MemoryManifold : public IMemoryManager {
+class MemoryManifold final : public IMemoryManager {
 public:
   MemoryManifold();
   ~MemoryManifold() = default;
 
   void addSubManager(const IMemoryManagerSP &newSubManager);
 
-  LocationUP<uint8_t> getByte(address_type address);
-  LocationUP<uint16_t> getWord(address_type address);
-  const std::vector<MemoryArea> &availableAreas();
+  LocationUP<uint8_t> getByte(const address_type address) override;
+  LocationUP<uint16_t> getWord(const address_type address) override;
+  virtual std::vector<MemoryArea> availableAreas() override;
 
 private:
-  std::map<MemoryArea, IMemoryManagerSP> subManagers_;
+  IMemoryManagerSP &selectManager(const address_type address);
+
+  std::vector<std::pair<MemoryArea, IMemoryManagerSP>> subManagers_;
 };
 
 #endif // MEMORYMANIFOLD_H

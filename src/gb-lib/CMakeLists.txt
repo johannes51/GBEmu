@@ -85,9 +85,7 @@ enable_wall(gbelib)
 enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
-clang_tidy(gbelib
-  "-checks=clang-analyzer-*,misc-*,modernize-*,performance-*,readability-*,-readability-redundant-member-init,cppcoreguidelines-*,-cppcoreguidelines-pro-type-reinterpret-cast,google-*,bugprone-*,-google-build-using-namespace")
-include_what_you_use(gbelib)
+clang_tidy(gbelib "-checks=*,-fuchsia-default-arguments,-readability-redundant-member-init")
 cppcheck(gbelib)
 
 build_docs()
