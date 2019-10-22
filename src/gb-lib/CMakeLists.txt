@@ -16,10 +16,18 @@ target_sources(gbelib PRIVATE
   cpu/cpuregisters.cpp
   cpu/flagsview.h
   cpu/flagsview.cpp
-  cpu/operation.h
-  cpu/operation.cpp
   cpu/registername.h
   cpu/registersinterface.h
+  cpu/operation/opcodeview.h
+  cpu/operation/opcodeview.cpp
+  cpu/operation/operation.h
+  cpu/operation/operation.cpp
+  cpu/operation/instructiondecoder.h
+  cpu/operation/instructiondecoder.cpp
+  cpu/operation/nop.h
+  cpu/operation/nop.cpp
+  cpu/operation/singleop.h
+  cpu/operation/singleop.cpp
   debug/simplelocation.h
   debug/simplelocation.cpp
   debug/variablebyte.h

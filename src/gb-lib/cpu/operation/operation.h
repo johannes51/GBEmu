@@ -6,17 +6,23 @@
 
 #include "location/location_defines.h"
 
-class Operation final {
+class Operation {
 public:
   Operation();
+  virtual ~Operation() = default;
   DISABLE_COPY_AND_MOVE(Operation)
 
-  bool nextOpcode(LocationUP<uint8_t> opcode);
+  virtual void nextOpcode(LocationUP<uint8_t> opcode) = 0;
+  virtual bool isComplete() = 0;
   void clock();
   bool isDone();
 
+  virtual void execute() = 0;
+
 private:
-  std::vector<uint8_t> opcodes_;
+  virtual uint cycles() = 0;
+
+  uint clocks_;
 };
 
 #endif // OPERATION_H
