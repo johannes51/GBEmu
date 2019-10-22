@@ -24,6 +24,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/operation.cpp
   cpu/operation/instructiondecoder.h
   cpu/operation/instructiondecoder.cpp
+  cpu/operation/loads.h
+  cpu/operation/loads.cpp
   cpu/operation/nop.h
   cpu/operation/nop.cpp
   cpu/operation/singleop.h
