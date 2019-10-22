@@ -3,7 +3,8 @@
 #include "cpu_defines.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
-#include "operation.h"
+#include "operation/instructiondecoder.h"
+#include "operation/operation.h"
 #include "registersinterface.h"
 #include "util/helpers.h"
 #include "util/ops.h"
@@ -16,13 +17,20 @@ Cpu::~Cpu() = default;
 
 void Cpu::clock() {
   if (!nextOperation_) {
-    nextOperation_ = std::make_unique<Operation>();
-    while (nextOperation_->nextOpcode(
-        mem_->getByte(hlp::indirect(registers_->pc())))) {
-      ops::increment(registers_->pc());
+    nextOperation_ = id::decode(nextOpcode());
+    while (!nextOperation_->isComplete()) {
+      nextOperation_->nextOpcode(nextOpcode());
     }
   }
   nextOperation_->clock();
   if (nextOperation_->isDone()) {
+    nextOperation_->execute();
+    nextOperation_.reset();
   }
+}
+
+LocationUP<uint8_t> Cpu::nextOpcode() {
+  auto result = mem_->getByte(hlp::indirect(registers_->pc()));
+  ops::increment(registers_->pc());
+  return result;
 }

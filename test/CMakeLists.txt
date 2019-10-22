@@ -15,7 +15,6 @@ configure_file(
 set(TEST_SOURCES
   main.cpp
   gbelib_tests/cpu/cpu_tests.cpp
-  gbelib_tests/cpu/operation_tests.cpp
   gbelib_tests/cpu/cpuflags_tests.cpp
   gbelib_tests/cpu/cpuregisters_tests.cpp
   gbelib_tests/cpu/registerbyte_tests.cpp

@@ -2,6 +2,7 @@
 #define CPU_H
 
 #include "cpu_defines.h"
+#include "location/location_defines.h"
 #include "mem/mem_defines.h"
 
 class Cpu {
@@ -13,6 +14,8 @@ public:
   void clock();
 
 private:
+  LocationUP<uint8_t> nextOpcode();
+
   IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
   OperationUP nextOperation_;
