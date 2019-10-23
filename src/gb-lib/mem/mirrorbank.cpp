@@ -19,7 +19,7 @@ LocationUP<uint8_t> MirrorBank::getByte(address_type address) {
 }
 
 LocationUP<uint16_t> MirrorBank::getWord(address_type address) {
-  mem_tools::translateAdressSafe(address + 1, singleArea(), offset_);
+  mem_tools::assertSafe(address + 1, singleArea());
   return mirrored_->getWord(
       mem_tools::translateAdressSafe(address, singleArea(), offset_));
 }
