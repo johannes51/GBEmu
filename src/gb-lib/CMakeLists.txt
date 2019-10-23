@@ -15,7 +15,6 @@ target_sources(gbelib PRIVATE
   cpu/cpuregisters.h
   cpu/cpuregisters.cpp
   cpu/flagsview.h
-  cpu/flagsview.cpp
   cpu/registername.h
   cpu/registersinterface.h
   cpu/operation/opcodeview.h
