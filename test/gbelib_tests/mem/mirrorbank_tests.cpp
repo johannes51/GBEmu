@@ -16,6 +16,6 @@ TEST(MirrorBankTest, testIndirect) {
   MirrorBank m{{16, 31}, {0, 15}, b};
 
   auto readByte = m.getByte(16 + 4);
-  ASSERT_EQ(value, readByte->get());
+  EXPECT_EQ(value, readByte->get());
 }
 

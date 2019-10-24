@@ -29,8 +29,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/nop.cpp
   cpu/operation/singleop.h
   cpu/operation/singleop.cpp
-  debug/simplelocation.h
-  debug/simplelocation.cpp
   debug/variablebyte.h
   debug/variablebyte.cpp
   gb_factories/cartloader.h
@@ -41,6 +39,8 @@ target_sources(gbelib PRIVATE
   mem/imemoryview.h
   mem/imemorymanager.h
   mem/mem_defines.h
+  mem/memoryarea.h
+  mem/memoryarea.cpp
   mem/mirrorbank.h
   mem/mirrorbank.cpp
   mem/memorymanifold.h
@@ -94,7 +94,8 @@ enable_wall(gbelib)
 enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
-clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,-fuchsia-default-arguments,\
+clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
+-fuchsia-default-arguments,-fuchsia-overloaded-operator,\
 -misc-unused-parameters,-readability-redundant-member-init")
 cppcheck(gbelib)
 

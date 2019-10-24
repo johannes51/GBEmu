@@ -17,10 +17,11 @@ public:
   void clock();
   bool isDone();
 
-  virtual void execute() = 0;
+  void execute();
 
 private:
   virtual uint cycles() = 0;
+  virtual void executeImpl() = 0;
 
   uint clocks_;
 };

@@ -1,3 +1,4 @@
+#include "gtest/gtest.h"
 
 
 #include "cpu/cpu.h"
@@ -6,20 +7,19 @@
 #include "cpu/cpuregisters.h"
 
 #include <fstream>
-#include "gtest/gtest.h"
 
 using namespace std;
 using namespace gb;
 
 TEST(CpuTest, testClock) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(std::ifstream{"Tetris.gb", std::ios_base::binary | std::ios_base::in},
-                                                      std::fstream{"Tetris.sav", std::ios_base::binary | std::ios_base::in}
+  auto f = MemoryFactory(make_unique<CartLoader>(ifstream{"Tetris.gb", ios_base::binary | ios_base::in},
+                                                      fstream{"Tetris.sav", ios_base::binary | ios_base::in}
                            ));
   auto mem = f.constructMemoryLayout();
-  auto reg = std::make_unique<CpuRegisters>();
-  Cpu cpu(std::move(reg), mem);
-  ASSERT_NO_THROW(cpu.clock());
-  ASSERT_ANY_THROW(cpu.clock());
+  auto reg = make_unique<CpuRegisters>();
+  Cpu cpu(move(reg), mem);
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_ANY_THROW(cpu.clock());
 }
 
 

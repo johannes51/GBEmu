@@ -7,11 +7,11 @@ using namespace std;
 
 TEST(NullByteTest, testRead) {
   NullByte a;
-  ASSERT_ANY_THROW(a.get());
+  EXPECT_ANY_THROW(a.get());
 }
 
 TEST(NullByteTest, testWrite) {
   NullByte a;
-  ASSERT_ANY_THROW(a.set(0x3));
+  EXPECT_ANY_THROW(a.set(0x3));
 }
 

@@ -29,7 +29,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_
 {
   auto writeLocation = memory.getWord(writeAdress);
   writeLocation->set(value);
-  ASSERT_EQ(value, memory.getWord(readAdress)->get());
+  EXPECT_EQ(value, memory.getWord(readAdress)->get());
 }
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint16_t value)
@@ -41,7 +41,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_
 {
   auto writeLocation = memory.getByte(writeAdress);
   writeLocation->set(value);
-  ASSERT_EQ(value, memory.getByte(readAdress)->get());
+  EXPECT_EQ(value, memory.getByte(readAdress)->get());
 }
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t value)
@@ -51,7 +51,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t val
 
 void testMemoryThrows(IMemoryView& memory, address_type testAdress)
 {
-  ASSERT_ANY_THROW(memory.getWord(testAdress));
+  EXPECT_ANY_THROW(memory.getWord(testAdress));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_1) {
@@ -60,9 +60,9 @@ TEST(GBMemoryFactoryTest, testROM0_1) {
                            std::fstream{"Tetris.sav", std::ios_base::binary}
                            ));
   auto mem = f.constructMemoryLayout();
-  ASSERT_EQ(0xC3, mem->getByte(startROM0)->get());
-  ASSERT_EQ(0x0C, mem->getByte(startROM0 + 1)->get());
-  ASSERT_ANY_THROW(mem->getByte(startROM0)->set(0x00));
+  EXPECT_EQ(0xC3, mem->getByte(startROM0)->get());
+  EXPECT_EQ(0x0C, mem->getByte(startROM0 + 1)->get());
+  EXPECT_ANY_THROW(mem->getByte(startROM0)->set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_2) {
@@ -71,11 +71,11 @@ TEST(GBMemoryFactoryTest, testROM0_2) {
                            std::fstream{"Tetris.sav", std::ios_base::binary}
                            ));
   auto mem = f.constructMemoryLayout();
-  ASSERT_EQ(0x00, mem->getByte(startPC)->get());
-  ASSERT_EQ(0xC3, mem->getByte(startPC + 1)->get());
-  ASSERT_EQ(0x50, mem->getByte(startPC + 2)->get());
-  ASSERT_EQ(0x01, mem->getByte(startPC + 3)->get());
-  ASSERT_ANY_THROW(mem->getByte(startPC)->set(0x00));
+  EXPECT_EQ(0x00, mem->getByte(startPC)->get());
+  EXPECT_EQ(0xC3, mem->getByte(startPC + 1)->get());
+  EXPECT_EQ(0x50, mem->getByte(startPC + 2)->get());
+  EXPECT_EQ(0x01, mem->getByte(startPC + 3)->get());
+  EXPECT_ANY_THROW(mem->getByte(startPC)->set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_3) {
@@ -85,8 +85,8 @@ TEST(GBMemoryFactoryTest, testROM0_3) {
                            ));
   auto mem = f.constructMemoryLayout();
   uint val = mem->getWord(endROM0 - 1)->get();
-  ASSERT_EQ(0x2F2F, val);
-  ASSERT_ANY_THROW(mem->getByte(endROM0)->set(0x00));
+  EXPECT_EQ(0x2F2F, val);
+  EXPECT_ANY_THROW(mem->getByte(endROM0)->set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM1_1) {
@@ -95,9 +95,9 @@ TEST(GBMemoryFactoryTest, testROM1_1) {
                            std::fstream{"Tetris.sav", std::ios_base::binary}
                            ));
   auto mem = f.constructMemoryLayout();
-  ASSERT_EQ(0x2F, mem->getByte(endROM0 + 1)->get());
-  ASSERT_EQ(0x2F, mem->getByte(endROM0 + 2)->get());
-  ASSERT_ANY_THROW(mem->getByte(endROM0 + 1)->set(0x00));
+  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 1)->get());
+  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 2)->get());
+  EXPECT_ANY_THROW(mem->getByte(endROM0 + 1)->set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testWRAM0_1) {
@@ -199,14 +199,14 @@ TEST(GBMemoryFactoryTest, testNOTUSED_1) {
   auto writeLocation = gbLayout->getWord(startNOTUSED);
   writeLocation->set(value);
 
-  ASSERT_EQ(0, gbLayout->getWord(startNOTUSED)->get());
+  EXPECT_EQ(0, gbLayout->getWord(startNOTUSED)->get());
 }
 
 TEST(GBMemoryFactoryTest, testNOTUSED_2) {
   auto mem = MemoryFactory{nullptr};
   auto gbLayout = mem.constructMemoryLayout();
 
-  ASSERT_ANY_THROW(gbLayout->getWord(endNOTUSED));
+  EXPECT_ANY_THROW(gbLayout->getWord(endNOTUSED));
 }
 
 TEST(GBMemoryFactoryTest, testHRAM_1) {
