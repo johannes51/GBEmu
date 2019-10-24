@@ -5,6 +5,7 @@
 
 #include "gb_defines.h"
 #include "mem/mem_defines.h"
+#include "mem/memoryarea.h"
 
 namespace gb {
 

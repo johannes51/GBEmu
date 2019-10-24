@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "imemoryview.h"
-#include "mem_defines.h"
+#include "memoryarea.h"
 
 class IMemoryManager : public IMemoryView {
 public:

@@ -1,3 +1,3 @@
 #include "nop.h"
 
-void Nop::execute() {}
+void Nop::executeImpl() {}

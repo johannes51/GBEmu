@@ -4,8 +4,8 @@
 #include "singleop.h"
 
 class Nop final : public SingleOp {
-public:
-  void execute() override;
+private:
+  void executeImpl() override;
 };
 
 #endif // NOP_H
