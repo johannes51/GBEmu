@@ -1,6 +1,6 @@
 #include "mem_tools.h"
 
-#include <set>
+#include <numeric>
 
 address_type mem_tools::translateAdressSafe(const address_type inputAdress,
                                             MemoryArea area) {
@@ -48,11 +48,12 @@ bool mem_tools::isSafe(const address_type &inputAdress,
 
 bool mem_tools::isDisjunct(const MemoryArea &area,
                            const std::vector<MemoryArea> &oldAreas) {
-  try {
-    std::set<MemoryArea> s(oldAreas.begin(), oldAreas.end());
-    s.insert(area);
-  } catch (...) {
-    return false;
-  }
-  return true;
+  return std::accumulate(oldAreas.cbegin(), oldAreas.cend(), true, [area](const auto& a, const auto& b) {
+    return a && isDisjunct(area, b);
+  });
+}
+
+bool mem_tools::isDisjunct(const MemoryArea &area1, const MemoryArea &area2)
+{
+  return (area1.to < area2.from) || (area1.from > area2.to);
 }

@@ -7,28 +7,14 @@ TEST(MemoryAreaTest, testLessThan) {
   MemoryArea b{0, 16};
   MemoryArea c{8, 16};
   MemoryArea d{8, 31};
-  MemoryArea e{31, 48};
-  MemoryArea f{32, 48};
 
-  EXPECT_ANY_THROW(a < b);
-  EXPECT_ANY_THROW(b < a);
+  EXPECT_FALSE(a < b);
+  EXPECT_FALSE(b < a);
 
-  EXPECT_ANY_THROW(a < c);
-  EXPECT_ANY_THROW(c < a);
+  EXPECT_TRUE(a < c);
+  EXPECT_FALSE(c < a);
 
-  EXPECT_ANY_THROW(a < d);
-  EXPECT_ANY_THROW(d < a);
-
-  EXPECT_TRUE(a < e);
-  EXPECT_FALSE(e < a);
-
-  EXPECT_ANY_THROW(c < d);
-  EXPECT_ANY_THROW(d < c);
-
-  EXPECT_ANY_THROW(d < e);
-  EXPECT_ANY_THROW(e < d);
-
-  EXPECT_TRUE(d < f);
-  EXPECT_FALSE(f < d);
+  EXPECT_TRUE(a < d);
+  EXPECT_FALSE(d < a);
 }
 
