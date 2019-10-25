@@ -1,5 +1,6 @@
 #include "instructiondecoder.h"
 
+#include "jumps_calls.h"
 #include "loads.h"
 #include "location/location.h"
 #include "nop.h"
@@ -14,6 +15,8 @@ OperationUP id::decode(LocationUP<uint8_t> opcodeLocation) {
   } else if (opcode.upperNibble() >= ops::BulkMinUpperNibble &&
              opcode.upperNibble() <= ops::BulkMaxUpperNibble) {
     result = ops::bulkLoad(opcode);
+  } else if (opcode.value() == ops::JumpDirect) {
+    result = ops::jumpDirect();
   } else {
     throw std::logic_error("Unknown opcode");
   }
