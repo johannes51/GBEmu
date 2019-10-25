@@ -17,4 +17,3 @@ TEST(MemoryAreaTest, testLessThan) {
   EXPECT_TRUE(a < d);
   EXPECT_FALSE(d < a);
 }
-

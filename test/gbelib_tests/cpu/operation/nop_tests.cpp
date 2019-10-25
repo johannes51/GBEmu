@@ -25,4 +25,3 @@ TEST(NopTest, testExecute) {
   EXPECT_TRUE(nop.isDone());
   EXPECT_NO_THROW(nop.execute());
 }
-

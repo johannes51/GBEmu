@@ -1,10 +1,9 @@
 #include "gtest/gtest.h"
 
-#include "gb_factories/memoryfactory.h"
 #include "gb_factories/cartloader.h"
-#include "mem/imemoryview.h"
+#include "gb_factories/memoryfactory.h"
 #include "location/location.h"
-
+#include "mem/imemoryview.h"
 
 using namespace std;
 using namespace gb;
@@ -25,40 +24,37 @@ address_type startHRAM = 0xFF80;
 address_type endHRAM = 0xFFFE;
 address_type startPC = 0x0100;
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_type readAdress, uint16_t value)
-{
+void testMemoryRoundtrip(IMemoryView &memory, address_type writeAdress,
+                         address_type readAdress, uint16_t value) {
   auto writeLocation = memory.getWord(writeAdress);
   writeLocation->set(value);
   EXPECT_EQ(value, memory.getWord(readAdress)->get());
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint16_t value)
-{
+void testMemoryRoundtrip(IMemoryView &memory, address_type rwAdress,
+                         uint16_t value) {
   testMemoryRoundtrip(memory, rwAdress, rwAdress, value);
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_type readAdress, uint8_t value)
-{
+void testMemoryRoundtrip(IMemoryView &memory, address_type writeAdress,
+                         address_type readAdress, uint8_t value) {
   auto writeLocation = memory.getByte(writeAdress);
   writeLocation->set(value);
   EXPECT_EQ(value, memory.getByte(readAdress)->get());
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t value)
-{
+void testMemoryRoundtrip(IMemoryView &memory, address_type rwAdress,
+                         uint8_t value) {
   testMemoryRoundtrip(memory, rwAdress, rwAdress, value);
 }
 
-void testMemoryThrows(IMemoryView& memory, address_type testAdress)
-{
+void testMemoryThrows(IMemoryView &memory, address_type testAdress) {
   EXPECT_ANY_THROW(memory.getWord(testAdress));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_1) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(
-                           std::ifstream{"Tetris.gb", std::ios_base::binary},
-                           std::fstream{"Tetris.sav", std::ios_base::binary}
-                           ));
+  auto f =
+      MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0xC3, mem->getByte(startROM0)->get());
   EXPECT_EQ(0x0C, mem->getByte(startROM0 + 1)->get());
@@ -66,10 +62,9 @@ TEST(GBMemoryFactoryTest, testROM0_1) {
 }
 
 TEST(GBMemoryFactoryTest, testROM0_2) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(
-                           std::ifstream{"Tetris.gb", std::ios_base::binary},
-                           std::fstream{"Tetris.sav", std::ios_base::binary}
-                           ));
+
+  auto f = MemoryFactory(
+      std::make_unique<CartLoader>("./Tetris.gb", "./Tetris.sav"));
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0x00, mem->getByte(startPC)->get());
   EXPECT_EQ(0xC3, mem->getByte(startPC + 1)->get());
@@ -79,10 +74,8 @@ TEST(GBMemoryFactoryTest, testROM0_2) {
 }
 
 TEST(GBMemoryFactoryTest, testROM0_3) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(
-                           std::ifstream{"Tetris.gb", std::ios_base::binary},
-                           std::fstream{"Tetris.sav", std::ios_base::binary}
-                           ));
+  auto f =
+      MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
   uint val = mem->getWord(endROM0 - 1)->get();
   EXPECT_EQ(0x2F2F, val);
@@ -90,10 +83,8 @@ TEST(GBMemoryFactoryTest, testROM0_3) {
 }
 
 TEST(GBMemoryFactoryTest, testROM1_1) {
-  auto f = MemoryFactory(std::make_unique<CartLoader>(
-                           std::ifstream{"Tetris.gb", std::ios_base::binary},
-                           std::fstream{"Tetris.sav", std::ios_base::binary}
-                           ));
+  auto f =
+      MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0x2F, mem->getByte(endROM0 + 1)->get());
   EXPECT_EQ(0x2F, mem->getByte(endROM0 + 2)->get());
@@ -171,22 +162,28 @@ TEST(GBMemoryFactoryTest, testECHO_2) {
   auto mem = MemoryFactory{nullptr};
   auto gbLayout = mem.constructMemoryLayout();
   uint8_t value8 = static_cast<uint8_t>(rand());
-  testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value8);
+  testMemoryRoundtrip(*gbLayout, startWRAM1,
+                      startECHO + startWRAM1 - startWRAM0, value8);
   value8 = static_cast<uint8_t>(rand());
-  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value8);
+  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0,
+                      startWRAM1, value8);
   uint16_t value16 = static_cast<uint16_t>(rand());
-  testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value16);
+  testMemoryRoundtrip(*gbLayout, startWRAM1,
+                      startECHO + startWRAM1 - startWRAM0, value16);
   value16 = static_cast<uint16_t>(rand());
-  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
+  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0,
+                      startWRAM1, value16);
 }
 
 TEST(GBMemoryFactoryTest, testECHO_3) {
   auto mem = MemoryFactory{nullptr};
   auto gbLayout = mem.constructMemoryLayout();
   uint8_t value8 = static_cast<uint8_t>(rand());
-  testMemoryRoundtrip(*gbLayout, startWRAM0 + endECHO - startECHO, endECHO, value8);
+  testMemoryRoundtrip(*gbLayout, startWRAM0 + endECHO - startECHO, endECHO,
+                      value8);
   value8 = static_cast<uint8_t>(rand());
-  testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO, value8);
+  testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO,
+                      value8);
 
   testMemoryThrows(*gbLayout, endECHO);
 }
@@ -226,4 +223,3 @@ TEST(GBMemoryFactoryTest, testHRAM_2) {
 
   testMemoryThrows(*gbLayout, endHRAM);
 }
-

@@ -10,5 +10,3 @@ TEST(CpuFlagsTest, testCarry) {
   flags.clearCarry();
   EXPECT_EQ(false, flags.carry());
 }
-
-
