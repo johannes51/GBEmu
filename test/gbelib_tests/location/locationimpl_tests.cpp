@@ -4,14 +4,12 @@
 
 #include "debug/variablebyte.h"
 
-
 using namespace std;
 
-class LocationImplMock : public LocationImpl
-{
+class LocationImplMock : public LocationImpl {
 public:
   LocationImplMock(LocationByteUP lower, LocationByteUP upper)
-    : LocationImpl(std::move(lower), std::move(upper)) {}
+      : LocationImpl(std::move(lower), std::move(upper)) {}
 };
 
 TEST(LocationImplTest, testgetByte) {
@@ -20,12 +18,13 @@ TEST(LocationImplTest, testgetByte) {
 }
 
 TEST(LocationImplTest, testgetWord1) {
-  LocationImplMock a(make_unique<VariableByte>(0xAB), make_unique<VariableByte>(0x5E));
+  LocationImplMock a(make_unique<VariableByte>(0xAB),
+                     make_unique<VariableByte>(0x5E));
   EXPECT_EQ(a.getWord(), 0x5EAB);
 }
 
 TEST(LocationImplTest, testgetWord2) {
-  LocationImplMock a(make_unique<VariableByte>(0xFF), make_unique<VariableByte>(0xFF));
+  LocationImplMock a(make_unique<VariableByte>(0xFF),
+                     make_unique<VariableByte>(0xFF));
   EXPECT_EQ(a.getWord(), 0xFFFF);
 }
-

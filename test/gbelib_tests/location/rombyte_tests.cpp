@@ -13,4 +13,3 @@ TEST(RomByteTest, testWrite) {
   RomByte byte{buffer};
   EXPECT_ANY_THROW(byte.set(0));
 }
-

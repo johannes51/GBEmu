@@ -1,9 +1,8 @@
 #include "gtest/gtest.h"
 
+#include "location/location.h"
 #include "mem/mirrorbank.h"
 #include "mem/rambank.h"
-#include "location/location.h"
-
 
 using namespace std;
 
@@ -18,4 +17,3 @@ TEST(MirrorBankTest, testIndirect) {
   auto readByte = m.getByte(16 + 4);
   EXPECT_EQ(value, readByte->get());
 }
-

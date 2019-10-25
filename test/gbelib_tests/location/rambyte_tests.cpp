@@ -15,4 +15,3 @@ TEST(RamByteTest, testRead) {
   RamByte a(buffer);
   EXPECT_EQ(0x2F, a.get());
 }
-

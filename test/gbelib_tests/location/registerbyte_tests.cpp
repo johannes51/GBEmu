@@ -15,5 +15,3 @@ TEST(RegisterByteTest, testRead) {
   RegisterByte byte{buffer};
   EXPECT_EQ(0x4E, byte.get());
 }
-
-

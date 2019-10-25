@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "util/ops.h"
 #include "location/location.h"
 #include "location/rambyte.h"
+#include "util/ops.h"
 
 TEST(OpsTest, testIncrement) {
   uint8_t buffer = 5;

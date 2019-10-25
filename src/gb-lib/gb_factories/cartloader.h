@@ -10,7 +10,7 @@ namespace gb {
 
 class CartLoader {
 public:
-  CartLoader(std::ifstream &&romFile, std::fstream &&ramFile);
+  CartLoader(const std::string &romFile, const std::string &ramFile);
 
   std::vector<IMemoryManagerSP> constructBanks();
 

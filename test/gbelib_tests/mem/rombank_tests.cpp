@@ -1,14 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "mem/rambank.h"
 #include "location/location.h"
+#include "mem/rombank.h"
 
 TEST(RomBankTest, testIndirect) {
-  RamBank b({0, 16});
-  auto writeByte = b.getByte(4);
   uint8_t value = 0xA2;
-  writeByte->set(value);
-  auto readByte = b.getByte(4);
-  EXPECT_EQ(value, readByte->get());
+  RomBank b({0, 15}, std::vector<uint8_t>(16, value));
+  EXPECT_ANY_THROW(b.getByte(4)->set(value));
+  EXPECT_EQ(value, b.getByte(4)->get());
 }
-

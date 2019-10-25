@@ -8,4 +8,3 @@ TEST(OpcodeViewTest, test) {
   EXPECT_EQ(0x3, opc.lowerNibble());
   EXPECT_EQ(0xA, opc.upperNibble());
 }
-

@@ -1,8 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "mem/nullbank.h"
 #include "location/location.h"
-
+#include "mem/nullbank.h"
 
 using namespace std;
 
@@ -15,4 +14,3 @@ TEST(NullBankTest, testWrite) {
 
   EXPECT_EQ(0, b.getByte(3)->get());
 }
-

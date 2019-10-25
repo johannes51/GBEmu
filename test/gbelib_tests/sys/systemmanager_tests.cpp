@@ -2,15 +2,13 @@
 
 #include <fstream>
 
-#include "sys/systemmanager.h"
-#include "gb_factories/memoryfactory.h"
 #include "gb_factories/cartloader.h"
+#include "gb_factories/memoryfactory.h"
+#include "sys/systemmanager.h"
 
 TEST(SystemManagerTest, testClock) {
-  gb::MemoryFactory m(std::make_unique<gb::CartLoader>(std::ifstream{"Tetris.gb", std::ios_base::binary},
-                                                       std::fstream{"Tetris.sav", std::ios_base::binary}
-                                                       ));
+  gb::MemoryFactory m(
+      std::make_unique<gb::CartLoader>("Tetris.gb", "Tetris.sav"));
   SystemManager s(m.constructMemoryLayout());
   EXPECT_NO_THROW(s.clock());
 }
-
