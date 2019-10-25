@@ -17,4 +17,5 @@ void Operation::execute() {
   if (clocks_ != cycles()) {
     throw std::logic_error("Tried to execute operation that isn't done");
   }
+  executeImpl();
 }

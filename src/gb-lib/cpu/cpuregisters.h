@@ -12,20 +12,9 @@ public:
   ~CpuRegisters();
   DISABLE_COPY_AND_MOVE(CpuRegisters)
 
-  LocationUP<uint16_t> af();
-  LocationUP<uint8_t> a();
-  LocationUP<uint16_t> bc();
-  LocationUP<uint8_t> b();
-  LocationUP<uint8_t> c();
-  LocationUP<uint16_t> de();
-  LocationUP<uint8_t> d();
-  LocationUP<uint8_t> e();
-  LocationUP<uint16_t> hl();
-  LocationUP<uint8_t> h();
-  LocationUP<uint8_t> l();
-  LocationUP<uint16_t> sp();
-  LocationUP<uint16_t> pc();
-  FlagsView &getFlags();
+  LocationUP<uint16_t> get(WordRegisters registerName) override;
+  LocationUP<uint8_t> get(ByteRegisters registerName) override;
+  FlagsView &getFlags() override;
 
 private:
   std::vector<uint8_t> registers_;

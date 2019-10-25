@@ -23,6 +23,10 @@ target_sources(gbelib PRIVATE
   cpu/operation/operation.cpp
   cpu/operation/instructiondecoder.h
   cpu/operation/instructiondecoder.cpp
+  cpu/operation/jump.h
+  cpu/operation/jump.cpp
+  cpu/operation/jumps_calls.h
+  cpu/operation/jumps_calls.cpp
   cpu/operation/loads.h
   cpu/operation/loads.cpp
   cpu/operation/nop.h

@@ -34,77 +34,66 @@ CpuRegisters::CpuRegisters() : registers_(), flags_() {
   registers_.at(RegisterName::PCl) = INITIAL_PCl;
 }
 
+LocationUP<uint16_t> CpuRegisters::get(WordRegisters registerName)
+{
+  auto lower = RegisterName::PCl;
+  auto upper = RegisterName::PCu;
+  switch (registerName) {
+  case WordRegisters::AF:
+    lower = RegisterName::F;
+    upper = RegisterName::A;
+    break;
+  case WordRegisters::BC:
+    lower = RegisterName::C;
+    upper = RegisterName::B;
+    break;
+  case WordRegisters::DE:
+    lower = RegisterName::E;
+    upper = RegisterName::D;
+    break;
+  case WordRegisters::HL:
+    lower = RegisterName::L;
+    upper = RegisterName::H;
+    break;
+  case WordRegisters::SP:
+    lower = RegisterName::SPl;
+    upper = RegisterName::SPu;
+    break;
+  default:
+  break;
+  }
+  return Location<uint16_t>::generate(std::make_unique<RegisterByte>(registers_.at(lower)),
+                                      std::make_unique<RegisterByte>(registers_.at(upper)));
+}
+
+LocationUP<uint8_t> CpuRegisters::get(ByteRegisters registerName)
+{
+  auto byte = RegisterName::A;
+  switch (registerName) {
+  case ByteRegisters::B:
+    byte = RegisterName::B;
+    break;
+  case ByteRegisters::C:
+    byte = RegisterName::C;
+    break;
+  case ByteRegisters::D:
+    byte = RegisterName::D;
+    break;
+  case ByteRegisters::E:
+    byte = RegisterName::E;
+    break;
+  case ByteRegisters::H:
+    byte = RegisterName::H;
+    break;
+  case ByteRegisters::L:
+    byte = RegisterName::L;
+    break;
+  default:
+  break;
+  }
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(byte)));
+}
+
 CpuRegisters::~CpuRegisters() = default;
-
-LocationUP<uint16_t> CpuRegisters::af() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::F)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::A)));
-}
-
-LocationUP<uint8_t> CpuRegisters::a() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::A)));
-}
-
-LocationUP<uint16_t> CpuRegisters::bc() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::C)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::B)));
-}
-
-LocationUP<uint8_t> CpuRegisters::b() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::B)));
-}
-
-LocationUP<uint8_t> CpuRegisters::c() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::C)));
-}
-
-LocationUP<uint16_t> CpuRegisters::de() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::E)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::D)));
-}
-
-LocationUP<uint8_t> CpuRegisters::d() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::D)));
-}
-
-LocationUP<uint8_t> CpuRegisters::e() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::E)));
-}
-
-LocationUP<uint16_t> CpuRegisters::hl() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::L)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::H)));
-}
-
-LocationUP<uint8_t> CpuRegisters::h() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::H)));
-}
-
-LocationUP<uint8_t> CpuRegisters::l() {
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::L)));
-}
-
-LocationUP<uint16_t> CpuRegisters::sp() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::SPl)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::SPu)));
-}
-
-LocationUP<uint16_t> CpuRegisters::pc() {
-  return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::PCl)),
-      std::make_unique<RegisterByte>(registers_.at(RegisterName::PCu)));
-}
 
 FlagsView &CpuRegisters::getFlags() { return *flags_; }
