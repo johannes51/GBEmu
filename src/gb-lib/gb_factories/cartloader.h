@@ -20,7 +20,7 @@ private:
   static constexpr address_type StartROM1 = 0x4000;
   static constexpr address_type EndROM1 = 0x7FFF;
 
-  std::vector<uint8_t> read16K(std::ifstream &file);
+  static std::vector<uint8_t> read16K(std::ifstream &file);
 
   std::ifstream romFile_;
   std::fstream ramFile_;

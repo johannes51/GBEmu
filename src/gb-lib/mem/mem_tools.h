@@ -17,8 +17,7 @@ void assertSafe(const address_type &inputAdress,
 bool isSafe(const address_type &address, const MemoryArea &area);
 bool isSafe(const address_type &inputAdress, const address_type &startAdress,
             const address_type &size);
-bool isDisjunct(const MemoryArea &area1,
-                const MemoryArea &area2);
+bool isDisjunct(const MemoryArea &area1, const MemoryArea &area2);
 bool isDisjunct(const MemoryArea &area,
                 const std::vector<MemoryArea> &oldAreas);
 } // namespace mem_tools
