@@ -23,10 +23,11 @@ private:
   static constexpr MemoryArea NOT_USED = {0xFEA0, 0xFEFF};
   static constexpr MemoryArea HRAM = {0xFF80, 0xFFFE};
 
-  IMemoryManagerSP buildRamBank(MemoryArea area);
-  IMemoryManagerSP buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea,
-                                   IMemoryManagerSP origin);
-  IMemoryManagerSP buildNullBank(MemoryArea area);
+  static IMemoryManagerSP buildRamBank(MemoryArea area);
+  static IMemoryManagerSP buildMirrorBank(MemoryArea mirrorArea,
+                                          MemoryArea originArea,
+                                          IMemoryManagerSP origin);
+  static IMemoryManagerSP buildNullBank(MemoryArea area);
   std::vector<IMemoryManagerSP> buildCartBanks();
 
   RomLoaderUP loader_;

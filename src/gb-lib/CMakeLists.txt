@@ -95,8 +95,8 @@ enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
--fuchsia-default-arguments,-fuchsia-overloaded-operator,\
--misc-unused-parameters,-readability-redundant-member-init")
+-fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,\
+-modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init")
 cppcheck(gbelib)
 
 build_docs()

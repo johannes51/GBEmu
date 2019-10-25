@@ -48,12 +48,12 @@ bool mem_tools::isSafe(const address_type &inputAdress,
 
 bool mem_tools::isDisjunct(const MemoryArea &area,
                            const std::vector<MemoryArea> &oldAreas) {
-  return std::accumulate(oldAreas.cbegin(), oldAreas.cend(), true, [area](const auto& a, const auto& b) {
-    return a && isDisjunct(area, b);
-  });
+  return std::accumulate(oldAreas.cbegin(), oldAreas.cend(), true,
+                         [area](const auto &a, const auto &b) {
+                           return a && isDisjunct(area, b);
+                         });
 }
 
-bool mem_tools::isDisjunct(const MemoryArea &area1, const MemoryArea &area2)
-{
+bool mem_tools::isDisjunct(const MemoryArea &area1, const MemoryArea &area2) {
   return (area1.to < area2.from) || (area1.from > area2.to);
 }
