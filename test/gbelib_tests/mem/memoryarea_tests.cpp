@@ -18,3 +18,16 @@ TEST(MemoryAreaTest, testLessThan)
   EXPECT_TRUE(a < d);
   EXPECT_FALSE(d < a);
 }
+
+TEST(MemoryAreaTest, testEquals)
+{
+  MemoryArea a { 0, 16 };
+  MemoryArea b { 0, 16 };
+  MemoryArea c { 8, 16 };
+
+  EXPECT_TRUE(a == b);
+  EXPECT_TRUE(b == a);
+
+  EXPECT_FALSE(a == c);
+  EXPECT_FALSE(c == a);
+}
