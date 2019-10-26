@@ -1,3 +1,3 @@
 #include "nop.h"
 
-void Nop::executeImpl() {}
+void Nop::executeImpl(RegistersInterface& registers) { (void)registers; }

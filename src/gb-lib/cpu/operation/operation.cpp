@@ -17,10 +17,10 @@ void Operation::clock()
 
 bool Operation::isDone() { return clocks_ == cycles(); }
 
-void Operation::execute()
+void Operation::execute(RegistersInterface& registers)
 {
   if (clocks_ != cycles()) {
     throw std::logic_error("Tried to execute operation that isn't done");
   }
-  executeImpl();
+  executeImpl(registers);
 }

@@ -21,13 +21,13 @@ public:
 protected:
   LocationImpl(LocationByteUP lower, LocationByteUP upper);
 
+  LocationByteUP lower_;
+  LocationByteUP upper_;
+
 private:
   static constexpr uint8_t BYTE_SIZE = 8;
   static constexpr uint8_t LOWER_MASK = 0xFFu;
   static constexpr uint16_t UPPER_MASK = 0xFF00u;
-
-  LocationByteUP lower_;
-  LocationByteUP upper_;
 };
 
 #endif // LOCATIONIMPL_H
