@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <vector>
 
+#include "cpu/cpu_defines.h"
 #include "location/location_defines.h"
 
 class Operation {
@@ -17,11 +18,11 @@ public:
   void clock();
   bool isDone();
 
-  void execute();
+  void execute(RegistersInterface& registers);
 
 private:
   virtual uint cycles() = 0;
-  virtual void executeImpl() = 0;
+  virtual void executeImpl(RegistersInterface& registers) = 0;
 
   uint clocks_;
 };

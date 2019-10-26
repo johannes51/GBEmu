@@ -1,6 +1,8 @@
 #ifndef JUMP_H
 #define JUMP_H
 
+#include <optional>
+
 #include "location/location.h"
 #include "operation.h"
 
@@ -16,9 +18,11 @@ public:
 
 private:
   uint cycles() override;
-  void executeImpl() override;
+  void executeImpl(RegistersInterface& registers) override;
 
-  Location<uint16_t> operand_;
+  std::optional<Location<uint8_t>> lower_;
+  std::optional<Location<uint8_t>> upper_;
+  JumpType type_;
 };
 
 #endif // JUMP_H

@@ -28,7 +28,7 @@ void Cpu::clock()
   }
   nextOperation_->clock();
   if (nextOperation_->isDone()) {
-    nextOperation_->execute();
+    nextOperation_->execute(*registers_);
     nextOperation_.reset();
   }
 }
@@ -37,5 +37,5 @@ Location<uint8_t> Cpu::nextOpcode()
 {
   auto result = mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
   ops::increment(registers_->get(WordRegisters::PC));
-  return std::move(result);
+  return result;
 }
