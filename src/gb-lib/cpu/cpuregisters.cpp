@@ -18,7 +18,10 @@ const uint8_t INITIAL_SPl = 0xFF;
 const uint8_t INITIAL_PCu = 0x01;
 const uint8_t INITIAL_PCl = 0x00;
 
-CpuRegisters::CpuRegisters() : registers_(), flags_() {
+CpuRegisters::CpuRegisters()
+    : registers_()
+    , flags_()
+{
   registers_.resize(RegisterName::SIZE);
   registers_.at(RegisterName::A) = INITIAL_A;
   registers_.at(RegisterName::F) = INITIAL_F;
@@ -34,7 +37,8 @@ CpuRegisters::CpuRegisters() : registers_(), flags_() {
   registers_.at(RegisterName::PCl) = INITIAL_PCl;
 }
 
-Location<uint16_t> CpuRegisters::get(WordRegisters registerName) {
+Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
+{
   auto lower = RegisterName::PCl;
   auto upper = RegisterName::PCu;
   switch (registerName) {
@@ -62,11 +66,11 @@ Location<uint16_t> CpuRegisters::get(WordRegisters registerName) {
     break;
   }
   return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(lower)),
-      std::make_unique<RegisterByte>(registers_.at(upper)));
+      std::make_unique<RegisterByte>(registers_.at(lower)), std::make_unique<RegisterByte>(registers_.at(upper)));
 }
 
-Location<uint8_t> CpuRegisters::get(ByteRegisters registerName) {
+Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
+{
   auto byte = RegisterName::A;
   switch (registerName) {
   case ByteRegisters::B:
@@ -90,10 +94,9 @@ Location<uint8_t> CpuRegisters::get(ByteRegisters registerName) {
   default:
     break;
   }
-  return Location<uint8_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(byte)));
+  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(byte)));
 }
 
 CpuRegisters::~CpuRegisters() = default;
 
-FlagsView &CpuRegisters::getFlags() { return *flags_; }
+FlagsView& CpuRegisters::getFlags() { return *flags_; }

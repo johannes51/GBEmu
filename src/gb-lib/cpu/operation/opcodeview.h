@@ -7,7 +7,7 @@ class OpcodeView {
 public:
   OpcodeView(uint8_t value);
 
-  const uint8_t &value() const;
+  const uint8_t& value() const;
   uint8_t upperNibble() const;
   uint8_t lowerNibble() const;
 

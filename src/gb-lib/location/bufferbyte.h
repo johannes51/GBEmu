@@ -9,13 +9,13 @@ public:
   DISABLE_COPY_AND_MOVE(BufferByte)
 
   uint8_t get() const override;
-  virtual void set(const uint8_t &value) override;
+  virtual void set(const uint8_t& value) override;
 
 protected:
-  BufferByte(uint8_t &reference);
+  BufferByte(uint8_t& reference);
 
 private:
-  uint8_t &reference_;
+  uint8_t& reference_;
 };
 
 #endif // BUFFERBYTE_H

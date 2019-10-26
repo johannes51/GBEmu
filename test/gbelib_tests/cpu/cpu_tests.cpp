@@ -10,7 +10,8 @@
 using namespace std;
 using namespace gb;
 
-TEST(CpuTest, testClock) {
+TEST(CpuTest, testClock)
+{
   auto f = MemoryFactory(make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
   auto reg = make_unique<CpuRegisters>();

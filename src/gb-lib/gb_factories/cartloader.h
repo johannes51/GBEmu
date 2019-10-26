@@ -10,7 +10,7 @@ namespace gb {
 
 class CartLoader {
 public:
-  CartLoader(const std::string &romFile, const std::string &ramFile);
+  CartLoader(const std::string& romFile, const std::string& ramFile);
 
   std::vector<IMemoryManagerSP> constructBanks();
 
@@ -20,7 +20,7 @@ private:
   static constexpr address_type StartROM1 = 0x4000;
   static constexpr address_type EndROM1 = 0x7FFF;
 
-  static std::vector<uint8_t> read16K(std::ifstream &file);
+  static std::vector<uint8_t> read16K(std::ifstream& file);
 
   std::ifstream romFile_;
   std::fstream ramFile_;

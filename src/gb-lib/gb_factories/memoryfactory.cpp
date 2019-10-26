@@ -8,15 +8,17 @@
 #include "mem/nullbank.h"
 #include "mem/rambank.h"
 
-gb::MemoryFactory::MemoryFactory(RomLoaderUP &&romLoader)
-    : loader_(std::move(romLoader)) {}
+gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
+    : loader_(std::move(romLoader))
+{
+}
 
-IMemoryViewSP gb::MemoryFactory::constructMemoryLayout() {
+IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
+{
   auto manifold = std::make_shared<MemoryManifold>();
 
   auto cartBanks = buildCartBanks();
-  std::for_each(cartBanks.begin(), cartBanks.end(),
-                [&](const auto &elem) { manifold->addSubManager(elem); });
+  std::for_each(cartBanks.begin(), cartBanks.end(), [&](const auto& elem) { manifold->addSubManager(elem); });
 
   auto wram0 = buildRamBank(WRAM0);
   auto wram1 = buildRamBank(WRAM1);
@@ -30,23 +32,19 @@ IMemoryViewSP gb::MemoryFactory::constructMemoryLayout() {
   return manifold;
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area) {
-  return std::make_shared<RamBank>(area);
+IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area) { return std::make_shared<RamBank>(area); }
+
+IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(
+    MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
+{
+  return std::make_shared<MirrorBank>(mirrorArea, originArea, std::move(origin));
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea,
-                                                    MemoryArea originArea,
-                                                    IMemoryManagerSP origin) {
-  return std::make_shared<MirrorBank>(mirrorArea, originArea,
-                                      std::move(origin));
-}
+IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) { return std::make_shared<NullBank>(area); }
 
-IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) {
-  return std::make_shared<NullBank>(area);
-}
-
-std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks() {
-  std::vector<IMemoryManagerSP> result{};
+std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks()
+{
+  std::vector<IMemoryManagerSP> result {};
   if (loader_) {
     result = loader_->constructBanks();
   }

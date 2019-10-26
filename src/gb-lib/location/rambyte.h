@@ -5,7 +5,7 @@
 
 class RamByte final : public BufferByte {
 public:
-  RamByte(uint8_t &reference);
+  RamByte(uint8_t& reference);
   DISABLE_COPY_AND_MOVE(RamByte)
 };
 
