@@ -1,6 +1,7 @@
 #ifndef JUMP_H
 #define JUMP_H
 
+#include "location/location.h"
 #include "operation.h"
 
 enum class JumpType { Direct, Relative };
@@ -10,14 +11,14 @@ public:
   Jump(JumpType type);
   ~Jump();
 
-  void nextOpcode(LocationUP<uint8_t> opcode) override;
+  void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
 private:
   uint cycles() override;
   void executeImpl() override;
 
-  LocationUP<uint16_t> operand_;
+  Location<uint16_t> operand_;
 };
 
 #endif // JUMP_H

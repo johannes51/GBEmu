@@ -29,8 +29,9 @@ void Cpu::clock() {
   }
 }
 
-LocationUP<uint8_t> Cpu::nextOpcode() {
-  auto result = mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
+Location<uint8_t> Cpu::nextOpcode() {
+  auto result =
+      mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
   ops::increment(registers_->get(WordRegisters::PC));
-  return result;
+  return std::move(result);
 }

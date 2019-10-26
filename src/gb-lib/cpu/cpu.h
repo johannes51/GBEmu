@@ -14,11 +14,11 @@ public:
   void clock();
 
 private:
-  LocationUP<uint8_t> nextOpcode();
+  Location<uint8_t> nextOpcode();
 
   IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
-  OperationUP nextOperation_;
+  std::unique_ptr<Operation> nextOperation_;
 };
 
 #endif // CPU_H

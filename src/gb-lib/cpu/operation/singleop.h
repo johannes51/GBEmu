@@ -5,7 +5,7 @@
 
 class SingleOp : public Operation {
 public:
-  virtual void nextOpcode(LocationUP<uint8_t> opcode) override;
+  virtual void nextOpcode(Location<uint8_t> opcode) override;
   virtual bool isComplete() override;
 
 private:
