@@ -5,8 +5,9 @@
 
 using namespace std;
 
-TEST(NullBankTest, testWrite) {
-  NullBank b{{0, 16}};
+TEST(NullBankTest, testWrite)
+{
+  NullBank b { { 0, 16 } };
   address_type loc = 0x03;
   uint8_t value = 0xA2;
 

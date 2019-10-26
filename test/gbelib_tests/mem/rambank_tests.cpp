@@ -5,8 +5,9 @@
 
 using namespace std;
 
-TEST(RamBankTest, testIndirect) {
-  RamBank b({0, 16});
+TEST(RamBankTest, testIndirect)
+{
+  RamBank b({ 0, 16 });
   auto writeByte = b.getByte(4);
   uint8_t value = 0xA2;
   writeByte.set(value);

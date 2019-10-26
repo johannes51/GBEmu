@@ -2,7 +2,8 @@
 
 #include "cpu/cpuflags.h"
 
-TEST(CpuFlagsTest, testCarry) {
+TEST(CpuFlagsTest, testCarry)
+{
   uint8_t buf;
   CpuFlags flags(buf);
   flags.setCarry();

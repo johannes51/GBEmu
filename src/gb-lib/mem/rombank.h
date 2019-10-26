@@ -5,7 +5,7 @@
 
 class RomBank final : public SingleAreaManager {
 public:
-  RomBank(MemoryArea area, std::vector<uint8_t> &&buffer);
+  RomBank(MemoryArea area, std::vector<uint8_t>&& buffer);
   DISABLE_COPY_AND_MOVE(RomBank)
 
   Location<uint8_t> getByte(address_type address) override;

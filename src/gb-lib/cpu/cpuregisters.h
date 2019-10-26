@@ -14,7 +14,7 @@ public:
 
   Location<uint16_t> get(WordRegisters registerName) override;
   Location<uint8_t> get(ByteRegisters registerName) override;
-  FlagsView &getFlags() override;
+  FlagsView& getFlags() override;
 
 private:
   std::vector<uint8_t> registers_;

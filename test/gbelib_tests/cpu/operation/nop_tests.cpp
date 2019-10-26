@@ -3,7 +3,8 @@
 #include "cpu/operation/nop.h"
 #include "location/location.h"
 
-TEST(NopTest, testClock) {
+TEST(NopTest, testClock)
+{
   Nop nop;
   EXPECT_TRUE(nop.isComplete());
   EXPECT_FALSE(nop.isDone());
@@ -12,12 +13,14 @@ TEST(NopTest, testClock) {
   EXPECT_ANY_THROW(nop.clock());
 }
 
-TEST(NopTest, testNextOpcode) {
+TEST(NopTest, testNextOpcode)
+{
   Nop nop;
   EXPECT_ANY_THROW(nop.nextOpcode(Location<uint8_t>()););
 }
 
-TEST(NopTest, testExecute) {
+TEST(NopTest, testExecute)
+{
   Nop nop;
   EXPECT_ANY_THROW(nop.execute());
   EXPECT_FALSE(nop.isDone());

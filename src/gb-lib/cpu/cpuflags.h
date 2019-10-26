@@ -6,7 +6,7 @@
 
 class CpuFlags final : public FlagsView {
 public:
-  CpuFlags(uint8_t &buffer);
+  CpuFlags(uint8_t& buffer);
   DISABLE_COPY_AND_MOVE(CpuFlags)
 
   void setCarry();
@@ -14,7 +14,7 @@ public:
   bool carry();
 
 private:
-  uint8_t &buffer_;
+  uint8_t& buffer_;
   bool carry_;
 };
 

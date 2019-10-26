@@ -1,8 +1,11 @@
 #include "opcodeview.h"
 
-OpcodeView::OpcodeView(uint8_t value) : value_(value) {}
+OpcodeView::OpcodeView(uint8_t value)
+    : value_(value)
+{
+}
 
-const uint8_t &OpcodeView::value() const { return value_; }
+const uint8_t& OpcodeView::value() const { return value_; }
 
 uint8_t OpcodeView::upperNibble() const { return value_ >> NIBBLE; }
 

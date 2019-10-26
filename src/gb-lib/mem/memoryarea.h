@@ -8,7 +8,7 @@ struct MemoryArea {
   address_type to;
 };
 
-bool operator<(const MemoryArea &lhs, const MemoryArea &rhs);
-bool operator==(const MemoryArea &lhs, const MemoryArea &rhs);
+bool operator<(const MemoryArea& lhs, const MemoryArea& rhs);
+bool operator==(const MemoryArea& lhs, const MemoryArea& rhs);
 
 #endif // MEMORYAREA_H

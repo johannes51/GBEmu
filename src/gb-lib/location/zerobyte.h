@@ -9,7 +9,7 @@ public:
   DISABLE_COPY_AND_MOVE(ZeroByte)
 
   uint8_t get() const override;
-  void set(const uint8_t &value) override;
+  void set(const uint8_t& value) override;
 };
 
 #endif // ZEROBYTE_H

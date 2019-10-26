@@ -13,7 +13,7 @@ public:
   virtual Location<uint16_t> getWord(const address_type address) override = 0;
   virtual std::vector<MemoryArea> availableAreas() override;
 
-  const MemoryArea &singleArea() const;
+  const MemoryArea& singleArea() const;
 
 private:
   std::vector<MemoryArea> availableAreas_;

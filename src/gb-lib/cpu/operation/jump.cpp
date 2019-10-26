@@ -2,7 +2,9 @@
 
 #include "location/location.h"
 
-Jump::Jump(JumpType type) : operand_() {
+Jump::Jump(JumpType type)
+    : operand_()
+{
   switch (type) {
   case JumpType::Direct:
     break;

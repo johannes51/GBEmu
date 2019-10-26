@@ -4,7 +4,8 @@
 #include "location/rambyte.h"
 #include "util/ops.h"
 
-TEST(OpsTest, testIncrement) {
+TEST(OpsTest, testIncrement)
+{
   uint8_t buffer = 5;
   auto l = Location<uint8_t>::generate(std::make_unique<RamByte>(buffer));
 

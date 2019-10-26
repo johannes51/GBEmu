@@ -10,14 +10,14 @@ public:
   MemoryManifold();
   DISABLE_COPY_AND_MOVE(MemoryManifold)
 
-  void addSubManager(const IMemoryManagerSP &newSubManager);
+  void addSubManager(const IMemoryManagerSP& newSubManager);
 
   Location<uint8_t> getByte(const address_type address) override;
   Location<uint16_t> getWord(const address_type address) override;
   virtual std::vector<MemoryArea> availableAreas() override;
 
 private:
-  IMemoryManagerSP &selectManager(const address_type address);
+  IMemoryManagerSP& selectManager(const address_type address);
 
   std::vector<std::pair<MemoryArea, IMemoryManagerSP>> subManagers_;
 };

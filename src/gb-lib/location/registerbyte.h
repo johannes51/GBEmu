@@ -5,7 +5,7 @@
 
 class RegisterByte final : public BufferByte {
 public:
-  RegisterByte(uint8_t &byte);
+  RegisterByte(uint8_t& byte);
   DISABLE_COPY_AND_MOVE(RegisterByte)
 };
 

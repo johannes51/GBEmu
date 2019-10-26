@@ -9,13 +9,17 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-Cpu::Cpu(RegistersInterfaceUP &&registers, IMemoryViewSP mem)
-    : mem_(std::move(mem)), registers_(std::move(registers)),
-      nextOperation_(nullptr) {}
+Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem)
+    : mem_(std::move(mem))
+    , registers_(std::move(registers))
+    , nextOperation_(nullptr)
+{
+}
 
 Cpu::~Cpu() = default;
 
-void Cpu::clock() {
+void Cpu::clock()
+{
   if (!nextOperation_) {
     nextOperation_ = id::decode(nextOpcode());
     while (!nextOperation_->isComplete()) {
@@ -29,9 +33,9 @@ void Cpu::clock() {
   }
 }
 
-Location<uint8_t> Cpu::nextOpcode() {
-  auto result =
-      mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
+Location<uint8_t> Cpu::nextOpcode()
+{
+  auto result = mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
   ops::increment(registers_->get(WordRegisters::PC));
   return std::move(result);
 }

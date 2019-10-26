@@ -4,12 +4,14 @@
 
 using namespace std;
 
-TEST(NullByteTest, testRead) {
+TEST(NullByteTest, testRead)
+{
   NullByte a;
   EXPECT_ANY_THROW(a.get());
 }
 
-TEST(NullByteTest, testWrite) {
+TEST(NullByteTest, testWrite)
+{
   NullByte a;
   EXPECT_ANY_THROW(a.set(0x3));
 }
