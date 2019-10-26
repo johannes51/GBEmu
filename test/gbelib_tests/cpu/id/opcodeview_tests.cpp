@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "cpu/operation/opcodeview.h"
+#include "cpu/id/opcodeview.h"
 
 TEST(OpcodeViewTest, test)
 {

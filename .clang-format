@@ -4,4 +4,6 @@ BasedOnStyle:  WebKit
 ColumnLimit:     120
 IndentWidth: 2
 AccessModifierOffset: -2
+FixNamespaceComments: true
+NamespaceIndentation: None
 ---

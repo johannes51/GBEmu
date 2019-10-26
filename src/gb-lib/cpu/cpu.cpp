@@ -1,9 +1,11 @@
 #include "cpu.h"
 
+#include <cassert>
+
 #include "cpu_defines.h"
+#include "id/instructiondecoder.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
-#include "operation/instructiondecoder.h"
 #include "operation/operation.h"
 #include "registersinterface.h"
 #include "util/helpers.h"

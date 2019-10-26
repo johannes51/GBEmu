@@ -17,9 +17,13 @@ set(TEST_SOURCES
   gbelib_tests/cpu/cpu_tests.cpp
   gbelib_tests/cpu/cpuflags_tests.cpp
   gbelib_tests/cpu/cpuregisters_tests.cpp
-  gbelib_tests/cpu/operation/instructiondecoder_tests.cpp
-  gbelib_tests/cpu/operation/loads_tests.cpp
-  gbelib_tests/cpu/operation/opcodeview_tests.cpp
+  gbelib_tests/cpu/id/arithmetic_tests.cpp
+  gbelib_tests/cpu/id/instructiondecoder_tests.cpp
+  gbelib_tests/cpu/id/jumps_calls_tests.cpp
+  gbelib_tests/cpu/id/loads_tests.cpp
+  gbelib_tests/cpu/id/opcodeview_tests.cpp
+  gbelib_tests/cpu/operation/aluoperation_tests.cpp
+  gbelib_tests/cpu/operation/jump_tests.cpp
   gbelib_tests/cpu/operation/nop_tests.cpp
   gbelib_tests/location/location_tests.cpp
   gbelib_tests/location/locationimpl_tests.cpp
