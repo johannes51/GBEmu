@@ -8,7 +8,9 @@
 class LocationImpl {
 public:
   virtual ~LocationImpl() = default;
-  DISABLE_COPY_AND_MOVE(LocationImpl)
+  DISABLE_COPY(LocationImpl)
+  LocationImpl(LocationImpl &&other) = default;
+  LocationImpl &operator=(LocationImpl &&rhs) = default;
 
   uint8_t getByte() const;
   uint16_t getWord() const;

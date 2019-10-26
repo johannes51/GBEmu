@@ -5,8 +5,8 @@
 
 namespace ops {
 
-template <class T> void increment(LocationUP<T> location) {
-  location->set(location->get() + 1);
+template <class T> void increment(Location<T> location) {
+  location.set(location.get() + 1);
 }
 
 } // namespace ops

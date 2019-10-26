@@ -27,8 +27,8 @@ address_type startPC = 0x0100;
 void testMemoryRoundtrip(IMemoryView &memory, address_type writeAdress,
                          address_type readAdress, uint16_t value) {
   auto writeLocation = memory.getWord(writeAdress);
-  writeLocation->set(value);
-  EXPECT_EQ(value, memory.getWord(readAdress)->get());
+  writeLocation.set(value);
+  EXPECT_EQ(value, memory.getWord(readAdress).get());
 }
 
 void testMemoryRoundtrip(IMemoryView &memory, address_type rwAdress,
@@ -39,8 +39,8 @@ void testMemoryRoundtrip(IMemoryView &memory, address_type rwAdress,
 void testMemoryRoundtrip(IMemoryView &memory, address_type writeAdress,
                          address_type readAdress, uint8_t value) {
   auto writeLocation = memory.getByte(writeAdress);
-  writeLocation->set(value);
-  EXPECT_EQ(value, memory.getByte(readAdress)->get());
+  writeLocation.set(value);
+  EXPECT_EQ(value, memory.getByte(readAdress).get());
 }
 
 void testMemoryRoundtrip(IMemoryView &memory, address_type rwAdress,
@@ -56,9 +56,9 @@ TEST(GBMemoryFactoryTest, testROM0_1) {
   auto f =
       MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0xC3, mem->getByte(startROM0)->get());
-  EXPECT_EQ(0x0C, mem->getByte(startROM0 + 1)->get());
-  EXPECT_ANY_THROW(mem->getByte(startROM0)->set(0x00));
+  EXPECT_EQ(0xC3, mem->getByte(startROM0).get());
+  EXPECT_EQ(0x0C, mem->getByte(startROM0 + 1).get());
+  EXPECT_ANY_THROW(mem->getByte(startROM0).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_2) {
@@ -66,29 +66,29 @@ TEST(GBMemoryFactoryTest, testROM0_2) {
   auto f = MemoryFactory(
       std::make_unique<CartLoader>("./Tetris.gb", "./Tetris.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0x00, mem->getByte(startPC)->get());
-  EXPECT_EQ(0xC3, mem->getByte(startPC + 1)->get());
-  EXPECT_EQ(0x50, mem->getByte(startPC + 2)->get());
-  EXPECT_EQ(0x01, mem->getByte(startPC + 3)->get());
-  EXPECT_ANY_THROW(mem->getByte(startPC)->set(0x00));
+  EXPECT_EQ(0x00, mem->getByte(startPC).get());
+  EXPECT_EQ(0xC3, mem->getByte(startPC + 1).get());
+  EXPECT_EQ(0x50, mem->getByte(startPC + 2).get());
+  EXPECT_EQ(0x01, mem->getByte(startPC + 3).get());
+  EXPECT_ANY_THROW(mem->getByte(startPC).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0_3) {
   auto f =
       MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
-  uint val = mem->getWord(endROM0 - 1)->get();
+  uint val = mem->getWord(endROM0 - 1).get();
   EXPECT_EQ(0x2F2F, val);
-  EXPECT_ANY_THROW(mem->getByte(endROM0)->set(0x00));
+  EXPECT_ANY_THROW(mem->getByte(endROM0).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM1_1) {
   auto f =
       MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 1)->get());
-  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 2)->get());
-  EXPECT_ANY_THROW(mem->getByte(endROM0 + 1)->set(0x00));
+  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 1).get());
+  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 2).get());
+  EXPECT_ANY_THROW(mem->getByte(endROM0 + 1).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testWRAM0_1) {
@@ -194,9 +194,9 @@ TEST(GBMemoryFactoryTest, testNOTUSED_1) {
 
   uint16_t value = static_cast<uint16_t>(rand());
   auto writeLocation = gbLayout->getWord(startNOTUSED);
-  writeLocation->set(value);
+  writeLocation.set(value);
 
-  EXPECT_EQ(0, gbLayout->getWord(startNOTUSED)->get());
+  EXPECT_EQ(0, gbLayout->getWord(startNOTUSED).get());
 }
 
 TEST(GBMemoryFactoryTest, testNOTUSED_2) {

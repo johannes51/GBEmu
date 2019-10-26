@@ -16,8 +16,8 @@ public:
   virtual ~RegistersInterface() = default;
   DISABLE_COPY_AND_MOVE(RegistersInterface)
 
-  virtual LocationUP<uint16_t> get(WordRegisters registerName) = 0;
-  virtual LocationUP<uint8_t> get(ByteRegisters registerName) = 0;
+  virtual Location<uint16_t> get(WordRegisters registerName) = 0;
+  virtual Location<uint8_t> get(ByteRegisters registerName) = 0;
 
   virtual FlagsView &getFlags() = 0;
 };

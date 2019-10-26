@@ -10,8 +10,8 @@ public:
   virtual ~IMemoryView() = default;
   DISABLE_COPY_AND_MOVE(IMemoryView)
 
-  virtual LocationUP<uint8_t> getByte(const address_type address) = 0;
-  virtual LocationUP<uint16_t> getWord(const address_type address) = 0;
+  virtual Location<uint8_t> getByte(const address_type address) = 0;
+  virtual Location<uint16_t> getWord(const address_type address) = 0;
 };
 
 #endif // IMEMORYVIEW_H

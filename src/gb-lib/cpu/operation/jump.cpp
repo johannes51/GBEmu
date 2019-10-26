@@ -11,12 +11,9 @@ Jump::Jump(JumpType type) : operand_() {
   }
 }
 
-Jump::~Jump()
-{
+Jump::~Jump() {}
 
-}
-
-void Jump::nextOpcode(LocationUP<uint8_t> opcode) {}
+void Jump::nextOpcode(Location<uint8_t> opcode) {}
 
 bool Jump::isComplete() {}
 

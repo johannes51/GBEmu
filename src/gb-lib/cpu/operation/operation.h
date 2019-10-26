@@ -12,7 +12,7 @@ public:
   virtual ~Operation() = default;
   DISABLE_COPY_AND_MOVE(Operation)
 
-  virtual void nextOpcode(LocationUP<uint8_t> opcode) = 0;
+  virtual void nextOpcode(Location<uint8_t> opcode) = 0;
   virtual bool isComplete() = 0;
   void clock();
   bool isDone();

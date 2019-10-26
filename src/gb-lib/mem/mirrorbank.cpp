@@ -13,12 +13,12 @@ MirrorBank::MirrorBank(MemoryArea mirrorArea, MemoryArea originalArea,
   }
 }
 
-LocationUP<uint8_t> MirrorBank::getByte(address_type address) {
+Location<uint8_t> MirrorBank::getByte(address_type address) {
   return mirrored_->getByte(
       mem_tools::translateAdressSafe(address, singleArea(), offset_));
 }
 
-LocationUP<uint16_t> MirrorBank::getWord(address_type address) {
+Location<uint16_t> MirrorBank::getWord(address_type address) {
   mem_tools::assertSafe(address + 1, singleArea());
   return mirrored_->getWord(
       mem_tools::translateAdressSafe(address, singleArea(), offset_));

@@ -26,11 +26,11 @@ void MemoryManifold::addSubManager(const IMemoryManagerSP &newSubManager) {
                  std::back_inserter(subManagers_), makeAreaManagerPair);
 }
 
-LocationUP<uint8_t> MemoryManifold::getByte(const address_type address) {
+Location<uint8_t> MemoryManifold::getByte(const address_type address) {
   return selectManager(address)->getByte(address);
 }
 
-LocationUP<uint16_t> MemoryManifold::getWord(const address_type address) {
+Location<uint16_t> MemoryManifold::getWord(const address_type address) {
   return selectManager(address)->getWord(address);
 }
 

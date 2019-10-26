@@ -14,7 +14,7 @@ TEST(NopTest, testClock) {
 
 TEST(NopTest, testNextOpcode) {
   Nop nop;
-  EXPECT_ANY_THROW(nop.nextOpcode(LocationUP<uint8_t>()););
+  EXPECT_ANY_THROW(nop.nextOpcode(Location<uint8_t>()););
 }
 
 TEST(NopTest, testExecute) {
