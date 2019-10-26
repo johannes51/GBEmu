@@ -17,18 +17,22 @@ target_sources(gbelib PRIVATE
   cpu/flagsview.h
   cpu/registername.h
   cpu/registersinterface.h
-  cpu/operation/opcodeview.h
-  cpu/operation/opcodeview.cpp
+  cpu/id/arithmetic.h
+  cpu/id/arithmetic.cpp
+  cpu/id/instructiondecoder.h
+  cpu/id/instructiondecoder.cpp
+  cpu/id/jumps_calls.h
+  cpu/id/jumps_calls.cpp
+  cpu/id/loads.h
+  cpu/id/loads.cpp
+  cpu/id/opcodeview.h
+  cpu/id/opcodeview.cpp
+  cpu/operation/aluoperation.h
+  cpu/operation/aluoperation.cpp
   cpu/operation/operation.h
   cpu/operation/operation.cpp
-  cpu/operation/instructiondecoder.h
-  cpu/operation/instructiondecoder.cpp
   cpu/operation/jump.h
   cpu/operation/jump.cpp
-  cpu/operation/jumps_calls.h
-  cpu/operation/jumps_calls.cpp
-  cpu/operation/loads.h
-  cpu/operation/loads.cpp
   cpu/operation/nop.h
   cpu/operation/nop.cpp
   cpu/operation/singleop.h
@@ -101,7 +105,8 @@ cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
 -fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,\
--modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init")
+-modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init,\
+-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers")
 cppcheck(gbelib)
 #sanitize(gbelib "Address")
 

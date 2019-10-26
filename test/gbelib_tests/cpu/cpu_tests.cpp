@@ -20,4 +20,11 @@ TEST(CpuTest, testClock)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_ANY_THROW(cpu.clock()); // Tetris executes 21 (LOAD HL, d16)
 }

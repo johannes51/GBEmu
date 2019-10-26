@@ -1,0 +1,50 @@
+#include "arithmetic.h"
+
+#include "../operation/aluoperation.h"
+
+ByteRegisters sourceRegister(uint8_t lowerNibble)
+{
+  ByteRegisters result;
+  switch (lowerNibble) {
+  case 0x0:
+  case 0x8:
+    result = ByteRegisters::B;
+    break;
+  case 0x1:
+  case 0x9:
+    result = ByteRegisters::C;
+    break;
+  case 0x2:
+  case 0xA:
+    result = ByteRegisters::D;
+    break;
+  case 0x3:
+  case 0xB:
+    result = ByteRegisters::E;
+    break;
+  case 0x4:
+  case 0xC:
+    result = ByteRegisters::H;
+    break;
+  case 0x5:
+  case 0xD:
+    result = ByteRegisters::L;
+    break;
+  case 0x7:
+  case 0xF:
+  default:
+    result = ByteRegisters::A;
+    break;
+  }
+  return result;
+}
+
+OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
+{
+  if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
+    auto op = std::make_unique<AluOperation>(AluFunction::Xor, Source::Register);
+    op->setRegister(sourceRegister(opcode.lowerNibble()));
+    return op;
+  }
+  return std::make_unique<AluOperation>(AluFunction::Xor, Source::Register);
+}
