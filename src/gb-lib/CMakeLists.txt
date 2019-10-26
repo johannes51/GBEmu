@@ -91,6 +91,7 @@ include(c++-standards)
 include(doxygen)
 include(formatting)
 include(tools)
+include(sanitizers)
 
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -102,6 +103,7 @@ clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
 -fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,\
 -modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init")
 cppcheck(gbelib)
+#sanitize(gbelib "Address")
 
 build_docs()
 
