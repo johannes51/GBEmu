@@ -24,9 +24,10 @@ TEST(NopTest, testExecute)
 {
   Nop nop;
   RegistersInterfaceUP r;
-  EXPECT_ANY_THROW(nop.execute(*r));
+  IMemoryViewSP m;
+  EXPECT_ANY_THROW(nop.execute(*r, *m));
   EXPECT_FALSE(nop.isDone());
   EXPECT_NO_THROW(nop.clock());
   EXPECT_TRUE(nop.isDone());
-  EXPECT_NO_THROW(nop.execute(*r));
+  EXPECT_NO_THROW(nop.execute(*r, *m));
 }

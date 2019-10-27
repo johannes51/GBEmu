@@ -10,6 +10,7 @@ public:
   static Location<T> generate(LocationByteUP lower, LocationByteUP upper = std::make_unique<NullByte>());
   static Location<uint16_t> fuse(Location<uint8_t> lower, Location<uint8_t> upper);
 
+  Location();
   DISABLE_COPY(Location)
   Location(Location&& rhs) = default;
   Location& operator=(Location&&) = default;
@@ -20,6 +21,12 @@ public:
 private:
   Location(LocationByteUP lower, LocationByteUP upper);
 };
+
+template <class T>
+Location<T>::Location()
+    : LocationImpl(nullptr, nullptr)
+{
+}
 
 template <class T>
 Location<T>::Location(LocationByteUP lower, LocationByteUP upper)

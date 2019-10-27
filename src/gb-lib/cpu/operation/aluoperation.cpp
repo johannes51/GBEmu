@@ -18,7 +18,7 @@ void AluOperation::nextOpcode(Location<uint8_t> opcode)
   if (isDone()) {
     throw std::logic_error("Already done");
   }
-  immediate_ = std::make_unique<Location<uint8_t>>(std::move(opcode));
+  immediate_ = Location<uint8_t>(std::move(opcode));
 }
 
 bool AluOperation::isComplete() { return source_ != Source::Immediate || register_; }
@@ -27,8 +27,9 @@ void AluOperation::setRegister(ByteRegisters registerName) { register_ = registe
 
 uint AluOperation::cycles() { return source_ != Source::Register ? 2 : 1; }
 
-void AluOperation::executeImpl(RegistersInterface& registers)
+void AluOperation::executeImpl(RegistersInterface& registers, IMemoryView& memory)
 {
+  (void)memory;
   switch (function_) {
   case AluFunction::Xor:
     ops::xorF(registers.get(ByteRegisters::A), getSource(registers));
@@ -45,7 +46,7 @@ Location<uint8_t> AluOperation::getSource(RegistersInterface& registers)
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    throw std::logic_error("indirect source uninmplemented");
+    throw std::logic_error("Indirect source uninmplemented");
     break;
   case Source::Register:
     if (!register_) {

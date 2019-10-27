@@ -4,6 +4,7 @@
 #include <optional>
 
 #include "../registersinterface.h"
+#include "location/location.h"
 #include "operation.h"
 
 enum class Source { Register, Immediate, Indirect };
@@ -22,14 +23,14 @@ public:
 
 private:
   uint cycles() override;
-  void executeImpl(RegistersInterface& registers) override;
+  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
 
   Location<uint8_t> getSource(RegistersInterface& registers);
 
   AluFunction function_;
   Source source_;
   std::optional<ByteRegisters> register_;
-  std::unique_ptr<Location<uint8_t>> immediate_;
+  std::optional<Location<uint8_t>> immediate_;
 };
 
 #endif // ALUOPERATION_H

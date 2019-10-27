@@ -7,9 +7,6 @@
 namespace id {
 namespace arithmetic {
 
-constexpr uint8_t BulkUpperMin = 0x8;
-constexpr uint8_t BulkUpperMax = 0xB;
-
 OperationUP bulkArithmetic(const OpcodeView opcode);
 
 } // namespace arithmetic

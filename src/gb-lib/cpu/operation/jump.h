@@ -18,7 +18,7 @@ public:
 
 private:
   uint cycles() override;
-  void executeImpl(RegistersInterface& registers) override;
+  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
 
   std::optional<Location<uint8_t>> lower_;
   std::optional<Location<uint8_t>> upper_;

@@ -7,10 +7,8 @@
 namespace id {
 namespace loads {
 
-constexpr uint8_t BulkUpperMin = 0x4;
-constexpr uint8_t BulkUpperMax = 0x7;
-
 OperationUP bulkLoad(const OpcodeView opcode);
+OperationUP loadImmediate(const OpcodeView opcode);
 
 } // namespace loads
 } // namespace id

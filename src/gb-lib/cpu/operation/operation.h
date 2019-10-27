@@ -6,6 +6,7 @@
 
 #include "cpu/cpu_defines.h"
 #include "location/location_defines.h"
+#include "mem/mem_defines.h"
 
 class Operation {
 public:
@@ -18,11 +19,11 @@ public:
   void clock();
   bool isDone();
 
-  void execute(RegistersInterface& registers);
+  void execute(RegistersInterface& registers, IMemoryView& memory);
 
 private:
   virtual uint cycles() = 0;
-  virtual void executeImpl(RegistersInterface& registers) = 0;
+  virtual void executeImpl(RegistersInterface& registers, IMemoryView& memory) = 0;
 
   uint clocks_;
 };
