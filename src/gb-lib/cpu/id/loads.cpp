@@ -4,8 +4,8 @@
 
 std::pair<Destination, ByteRegisters> destination(const OpcodeView& opcode)
 {
-  ByteRegisters destRegister;
-  Destination dest = Destination::Register8;
+  auto destRegister = ByteRegisters::A;
+  auto dest = Destination::Register8;
   if (opcode.lowerNibble() <= 0x7) {
     switch (opcode.upperNibble()) {
     case 0x4:
@@ -35,8 +35,7 @@ std::pair<Destination, ByteRegisters> destination(const OpcodeView& opcode)
       destRegister = ByteRegisters::L;
       break;
     case 0x7:
-      destRegister = ByteRegisters::A;
-      break;
+       destRegister = ByteRegisters::A;
     default:
       break;
     }
@@ -46,8 +45,8 @@ std::pair<Destination, ByteRegisters> destination(const OpcodeView& opcode)
 
 std::pair<Source, ByteRegisters> source(const OpcodeView& opcode)
 {
-  ByteRegisters srcRegister;
-  Source src = Source::Register;
+  auto srcRegister = ByteRegisters::A;
+  auto src = Source::Register;
   switch (opcode.lowerNibble()) {
   case 0x0:
   case 0x8:
@@ -104,7 +103,7 @@ OperationUP id::loads::bulkLoad(const OpcodeView opcode)
 
 OperationUP id::loads::loadImmediate(const OpcodeView opcode)
 {
-  std::unique_ptr<Load> result;
+  std::unique_ptr<Load> result(nullptr);
   switch (opcode.value()) {
   case 0x06:
     result = std::make_unique<Load>(Destination::Register8, Source::Register);
