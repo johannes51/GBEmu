@@ -4,7 +4,7 @@ std::vector<MemoryArea> SingleAreaManager::availableAreas() { return availableAr
 
 const MemoryArea& SingleAreaManager::singleArea() const { return availableAreas_.front(); }
 
-SingleAreaManager::SingleAreaManager(MemoryArea area)
+SingleAreaManager::SingleAreaManager(const MemoryArea& area)
     : availableAreas_(1)
 {
   availableAreas_.front() = area;

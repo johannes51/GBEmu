@@ -22,7 +22,7 @@ public:
 private:
   std::optional<Location<uint8_t>> lower_;
   std::optional<Location<uint8_t>> upper_;
-  JumpType type_;
+  const JumpType type_;
 };
 
 #endif // JUMP_H

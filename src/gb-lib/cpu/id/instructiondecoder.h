@@ -6,7 +6,7 @@
 
 namespace id {
 
-OperationUP decode(Location<uint8_t> opcodeLocation);
+OperationUP decode(const Location<uint8_t> opcodeLocation);
 
 }
 

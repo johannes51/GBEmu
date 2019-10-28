@@ -4,7 +4,7 @@
 #include "location/zerobyte.h"
 #include "mem_tools.h"
 
-NullBank::NullBank(MemoryArea area)
+NullBank::NullBank(const MemoryArea &area)
     : SingleAreaManager(area)
 {
 }

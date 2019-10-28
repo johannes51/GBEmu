@@ -54,20 +54,20 @@ void Load::setSource(WordRegisters srcRegister) { srcRegister16_ = srcRegister; 
 
 uint Load::cycles()
 {
-  auto cyc = 1U;
+  auto result = 1U;
   if (destination_ == Destination::ImmediateIndirect) {
-    cyc = 5U;
+    result = 5U;
   } else if (destination_ == Destination::RegisterIndirect || source_ == Source::RegisterIndirect) {
-    ++cyc;
+    ++result;
   }
   if (source_ == Source::Immediate) {
     if (destination_ == Destination::Register8 || destination_ == Destination::RegisterIndirect) {
-      ++cyc;
+      ++result;
     } else if (destination_ == Destination::Register16) {
-      cyc += 2;
+      result += 2;
     }
   }
-  return cyc;
+  return result;
 }
 
 void Load::execute(RegistersInterface& registers, IMemoryView& memory)

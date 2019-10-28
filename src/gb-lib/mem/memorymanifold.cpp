@@ -8,16 +8,16 @@
 
 void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
 {
-  auto makeAreaManagerPair = [newSubManager](const auto& element) { return std::make_pair(element, newSubManager); };
-  auto newAreas = newSubManager->availableAreas();
-  auto oldAreas = availableAreas();
+  const auto newAreas = newSubManager->availableAreas();
+  const auto oldAreas = availableAreas();
 
   if (!std::accumulate(newAreas.begin(), newAreas.end(), true,
           [oldAreas](auto& a, const auto& b) { return a && mem_tools::isDisjunct(b, oldAreas); })) {
     throw std::invalid_argument("Areas collide");
   }
 
-  std::transform(newAreas.begin(), newAreas.end(), std::back_inserter(subManagers_), makeAreaManagerPair);
+  std::transform(newAreas.begin(), newAreas.end(), std::back_inserter(subManagers_),
+      [newSubManager](const auto& newArea) { return std::make_pair(newArea, newSubManager); });
 }
 
 Location<uint8_t> MemoryManifold::getByte(const address_type address)
@@ -40,8 +40,8 @@ std::vector<MemoryArea> MemoryManifold::availableAreas()
 
 IMemoryManagerSP& MemoryManifold::selectManager(const address_type address)
 {
-  auto checkInArea = [&](const auto& element) { return mem_tools::isSafe(address, element.first); };
-  auto it = std::find_if(subManagers_.begin(), subManagers_.end(), checkInArea);
+  auto it = std::find_if(subManagers_.begin(), subManagers_.end(),
+      [&](const auto& element) { return mem_tools::isSafe(address, element.first); });
   if (it == subManagers_.end()) {
     throw std::invalid_argument("Out of bounds");
   }

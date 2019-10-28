@@ -89,8 +89,8 @@ OperationUP id::loads::bulkLoad(const OpcodeView opcode)
   if (opcode.value() == 0x76) {
     throw std::logic_error("HALT unimplemented");
   }
-  auto opDestination = destination(opcode);
-  auto opSource = source(opcode);
+  const auto opDestination = destination(opcode);
+  const auto opSource = source(opcode);
   auto result = std::make_unique<Load>(opDestination.first, opSource.first);
   if (opDestination.first == Destination::Register8) {
     result->setDestination(opDestination.second);

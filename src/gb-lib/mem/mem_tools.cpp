@@ -2,20 +2,20 @@
 
 #include <numeric>
 
-address_type mem_tools::translateAdressSafe(const address_type inputAdress, MemoryArea area)
+address_type mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& area)
 {
   assertSafe(inputAdress, area);
   return inputAdress - area.from;
 }
 
 address_type mem_tools::translateAdressSafe(
-    const address_type inputAdress, const address_type startAdress, const address_type size)
+    const address_type& inputAdress, const address_type& startAdress, const address_type& size)
 {
   assertSafe(inputAdress, startAdress, size);
   return inputAdress - startAdress;
 }
 
-address_type mem_tools::translateAdressSafe(const address_type inputAdress, MemoryArea mirror, int offset)
+address_type mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& mirror, const int offset)
 {
   assertSafe(inputAdress, mirror);
   return inputAdress + offset;

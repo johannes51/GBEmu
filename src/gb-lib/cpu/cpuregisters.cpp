@@ -2,7 +2,7 @@
 
 #include "flagsview.h"
 #include "location/location.h"
-#include "location/registerbyte.h"
+#include "location/rambyte.h"
 #include "registername.h"
 
 const uint8_t INITIAL_A = 0x01;
@@ -66,7 +66,7 @@ Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
     break;
   }
   return Location<uint16_t>::generate(
-      std::make_unique<RegisterByte>(registers_.at(lower)), std::make_unique<RegisterByte>(registers_.at(upper)));
+      std::make_unique<RamByte>(registers_.at(lower)), std::make_unique<RamByte>(registers_.at(upper)));
 }
 
 Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
@@ -94,7 +94,7 @@ Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
   default:
     break;
   }
-  return Location<uint8_t>::generate(std::make_unique<RegisterByte>(registers_.at(byte)));
+  return Location<uint8_t>::generate(std::make_unique<RamByte>(registers_.at(byte)));
 }
 
 CpuRegisters::~CpuRegisters() = default;
