@@ -19,6 +19,7 @@ private:
   IMemoryViewSP mem_;
   RegistersInterfaceUP registers_;
   std::unique_ptr<Operation> nextOperation_;
+  uint ticksTillExecution_ = 0;
 };
 
 #endif // CPU_H

@@ -12,9 +12,8 @@ TEST(AluOperationTest, testXor)
   xorOp.setRegister(ByteRegisters::B);
   ASSERT_TRUE(xorOp.isComplete());
 
-  EXPECT_FALSE(xorOp.isDone());
-  EXPECT_NO_THROW(xorOp.clock());
-  ASSERT_TRUE(xorOp.isDone());
+  EXPECT_EQ(1, xorOp.cycles());
+  ;
 
   CpuRegisters r;
   auto a = r.get(ByteRegisters::A);

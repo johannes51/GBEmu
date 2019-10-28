@@ -20,15 +20,15 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
+  uint cycles() override;
+  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+
   void setDestination(ByteRegisters destRegister);
   void setDestination(WordRegisters destRegister);
   void setSource(ByteRegisters srcRegister);
   void setSource(WordRegisters srcRegister);
 
 private:
-  uint cycles() override;
-  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
-
   std::optional<Location<uint8_t>> immediate8_;
   std::optional<Location<uint16_t>> immediate16_;
   Destination destination_;

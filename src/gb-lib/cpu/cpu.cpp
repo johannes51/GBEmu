@@ -27,9 +27,10 @@ void Cpu::clock()
     while (!nextOperation_->isComplete()) {
       nextOperation_->nextOpcode(nextOpcode());
     }
+    ticksTillExecution_ = nextOperation_->cycles();
   }
-  nextOperation_->clock();
-  if (nextOperation_->isDone()) {
+  --ticksTillExecution_;
+  if (ticksTillExecution_ <= 0) {
     nextOperation_->execute(*registers_, *mem_);
     nextOperation_.reset();
   }

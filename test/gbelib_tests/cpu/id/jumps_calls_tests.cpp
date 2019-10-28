@@ -9,5 +9,5 @@ TEST(ArithmeticTest, testDirect)
 {
   auto op = jumpDirect();
   ASSERT_TRUE(op);
-  EXPECT_NO_THROW(op->isDone());
+  EXPECT_FALSE(op->isComplete());
 }

@@ -30,7 +30,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/aluoperation.h
   cpu/operation/aluoperation.cpp
   cpu/operation/operation.h
-  cpu/operation/operation.cpp
   cpu/operation/jump.h
   cpu/operation/jump.cpp
   cpu/operation/load.h

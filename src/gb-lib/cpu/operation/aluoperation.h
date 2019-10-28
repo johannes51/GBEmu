@@ -19,12 +19,12 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
+  uint cycles() override;
+  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+
   void setRegister(ByteRegisters registerName);
 
 private:
-  uint cycles() override;
-  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
-
   Location<uint8_t> getSource(RegistersInterface& registers);
 
   AluFunction function_;

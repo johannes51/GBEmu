@@ -6,11 +6,6 @@
 #include "location/location.h"
 #include "mem_tools.h"
 
-MemoryManifold::MemoryManifold()
-    : subManagers_()
-{
-}
-
 void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
 {
   auto makeAreaManagerPair = [newSubManager](const auto& element) { return std::make_pair(element, newSubManager); };

@@ -7,7 +7,7 @@
 
 class MemoryManifold final : public IMemoryManager {
 public:
-  MemoryManifold();
+  MemoryManifold() = default;
   DISABLE_COPY_AND_MOVE(MemoryManifold)
 
   void addSubManager(const IMemoryManagerSP& newSubManager);
@@ -19,7 +19,8 @@ public:
 private:
   IMemoryManagerSP& selectManager(const address_type address);
 
-  std::vector<std::pair<MemoryArea, IMemoryManagerSP>> subManagers_;
+  std::vector<std::pair<MemoryArea, IMemoryManagerSP>> subManagers_
+      = std::vector<std::pair<MemoryArea, IMemoryManagerSP>>();
 };
 
 #endif // MEMORYMANIFOLD_H

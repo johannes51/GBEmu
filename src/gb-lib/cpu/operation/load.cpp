@@ -70,7 +70,7 @@ uint Load::cycles()
   return cyc;
 }
 
-void Load::executeImpl(RegistersInterface& registers, IMemoryView& memory)
+void Load::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   Location<uint16_t> source16;
   Location<uint8_t> source8;
@@ -107,10 +107,10 @@ void Load::executeImpl(RegistersInterface& registers, IMemoryView& memory)
     default:
       throw std::invalid_argument("Impossible combination of dest and source");
     }
-    ops::load((destination_ == Destination::Register8) ?
-                registers.get(*destRegister8_) :
-                memory.getByte(hlp::indirect(registers.get(WordRegisters::HL))),
-              std::move(source8));
+    ops::load((destination_ == Destination::Register8)
+            ? registers.get(*destRegister8_)
+            : memory.getByte(hlp::indirect(registers.get(WordRegisters::HL))),
+        std::move(source8));
     break;
   case Destination::ImmediateIndirect:
     ops::load(memory.getWord(hlp::indirect(std::move(*immediate16_))), registers.get(WordRegisters::SP));

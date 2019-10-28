@@ -5,7 +5,7 @@
 
 TEST(LoadsTest, testLoad)
 {
-  auto op = id::loads::bulkLoad(OpcodeView(0x3F));
+  auto op = id::loads::bulkLoad(OpcodeView(0x3A));
   ASSERT_TRUE(op);
-  EXPECT_NO_THROW(op->isDone());
+  EXPECT_TRUE(op->isComplete());
 }

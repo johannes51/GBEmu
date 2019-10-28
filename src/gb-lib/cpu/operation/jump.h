@@ -16,10 +16,10 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-private:
   uint cycles() override;
-  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
+private:
   std::optional<Location<uint8_t>> lower_;
   std::optional<Location<uint8_t>> upper_;
   JumpType type_;
