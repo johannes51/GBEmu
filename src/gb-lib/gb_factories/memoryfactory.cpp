@@ -17,8 +17,9 @@ IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
 {
   auto manifold = std::make_shared<MemoryManifold>();
 
-  auto cartBanks = buildCartBanks();
-  std::for_each(cartBanks.begin(), cartBanks.end(), [&](const auto& elem) { manifold->addSubManager(elem); });
+  for (const auto& bankManager : buildCartBanks()) {
+    manifold->addSubManager(bankManager);
+  }
 
   auto wram0 = buildRamBank(WRAM0);
   auto wram1 = buildRamBank(WRAM1);

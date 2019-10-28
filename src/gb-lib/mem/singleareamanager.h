@@ -5,7 +5,7 @@
 
 class SingleAreaManager : public IMemoryManager {
 public:
-  SingleAreaManager(MemoryArea area);
+  SingleAreaManager(const MemoryArea &area);
   virtual ~SingleAreaManager() = default;
   DISABLE_COPY_AND_MOVE(SingleAreaManager)
 

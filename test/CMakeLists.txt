@@ -40,7 +40,6 @@ set(TEST_SOURCES
   gbelib_tests/location/rambyte_tests.cpp
   gbelib_tests/location/rombyte_tests.cpp
   gbelib_tests/location/zerobyte_tests.cpp
-  gbelib_tests/location/registerbyte_tests.cpp
   gbelib_tests/gb/gbmemoryfactory_tests.cpp
   gbelib_tests/mem/nullbank_tests.cpp
   gbelib_tests/mem/memorymanifold_tests.cpp

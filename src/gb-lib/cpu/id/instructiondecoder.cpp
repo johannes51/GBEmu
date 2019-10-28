@@ -8,9 +8,9 @@
 #include "location/location.h"
 #include "opcodeview.h"
 
-OperationUP id::decode(Location<uint8_t> opcodeLocation)
+OperationUP id::decode(const Location<uint8_t> opcodeLocation)
 {
-  OpcodeView opcode(opcodeLocation.get());
+  const OpcodeView opcode(opcodeLocation.get());
   OperationUP result;
   if (opcode.value() == 0x00) {
     result = std::make_unique<Nop>();

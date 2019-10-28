@@ -2,7 +2,7 @@
 
 #include "../operation/aluoperation.h"
 
-ByteRegisters sourceRegister(uint8_t lowerNibble)
+ByteRegisters sourceRegister(const uint8_t lowerNibble)
 {
   ByteRegisters result;
   switch (lowerNibble) {

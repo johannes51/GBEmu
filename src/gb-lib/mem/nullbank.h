@@ -5,7 +5,7 @@
 
 class NullBank final : public SingleAreaManager {
 public:
-  NullBank(MemoryArea area);
+  NullBank(const MemoryArea &area);
   DISABLE_COPY_AND_MOVE(NullBank)
 
   Location<uint8_t> getByte(address_type address) override;

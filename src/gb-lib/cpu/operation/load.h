@@ -31,8 +31,8 @@ public:
 private:
   std::optional<Location<uint8_t>> immediate8_;
   std::optional<Location<uint16_t>> immediate16_;
-  Destination destination_;
-  Source source_;
+  const Destination destination_;
+  const Source source_;
   std::optional<ByteRegisters> destRegister8_;
   std::optional<ByteRegisters> srcRegister8_;
   std::optional<WordRegisters> destRegister16_;

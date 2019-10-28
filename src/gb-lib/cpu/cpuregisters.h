@@ -18,7 +18,7 @@ public:
 
 private:
   std::vector<uint8_t> registers_;
-  FlagsViewUP flags_;
+  const FlagsViewUP flags_;
 };
 
 #endif // REGISTERSIMPL_H

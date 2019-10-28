@@ -16,8 +16,8 @@ public:
 private:
   Location<uint8_t> nextOpcode();
 
-  IMemoryViewSP mem_;
-  RegistersInterfaceUP registers_;
+  const IMemoryViewSP mem_;
+  const RegistersInterfaceUP registers_;
   std::unique_ptr<Operation> nextOperation_;
   uint ticksTillExecution_ = 0;
 };

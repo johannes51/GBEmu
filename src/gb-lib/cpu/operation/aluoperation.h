@@ -27,8 +27,8 @@ public:
 private:
   Location<uint8_t> getSource(RegistersInterface& registers);
 
-  AluFunction function_;
-  Source source_;
+  const AluFunction function_;
+  const Source source_;
   std::optional<ByteRegisters> register_;
   std::optional<Location<uint8_t>> immediate_;
 };

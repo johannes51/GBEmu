@@ -5,7 +5,7 @@
 
 class RamBank : public SingleAreaManager {
 public:
-  RamBank(MemoryArea area);
+  RamBank(const MemoryArea& area);
   DISABLE_COPY_AND_MOVE(RamBank)
 
   Location<uint8_t> getByte(address_type address);

@@ -76,8 +76,6 @@ target_sources(gbelib PRIVATE
   location/nullbyte.cpp
   location/rambyte.h
   location/rambyte.cpp
-  location/registerbyte.h
-  location/registerbyte.cpp
   location/rombyte.h
   location/rombyte.cpp
   location/zerobyte.h
