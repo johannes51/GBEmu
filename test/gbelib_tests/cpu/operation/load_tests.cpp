@@ -15,11 +15,7 @@ TEST(LoadTest, testImmediate8)
   loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x42)));
   ASSERT_TRUE(loadImmediate.isComplete());
 
-  EXPECT_FALSE(loadImmediate.isDone());
-  EXPECT_NO_THROW(loadImmediate.clock());
-  EXPECT_FALSE(loadImmediate.isDone());
-  EXPECT_NO_THROW(loadImmediate.clock());
-  ASSERT_TRUE(loadImmediate.isDone());
+  EXPECT_EQ(2, loadImmediate.cycles());
 
   CpuRegisters r;
   IMemoryViewSP m;
@@ -38,13 +34,7 @@ TEST(LoadTest, testImmediate16)
   loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x74)));
   ASSERT_TRUE(loadImmediate.isComplete());
 
-  EXPECT_FALSE(loadImmediate.isDone());
-  EXPECT_NO_THROW(loadImmediate.clock());
-  EXPECT_FALSE(loadImmediate.isDone());
-  EXPECT_NO_THROW(loadImmediate.clock());
-  EXPECT_FALSE(loadImmediate.isDone());
-  EXPECT_NO_THROW(loadImmediate.clock());
-  ASSERT_TRUE(loadImmediate.isDone());
+  EXPECT_EQ(3, loadImmediate.cycles());
 
   CpuRegisters r;
   IMemoryViewSP m;

@@ -44,7 +44,7 @@ bool Jump::isComplete()
 
 uint Jump::cycles() { return 4; }
 
-void Jump::executeImpl(RegistersInterface& registers, IMemoryView& memory)
+void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
   switch (type_) {

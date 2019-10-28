@@ -15,8 +15,8 @@ AluOperation::~AluOperation() = default;
 
 void AluOperation::nextOpcode(Location<uint8_t> opcode)
 {
-  if (isDone()) {
-    throw std::logic_error("Already done");
+  if (isComplete()) {
+    throw std::logic_error("Already complete");
   }
   immediate_ = Location<uint8_t>(std::move(opcode));
 }
@@ -27,7 +27,7 @@ void AluOperation::setRegister(ByteRegisters registerName) { register_ = registe
 
 uint AluOperation::cycles() { return source_ != Source::Register ? 2 : 1; }
 
-void AluOperation::executeImpl(RegistersInterface& registers, IMemoryView& memory)
+void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
   switch (function_) {

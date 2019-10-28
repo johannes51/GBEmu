@@ -4,8 +4,8 @@
 #include "singleop.h"
 
 class Nop final : public SingleOp {
-private:
-  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
+public:
+  void execute(RegistersInterface& registers, IMemoryView& memory) override;
 };
 
 #endif // NOP_H

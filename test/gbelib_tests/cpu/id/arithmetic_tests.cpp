@@ -9,5 +9,5 @@ TEST(ArithmeticTest, testBulk)
 {
   auto op = bulkArithmetic(OpcodeView(0x80));
   ASSERT_TRUE(op);
-  EXPECT_NO_THROW(op->isDone());
+  EXPECT_TRUE(op->isComplete());
 }

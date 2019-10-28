@@ -15,15 +15,7 @@ TEST(JumpTest, testDirect)
   EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x19))));
   ASSERT_TRUE(jump.isComplete());
 
-  EXPECT_FALSE(jump.isDone());
-  EXPECT_NO_THROW(jump.clock());
-  EXPECT_FALSE(jump.isDone());
-  EXPECT_NO_THROW(jump.clock());
-  EXPECT_FALSE(jump.isDone());
-  EXPECT_NO_THROW(jump.clock());
-  EXPECT_FALSE(jump.isDone());
-  EXPECT_NO_THROW(jump.clock());
-  ASSERT_TRUE(jump.isDone());
+  EXPECT_EQ(4, jump.cycles());
 
   CpuRegisters r;
   IMemoryViewSP m;

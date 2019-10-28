@@ -5,10 +5,11 @@
 
 class SingleOp : public Operation {
 public:
+  virtual ~SingleOp() = default;
+
   virtual void nextOpcode(Location<uint8_t> opcode) override;
   virtual bool isComplete() override;
 
-private:
   virtual uint cycles() override;
 };
 

@@ -35,7 +35,7 @@ std::pair<Destination, ByteRegisters> destination(const OpcodeView& opcode)
       destRegister = ByteRegisters::L;
       break;
     case 0x7:
-       destRegister = ByteRegisters::A;
+      destRegister = ByteRegisters::A;
     default:
       break;
     }

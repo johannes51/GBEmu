@@ -10,22 +10,15 @@
 
 class Operation {
 public:
-  Operation();
+  Operation() = default;
   virtual ~Operation() = default;
   DISABLE_COPY_AND_MOVE(Operation)
 
   virtual void nextOpcode(Location<uint8_t> opcode) = 0;
   virtual bool isComplete() = 0;
-  void clock();
-  bool isDone();
 
-  void execute(RegistersInterface& registers, IMemoryView& memory);
-
-private:
   virtual uint cycles() = 0;
-  virtual void executeImpl(RegistersInterface& registers, IMemoryView& memory) = 0;
-
-  uint clocks_;
+  virtual void execute(RegistersInterface& registers, IMemoryView& memory) = 0;
 };
 
 #endif // OPERATION_H
