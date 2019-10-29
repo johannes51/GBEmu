@@ -5,7 +5,8 @@
 TEST(CpuFlagsTest, testCarry)
 {
   uint8_t buf;
-  CpuFlags flags(buf);
+  CpuFlags flags_anon(buf);
+  FlagsView& flags = flags_anon;
   flags.setCarry();
   EXPECT_EQ(true, flags.carry());
   flags.clearCarry();
