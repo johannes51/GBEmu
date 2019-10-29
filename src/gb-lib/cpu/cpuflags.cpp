@@ -1,7 +1,8 @@
 #include "cpuflags.h"
 
 CpuFlags::CpuFlags(uint8_t& buffer)
-    : buffer_(buffer)
+    : FlagsView()
+    , buffer_(buffer)
     , carry_(false)
 {
 }

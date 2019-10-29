@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.2)
 project(script)
 
 add_custom_target(script SOURCES
+  code-coverage.cmake
   compiler-options.cmake
   c++-standards.cmake
   dependency-graph.cmake
