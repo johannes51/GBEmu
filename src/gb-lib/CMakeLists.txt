@@ -15,7 +15,6 @@ target_sources(gbelib PRIVATE
   cpu/cpuregisters.h
   cpu/cpuregisters.cpp
   cpu/flagsview.h
-  cpu/registername.h
   cpu/registersinterface.h
   cpu/id/arithmetic.h
   cpu/id/arithmetic.cpp
@@ -32,8 +31,10 @@ target_sources(gbelib PRIVATE
   cpu/operation/operation.h
   cpu/operation/jump.h
   cpu/operation/jump.cpp
-  cpu/operation/load.h
-  cpu/operation/load.cpp
+  cpu/operation/byteload.h
+  cpu/operation/byteload.cpp
+  cpu/operation/wordload.h
+  cpu/operation/wordload.cpp
   cpu/operation/nop.h
   cpu/operation/nop.cpp
   cpu/operation/singleop.h
@@ -87,14 +88,6 @@ target_sources(gbelib PRIVATE
   sys/systemmanager.cpp
   sys/systemmanager.h
   )
-
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/script;")
-include(compiler-options)
-include(c++-standards)
-include(doxygen)
-include(formatting)
-include(tools)
-include(sanitizers)
 
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})

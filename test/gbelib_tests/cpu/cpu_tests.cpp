@@ -26,14 +26,16 @@ TEST(CpuTest, testTetris)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x020C XOR A
-  EXPECT_NO_THROW(cpu.clock()); // 0x020D LD DE, 0xDFFF
+  EXPECT_NO_THROW(cpu.clock()); // 0x020D LD HL, 0xDFFF
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0210 LD C, 0x10
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0212 LD H, B
   EXPECT_NO_THROW(cpu.clock()); // 0x0213 NOP
-  EXPECT_ANY_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0214 LD (HL-),A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_ANY_THROW(cpu.clock()); // 0x0215 DEC B
 }
 
 TEST(CpuTest, testLoads)
@@ -60,5 +62,9 @@ TEST(CpuTest, testLoads)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0204 LD C, 0x10
   EXPECT_NO_THROW(cpu.clock());
-  EXPECT_ANY_THROW(cpu.clock()); // 0x0206 irgend'n komischer (HL+) Load
+  EXPECT_NO_THROW(cpu.clock()); // 0x0206 LD A, (HL+)
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0207 LD (DE), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_ANY_THROW(cpu.clock()); // 0x0208 INC E
 }
