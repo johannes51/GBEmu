@@ -3,7 +3,7 @@
 #include "location/location.h"
 #include "mem_tools.h"
 
-MirrorBank::MirrorBank(const MemoryArea &mirrorArea, const MemoryArea &originalArea, IMemoryManagerSP mirrored)
+MirrorBank::MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManagerSP mirrored)
     : SingleAreaManager(mirrorArea)
     , offset_(originalArea.from - mirrorArea.from)
     , mirrored_(std::move(mirrored))

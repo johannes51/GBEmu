@@ -3,7 +3,6 @@
 #include "flagsview.h"
 #include "location/location.h"
 #include "location/rambyte.h"
-#include "registername.h"
 
 const uint8_t INITIAL_A = 0x01;
 const uint8_t INITIAL_F = 0xB0;
@@ -22,19 +21,18 @@ CpuRegisters::CpuRegisters()
     : registers_()
     , flags_()
 {
-  registers_.resize(RegisterName::SIZE);
-  registers_.at(RegisterName::A) = INITIAL_A;
-  registers_.at(RegisterName::F) = INITIAL_F;
-  registers_.at(RegisterName::B) = INITIAL_B;
-  registers_.at(RegisterName::C) = INITIAL_C;
-  registers_.at(RegisterName::D) = INITIAL_D;
-  registers_.at(RegisterName::E) = INITIAL_E;
-  registers_.at(RegisterName::H) = INITIAL_H;
-  registers_.at(RegisterName::L) = INITIAL_L;
-  registers_.at(RegisterName::SPu) = INITIAL_SPu;
-  registers_.at(RegisterName::SPl) = INITIAL_SPl;
-  registers_.at(RegisterName::PCu) = INITIAL_PCu;
-  registers_.at(RegisterName::PCl) = INITIAL_PCl;
+  registers_[RegisterName::A] = INITIAL_A;
+  registers_[RegisterName::F] = INITIAL_F;
+  registers_[RegisterName::B] = INITIAL_B;
+  registers_[RegisterName::C] = INITIAL_C;
+  registers_[RegisterName::D] = INITIAL_D;
+  registers_[RegisterName::E] = INITIAL_E;
+  registers_[RegisterName::H] = INITIAL_H;
+  registers_[RegisterName::L] = INITIAL_L;
+  registers_[RegisterName::SPu] = INITIAL_SPu;
+  registers_[RegisterName::SPl] = INITIAL_SPl;
+  registers_[RegisterName::PCu] = INITIAL_PCu;
+  registers_[RegisterName::PCl] = INITIAL_PCl;
 }
 
 Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
@@ -62,7 +60,13 @@ Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
     lower = RegisterName::SPl;
     upper = RegisterName::SPu;
     break;
+  case WordRegisters::PC:
+    lower = RegisterName::PCl;
+    upper = RegisterName::PCu;
+    break;
+  case WordRegisters::None:
   default:
+    throw std::invalid_argument("Unable to provide register");
     break;
   }
   return Location<uint16_t>::generate(
@@ -73,6 +77,9 @@ Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
 {
   auto byte = RegisterName::A;
   switch (registerName) {
+  case ByteRegisters::A:
+    byte = RegisterName::A;
+    break;
   case ByteRegisters::B:
     byte = RegisterName::B;
     break;
@@ -91,7 +98,9 @@ Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
   case ByteRegisters::L:
     byte = RegisterName::L;
     break;
+  case ByteRegisters::None:
   default:
+    throw std::invalid_argument("Unable to provide register");
     break;
   }
   return Location<uint8_t>::generate(std::make_unique<RamByte>(registers_.at(byte)));

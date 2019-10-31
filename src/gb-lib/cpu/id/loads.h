@@ -9,6 +9,7 @@ namespace loads {
 
 OperationUP bulkLoad(const OpcodeView opcode);
 OperationUP loadImmediate(const OpcodeView opcode);
+OperationUP loadRegisterIndirect(const OpcodeView opcode, bool store);
 
 } // namespace loads
 } // namespace id

@@ -17,6 +17,10 @@ OperationUP id::decode(const Location<uint8_t> opcodeLocation)
   } else if (opcode.upperNibble() <= 0x3) {
     if (opcode.lowerNibble() == 0x1 || opcode.lowerNibble() == 0x6 || opcode.lowerNibble() == 0xE) {
       result = loads::loadImmediate(opcode);
+    } else if (opcode.lowerNibble() == 0x2) {
+      result = loads::loadRegisterIndirect(opcode, true);
+    } else if (opcode.lowerNibble() == 0xA) {
+      result = loads::loadRegisterIndirect(opcode, false);
     } else {
       throw std::logic_error("Unimplemented");
     }

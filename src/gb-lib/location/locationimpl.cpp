@@ -21,8 +21,6 @@ void LocationImpl::setByte(uint8_t value) { lower_->set(value); }
 
 void LocationImpl::setWord(uint16_t value)
 {
-  uint8_t lowerValue = value & LOWER_MASK;
-  uint8_t upperValue = static_cast<uint16_t>(value & UPPER_MASK) >> BYTE_SIZE;
-  lower_->set(lowerValue);
-  upper_->set(upperValue);
+  lower_->set(value & LOWER_MASK);
+  upper_->set(static_cast<uint16_t>(value & UPPER_MASK) >> BYTE_SIZE);
 }

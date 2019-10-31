@@ -6,9 +6,9 @@
 #include "cpu_defines.h"
 #include "location/location_defines.h"
 
-enum class ByteRegisters { A, B, C, D, E, H, L };
+enum class ByteRegisters { A, B, C, D, E, H, L, None };
 
-enum class WordRegisters { AF, BC, DE, HL, SP, PC };
+enum class WordRegisters { AF, BC, DE, HL, SP, PC, None };
 
 class RegistersInterface {
 public:

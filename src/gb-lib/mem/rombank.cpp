@@ -4,7 +4,7 @@
 #include "location/rombyte.h"
 #include "mem_tools.h"
 
-RomBank::RomBank(const MemoryArea &area, std::vector<uint8_t>&& buffer)
+RomBank::RomBank(const MemoryArea& area, std::vector<uint8_t>&& buffer)
     : SingleAreaManager(area)
     , buffer_(std::move(buffer))
 {

@@ -4,9 +4,6 @@ project(gbe_tests)
 find_package(GTest REQUIRED)
 include(GoogleTest)
 
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
 configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/res/Tetris.gb"
   "${CMAKE_CURRENT_BINARY_DIR}/Tetris.gb"
@@ -32,7 +29,8 @@ set(TEST_SOURCES
   gbelib_tests/cpu/id/opcodeview_tests.cpp
   gbelib_tests/cpu/operation/aluoperation_tests.cpp
   gbelib_tests/cpu/operation/jump_tests.cpp
-  gbelib_tests/cpu/operation/load_tests.cpp
+  gbelib_tests/cpu/operation/wordload_tests.cpp
+  gbelib_tests/cpu/operation/byteload_tests.cpp
   gbelib_tests/cpu/operation/nop_tests.cpp
   gbelib_tests/location/location_tests.cpp
   gbelib_tests/location/locationimpl_tests.cpp
@@ -57,20 +55,12 @@ add_executable(gbelib_tests ${TEST_SOURCES})
 target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main)
 target_include_directories(gbelib_tests PRIVATE $<TARGET_PROPERTY:gbelib,INCLUDE_DIRECTORIES>)
 
-set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/script;")
-include(compiler-options)
-include(c++-standards)
-include(doxygen)
-include(formatting)
-include(tools)
-set(CODE_COVERAGE ON)
-include(code-coverage)
-target_code_coverage(gbelib_tests)
-
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 enable_wall(gbelib_tests)
 enable_effcpp(gbelib_tests)
 cxx_17(gbelib_tests)
 clang_format(format_gbelib_tests gbelib_tests)
+
+target_code_coverage(gbelib_tests)
 
 install(TARGETS gbelib_tests DESTINATION bin)

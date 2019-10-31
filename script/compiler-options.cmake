@@ -20,7 +20,7 @@ function(enable_effcpp TARGET)
   elseif("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
          OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
     # Clang
-    target_compile_options(TARGET PRIVATE "-Weffc++")
+    target_compile_options(${TARGET} PRIVATE "-Weffc++")
   endif()
 endfunction()
 

@@ -1,7 +1,7 @@
 #ifndef REGISTERSIMPL_H
 #define REGISTERSIMPL_H
 
-#include <vector>
+#include <unordered_map>
 
 #include "location/location_defines.h"
 #include "registersinterface.h"
@@ -17,7 +17,9 @@ public:
   FlagsView& getFlags() override;
 
 private:
-  std::vector<uint8_t> registers_;
+  enum class RegisterName { A, F, B, C, D, E, H, L, SPu, SPl, PCu, PCl };
+
+  std::unordered_map<RegisterName, uint8_t> registers_;
   const FlagsViewUP flags_;
 };
 
