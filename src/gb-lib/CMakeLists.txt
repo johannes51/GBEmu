@@ -1,8 +1,5 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.11)
 project(gb-lib C CXX)
-
-
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
@@ -91,16 +88,16 @@ target_sources(gbelib PRIVATE
 
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+
 enable_wall(gbelib)
 enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
--fuchsia-default-arguments-calls,-fuchsia-overloaded-operator,\
+-fuchsia-default-arguments-calls,-fuchsia-default-arguments,-fuchsia-overloaded-operator,\
 -modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init,\
 -readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers")
 cppcheck(gbelib)
-#sanitize(gbelib "Address")
 
 build_docs()
 

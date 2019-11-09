@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.2)
+cmake_minimum_required(VERSION 3.11)
 project(GBE)
 
 set(PROJECT_INSTALL_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/include)
@@ -15,6 +15,8 @@ include(sanitizers)
 set(CODE_COVERAGE ON)
 include(code-coverage)
 include(dependency-graph)
+
+gen_dep_graph(png)
 
 add_subdirectory(src)
 add_subdirectory(test)
