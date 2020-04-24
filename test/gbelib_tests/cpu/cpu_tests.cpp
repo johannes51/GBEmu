@@ -35,7 +35,7 @@ TEST(CpuTest, testTetris)
   EXPECT_NO_THROW(cpu.clock()); // 0x0213 NOP
   EXPECT_NO_THROW(cpu.clock()); // 0x0214 LD (HL-),A
   EXPECT_NO_THROW(cpu.clock());
-  EXPECT_ANY_THROW(cpu.clock()); // 0x0215 DEC B
+  EXPECT_NO_THROW(cpu.clock()); // 0x0215 DEC B
 }
 
 TEST(CpuTest, testLoads)

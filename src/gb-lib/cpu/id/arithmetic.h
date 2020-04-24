@@ -8,6 +8,7 @@ namespace id {
 namespace arithmetic {
 
 OperationUP bulkArithmetic(const OpcodeView opcode);
+OperationUP decrement(const OpcodeView opcode);
 
 } // namespace arithmetic
 } // namespace id
