@@ -4,10 +4,10 @@
 #include "util/ops.h"
 
 AluOperation::AluOperation(AluFunction function, Source source)
-    : function_(function)
-    , source_(source)
-    , register_(std::nullopt)
-    , immediate_()
+  : function_(function)
+  , source_(source)
+  , register_(std::nullopt)
+  , immediate_()
 {
 }
 
@@ -25,7 +25,16 @@ bool AluOperation::isComplete() { return source_ != Source::Immediate || registe
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
-uint AluOperation::cycles() { return source_ != Source::Register ? 2 : 1; }
+uint AluOperation::cycles() {
+  uint result;
+  if (source_ == Source::Indirect) {
+    if (function_ == AluFunction::Dec) { result = 3; }
+    else { result = 2; }
+  } else {
+    result = 1;
+  }
+  return result;
+}
 
 void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
@@ -34,7 +43,8 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
   case AluFunction::Xor:
     ops::xorF(registers.get(ByteRegisters::A), getSource(registers));
     break;
-  default:
+  case AluFunction::Dec:
+    ops::decrement(registers.get(*register_));
     break;
   }
 }
@@ -53,6 +63,9 @@ Location<uint8_t> AluOperation::getSource(RegistersInterface& registers)
       throw std::invalid_argument("No register set");
     }
     return registers.get(*register_);
+    break;
+  case Source::None:
+    throw std::invalid_argument("Source-less operation");
     break;
   }
   throw std::logic_error("shouldn't get here");

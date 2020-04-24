@@ -13,7 +13,6 @@ TEST(AluOperationTest, testXor)
   ASSERT_TRUE(xorOp.isComplete());
 
   EXPECT_EQ(1, xorOp.cycles());
-  ;
 
   CpuRegisters r;
   auto a = r.get(ByteRegisters::A);
@@ -26,4 +25,22 @@ TEST(AluOperationTest, testXor)
   IMemoryViewSP m;
   xorOp.execute(r, *m);
   EXPECT_EQ(0xC, r.get(ByteRegisters::A).get()); // 1100
+}
+
+TEST(AluOperationTest, testDec)
+{
+  AluOperation xorOp { AluFunction::Dec, Source::None };
+  xorOp.setRegister(ByteRegisters::B);
+  ASSERT_TRUE(xorOp.isComplete());
+
+  EXPECT_EQ(1, xorOp.cycles());
+
+  CpuRegisters r;
+  auto b = r.get(ByteRegisters::B);
+  b.set(0x5); // 0101
+  ASSERT_EQ(0x5, b.get());
+
+  IMemoryViewSP m;
+  xorOp.execute(r, *m);
+  EXPECT_EQ(0x4, r.get(ByteRegisters::B).get()); // 0100
 }

@@ -48,3 +48,9 @@ OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
   }
   return std::make_unique<AluOperation>(AluFunction::Xor, Source::Register);
 }
+
+OperationUP id::arithmetic::decrement(const OpcodeView opcode)
+{
+  (void) opcode;
+  return std::make_unique<AluOperation>(AluFunction::Dec, Source::None);
+}
