@@ -15,6 +15,8 @@ TEST(ByteLoadTest, testImmediate)
   EXPECT_FALSE(loadImmediate.isComplete());
   loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x42)));
   ASSERT_TRUE(loadImmediate.isComplete());
+  EXPECT_THROW(loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x42))),
+               std::logic_error);
 
   EXPECT_EQ(2, loadImmediate.cycles());
 
@@ -23,6 +25,27 @@ TEST(ByteLoadTest, testImmediate)
   loadImmediate.execute(r, *m);
 
   EXPECT_EQ(0x42, r.get(ByteRegisters::L).get());
+}
+
+TEST(ByteLoadTest, testImmediateIndirect)
+{
+  RamBank b({0, 2});
+
+  ByteLoad loadImmediate { ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register };
+  loadImmediate.setSource(ByteRegisters::A);
+  EXPECT_FALSE(loadImmediate.isComplete());
+  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00)));
+  EXPECT_FALSE(loadImmediate.isComplete());
+  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x02)));
+  ASSERT_TRUE(loadImmediate.isComplete());
+
+  EXPECT_EQ(5, loadImmediate.cycles());
+
+  CpuRegisters r;
+  r.get(ByteRegisters::A).set(0x42);
+  loadImmediate.execute(r, b);
+
+  EXPECT_EQ(0x42, b.getByte(2).get());
 }
 
 TEST(ByteLoadTest, testRegisterIndirect)

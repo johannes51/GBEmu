@@ -1,5 +1,7 @@
 #include "mirrorbank.h"
 
+#include <stdexcept>
+
 #include "location/location.h"
 #include "mem_tools.h"
 

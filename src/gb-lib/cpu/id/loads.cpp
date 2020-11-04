@@ -1,5 +1,7 @@
 #include "loads.h"
 
+#include <stdexcept>
+
 #include "../operation/byteload.h"
 #include "../operation/wordload.h"
 

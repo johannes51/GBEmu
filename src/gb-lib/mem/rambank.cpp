@@ -1,5 +1,7 @@
 #include "rambank.h"
 
+#include <stdexcept>
+
 #include "location/location.h"
 #include "location/rambyte.h"
 

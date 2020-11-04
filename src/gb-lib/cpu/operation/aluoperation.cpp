@@ -1,5 +1,7 @@
 #include "aluoperation.h"
 
+#include <stdexcept>
+
 #include "location/location.h"
 #include "util/ops.h"
 
@@ -25,8 +27,8 @@ bool AluOperation::isComplete() { return source_ != Source::Immediate || registe
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
-uint AluOperation::cycles() {
-  uint result;
+unsigned int AluOperation::cycles() {
+  unsigned int result;
   if (source_ == Source::Indirect) {
     if (function_ == AluFunction::Dec) { result = 3; }
     else { result = 2; }

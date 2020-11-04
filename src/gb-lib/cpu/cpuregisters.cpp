@@ -1,5 +1,7 @@
 #include "cpuregisters.h"
 
+#include <stdexcept>
+
 #include "flagsview.h"
 #include "location/location.h"
 #include "location/rambyte.h"

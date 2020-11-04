@@ -1,5 +1,7 @@
 #include "instructiondecoder.h"
 
+#include <stdexcept>
+
 #include "../operation/nop.h"
 #include "../operation/operation.h"
 #include "arithmetic.h"
@@ -73,7 +75,7 @@ OperationUP id::decode(const Location<uint8_t> opcodeLocation)
     case 0xD:
     case 0xE:
     case 0xF:
-      throw std::logic_error("Unknown opcode");
+      throw std::invalid_argument("Unknown opcode");
       break;
     } }
 
