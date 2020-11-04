@@ -24,3 +24,9 @@ TEST(RamBankTest, testWrite16)
   auto readByte = b.getWord(0);
   EXPECT_EQ(value, readByte.get());
 }
+
+TEST(RamBankTest, testOob)
+{
+  RamBank b({ 0, 1 });
+  EXPECT_THROW(b.getByte(4), std::invalid_argument);
+}

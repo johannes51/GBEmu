@@ -2,6 +2,7 @@
 
 #include <algorithm>
 #include <numeric>
+#include <stdexcept>
 
 #include "location/location.h"
 #include "mem_tools.h"

@@ -10,7 +10,7 @@ public:
   virtual void nextOpcode(Location<uint8_t> opcode) override;
   virtual bool isComplete() override;
 
-  virtual uint cycles() override;
+  virtual unsigned int cycles() override;
 };
 
 #endif // SINGLEOP_H

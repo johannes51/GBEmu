@@ -1,5 +1,7 @@
 #include "wordload.h"
 
+#include <stdexcept>
+
 #include "../registersinterface.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
@@ -39,7 +41,7 @@ void WordLoad::setDestination(WordRegisters destRegister) { destRegister_ = dest
 
 void WordLoad::setSource(WordRegisters srcRegister) { srcRegister_ = srcRegister; }
 
-uint WordLoad::cycles()
+unsigned int WordLoad::cycles()
 {
   auto result = 3U;
   if (destination_ == Destination::ImmediateIndirect) {

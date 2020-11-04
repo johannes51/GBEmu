@@ -19,7 +19,7 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-  uint cycles() override;
+  unsigned int cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
   void setDestination(WordRegisters destRegister);

@@ -89,6 +89,7 @@ target_sources(gbelib PRIVATE
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
+target_code_coverage(gbelib)
 enable_wall(gbelib)
 enable_effcpp(gbelib)
 cxx_17(gbelib)

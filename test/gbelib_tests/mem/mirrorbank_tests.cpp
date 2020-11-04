@@ -18,3 +18,9 @@ TEST(MirrorBankTest, testIndirect)
   auto readByte = m.getByte(16 + 4);
   EXPECT_EQ(value, readByte.get());
 }
+
+TEST(MirrorBankTest, testTooBig)
+{
+  auto b = std::make_shared<RamBank>(MemoryArea { 0, 15 });
+  EXPECT_THROW(MirrorBank({ 16, 48 }, { 0, 15 }, b), std::invalid_argument);
+}

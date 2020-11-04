@@ -1,5 +1,7 @@
 #include "arithmetic.h"
 
+#include <stdexcept>
+
 #include "../operation/aluoperation.h"
 
 ByteRegisters sourceRegister(const uint8_t lowerNibble)
@@ -46,7 +48,7 @@ OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
     op->setRegister(sourceRegister(opcode.lowerNibble()));
     return op;
   }
-  return std::make_unique<AluOperation>(AluFunction::Xor, Source::Register);
+  throw std::logic_error("Unimplemented");
 }
 
 OperationUP id::arithmetic::decrement(const OpcodeView opcode)

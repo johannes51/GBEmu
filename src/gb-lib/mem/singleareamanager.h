@@ -16,7 +16,7 @@ public:
   const MemoryArea& singleArea() const;
 
 private:
-  std::vector<MemoryArea> availableAreas_;
+  std::vector<MemoryArea> availableAreas_; // NOTE: das muss ein Vektor sein
 };
 
 #endif // SINGLEAREAMANAGER_H

@@ -1,5 +1,7 @@
 #include "singleop.h"
 
+#include <stdexcept>
+
 #include "location/location.h"
 
 void SingleOp::nextOpcode(Location<uint8_t> opcode)
@@ -10,4 +12,4 @@ void SingleOp::nextOpcode(Location<uint8_t> opcode)
 
 bool SingleOp::isComplete() { return true; }
 
-uint SingleOp::cycles() { return 1; }
+unsigned int SingleOp::cycles() { return 1; }

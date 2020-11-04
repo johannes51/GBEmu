@@ -1,5 +1,7 @@
 #include "byteload.h"
 
+#include <stdexcept>
+
 #include "../registersinterface.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
@@ -22,7 +24,7 @@ void ByteLoad::nextOpcode(Location<uint8_t> opcode)
   if (!immediate8_) {
     immediate8_.emplace(std::move(opcode));
   } else {
-    immediate16_.emplace(Location<uint8_t>::fuse(std::move(*immediate8_), std::move(opcode)));
+    immediate16_.emplace(Location<uint8_t>::fuse(std::move(opcode), std::move(*immediate8_)));
   }
 }
 
@@ -57,7 +59,7 @@ void ByteLoad::setPostAction(ByteLoad::Post postAction) {
   postAction_ = postAction;
 }
 
-uint ByteLoad::cycles()
+unsigned int ByteLoad::cycles()
 {
   auto result = 1U;
   if (destination_ == Destination::ImmediateIndirect) {

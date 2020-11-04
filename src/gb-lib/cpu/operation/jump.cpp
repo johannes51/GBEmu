@@ -1,5 +1,7 @@
 #include "jump.h"
 
+#include <stdexcept>
+
 #include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "location/zerobyte.h"
@@ -42,7 +44,7 @@ bool Jump::isComplete()
   return result;
 }
 
-uint Jump::cycles() { return 4; }
+unsigned int Jump::cycles() { return 4; }
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
@@ -52,6 +54,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
     ops::load(registers.get(WordRegisters::PC), Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
     break;
   case JumpType::Relative:
+    ops::add(registers.get(WordRegisters::PC), Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
     break;
   }
 }
