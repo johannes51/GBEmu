@@ -1,8 +1,8 @@
 
 function(set_std_properties TARGET STANDARD)
-  set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD ${STANDARD})
-  set_property(TARGET ${TARGET} PROPERTY CXX_STANDARD_REQUIRED ON)
-  set_property(TARGET ${TARGET} PROPERTY CXX_EXTENSIONS OFF)
+  set_target_properties(${TARGET} PROPERTIES CXX_STANDARD ${STANDARD}
+                                             CXX_STANDARD_REQUIRED ON
+                                             CXX_EXTENSIONS OFF)
 endfunction()
 
 function(msvc_option TARGET STANDARD)

@@ -13,6 +13,8 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
+option(CLANG_TIDY_ACTIVE "" OFF)
+
 find_program(CLANG_TIDY_EXE NAMES "clang-tidy")
 if(CLANG_TIDY_EXE)
   message(STATUS "clang-tidy found: ${CLANG_TIDY_EXE}")
@@ -32,11 +34,13 @@ endif()
 # Adds clang-tidy checks to the compilation, with the given arguments being used
 # as the options set.
 function(clang_tidy TARGET_NAME)
-  if(CLANG_TIDY_EXE)
-    set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE};${ARGN}")
-  else()
-    message(FATAL_ERROR "clang-tidy is needed.")
-  endif()
+    if(CLANG_TIDY_ACTIVE)
+        if(CLANG_TIDY_EXE)
+            set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE};${ARGN}")
+        else()
+            message(FATAL_ERROR "clang-tidy is needed.")
+        endif()
+    endif()
 endfunction()
 
 # Adds cppcheck to the compilation, with the given arguments being used as the
