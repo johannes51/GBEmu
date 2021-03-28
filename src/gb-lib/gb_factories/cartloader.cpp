@@ -5,6 +5,12 @@
 
 #include "mem/rombank.h"
 
+gb::CartLoader::CartLoader(const std::string& romFile)
+    : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
+    , ramFile_()
+{
+}
+
 gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFile)
     : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
     , ramFile_(ramFile, std::ios_base::in | std::ios_base::out | std::ios_base::binary)
@@ -32,7 +38,7 @@ std::vector<uint8_t> gb::CartLoader::read16K(std::ifstream& file)
   std::vector<uint8_t> result(Size);
   std::array<std::ifstream::char_type, Size> temp {};
 
-  static_assert(sizeof(std::ifstream::char_type) == sizeof(uint8_t));
+  static_assert(sizeof(std::ifstream::char_type) == sizeof(uint8_t), "Non-portable if this doesn't hold");
 
   std::copy_n(std::istreambuf_iterator(file), Size * sizeof(std::ifstream::char_type), temp.begin());
   std::memcpy(result.data(), temp.data(), Size * sizeof(uint8_t));

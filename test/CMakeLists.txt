@@ -8,8 +8,16 @@ include(GoogleTest)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 configure_file(
-  "${CMAKE_CURRENT_LIST_DIR}/gbelib_tests/gb/Tetris.gb"
+  "${CMAKE_CURRENT_LIST_DIR}/res/Tetris.gb"
   "${CMAKE_CURRENT_BINARY_DIR}/Tetris.gb"
+  COPYONLY)
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/res/jumps_calls.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/jumps_calls.gb"
+  COPYONLY)
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/res/loads.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/loads.gb"
   COPYONLY)
 
 set(TEST_SOURCES
@@ -24,6 +32,7 @@ set(TEST_SOURCES
   gbelib_tests/cpu/id/opcodeview_tests.cpp
   gbelib_tests/cpu/operation/aluoperation_tests.cpp
   gbelib_tests/cpu/operation/jump_tests.cpp
+  gbelib_tests/cpu/operation/load_tests.cpp
   gbelib_tests/cpu/operation/nop_tests.cpp
   gbelib_tests/location/location_tests.cpp
   gbelib_tests/location/locationimpl_tests.cpp

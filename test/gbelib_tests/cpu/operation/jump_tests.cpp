@@ -26,7 +26,8 @@ TEST(JumpTest, testDirect)
   ASSERT_TRUE(jump.isDone());
 
   CpuRegisters r;
+  IMemoryViewSP m;
   ASSERT_NE(0x195E, r.get(WordRegisters::PC).get());
-  jump.execute(r);
+  jump.execute(r, *m);
   EXPECT_EQ(0x195E, r.get(WordRegisters::PC).get());
 }

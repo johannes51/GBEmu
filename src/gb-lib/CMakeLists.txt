@@ -33,6 +33,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/operation.cpp
   cpu/operation/jump.h
   cpu/operation/jump.cpp
+  cpu/operation/load.h
+  cpu/operation/load.cpp
   cpu/operation/nop.h
   cpu/operation/nop.cpp
   cpu/operation/singleop.h

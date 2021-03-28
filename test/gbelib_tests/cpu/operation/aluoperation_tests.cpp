@@ -24,6 +24,7 @@ TEST(AluOperationTest, testXor)
   b.set(0x5); // 0101
   ASSERT_EQ(0x5, b.get());
 
-  xorOp.execute(r);
+  IMemoryViewSP m;
+  xorOp.execute(r, *m);
   EXPECT_EQ(0xC, r.get(ByteRegisters::A).get()); // 1100
 }

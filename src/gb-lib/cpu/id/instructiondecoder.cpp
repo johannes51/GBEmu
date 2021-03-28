@@ -14,9 +14,15 @@ OperationUP id::decode(Location<uint8_t> opcodeLocation)
   OperationUP result;
   if (opcode.value() == 0x00) {
     result = std::make_unique<Nop>();
-  } else if (opcode.upperNibble() >= loads::BulkUpperMin && opcode.upperNibble() <= loads::BulkUpperMax) {
+  } else if (opcode.upperNibble() <= 0x3) {
+    if (opcode.lowerNibble() == 0x1 || opcode.lowerNibble() == 0x6 || opcode.lowerNibble() == 0xE) {
+      result = loads::loadImmediate(opcode);
+    } else {
+      throw std::logic_error("Unimplemented");
+    }
+  } else if (opcode.upperNibble() >= 0x4 && opcode.upperNibble() <= 0x7) {
     result = loads::bulkLoad(opcode);
-  } else if (opcode.upperNibble() >= arithmetic::BulkUpperMin && opcode.upperNibble() <= arithmetic::BulkUpperMax) {
+  } else if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
     result = arithmetic::bulkArithmetic(opcode);
   } else if (opcode.value() == jumps_calls::JumpDirect) {
     result = jumps_calls::jumpDirect();

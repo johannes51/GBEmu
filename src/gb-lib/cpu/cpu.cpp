@@ -30,7 +30,7 @@ void Cpu::clock()
   }
   nextOperation_->clock();
   if (nextOperation_->isDone()) {
-    nextOperation_->execute(*registers_);
+    nextOperation_->execute(*registers_, *mem_);
     nextOperation_.reset();
   }
 }

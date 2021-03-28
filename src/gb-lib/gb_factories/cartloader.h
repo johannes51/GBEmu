@@ -10,6 +10,7 @@ namespace gb {
 
 class CartLoader {
 public:
+  CartLoader(const std::string& romFile);
   CartLoader(const std::string& romFile, const std::string& ramFile);
 
   std::vector<IMemoryManagerSP> constructBanks();

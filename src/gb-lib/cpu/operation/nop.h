@@ -5,7 +5,7 @@
 
 class Nop final : public SingleOp {
 private:
-  void executeImpl(RegistersInterface& registers) override;
+  void executeImpl(RegistersInterface& registers, IMemoryView& memory) override;
 };
 
 #endif // NOP_H

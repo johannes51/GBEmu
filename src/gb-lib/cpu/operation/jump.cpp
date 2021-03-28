@@ -44,8 +44,9 @@ bool Jump::isComplete()
 
 uint Jump::cycles() { return 4; }
 
-void Jump::executeImpl(RegistersInterface& registers)
+void Jump::executeImpl(RegistersInterface& registers, IMemoryView& memory)
 {
+  (void)memory;
   switch (type_) {
   case JumpType::Direct:
     ops::load(registers.get(WordRegisters::PC), Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
