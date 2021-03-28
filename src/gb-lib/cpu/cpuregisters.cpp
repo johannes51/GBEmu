@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "flagsview.h"
+#include "cpuflags.h"
 #include "location/location.h"
 #include "location/rambyte.h"
 
@@ -35,6 +35,7 @@ CpuRegisters::CpuRegisters()
   registers_[RegisterName::SPl] = INITIAL_SPl;
   registers_[RegisterName::PCu] = INITIAL_PCu;
   registers_[RegisterName::PCl] = INITIAL_PCl;
+  flags_ = std::make_unique<CpuFlags>(registers_[RegisterName::F]);
 }
 
 auto CpuRegisters::get(WordRegisters registerName) -> Location<uint16_t>

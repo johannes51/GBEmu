@@ -25,6 +25,8 @@ target_sources(gbelib PRIVATE
   cpu/id/opcodeview.cpp
   cpu/operation/aluoperation.h
   cpu/operation/aluoperation.cpp
+  cpu/operation/control.h
+  cpu/operation/control.cpp
   cpu/operation/operation.h
   cpu/operation/jump.h
   cpu/operation/jump.cpp
@@ -32,8 +34,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/byteload.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
-  cpu/operation/nop.h
-  cpu/operation/nop.cpp
   cpu/operation/singleop.h
   cpu/operation/singleop.cpp
   gb_factories/cartloader.h

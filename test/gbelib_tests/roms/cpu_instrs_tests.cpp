@@ -25,5 +25,9 @@ TEST(RomTest, testCpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
-  // EXPECT_NO_THROW(cpu.clock()); // 0x0430 DI
+  EXPECT_NO_THROW(cpu.clock()); // 0x0430 DI
+  EXPECT_NO_THROW(cpu.clock()); // 0x0431 LD SP, 0xDFFF
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  // EXPECT_NO_THROW(cpu.clock()); // 0x0434 LD (0xD600), A
 }

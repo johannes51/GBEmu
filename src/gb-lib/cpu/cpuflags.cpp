@@ -3,6 +3,7 @@
 CpuFlags::CpuFlags(uint8_t& buffer)
     : buffer_(buffer)
     , carry_(false)
+    , interrupt_(true)
 {
 }
 
@@ -15,3 +16,9 @@ auto CpuFlags::carry() -> bool
   (void)buffer_;
   return carry_;
 }
+
+void CpuFlags::enableInterrupt() { interrupt_ = true; }
+
+void CpuFlags::disableInterrupt() { interrupt_ = false; }
+
+bool CpuFlags::interruptEnabled() { return interrupt_; }

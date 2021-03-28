@@ -15,10 +15,10 @@ set(TEST_SOURCES
   cpu/id/loads_tests.cpp
   cpu/id/opcodeview_tests.cpp
   cpu/operation/aluoperation_tests.cpp
+  cpu/operation/control_tests.cpp
   cpu/operation/jump_tests.cpp
   cpu/operation/wordload_tests.cpp
   cpu/operation/byteload_tests.cpp
-  cpu/operation/nop_tests.cpp
   location/location_tests.cpp
   location/locationimpl_tests.cpp
   location/nullbyte_tests.cpp

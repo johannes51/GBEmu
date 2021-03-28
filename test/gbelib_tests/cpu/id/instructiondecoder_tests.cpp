@@ -30,12 +30,6 @@ TEST(InstructionDecoderTest, testArith)
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testUnknown)
-{
-  EXPECT_THROW(
-      auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC4))), std::invalid_argument);
-}
-
 TEST(InstructionDecoderTest, testx0xTo3x1)
 {
   auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x06)));
@@ -60,8 +54,14 @@ TEST(InstructionDecoderTest, testx0xTo3x4)
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x5)
+TEST(InstructionDecoderTest, testxCxToFx1)
 {
-  EXPECT_THROW(
-      auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))), std::logic_error);
+  auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xF3)));
+  EXPECT_NE(op, nullptr);
+}
+
+TEST(InstructionDecoderTest, testxCxToFx2)
+{
+  auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xFB)));
+  EXPECT_NE(op, nullptr);
 }

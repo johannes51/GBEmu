@@ -11,6 +11,10 @@ public:
   virtual void clearCarry() = 0;
   virtual bool carry() = 0;
 
+  virtual void enableInterrupt() = 0;
+  virtual void disableInterrupt() = 0;
+  virtual bool interruptEnabled() = 0;
+
 protected:
   FlagsView() = default;
 };

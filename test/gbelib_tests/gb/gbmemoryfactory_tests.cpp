@@ -84,9 +84,9 @@ TEST(GBMemoryFactoryTest, testROM1t1)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0xC3, mem->getByte(endROM0 + 1).get());
-  EXPECT_EQ(0x20, mem->getByte(endROM0 + 2).get());
-  EXPECT_ANY_THROW(mem->getByte(endROM0 + 1).set(0x00));
+  EXPECT_EQ(0xC3, mem->getByte(startROM1).get());
+  EXPECT_EQ(0x20, mem->getByte(startROM1 + 1).get());
+  EXPECT_ANY_THROW(mem->getByte(startROM1).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testWRAM0t1)

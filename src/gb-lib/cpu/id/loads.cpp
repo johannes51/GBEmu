@@ -132,7 +132,7 @@ auto id::loads::loadImmediate(const OpcodeView opcode) -> OperationUP
     result = std::move(p);
     break;
   }
-  case 0x32: {
+  case 0x31: {
     auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
     p->setDestination(WordRegisters::SP);
     result = std::move(p);
