@@ -4,9 +4,9 @@
 
 #include "cpu/cpuregisters.h"
 #include "location/location.h"
-
-#include "debug/variablebyte.h"
 #include "mem/rambank.h"
+
+#include "mock/variablebyte.h"
 
 TEST(ByteLoadTest, testImmediate)
 {

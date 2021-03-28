@@ -2,7 +2,7 @@
 
 #include "location/locationimpl.h"
 
-#include "debug/variablebyte.h"
+#include "mock/variablebyte.h"
 
 using namespace std;
 

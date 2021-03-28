@@ -36,8 +36,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/nop.cpp
   cpu/operation/singleop.h
   cpu/operation/singleop.cpp
-  debug/variablebyte.h
-  debug/variablebyte.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/gb_defines.h

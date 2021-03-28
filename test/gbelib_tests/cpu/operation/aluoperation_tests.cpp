@@ -4,7 +4,7 @@
 #include "cpu/operation/aluoperation.h"
 #include "location/location.h"
 
-#include "debug/variablebyte.h"
+#include "mock/variablebyte.h"
 
 TEST(AluOperationTest, testXor)
 {

@@ -1,9 +1,10 @@
 #include "gtest/gtest.h"
 
-#include "debug/variablebyte.h"
 #include "location/location.h"
 #include "location/zerobyte.h"
 #include "mem/rambank.h"
+
+#include "mock/variablebyte.h"
 
 TEST(LocationTest, testGenerate1)
 {
