@@ -5,7 +5,6 @@
 
 using namespace id::arithmetic;
 
-
 TEST(ArithmeticTest, testBulk)
 {
   auto op = bulkArithmetic(OpcodeView(0x80));
@@ -13,10 +12,7 @@ TEST(ArithmeticTest, testBulk)
   EXPECT_TRUE(op->isComplete());
 }
 
-TEST(ArithmeticTest, testUnimplemented)
-{
-  EXPECT_THROW(auto op = bulkArithmetic(OpcodeView(0xC0)), std::logic_error);
-}
+TEST(ArithmeticTest, testUnimplemented) { EXPECT_THROW(auto op = bulkArithmetic(OpcodeView(0xC0)), std::logic_error); }
 
 TEST(ArithmeticTest, testSourceA)
 {

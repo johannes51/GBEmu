@@ -6,10 +6,10 @@
 #include "util/ops.h"
 
 AluOperation::AluOperation(AluFunction function, Source source)
-  : function_(function)
-  , source_(source)
-  , register_(std::nullopt)
-  , immediate_()
+    : function_(function)
+    , source_(source)
+    , register_(std::nullopt)
+    , immediate_()
 {
 }
 
@@ -27,11 +27,15 @@ bool AluOperation::isComplete() { return source_ != Source::Immediate || registe
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
-unsigned int AluOperation::cycles() {
+unsigned int AluOperation::cycles()
+{
   unsigned int result;
   if (source_ == Source::Indirect) {
-    if (function_ == AluFunction::Dec) { result = 3; }
-    else { result = 2; }
+    if (function_ == AluFunction::Dec) {
+      result = 3;
+    } else {
+      result = 2;
+    }
   } else {
     result = 1;
   }

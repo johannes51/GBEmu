@@ -39,25 +39,15 @@ bool ByteLoad::isComplete()
   return result;
 }
 
-void ByteLoad::setDestination(ByteRegisters destRegister) {
-  destRegister8_ = destRegister;
-}
+void ByteLoad::setDestination(ByteRegisters destRegister) { destRegister8_ = destRegister; }
 
-void ByteLoad::setDestination(WordRegisters destRegister) {
-  destRegister16_ = destRegister;
-}
+void ByteLoad::setDestination(WordRegisters destRegister) { destRegister16_ = destRegister; }
 
-void ByteLoad::setSource(ByteRegisters srcRegister) {
-  srcRegister8_ = srcRegister;
-}
+void ByteLoad::setSource(ByteRegisters srcRegister) { srcRegister8_ = srcRegister; }
 
-void ByteLoad::setSource(WordRegisters srcRegister) {
-  srcRegister16_ = srcRegister;
-}
+void ByteLoad::setSource(WordRegisters srcRegister) { srcRegister16_ = srcRegister; }
 
-void ByteLoad::setPostAction(ByteLoad::Post postAction) {
-  postAction_ = postAction;
-}
+void ByteLoad::setPostAction(ByteLoad::Post postAction) { postAction_ = postAction; }
 
 unsigned int ByteLoad::cycles()
 {

@@ -24,10 +24,10 @@ OperationUP decode0xTo3x(const OpcodeView& opcode)
     break;
   case 0x2:
     result = id::loads::loadRegisterIndirect(opcode, true);
-  break;
+    break;
   case 0xA:
     result = id::loads::loadRegisterIndirect(opcode, false);
-  break;
+    break;
   case 0x0:
   case 0x3:
   case 0x4:
@@ -39,7 +39,7 @@ OperationUP decode0xTo3x(const OpcodeView& opcode)
   case 0xD:
   case 0xF:
     throw std::logic_error("Unimplemented");
-  break;
+    break;
   }
   return result;
 }
@@ -52,7 +52,8 @@ OperationUP id::decode(const Location<uint8_t> opcodeLocation)
     result = std::make_unique<Nop>();
   } else if (opcode.value() == jumps_calls::JumpDirect) {
     result = jumps_calls::jumpDirect();
-  } else { switch (opcode.upperNibble()) {
+  } else {
+    switch (opcode.upperNibble()) {
     case 0x0:
     case 0x1:
     case 0x2:
@@ -77,7 +78,8 @@ OperationUP id::decode(const Location<uint8_t> opcodeLocation)
     case 0xF:
       throw std::invalid_argument("Unknown opcode");
       break;
-    } }
+    }
+  }
 
   return result;
 }

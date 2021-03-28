@@ -5,7 +5,7 @@
 #include "location/location.h"
 #include "location/rambyte.h"
 
-RamBank::RamBank(const MemoryArea &area)
+RamBank::RamBank(const MemoryArea& area)
     : SingleAreaManager(area)
     , start_(area.from)
     , size_(area.to - area.from + 1)

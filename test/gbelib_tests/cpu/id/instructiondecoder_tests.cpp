@@ -32,8 +32,8 @@ TEST(InstructionDecoderTest, testArith)
 
 TEST(InstructionDecoderTest, testUnknown)
 {
-  EXPECT_THROW(auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC4))),
-               std::invalid_argument);
+  EXPECT_THROW(
+      auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC4))), std::invalid_argument);
 }
 
 TEST(InstructionDecoderTest, testx0xTo3x_1)
@@ -62,6 +62,6 @@ TEST(InstructionDecoderTest, testx0xTo3x_4)
 
 TEST(InstructionDecoderTest, testx0xTo3x_5)
 {
-  EXPECT_THROW(auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))),
-                                    std::logic_error);
+  EXPECT_THROW(
+      auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))), std::logic_error);
 }

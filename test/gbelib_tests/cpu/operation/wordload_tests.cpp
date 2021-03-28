@@ -7,10 +7,9 @@
 #include "location/rambyte.h"
 #include "mem/rambank.h"
 
-
 TEST(WordLoadTest, testImmediate)
 {
-  RamBank b({0, 1});
+  RamBank b({ 0, 1 });
   b.getWord(0).set(0x1C74);
 
   WordLoad loadImmediate { WordLoad::Destination::Register, WordLoad::Source::Immediate };
@@ -35,7 +34,7 @@ TEST(WordLoadTest, testImmediate)
 
 TEST(WordLoadTest, testImmediate2)
 {
-  RamBank b({0, 1});
+  RamBank b({ 0, 1 });
   b.getWord(0).set(0xDFFF);
 
   WordLoad loadImmediate { WordLoad::Destination::Register, WordLoad::Source::Immediate };
@@ -76,7 +75,7 @@ TEST(WordLoadTest, testRegister)
 
 TEST(WordLoadTest, testImmediateIndirect)
 {
-  RamBank b({0, 3});
+  RamBank b({ 0, 3 });
   b.getWord(0).set(0x0002);
 
   WordLoad loadIndirect { WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register };
@@ -98,7 +97,7 @@ TEST(WordLoadTest, testImmediateIndirect)
 
 TEST(WordLoadTest, testRegisterIndirect)
 {
-  RamBank b({0, 3});
+  RamBank b({ 0, 3 });
 
   WordLoad loadIndirect { WordLoad::Destination::RegisterIndirect, WordLoad::Source::Register };
   loadIndirect.setSource(WordRegisters::HL);

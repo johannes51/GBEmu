@@ -53,6 +53,6 @@ OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
 
 OperationUP id::arithmetic::decrement(const OpcodeView opcode)
 {
-  (void) opcode;
+  (void)opcode;
   return std::make_unique<AluOperation>(AluFunction::Dec, Source::None);
 }

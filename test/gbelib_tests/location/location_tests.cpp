@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
 #include "debug/variablebyte.h"
-#include "mem/rambank.h"
 #include "location/location.h"
 #include "location/zerobyte.h"
+#include "mem/rambank.h"
 
 TEST(LocationTest, testGenerate1)
 {
@@ -25,7 +25,7 @@ TEST(LocationTest, testGenerate3)
 
 TEST(LocationTest, testFuse)
 {
-  RamBank bk({0, 2});
+  RamBank bk({ 0, 2 });
   bk.getWord(0).set(0x1E3F);
   auto a = bk.getByte(0);
   auto b = bk.getByte(1);
