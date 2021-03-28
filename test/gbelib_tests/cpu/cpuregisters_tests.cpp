@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "cpu/cpuregisters.h"
-#include "util/location.h"
+#include "location/location.h"
 
 
 using namespace std;
