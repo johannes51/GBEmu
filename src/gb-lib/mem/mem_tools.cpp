@@ -4,20 +4,21 @@
 
 #include <numeric>
 
-address_type mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& area)
+auto mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& area) -> address_type
 {
   assertSafe(inputAdress, area);
   return inputAdress - area.from;
 }
 
-address_type mem_tools::translateAdressSafe(
-    const address_type& inputAdress, const address_type& startAdress, const address_type& size)
+auto mem_tools::translateAdressSafe(
+    const address_type& inputAdress, const address_type& startAdress, const address_type& size) -> address_type
 {
   assertSafe(inputAdress, startAdress, size);
   return inputAdress - startAdress;
 }
 
-address_type mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& mirror, const int offset)
+auto mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& mirror, const int offset)
+    -> address_type
 {
   assertSafe(inputAdress, mirror);
   return inputAdress + offset;
@@ -37,23 +38,24 @@ void mem_tools::assertSafe(const address_type& inputAdress, const address_type& 
   }
 }
 
-bool mem_tools::isSafe(const address_type& address, const MemoryArea& area)
+auto mem_tools::isSafe(const address_type& address, const MemoryArea& area) -> bool
 {
   return (address >= area.from && address <= area.to);
 }
 
-bool mem_tools::isSafe(const address_type& inputAdress, const address_type& startAdress, const address_type& size)
+auto mem_tools::isSafe(const address_type& inputAdress, const address_type& startAdress, const address_type& size)
+    -> bool
 {
   return (inputAdress >= startAdress && inputAdress < startAdress + size);
 }
 
-bool mem_tools::isDisjunct(const MemoryArea& area, const std::vector<MemoryArea>& oldAreas)
+auto mem_tools::isDisjunct(const MemoryArea& area, const std::vector<MemoryArea>& oldAreas) -> bool
 {
   return std::accumulate(oldAreas.cbegin(), oldAreas.cend(), true,
       [area](const auto& a, const auto& b) { return a && isDisjunct(area, b); });
 }
 
-bool mem_tools::isDisjunct(const MemoryArea& area1, const MemoryArea& area2)
+auto mem_tools::isDisjunct(const MemoryArea& area1, const MemoryArea& area2) -> bool
 {
   return (area1.to < area2.from) || (area1.from > area2.to);
 }

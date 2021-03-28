@@ -10,6 +10,6 @@ void SingleOp::nextOpcode(Location<uint8_t> opcode)
   throw std::logic_error("Single Opcode instruction");
 }
 
-bool SingleOp::isComplete() { return true; }
+auto SingleOp::isComplete() -> bool { return true; }
 
-unsigned int SingleOp::cycles() { return 1; }
+auto SingleOp::cycles() -> unsigned int { return 1; }

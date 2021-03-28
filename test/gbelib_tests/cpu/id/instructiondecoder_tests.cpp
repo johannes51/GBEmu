@@ -36,31 +36,31 @@ TEST(InstructionDecoderTest, testUnknown)
       auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC4))), std::invalid_argument);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x_1)
+TEST(InstructionDecoderTest, testx0xTo3x1)
 {
   auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x06)));
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x_2)
+TEST(InstructionDecoderTest, testx0xTo3x2)
 {
   auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x05)));
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x_3)
+TEST(InstructionDecoderTest, testx0xTo3x3)
 {
   auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x02)));
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x_4)
+TEST(InstructionDecoderTest, testx0xTo3x4)
 {
   auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0A)));
   EXPECT_NE(op, nullptr);
 }
 
-TEST(InstructionDecoderTest, testx0xTo3x_5)
+TEST(InstructionDecoderTest, testx0xTo3x5)
 {
   EXPECT_THROW(
       auto op = id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))), std::logic_error);

@@ -65,7 +65,7 @@ TEST(WordLoadTest, testRegister)
   EXPECT_EQ(3, loadRegister.cycles());
 
   CpuRegisters r;
-  unsigned short value = 0xDFFF;
+  uint16_t value = 0xDFFF;
   r.get(WordRegisters::AF).set(value);
 
   ASSERT_NE(r.get(WordRegisters::HL).get(), value);

@@ -8,9 +8,9 @@ LocationImpl::LocationImpl(LocationByteUP lower, LocationByteUP upper)
 {
 }
 
-uint8_t LocationImpl::getByte() const { return lower_->get(); }
+auto LocationImpl::getByte() const -> uint8_t { return lower_->get(); }
 
-uint16_t LocationImpl::getWord() const
+auto LocationImpl::getWord() const -> uint16_t
 {
   uint16_t result
       = static_cast<uint16_t>(static_cast<uint16_t>(upper_->get()) << BYTE_SIZE) | static_cast<uint16_t>(lower_->get());

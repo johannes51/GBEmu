@@ -36,7 +36,7 @@ void Cpu::clock()
   }
 }
 
-Location<uint8_t> Cpu::nextOpcode()
+auto Cpu::nextOpcode() -> Location<uint8_t>
 {
   auto result = mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
   ops::increment(registers_->get(WordRegisters::PC));

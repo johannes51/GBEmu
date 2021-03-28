@@ -28,7 +28,7 @@ void ByteLoad::nextOpcode(Location<uint8_t> opcode)
   }
 }
 
-bool ByteLoad::isComplete()
+auto ByteLoad::isComplete() -> bool
 {
   bool result = true;
   if (source_ == Source::ImmediateIndirect || destination_ == Destination::ImmediateIndirect) {
@@ -49,11 +49,11 @@ void ByteLoad::setSource(WordRegisters srcRegister) { srcRegister16_ = srcRegist
 
 void ByteLoad::setPostAction(ByteLoad::Post postAction) { postAction_ = postAction; }
 
-unsigned int ByteLoad::cycles()
+auto ByteLoad::cycles() -> unsigned int
 {
-  auto result = 1U;
+  auto result = BaseDuration;
   if (destination_ == Destination::ImmediateIndirect) {
-    result = 5U;
+    result = ImmediateIndirectDuration;
   } else if (destination_ == Destination::RegisterIndirect || source_ == Source::RegisterIndirect) {
     ++result;
   }
@@ -73,7 +73,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   if (destination_ == Destination::Register) {
     destination = registers.get(destRegister8_);
   } else {
-    address_type address;
+    address_type address = 0;
     if (destination_ == Destination::RegisterIndirect) {
       address = hlp::indirect(registers.get(destRegister16_));
     } else {

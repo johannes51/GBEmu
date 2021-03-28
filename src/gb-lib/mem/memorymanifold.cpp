@@ -21,17 +21,17 @@ void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
       [newSubManager](const auto& newArea) { return std::make_pair(newArea, newSubManager); });
 }
 
-Location<uint8_t> MemoryManifold::getByte(const address_type address)
+auto MemoryManifold::getByte(const address_type address) -> Location<uint8_t>
 {
   return selectManager(address)->getByte(address);
 }
 
-Location<uint16_t> MemoryManifold::getWord(const address_type address)
+auto MemoryManifold::getWord(const address_type address) -> Location<uint16_t>
 {
   return selectManager(address)->getWord(address);
 }
 
-std::vector<MemoryArea> MemoryManifold::availableAreas()
+auto MemoryManifold::availableAreas() -> std::vector<MemoryArea>
 {
   std::vector<MemoryArea> result(subManagers_.size());
   std::transform(
@@ -39,7 +39,7 @@ std::vector<MemoryArea> MemoryManifold::availableAreas()
   return result;
 }
 
-IMemoryManagerSP& MemoryManifold::selectManager(const address_type address)
+auto MemoryManifold::selectManager(const address_type address) -> IMemoryManagerSP&
 {
   auto it = std::find_if(subManagers_.begin(), subManagers_.end(),
       [&](const auto& element) { return mem_tools::isSafe(address, element.first); });

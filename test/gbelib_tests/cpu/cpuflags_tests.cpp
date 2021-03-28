@@ -4,7 +4,7 @@
 
 TEST(CpuFlagsTest, testCarry)
 {
-  uint8_t buf;
+  uint8_t buf = 0;
   CpuFlags flags_anon(buf);
   FlagsView& flags = flags_anon;
   flags.setCarry();

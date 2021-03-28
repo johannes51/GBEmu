@@ -9,7 +9,8 @@ AluOperation::AluOperation(AluFunction function, Source source)
     : function_(function)
     , source_(source)
     , register_(std::nullopt)
-    , immediate_()
+    , immediate_(std::nullopt)
+
 {
 }
 
@@ -23,13 +24,13 @@ void AluOperation::nextOpcode(Location<uint8_t> opcode)
   immediate_ = Location<uint8_t>(std::move(opcode));
 }
 
-bool AluOperation::isComplete() { return source_ != Source::Immediate || register_; }
+auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate || register_; }
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
-unsigned int AluOperation::cycles()
+auto AluOperation::cycles() -> unsigned int
 {
-  unsigned int result;
+  unsigned int result = 0;
   if (source_ == Source::Indirect) {
     if (function_ == AluFunction::Dec) {
       result = 3;
@@ -55,7 +56,7 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
   }
 }
 
-Location<uint8_t> AluOperation::getSource(RegistersInterface& registers)
+auto AluOperation::getSource(RegistersInterface& registers) -> Location<uint8_t>
 {
   switch (source_) {
   case Source::Immediate:

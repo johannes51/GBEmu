@@ -5,8 +5,8 @@ OpcodeView::OpcodeView(uint8_t value)
 {
 }
 
-const uint8_t& OpcodeView::value() const { return value_; }
+auto OpcodeView::value() const -> const uint8_t& { return value_; }
 
-uint8_t OpcodeView::upperNibble() const { return value_ >> NIBBLE; }
+auto OpcodeView::upperNibble() const -> uint8_t { return value_ >> NIBBLE; }
 
-uint8_t OpcodeView::lowerNibble() const { return value_ & LOWER_MASK; }
+auto OpcodeView::lowerNibble() const -> uint8_t { return value_ & LOWER_MASK; }

@@ -94,10 +94,7 @@ enable_wall(gbelib)
 enable_effcpp(gbelib)
 cxx_17(gbelib)
 clang_format(format_gbelib gbelib)
-clang_tidy(gbelib "-checks=*,-clang-diagnostic-unused-parameter,\
--fuchsia-default-arguments-calls,-fuchsia-default-arguments,-fuchsia-overloaded-operator,\
--modernize-use-trailing-return-type,-misc-unused-parameters,-readability-redundant-member-init,\
--readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers")
+clang_tidy(gbelib)
 cppcheck(gbelib)
 
 build_docs()

@@ -2,4 +2,4 @@
 
 #include "../operation/jump.h"
 
-OperationUP id::jumps_calls::jumpDirect() { return std::make_unique<Jump>(JumpType::Direct); }
+auto id::jumps_calls::jumpDirect() -> OperationUP { return std::make_unique<Jump>(JumpType::Direct); }

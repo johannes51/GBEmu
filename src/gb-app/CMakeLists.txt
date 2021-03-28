@@ -20,5 +20,6 @@ set( SRCS
 add_executable(app)
 target_sources(app PRIVATE ${SRCS})
 target_link_libraries(app PRIVATE gbelib Qt5::Widgets)
+clang_tidy(app)
 install(TARGETS app RUNTIME DESTINATION CMAKE_RUNTIME_OUTPUT_DIRECTORY)
 

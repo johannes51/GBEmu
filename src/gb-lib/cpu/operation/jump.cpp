@@ -30,7 +30,7 @@ void Jump::nextOpcode(Location<uint8_t> opcode)
   }
 }
 
-bool Jump::isComplete()
+auto Jump::isComplete() -> bool
 {
   bool result = true;
   switch (type_) {
@@ -44,7 +44,7 @@ bool Jump::isComplete()
   return result;
 }
 
-unsigned int Jump::cycles() { return 4; }
+auto Jump::cycles() -> unsigned int { return 4; }
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {

@@ -3,13 +3,14 @@
 #include "widgets/mainwindow.h"
 
 
-int main(int argc, char* argv[])
+auto main(int argc, char* argv[]) -> int
 {
   QApplication a(argc, argv);
-  a.setApplicationName("GBEmu");
-  a.setOrganizationName("Mehrdraufhaber");
+  a.setApplicationName("GBEmu"); // NOLINT(readability-static-accessed-through-instance)
+  a.setOrganizationName("Mehrdraufhaber"); // NOLINT(readability-static-accessed-through-instance)
+
   MainWindow w;
   w.show();
 
-  return a.exec();
+  return a.exec(); // NOLINT(readability-static-accessed-through-instance)
 }

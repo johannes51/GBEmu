@@ -4,7 +4,7 @@
 
 #include "../operation/aluoperation.h"
 
-ByteRegisters sourceRegister(const uint8_t lowerNibble)
+auto sourceRegister(const uint8_t lowerNibble) -> ByteRegisters
 {
   ByteRegisters result;
   switch (lowerNibble) {
@@ -41,7 +41,7 @@ ByteRegisters sourceRegister(const uint8_t lowerNibble)
   return result;
 }
 
-OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
+auto id::arithmetic::bulkArithmetic(const OpcodeView opcode) -> OperationUP
 {
   if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
     auto op = std::make_unique<AluOperation>(AluFunction::Xor, Source::Register);
@@ -51,7 +51,7 @@ OperationUP id::arithmetic::bulkArithmetic(const OpcodeView opcode)
   throw std::logic_error("Unimplemented");
 }
 
-OperationUP id::arithmetic::decrement(const OpcodeView opcode)
+auto id::arithmetic::decrement(const OpcodeView opcode) -> OperationUP
 {
   (void)opcode;
   return std::make_unique<AluOperation>(AluFunction::Dec, Source::None);

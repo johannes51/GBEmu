@@ -5,7 +5,7 @@
 #include "../operation/byteload.h"
 #include "../operation/wordload.h"
 
-std::pair<ByteLoad::Destination, ByteRegisters> destination(const OpcodeView& opcode)
+auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, ByteRegisters>
 {
   auto destRegister = ByteRegisters::A;
   auto dest = ByteLoad::Destination::Register;
@@ -46,7 +46,7 @@ std::pair<ByteLoad::Destination, ByteRegisters> destination(const OpcodeView& op
   return std::make_pair(dest, destRegister);
 }
 
-std::pair<ByteLoad::Source, ByteRegisters> source(const OpcodeView& opcode)
+auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegisters>
 {
   auto srcRegister = ByteRegisters::A;
   auto src = ByteLoad::Source::Register;
@@ -87,7 +87,7 @@ std::pair<ByteLoad::Source, ByteRegisters> source(const OpcodeView& opcode)
   return std::make_pair(src, srcRegister);
 }
 
-OperationUP id::loads::bulkLoad(const OpcodeView opcode)
+auto id::loads::bulkLoad(const OpcodeView opcode) -> OperationUP
 {
   if (opcode.value() == 0x76) {
     throw std::logic_error("HALT unimplemented");
@@ -104,7 +104,7 @@ OperationUP id::loads::bulkLoad(const OpcodeView opcode)
   return result;
 }
 
-OperationUP id::loads::loadImmediate(const OpcodeView opcode)
+auto id::loads::loadImmediate(const OpcodeView opcode) -> OperationUP
 {
   OperationUP result;
   switch (opcode.value()) {
@@ -145,7 +145,7 @@ OperationUP id::loads::loadImmediate(const OpcodeView opcode)
   return result;
 }
 
-OperationUP id::loads::loadRegisterIndirect(const OpcodeView opcode, bool store)
+auto id::loads::loadRegisterIndirect(const OpcodeView opcode, bool store) -> OperationUP
 {
   auto dest = store ? ByteLoad::Destination::RegisterIndirect : ByteLoad::Destination::Register;
   auto src = store ? ByteLoad::Source::Register : ByteLoad::Source::RegisterIndirect;

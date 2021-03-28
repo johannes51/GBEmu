@@ -17,7 +17,7 @@ gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFil
 {
 }
 
-std::vector<IMemoryManagerSP> gb::CartLoader::constructBanks()
+auto gb::CartLoader::constructBanks() -> std::vector<IMemoryManagerSP>
 {
   std::vector<IMemoryManagerSP> result;
 
@@ -32,7 +32,7 @@ std::vector<IMemoryManagerSP> gb::CartLoader::constructBanks()
   return result;
 }
 
-std::vector<uint8_t> gb::CartLoader::read16K(std::ifstream& file)
+auto gb::CartLoader::read16K(std::ifstream& file) -> std::vector<uint8_t>
 {
   static constexpr address_type Size = 0x4000;
   std::vector<uint8_t> result(Size);

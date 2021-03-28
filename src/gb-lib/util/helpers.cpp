@@ -1,3 +1,3 @@
 #include "helpers.h"
 
-address_type hlp::indirect(const Location<address_type> location) { return location.get(); }
+auto hlp::indirect(const Location<address_type> location) -> address_type { return location.get(); }

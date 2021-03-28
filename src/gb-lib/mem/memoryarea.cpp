@@ -2,6 +2,9 @@
 
 #include <stdexcept>
 
-bool operator<(const MemoryArea& lhs, const MemoryArea& rhs) { return lhs.from < rhs.from; }
+auto operator<(const MemoryArea& lhs, const MemoryArea& rhs) -> bool { return lhs.from < rhs.from; }
 
-bool operator==(const MemoryArea& lhs, const MemoryArea& rhs) { return lhs.from == rhs.from && lhs.to == rhs.to; }
+auto operator==(const MemoryArea& lhs, const MemoryArea& rhs) -> bool
+{
+  return lhs.from == rhs.from && lhs.to == rhs.to;
+}

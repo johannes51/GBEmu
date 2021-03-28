@@ -4,7 +4,7 @@
 
 TEST(RamByteTest, testWrite)
 {
-  uint8_t buffer;
+  uint8_t buffer = 0;
   RamByte a(buffer);
   uint8_t value = 0x17;
   a.set(value);

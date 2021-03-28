@@ -13,7 +13,7 @@ RamBank::RamBank(const MemoryArea& area)
 {
 }
 
-Location<uint8_t> RamBank::getByte(address_type address)
+auto RamBank::getByte(address_type address) -> Location<uint8_t>
 {
   auto index = static_cast<int>(address) - static_cast<int>(start_);
   if (index < 0 || index > size_ - 1) {
@@ -22,7 +22,7 @@ Location<uint8_t> RamBank::getByte(address_type address)
   return Location<uint8_t>::generate(std::make_unique<RamByte>(buffer_.at(index)));
 }
 
-Location<uint16_t> RamBank::getWord(address_type address)
+auto RamBank::getWord(address_type address) -> Location<uint16_t>
 {
   auto index = address - start_;
   if (index < 0 || index > size_ - 2) {

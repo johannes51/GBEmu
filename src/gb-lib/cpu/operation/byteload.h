@@ -13,6 +13,8 @@ public:
   enum class Destination { Register, RegisterIndirect, ImmediateIndirect };
   enum class Source { Immediate, Register, RegisterIndirect, ImmediateIndirect };
   enum class Post { Increment, Decrement, None };
+  static constexpr auto BaseDuration = 1U;
+  static constexpr auto ImmediateIndirectDuration = 5U;
 
   ByteLoad(Destination destination, Source source);
   ~ByteLoad();

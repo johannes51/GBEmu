@@ -15,7 +15,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe2)
   address_type inputAddress = 0x01;
   MemoryArea area { 1, 16 };
 
-  address_type result;
+  address_type result = 0;
   ASSERT_NO_THROW(result = mem_tools::translateAdressSafe(inputAddress, area));
 
   EXPECT_EQ(inputAddress - area.from, result);
@@ -44,7 +44,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe5)
   address_type startAddress = 1;
   address_type size = 16;
 
-  address_type result;
+  address_type result = 0;
   ASSERT_NO_THROW(result = mem_tools::translateAdressSafe(inputAddress, startAddress, size));
 
   EXPECT_EQ(inputAddress - startAddress, result);
@@ -74,7 +74,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe8)
   MemoryArea area { 1, 16 };
   address_type offset = 20;
 
-  address_type result;
+  address_type result = 0;
   ASSERT_NO_THROW(result = mem_tools::translateAdressSafe(inputAddress, area, offset));
 
   EXPECT_EQ(inputAddress + offset, result);

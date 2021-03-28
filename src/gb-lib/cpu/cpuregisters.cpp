@@ -37,7 +37,7 @@ CpuRegisters::CpuRegisters()
   registers_[RegisterName::PCl] = INITIAL_PCl;
 }
 
-Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
+auto CpuRegisters::get(WordRegisters registerName) -> Location<uint16_t>
 {
   auto lower = RegisterName::PCl;
   auto upper = RegisterName::PCu;
@@ -75,7 +75,7 @@ Location<uint16_t> CpuRegisters::get(WordRegisters registerName)
       std::make_unique<RamByte>(registers_.at(lower)), std::make_unique<RamByte>(registers_.at(upper)));
 }
 
-Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
+auto CpuRegisters::get(ByteRegisters registerName) -> Location<uint8_t>
 {
   auto byte = RegisterName::A;
   switch (registerName) {
@@ -110,4 +110,4 @@ Location<uint8_t> CpuRegisters::get(ByteRegisters registerName)
 
 CpuRegisters::~CpuRegisters() = default;
 
-FlagsView& CpuRegisters::getFlags() { return *flags_; }
+auto CpuRegisters::getFlags() -> FlagsView& { return *flags_; }

@@ -11,4 +11,4 @@ SystemManager::SystemManager(const IMemoryViewSP& memory)
 
 SystemManager::~SystemManager() = default;
 
-void SystemManager::clock() { cpu_->clock(); }
+void SystemManager::clock() const { cpu_->clock(); }

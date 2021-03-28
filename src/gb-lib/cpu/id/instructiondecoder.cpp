@@ -10,7 +10,7 @@
 #include "location/location.h"
 #include "opcodeview.h"
 
-OperationUP decode0xTo3x(const OpcodeView& opcode)
+auto decode0xTo3x(const OpcodeView& opcode) -> OperationUP
 {
   OperationUP result;
   switch (opcode.lowerNibble()) {
@@ -44,7 +44,7 @@ OperationUP decode0xTo3x(const OpcodeView& opcode)
   return result;
 }
 
-OperationUP id::decode(const Location<uint8_t> opcodeLocation)
+auto id::decode(const Location<uint8_t> opcodeLocation) -> OperationUP
 {
   const OpcodeView opcode(opcodeLocation.get());
   OperationUP result;

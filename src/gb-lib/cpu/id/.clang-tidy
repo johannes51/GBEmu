@@ -1,0 +1,4 @@
+---
+Checks: '*,-llvmlibc-*,-fuchsia-*,-readability-redundant-member-init,-google-runtime-references,
+-readability-magic-numbers,-cppcoreguidelines-avoid-magic-numbers'
+...

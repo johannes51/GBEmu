@@ -9,7 +9,7 @@ public:
   SystemManager(const IMemoryViewSP& memory);
   ~SystemManager();
 
-  void clock();
+  void clock() const;
 
   IMemoryViewSP memory_;
   CpuUP cpu_;

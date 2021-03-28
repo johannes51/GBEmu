@@ -28,7 +28,7 @@ void WordLoad::nextOpcode(Location<uint8_t> opcode)
   }
 }
 
-bool WordLoad::isComplete()
+auto WordLoad::isComplete() -> bool
 {
   bool result = true;
   if (source_ == Source::Immediate || destination_ == Destination::ImmediateIndirect) {
@@ -41,11 +41,11 @@ void WordLoad::setDestination(WordRegisters destRegister) { destRegister_ = dest
 
 void WordLoad::setSource(WordRegisters srcRegister) { srcRegister_ = srcRegister; }
 
-unsigned int WordLoad::cycles()
+auto WordLoad::cycles() -> unsigned int
 {
-  auto result = 3U;
+  auto result = BaseDuration;
   if (destination_ == Destination::ImmediateIndirect) {
-    result = 5U;
+    result = ImmediateIndirectDuration;
   }
   return result;
 }
@@ -56,7 +56,7 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   if (destination_ == Destination::Register) {
     destination = registers.get(destRegister_);
   } else {
-    address_type address;
+    address_type address = 0;
     if (destination_ == Destination::RegisterIndirect) {
       address = hlp::indirect(registers.get(destRegister_));
     } else {

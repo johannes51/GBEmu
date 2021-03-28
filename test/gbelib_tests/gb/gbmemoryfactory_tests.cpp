@@ -50,7 +50,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t val
 
 void testMemoryThrows(IMemoryView& memory, address_type testAdress) { EXPECT_ANY_THROW(memory.getWord(testAdress)); }
 
-TEST(GBMemoryFactoryTest, testROM0_1)
+TEST(GBMemoryFactoryTest, testROM0t1)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
@@ -59,7 +59,7 @@ TEST(GBMemoryFactoryTest, testROM0_1)
   EXPECT_ANY_THROW(mem->getByte(startROM0).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM0_2)
+TEST(GBMemoryFactoryTest, testROM0t2)
 {
 
   auto f = MemoryFactory(std::make_unique<CartLoader>("./Tetris.gb", "./Tetris.sav"));
@@ -71,7 +71,7 @@ TEST(GBMemoryFactoryTest, testROM0_2)
   EXPECT_ANY_THROW(mem->getByte(startPC).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM0_3)
+TEST(GBMemoryFactoryTest, testROM0t3)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
@@ -80,7 +80,7 @@ TEST(GBMemoryFactoryTest, testROM0_3)
   EXPECT_ANY_THROW(mem->getByte(endROM0).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM1_1)
+TEST(GBMemoryFactoryTest, testROM1t1)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
   auto mem = f.constructMemoryLayout();
@@ -89,99 +89,99 @@ TEST(GBMemoryFactoryTest, testROM1_1)
   EXPECT_ANY_THROW(mem->getByte(endROM0 + 1).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0_1)
+TEST(GBMemoryFactoryTest, testWRAM0t1)
 {
   auto mem = MemoryFactory(nullptr);
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM0, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0_2)
+TEST(GBMemoryFactoryTest, testWRAM0t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, endWRAM0, value8);
 
   testMemoryThrows(*gbLayout, endWRAM0);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0_3)
+TEST(GBMemoryFactoryTest, testWRAM0t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1_1)
+TEST(GBMemoryFactoryTest, testWRAM1t1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM1, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1_2)
+TEST(GBMemoryFactoryTest, testWRAM1t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, endWRAM1, value8);
 
   testMemoryThrows(*gbLayout, endWRAM1);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1_3)
+TEST(GBMemoryFactoryTest, testWRAM1t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHO_1)
+TEST(GBMemoryFactoryTest, testECHOt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value8);
   value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value16);
   value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHO_2)
+TEST(GBMemoryFactoryTest, testECHOt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value8);
   value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value16);
   value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHO_3)
+TEST(GBMemoryFactoryTest, testECHOt3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startWRAM0 + endECHO - startECHO, endECHO, value8);
   value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO, value8);
@@ -189,19 +189,19 @@ TEST(GBMemoryFactoryTest, testECHO_3)
   testMemoryThrows(*gbLayout, endECHO);
 }
 
-TEST(GBMemoryFactoryTest, testNOTUSED_1)
+TEST(GBMemoryFactoryTest, testNOTUSEDt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
 
-  uint16_t value = static_cast<uint16_t>(rand());
+  auto value = static_cast<uint16_t>(rand());
   auto writeLocation = gbLayout->getWord(startNOTUSED);
   writeLocation.set(value);
 
   EXPECT_EQ(0, gbLayout->getWord(startNOTUSED).get());
 }
 
-TEST(GBMemoryFactoryTest, testNOTUSED_2)
+TEST(GBMemoryFactoryTest, testNOTUSEDt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -209,21 +209,21 @@ TEST(GBMemoryFactoryTest, testNOTUSED_2)
   EXPECT_ANY_THROW(gbLayout->getWord(endNOTUSED));
 }
 
-TEST(GBMemoryFactoryTest, testHRAM_1)
+TEST(GBMemoryFactoryTest, testHRAMt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, startHRAM, value8);
-  uint16_t value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand());
   testMemoryRoundtrip(*gbLayout, startHRAM, value16);
 }
 
-TEST(GBMemoryFactoryTest, testHRAM_2)
+TEST(GBMemoryFactoryTest, testHRAMt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  uint8_t value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand());
   testMemoryRoundtrip(*gbLayout, endHRAM, value8);
 
   testMemoryThrows(*gbLayout, endHRAM);

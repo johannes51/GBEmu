@@ -13,7 +13,7 @@ gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
 {
 }
 
-IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
+auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
 {
   auto manifold = std::make_shared<MemoryManifold>();
 
@@ -33,17 +33,17 @@ IMemoryViewSP gb::MemoryFactory::constructMemoryLayout()
   return manifold;
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildRamBank(MemoryArea area) { return std::make_shared<RamBank>(area); }
+auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerSP { return std::make_shared<RamBank>(area); }
 
-IMemoryManagerSP gb::MemoryFactory::buildMirrorBank(
-    MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
+auto gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
+    -> IMemoryManagerSP
 {
   return std::make_shared<MirrorBank>(mirrorArea, originArea, std::move(origin));
 }
 
-IMemoryManagerSP gb::MemoryFactory::buildNullBank(MemoryArea area) { return std::make_shared<NullBank>(area); }
+auto gb::MemoryFactory::buildNullBank(MemoryArea area) -> IMemoryManagerSP { return std::make_shared<NullBank>(area); }
 
-std::vector<IMemoryManagerSP> gb::MemoryFactory::buildCartBanks()
+auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerSP>
 {
   std::vector<IMemoryManagerSP> result {};
   if (loader_) {

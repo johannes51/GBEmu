@@ -12,6 +12,8 @@ class WordLoad final : public Operation {
 public:
   enum class Destination { Register, ImmediateIndirect, RegisterIndirect };
   enum class Source { Immediate, Register };
+  static constexpr auto BaseDuration = 3U;
+  static constexpr auto ImmediateIndirectDuration = 5U;
 
   WordLoad(Destination destination, Source source);
   ~WordLoad();

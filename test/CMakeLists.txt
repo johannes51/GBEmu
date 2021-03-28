@@ -56,11 +56,14 @@ add_executable(gbelib_tests ${TEST_SOURCES})
 target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main)
 target_include_directories(gbelib_tests PRIVATE $<TARGET_PROPERTY:gbelib,INCLUDE_DIRECTORIES>)
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+get_target_property(gtest_include_dirs GTest::GTest INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(gbelib_tests SYSTEM PRIVATE ${gtest_include_dirs})
 
 enable_wall(gbelib_tests)
 enable_effcpp(gbelib_tests)
 cxx_17(gbelib_tests)
 clang_format(format_gbelib_tests gbelib_tests)
+clang_tidy(gbelib_tests)
 
 target_code_coverage(gbelib_tests)
 
