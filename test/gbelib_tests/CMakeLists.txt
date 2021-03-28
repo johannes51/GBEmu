@@ -1,18 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 
-message("${CMAKE_CURRENT_LIST_DIR}/../res/Tetris.gb")
-message("${CMAKE_CURRENT_LIST_DIR}/../res/Tetris.gb")
 configure_file(
-  "${CMAKE_CURRENT_LIST_DIR}/../res/Tetris.gb"
-  "${CMAKE_CURRENT_BINARY_DIR}/Tetris.gb"
-  COPYONLY)
-configure_file(
-  "${CMAKE_CURRENT_LIST_DIR}/../res/jumps_calls.gb"
-  "${CMAKE_CURRENT_BINARY_DIR}/jumps_calls.gb"
-  COPYONLY)
-configure_file(
-  "${CMAKE_CURRENT_LIST_DIR}/../res/loads.gb"
-  "${CMAKE_CURRENT_BINARY_DIR}/loads.gb"
+  "${CMAKE_CURRENT_LIST_DIR}/../res/cpu_instrs.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/cpu_instrs.gb"
   COPYONLY)
 
 set(TEST_SOURCES
@@ -46,6 +36,7 @@ set(TEST_SOURCES
   mem/rombank_tests.cpp
   mock/variablebyte.h
   mock/variablebyte.cpp
+  roms/cpu_instrs_tests.cpp
   util/helpers_tests.cpp
   util/ops_tests.cpp
   sys/systemmanager_tests.cpp

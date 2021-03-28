@@ -8,7 +8,7 @@
 
 TEST(SystemManagerTest, testClock)
 {
-  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("Tetris.gb", "Tetris.sav"));
+  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   SystemManager s(m.constructMemoryLayout());
   EXPECT_NO_THROW(s.clock());
 }

@@ -52,40 +52,40 @@ void testMemoryThrows(IMemoryView& memory, address_type testAdress) { EXPECT_ANY
 
 TEST(GBMemoryFactoryTest, testROM0t1)
 {
-  auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
+  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0xC3, mem->getByte(startROM0).get());
-  EXPECT_EQ(0x0C, mem->getByte(startROM0 + 1).get());
+  EXPECT_EQ(0x3C, mem->getByte(startROM0).get());
+  EXPECT_EQ(0xC9, mem->getByte(startROM0 + 1).get());
   EXPECT_ANY_THROW(mem->getByte(startROM0).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0t2)
 {
 
-  auto f = MemoryFactory(std::make_unique<CartLoader>("./Tetris.gb", "./Tetris.sav"));
+  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0x00, mem->getByte(startPC).get());
   EXPECT_EQ(0xC3, mem->getByte(startPC + 1).get());
-  EXPECT_EQ(0x50, mem->getByte(startPC + 2).get());
-  EXPECT_EQ(0x01, mem->getByte(startPC + 3).get());
+  EXPECT_EQ(0x37, mem->getByte(startPC + 2).get());
+  EXPECT_EQ(0x06, mem->getByte(startPC + 3).get());
   EXPECT_ANY_THROW(mem->getByte(startPC).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM0t3)
 {
-  auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
+  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
   unsigned int val = mem->getWord(endROM0 - 1).get();
-  EXPECT_EQ(0x2F2F, val);
+  EXPECT_EQ(0x066E, val);
   EXPECT_ANY_THROW(mem->getByte(endROM0).set(0x00));
 }
 
 TEST(GBMemoryFactoryTest, testROM1t1)
 {
-  auto f = MemoryFactory(std::make_unique<CartLoader>("Tetris.gb", "Tetris.sav"));
+  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
-  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 1).get());
-  EXPECT_EQ(0x2F, mem->getByte(endROM0 + 2).get());
+  EXPECT_EQ(0xC3, mem->getByte(endROM0 + 1).get());
+  EXPECT_EQ(0x20, mem->getByte(endROM0 + 2).get());
   EXPECT_ANY_THROW(mem->getByte(endROM0 + 1).set(0x00));
 }
 
