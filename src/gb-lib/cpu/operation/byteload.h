@@ -14,9 +14,8 @@ public:
   enum class Source { Immediate, Register, RegisterIndirect, ImmediateIndirect };
   enum class Post { Increment, Decrement, None };
   static constexpr auto BaseDuration = 1U;
-  static constexpr auto ImmediateIndirectDuration = 5U;
 
-  ByteLoad(Destination destination, Source source);
+  ByteLoad(Destination destination, Source source, bool zeroPage = false);
   ~ByteLoad();
 
   void nextOpcode(Location<uint8_t> opcode) override;
@@ -41,6 +40,7 @@ private:
   Post postAction_ = Post::None;
   std::optional<Location<uint8_t>> immediate8_ = std::nullopt;
   std::optional<Location<uint16_t>> immediate16_ = std::nullopt;
+  bool zeroPage_;
 };
 
 #endif // BYTE_LOAD_H

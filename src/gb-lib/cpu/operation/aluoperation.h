@@ -9,7 +9,7 @@
 
 enum class Source { Register, Immediate, Indirect, None };
 
-enum class AluFunction { Dec, Xor };
+enum class AluFunction { Add, Dec, Xor };
 
 class AluOperation final : public Operation {
 public:
@@ -25,7 +25,7 @@ public:
   void setRegister(ByteRegisters registerName);
 
 private:
-  Location<uint8_t> getSource(RegistersInterface& registers);
+  Location<uint8_t> getSource(RegistersInterface& reg, IMemoryView& mem);
 
   const AluFunction function_;
   const Source source_;

@@ -18,7 +18,7 @@ private:
 
   const IMemoryViewSP mem_;
   const RegistersInterfaceUP registers_;
-  std::unique_ptr<Operation> nextOperation_;
+  OperationUP nextOperation_;
   unsigned int ticksTillExecution_ = 0;
 };
 

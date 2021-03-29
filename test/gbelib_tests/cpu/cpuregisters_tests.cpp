@@ -59,8 +59,32 @@ TEST(CpuRegistersTest, testInitialHL)
   EXPECT_EQ(0x014D, regs.get(WordRegisters::HL).get());
 }
 
+TEST(CpuRegistersTest, testInitialH)
+{
+  CpuRegisters regs;
+  EXPECT_EQ(0x01, regs.get(ByteRegisters::H).get());
+}
+
+TEST(CpuRegistersTest, testInitialL)
+{
+  CpuRegisters regs;
+  EXPECT_EQ(0x4D, regs.get(ByteRegisters::L).get());
+}
+
 TEST(CpuRegistersTest, testInitialSp)
 {
   CpuRegisters regs;
   EXPECT_EQ(0xFFFF, regs.get(WordRegisters::SP).get());
+}
+
+TEST(CpuRegistersTest, testNonByte)
+{
+  CpuRegisters regs;
+  EXPECT_ANY_THROW(regs.get(ByteRegisters::None));
+}
+
+TEST(CpuRegistersTest, testNoneWord)
+{
+  CpuRegisters regs;
+  EXPECT_ANY_THROW(regs.get(WordRegisters::None));
 }

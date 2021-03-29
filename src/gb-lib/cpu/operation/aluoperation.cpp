@@ -3,6 +3,8 @@
 #include <stdexcept>
 
 #include "location/location.h"
+#include "mem/imemoryview.h"
+#include "util/helpers.h"
 #include "util/ops.h"
 
 AluOperation::AluOperation(AluFunction function, Source source)
@@ -24,21 +26,20 @@ void AluOperation::nextOpcode(Location<uint8_t> opcode)
   immediate_ = Location<uint8_t>(std::move(opcode));
 }
 
-auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate || register_; }
+auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate || immediate_; }
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
 auto AluOperation::cycles() -> unsigned int
 {
-  unsigned int result = 0;
+  unsigned int result = 1;
   if (source_ == Source::Indirect) {
+    ++result;
     if (function_ == AluFunction::Dec) {
-      result = 3;
-    } else {
-      result = 2;
+      ++result;
     }
-  } else {
-    result = 1;
+  } else if (source_ == Source::Immediate) {
+    ++result;
   }
   return result;
 }
@@ -47,33 +48,40 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
   switch (function_) {
-  case AluFunction::Xor:
-    ops::xorF(registers.get(ByteRegisters::A), getSource(registers));
+  case AluFunction::Add:
+    ops::add(registers.get(ByteRegisters::A), getSource(registers, memory));
     break;
   case AluFunction::Dec:
-    ops::decrement(registers.get(*register_));
+    if (source_ == Source::Indirect) {
+      ops::decrement(getSource(registers, memory));
+    } else {
+      ops::decrement(registers.get(*register_));
+    }
+    break;
+  case AluFunction::Xor:
+    ops::xorF(registers.get(ByteRegisters::A), getSource(registers, memory));
     break;
   }
 }
 
-auto AluOperation::getSource(RegistersInterface& registers) -> Location<uint8_t>
+auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location<uint8_t>
 {
   switch (source_) {
   case Source::Immediate:
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    throw std::logic_error("Indirect source uninmplemented");
+    return mem.getByte(hlp::indirect(reg.get(WordRegisters::HL)));
     break;
   case Source::Register:
     if (!register_) {
       throw std::invalid_argument("No register set");
     }
-    return registers.get(*register_);
+    return reg.get(*register_);
     break;
   case Source::None:
-    throw std::invalid_argument("Source-less operation");
+  default:
+    throw std::invalid_argument("No proper source configured");
     break;
   }
-  throw std::logic_error("shouldn't get here");
 }

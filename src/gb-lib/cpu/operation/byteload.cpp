@@ -8,9 +8,10 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-ByteLoad::ByteLoad(Destination destination, Source source)
+ByteLoad::ByteLoad(Destination destination, Source source, bool zeroPage)
     : destination_(destination)
     , source_(source)
+    , zeroPage_(zeroPage)
 {
 }
 
@@ -32,7 +33,11 @@ auto ByteLoad::isComplete() -> bool
 {
   bool result = true;
   if (source_ == Source::ImmediateIndirect || destination_ == Destination::ImmediateIndirect) {
-    result = static_cast<bool>(immediate16_);
+    if (zeroPage_) {
+      result = static_cast<bool>(immediate8_);
+    } else {
+      result = static_cast<bool>(immediate16_);
+    }
   } else if (source_ == Source::Immediate) {
     result = static_cast<bool>(immediate8_);
   }
@@ -52,17 +57,26 @@ void ByteLoad::setPostAction(ByteLoad::Post postAction) { postAction_ = postActi
 auto ByteLoad::cycles() -> unsigned int
 {
   auto result = BaseDuration;
-  if (destination_ == Destination::ImmediateIndirect) {
-    result = ImmediateIndirectDuration;
-  } else if (destination_ == Destination::RegisterIndirect || source_ == Source::RegisterIndirect) {
+  switch (source_) {
+  case Source::Immediate:
+  case Source::RegisterIndirect:
     ++result;
+    break;
+  case Source::ImmediateIndirect:
+    result += zeroPage_ ? 2 : 3;
+    break;
+  default:
+    break;
   }
-  if (source_ == Source::Immediate) {
-    if (destination_ == Destination::Register || destination_ == Destination::RegisterIndirect) {
-      ++result;
-    } else if (destination_ == Destination::Register) {
-      result += 2;
-    }
+  switch (destination_) {
+  case Destination::RegisterIndirect:
+    ++result;
+    break;
+  case Destination::ImmediateIndirect:
+    result += zeroPage_ ? 2 : 3;
+    break;
+  default:
+    break;
   }
   return result;
 }
@@ -87,7 +101,8 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     source = std::move(*immediate8_);
     break;
   case Source::ImmediateIndirect:
-    source = memory.getByte(hlp::indirect(std::move(*immediate16_)));
+    source = zeroPage_ ? memory.getByte(hlp::indirect(std::move(*immediate8_)))
+                       : memory.getByte(hlp::indirect(std::move(*immediate16_)));
     break;
   case Source::Register:
     source = registers.get(srcRegister8_);
@@ -95,8 +110,6 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   case Source::RegisterIndirect:
     source = memory.getByte(hlp::indirect(registers.get(srcRegister16_)));
     break;
-  default:
-    throw std::invalid_argument("Impossible combination of dest and source");
   }
   ops::load(std::move(destination), std::move(source));
 }

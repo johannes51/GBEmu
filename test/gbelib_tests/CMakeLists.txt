@@ -6,6 +6,7 @@ configure_file(
   COPYONLY)
 
 set(TEST_SOURCES
+  todo.cpp
   cpu/cpu_tests.cpp
   cpu/cpuflags_tests.cpp
   cpu/cpuregisters_tests.cpp

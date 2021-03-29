@@ -6,8 +6,11 @@
 
 namespace hlp {
 
-address_type indirect(const Location<address_type> location);
+constexpr address_type ZeroPageBase = 0xFF00;
 
-}
+address_type indirect(const Location<address_type> location);
+address_type indirect(const Location<uint8_t> location);
+
+} // namespace hlp
 
 #endif // HELPERS_H

@@ -39,13 +39,32 @@ TEST(ByteLoadTest, testImmediateIndirect)
   loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x02)));
   ASSERT_TRUE(loadImmediate.isComplete());
 
-  EXPECT_EQ(5, loadImmediate.cycles());
+  EXPECT_EQ(4, loadImmediate.cycles());
 
   CpuRegisters r;
   r.get(ByteRegisters::A).set(0x42);
   loadImmediate.execute(r, b);
 
   EXPECT_EQ(0x42, b.getByte(2).get());
+}
+
+TEST(ByteLoadTest, testImmediateIndirect2)
+{
+  RamBank b({ 0xFF00, 0xFF02 });
+
+  ByteLoad loadImmediate { ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect, true };
+  loadImmediate.setDestination(ByteRegisters::A);
+  EXPECT_FALSE(loadImmediate.isComplete());
+  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00)));
+  ASSERT_TRUE(loadImmediate.isComplete());
+
+  EXPECT_EQ(3, loadImmediate.cycles());
+
+  CpuRegisters r;
+  b.getByte(0xFF00).set(0x42);
+  loadImmediate.execute(r, b);
+
+  EXPECT_EQ(0x42, r.get(ByteRegisters::A).get());
 }
 
 TEST(ByteLoadTest, testRegisterIndirect)
@@ -63,5 +82,34 @@ TEST(ByteLoadTest, testRegisterIndirect)
   RamBank m({ 0xDFFF, 0xDFFF });
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0x3C, r.get(ByteRegisters::A).get());
+  EXPECT_EQ(0x3C, m.getByte(0xDFFF).get());
+}
+
+TEST(ByteLoadTest, testRegisterIndirect2)
+{
+  ByteLoad loadRI { ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect };
+  loadRI.setDestination(ByteRegisters::A);
+  loadRI.setSource(WordRegisters::DE);
+  ASSERT_TRUE(loadRI.isComplete());
+
+  EXPECT_EQ(2, loadRI.cycles());
+
+  CpuRegisters r;
+  r.get(WordRegisters::DE).set(0xDFFF);
+  r.get(ByteRegisters::A).set(0x3C);
+  RamBank m({ 0xDFFF, 0xDFFF });
+  m.getByte(0xDFFF).set(0xF3);
+  loadRI.execute(r, m);
+
+  EXPECT_EQ(0xF3, r.get(ByteRegisters::A).get());
+}
+
+TEST(ByteLoadTest, testPost)
+{
+  ByteLoad loadRI { ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect };
+  loadRI.setDestination(ByteRegisters::A);
+  loadRI.setSource(WordRegisters::DE);
+  ASSERT_TRUE(loadRI.isComplete());
+
+  EXPECT_NO_THROW(loadRI.setPostAction(ByteLoad::Post::Increment));
 }
