@@ -11,9 +11,10 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem)
+Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem, InstructionDecoderUP instructionDecoder)
     : mem_(std::move(mem))
     , registers_(std::move(registers))
+    , instructionDecoder_(std::move(instructionDecoder))
     , nextOperation_(nullptr)
 {
 }
@@ -23,7 +24,7 @@ Cpu::~Cpu() = default;
 void Cpu::clock()
 {
   if (!nextOperation_) {
-    nextOperation_ = id::decode(nextOpcode());
+    nextOperation_ = instructionDecoder_->decode(nextOpcode());
     while (!nextOperation_->isComplete()) {
       nextOperation_->nextOpcode(nextOpcode());
     }

@@ -16,7 +16,8 @@ target_sources(gbelib PRIVATE
   cpu/id/arithmetic.h
   cpu/id/arithmetic.cpp
   cpu/id/instructiondecoder.h
-  cpu/id/instructiondecoder.cpp
+  cpu/id/baseinstructiondecoder.h
+  cpu/id/baseinstructiondecoder.cpp
   cpu/id/jumps_calls.h
   cpu/id/jumps_calls.cpp
   cpu/id/loads.h

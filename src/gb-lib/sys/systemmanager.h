@@ -6,7 +6,7 @@
 
 class SystemManager {
 public:
-  SystemManager(const IMemoryViewSP& memory);
+  SystemManager(IMemoryViewSP memory, std::unique_ptr<Cpu> cpu);
   ~SystemManager();
 
   void clock() const;

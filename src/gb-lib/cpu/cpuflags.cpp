@@ -21,4 +21,4 @@ void CpuFlags::enableInterrupt() { interrupt_ = true; }
 
 void CpuFlags::disableInterrupt() { interrupt_ = false; }
 
-bool CpuFlags::interruptEnabled() { return interrupt_; }
+auto CpuFlags::interruptEnabled() -> bool { return interrupt_; }

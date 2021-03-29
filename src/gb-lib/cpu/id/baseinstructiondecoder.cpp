@@ -1,4 +1,4 @@
-#include "instructiondecoder.h"
+#include "baseinstructiondecoder.h"
 
 #include <stdexcept>
 
@@ -78,14 +78,14 @@ auto decodeCxToFx(const OpcodeView& opcode) -> OperationUP
   return result;
 }
 
-auto id::decode(const Location<uint8_t> opcodeLocation) -> OperationUP
+auto decode(const Location<uint8_t> opcodeLocation) -> OperationUP
 {
   const OpcodeView opcode(opcodeLocation.get());
   OperationUP result;
   if (opcode.value() == 0x00) {
     result = std::make_unique<Control>(ControlOp::Nop);
-  } else if (opcode.value() == jumps_calls::JumpDirect) {
-    result = jumps_calls::jumpDirect();
+  } else if (opcode.value() == id::jumps_calls::JumpDirect) {
+    result = id::jumps_calls::jumpDirect();
   } else {
     switch (opcode.upperNibble()) {
     case 0x0:
@@ -98,13 +98,13 @@ auto id::decode(const Location<uint8_t> opcodeLocation) -> OperationUP
     case 0x5:
     case 0x6:
     case 0x7:
-      result = loads::bulkLoad(opcode);
+      result = id::loads::bulkLoad(opcode);
       break;
     case 0x8:
     case 0x9:
     case 0xA:
     case 0xB:
-      result = arithmetic::bulkArithmetic(opcode);
+      result = id::arithmetic::bulkArithmetic(opcode);
       break;
     case 0xC:
     case 0xD:
@@ -116,4 +116,18 @@ auto id::decode(const Location<uint8_t> opcodeLocation) -> OperationUP
   }
 
   return result;
+}
+
+auto BaseInstructionDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+{
+  try {
+    return decoders_[opcodeLocation.get()]->decode(opcodeLocation);
+  } catch (...) {
+    throw std::logic_error("Unimplemented opcode: " + opcodeLocation.get());
+  }
+}
+
+void BaseInstructionDecoder::registerOpcode(const uint8_t& opcode, InstructionDecoderSP decoder)
+{
+  decoders_[opcode] = std::move(decoder);
 }

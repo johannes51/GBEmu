@@ -4,10 +4,17 @@
 #include "cpu/cpu_defines.h"
 #include "location/location_defines.h"
 
-namespace id {
+class InstructionDecoder {
+public:
+  virtual ~InstructionDecoder() = default;
 
-OperationUP decode(const Location<uint8_t> opcodeLocation);
+  virtual OperationUP decode(const Location<uint8_t>& opcodeLocation) = 0;
 
-}
+protected:
+  InstructionDecoder() = default;
+};
+
+using InstructionDecoderUP = std::unique_ptr<InstructionDecoder>;
+using InstructionDecoderSP = std::shared_ptr<InstructionDecoder>;
 
 #endif // INSTRUCTIONDECODER_H

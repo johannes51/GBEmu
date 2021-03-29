@@ -3,9 +3,9 @@
 #include "cpu/cpu.h"
 #include "cpu/cpuregisters.h"
 
-SystemManager::SystemManager(const IMemoryViewSP& memory)
-    : memory_(memory)
-    , cpu_(std::make_unique<Cpu>(std::make_unique<CpuRegisters>(), memory))
+SystemManager::SystemManager(IMemoryViewSP memory, std::unique_ptr<Cpu> cpu)
+    : memory_(std::move(memory))
+    , cpu_(std::move(cpu))
 {
 }
 
