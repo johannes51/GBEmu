@@ -6,7 +6,7 @@
 
 #include "mock/variablebyte.h"
 
-TEST(JumpTest, testDirect)
+TEST(JumpTest, Direct)
 {
   Jump jump { JumpType::Direct };
   EXPECT_FALSE(jump.isComplete());
@@ -23,7 +23,7 @@ TEST(JumpTest, testDirect)
   EXPECT_EQ(0x195E, r.get(WordRegisters::PC).get());
 }
 
-TEST(JumpTest, testRelative)
+TEST(JumpTest, Relative)
 {
   Jump jump { JumpType::Relative };
   EXPECT_FALSE(jump.isComplete());
@@ -38,7 +38,7 @@ TEST(JumpTest, testRelative)
   EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
 }
 
-TEST(JumpTest, testNext)
+TEST(JumpTest, Next)
 {
   Jump jump { JumpType::Direct };
   EXPECT_FALSE(jump.isComplete());

@@ -5,52 +5,52 @@
 
 using namespace id::arithmetic;
 
-TEST(ArithmeticTest, testBulk)
+TEST(ArithmeticTest, Bulk)
 {
   auto op = bulkArithmetic(OpcodeView(0x80));
   ASSERT_TRUE(op);
   EXPECT_TRUE(op->isComplete());
 }
 
-TEST(ArithmeticTest, testUnimplemented) { EXPECT_THROW(auto op = bulkArithmetic(OpcodeView(0xC0)), std::logic_error); }
+TEST(ArithmeticTest, Unimplemented) { EXPECT_THROW(auto op = bulkArithmetic(OpcodeView(0xC0)), std::logic_error); }
 
-TEST(ArithmeticTest, testSourceA)
+TEST(ArithmeticTest, SourceA)
 {
   auto op = bulkArithmetic(OpcodeView(0x87));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceB)
+TEST(ArithmeticTest, SourceB)
 {
   auto op = bulkArithmetic(OpcodeView(0x80));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceC)
+TEST(ArithmeticTest, SourceC)
 {
   auto op = bulkArithmetic(OpcodeView(0x81));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceD)
+TEST(ArithmeticTest, SourceD)
 {
   auto op = bulkArithmetic(OpcodeView(0x82));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceE)
+TEST(ArithmeticTest, SourceE)
 {
   auto op = bulkArithmetic(OpcodeView(0x83));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceH)
+TEST(ArithmeticTest, SourceH)
 {
   auto op = bulkArithmetic(OpcodeView(0x84));
   EXPECT_TRUE(op);
 }
 
-TEST(ArithmeticTest, testSourceL)
+TEST(ArithmeticTest, SourceL)
 {
   auto op = bulkArithmetic(OpcodeView(0x85));
   EXPECT_TRUE(op);

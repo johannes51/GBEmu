@@ -2,7 +2,7 @@
 
 #include "location/zerobyte.h"
 
-TEST(ZeroTest, testByte)
+TEST(ZeroTest, Byte)
 {
   ZeroByte byte {};
   EXPECT_EQ(0x0, byte.get());

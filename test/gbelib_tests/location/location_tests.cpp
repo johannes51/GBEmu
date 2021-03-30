@@ -6,25 +6,25 @@
 
 #include "mock/variablebyte.h"
 
-TEST(LocationTest, testGenerate1)
+TEST(LocationTest, Generate1)
 {
   auto a = Location<uint8_t>::generate(std::make_unique<ZeroByte>());
   EXPECT_EQ(typeid(a.get()), typeid(uint8_t));
 }
 
-TEST(LocationTest, testGenerate2)
+TEST(LocationTest, Generate2)
 {
   auto a = Location<uint16_t>::generate(std::make_unique<ZeroByte>(), std::make_unique<ZeroByte>());
   EXPECT_EQ(typeid(a.get()), typeid(uint16_t));
 }
 
-TEST(LocationTest, testGenerate3)
+TEST(LocationTest, Generate3)
 {
   auto a = Location<uint16_t>::generate(std::make_unique<ZeroByte>());
   EXPECT_ANY_THROW(a.get());
 }
 
-TEST(LocationTest, testFuse)
+TEST(LocationTest, Fuse)
 {
   RamBank bk({ 0, 2 });
   bk.getWord(0).set(0x1E3F);

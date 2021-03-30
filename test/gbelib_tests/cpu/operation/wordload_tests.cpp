@@ -7,7 +7,7 @@
 #include "location/rambyte.h"
 #include "mem/rambank.h"
 
-TEST(WordLoadTest, testImmediate)
+TEST(WordLoadTest, Immediate)
 {
   RamBank b({ 0, 1 });
   b.getWord(0).set(0x1C74);
@@ -32,7 +32,7 @@ TEST(WordLoadTest, testImmediate)
   EXPECT_EQ(0x1C74, value);
 }
 
-TEST(WordLoadTest, testImmediate2)
+TEST(WordLoadTest, Immediate2)
 {
   RamBank b({ 0, 1 });
   b.getWord(0).set(0xDFFF);
@@ -55,7 +55,7 @@ TEST(WordLoadTest, testImmediate2)
   EXPECT_EQ(0xDFFF, value);
 }
 
-TEST(WordLoadTest, testRegister)
+TEST(WordLoadTest, Register)
 {
   WordLoad loadRegister { WordLoad::Destination::Register, WordLoad::Source::Register };
   loadRegister.setDestination(WordRegisters::HL);
@@ -73,7 +73,7 @@ TEST(WordLoadTest, testRegister)
   EXPECT_EQ(r.get(WordRegisters::HL).get(), value);
 }
 
-TEST(WordLoadTest, testImmediateIndirect)
+TEST(WordLoadTest, ImmediateIndirect)
 {
   RamBank b({ 0, 3 });
   b.getWord(0).set(0x0002);
@@ -95,7 +95,7 @@ TEST(WordLoadTest, testImmediateIndirect)
   EXPECT_EQ(0xDFFF, b.getWord(2).get());
 }
 
-TEST(WordLoadTest, testRegisterIndirect)
+TEST(WordLoadTest, RegisterIndirect)
 {
   RamBank b({ 0, 3 });
 

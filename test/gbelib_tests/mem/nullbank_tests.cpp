@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TEST(NullBankTest, testWrite)
+TEST(NullBankTest, Write)
 {
   NullBank b { { 0, 16 } };
   address_type loc = 0x03;

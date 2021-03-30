@@ -2,7 +2,7 @@
 
 #include "mem/mem_tools.h"
 
-TEST(MemoryToolsTest, testTranslateAdressSafe)
+TEST(MemoryToolsTest, TranslateAdressSafe)
 {
   address_type inputAddress = 0x00;
   MemoryArea area { 1, 16 };
@@ -10,7 +10,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, area));
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe2)
+TEST(MemoryToolsTest, TranslateAdressSafe2)
 {
   address_type inputAddress = 0x01;
   MemoryArea area { 1, 16 };
@@ -21,7 +21,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe2)
   EXPECT_EQ(inputAddress - area.from, result);
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe3)
+TEST(MemoryToolsTest, TranslateAdressSafe3)
 {
   address_type inputAddress = 0x10;
   MemoryArea area { 0x00, 0x0F };
@@ -29,7 +29,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe3)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, area));
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe4)
+TEST(MemoryToolsTest, TranslateAdressSafe4)
 {
   address_type inputAddress = 0x00;
   address_type startAddress = 1;
@@ -38,7 +38,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe4)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, startAddress, size));
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe5)
+TEST(MemoryToolsTest, TranslateAdressSafe5)
 {
   address_type inputAddress = 0x05;
   address_type startAddress = 1;
@@ -50,7 +50,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe5)
   EXPECT_EQ(inputAddress - startAddress, result);
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe6)
+TEST(MemoryToolsTest, TranslateAdressSafe6)
 {
   address_type inputAddress = 0x10;
   address_type startAddress = 0;
@@ -59,7 +59,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe6)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, startAddress, size));
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe7)
+TEST(MemoryToolsTest, TranslateAdressSafe7)
 {
   address_type inputAddress = 0x00;
   MemoryArea area { 1, 16 };
@@ -68,7 +68,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe7)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, area, offset));
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe8)
+TEST(MemoryToolsTest, TranslateAdressSafe8)
 {
   address_type inputAddress = 0x04;
   MemoryArea area { 1, 16 };
@@ -80,7 +80,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe8)
   EXPECT_EQ(inputAddress + offset, result);
 }
 
-TEST(MemoryToolsTest, testTranslateAdressSafe9)
+TEST(MemoryToolsTest, TranslateAdressSafe9)
 {
   address_type inputAddress = 0x17;
   MemoryArea area { 1, 16 };
@@ -89,7 +89,7 @@ TEST(MemoryToolsTest, testTranslateAdressSafe9)
   EXPECT_ANY_THROW(mem_tools::translateAdressSafe(inputAddress, area, offset));
 }
 
-TEST(MemoryToolsTest, testIsDisjunct)
+TEST(MemoryToolsTest, IsDisjunct)
 {
   std::vector<MemoryArea> areas(2);
   areas.at(0) = { 0, 15 };
@@ -99,7 +99,7 @@ TEST(MemoryToolsTest, testIsDisjunct)
   EXPECT_FALSE(mem_tools::isDisjunct(area, areas));
 }
 
-TEST(MemoryToolsTest, testIsDisjunct2)
+TEST(MemoryToolsTest, IsDisjunct2)
 {
   std::vector<MemoryArea> areas(2);
   areas.at(0) = { 0, 15 };
@@ -109,7 +109,7 @@ TEST(MemoryToolsTest, testIsDisjunct2)
   EXPECT_TRUE(mem_tools::isDisjunct(area, areas));
 }
 
-TEST(MemoryToolsTest, testIsDisjunct3)
+TEST(MemoryToolsTest, IsDisjunct3)
 {
   std::vector<MemoryArea> areas(2);
   areas.at(0) = { 0, 15 };
@@ -119,7 +119,7 @@ TEST(MemoryToolsTest, testIsDisjunct3)
   EXPECT_FALSE(mem_tools::isDisjunct(area, areas));
 }
 
-TEST(MemoryToolsTest, testIsDisjunct4)
+TEST(MemoryToolsTest, IsDisjunct4)
 {
   std::vector<MemoryArea> areas(2);
   areas.at(0) = { 0, 15 };

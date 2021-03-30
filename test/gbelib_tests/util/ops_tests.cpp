@@ -4,7 +4,7 @@
 #include "location/rambyte.h"
 #include "util/ops.h"
 
-TEST(OpsTest, testIncrement8)
+TEST(OpsTest, Increment8)
 {
   uint8_t buffer = 5;
   auto l = Location<uint8_t>::generate(std::make_unique<RamByte>(buffer));
@@ -14,7 +14,7 @@ TEST(OpsTest, testIncrement8)
   EXPECT_EQ(6, buffer);
 }
 
-TEST(OpsTest, testIncrement16)
+TEST(OpsTest, Increment16)
 {
   uint8_t bufferL = 0xFF;
   uint8_t bufferU = 0xAF;
@@ -26,7 +26,7 @@ TEST(OpsTest, testIncrement16)
   EXPECT_EQ(0xB0, bufferU);
 }
 
-TEST(OpsTest, testAdd8)
+TEST(OpsTest, Add8)
 {
   uint8_t a = 5;
   uint8_t b = 13;
@@ -38,7 +38,7 @@ TEST(OpsTest, testAdd8)
   EXPECT_EQ(5 + 13, a);
 }
 
-TEST(OpsTest, testAdd16)
+TEST(OpsTest, Add16)
 {
   uint8_t aL = 0x35;
   uint8_t bL = 0xA2;
@@ -53,7 +53,7 @@ TEST(OpsTest, testAdd16)
   EXPECT_EQ(0x14 + 0xC7, aU);
 }
 
-TEST(OpsTest, testLoad8)
+TEST(OpsTest, Load8)
 {
   uint8_t dest = 0x3C;
   uint8_t src = 0xF1;
@@ -65,7 +65,7 @@ TEST(OpsTest, testLoad8)
   EXPECT_EQ(0xF1, dest);
 }
 
-TEST(OpsTest, testLoad16)
+TEST(OpsTest, Load16)
 {
   uint8_t destL = 0x3C;
   uint8_t destU = 0xB8;

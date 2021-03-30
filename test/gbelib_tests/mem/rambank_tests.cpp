@@ -5,7 +5,7 @@
 
 using namespace std;
 
-TEST(RamBankTest, testWrite8)
+TEST(RamBankTest, Write8)
 {
   RamBank b({ 0, 16 });
   auto writeByte = b.getByte(4);
@@ -15,7 +15,7 @@ TEST(RamBankTest, testWrite8)
   EXPECT_EQ(value, readByte.get());
 }
 
-TEST(RamBankTest, testWrite16)
+TEST(RamBankTest, Write16)
 {
   RamBank b({ 0, 1 });
   auto writeByte = b.getWord(0);
@@ -25,7 +25,7 @@ TEST(RamBankTest, testWrite16)
   EXPECT_EQ(value, readByte.get());
 }
 
-TEST(RamBankTest, testOob)
+TEST(RamBankTest, Oob)
 {
   RamBank b({ 0, 1 });
   EXPECT_THROW(b.getByte(4), std::invalid_argument);

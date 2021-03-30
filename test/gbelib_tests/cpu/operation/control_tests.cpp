@@ -6,7 +6,7 @@
 #include "cpu/registersinterface.h"
 #include "location/location.h"
 
-TEST(ControlTest, testNop)
+TEST(ControlTest, Nop)
 {
   Control nop { ControlOp::Nop };
   RegistersInterfaceUP r;
@@ -17,13 +17,13 @@ TEST(ControlTest, testNop)
   EXPECT_NO_THROW(nop.execute(*r, *m));
 }
 
-TEST(NopTest, testNextOpcode)
+TEST(NopTest, NextOpcode)
 {
   Control nop { ControlOp::Nop };
   EXPECT_ANY_THROW(nop.nextOpcode(Location<uint8_t>::generate(std::make_unique<NullByte>())));
 }
 
-TEST(ControlTest, testEi)
+TEST(ControlTest, Ei)
 {
   Control ei { ControlOp::EI };
   IMemoryViewSP m;
@@ -36,7 +36,7 @@ TEST(ControlTest, testEi)
   EXPECT_TRUE(r.getFlags().interruptEnabled());
 }
 
-TEST(ControlTest, testDi)
+TEST(ControlTest, Di)
 {
   Control di { ControlOp::DI };
   IMemoryViewSP m;

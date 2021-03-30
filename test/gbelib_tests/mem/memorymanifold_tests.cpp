@@ -4,7 +4,7 @@
 #include "mem/memorymanifold.h"
 #include "mem/nullbank.h"
 
-TEST(MemoryManifoldTest, testAddSubmanager1)
+TEST(MemoryManifoldTest, AddSubmanager1)
 {
   MemoryManifold m;
   m.addSubManager(std::make_unique<NullBank>(MemoryArea { 1, 15 }));
@@ -21,7 +21,7 @@ TEST(MemoryManifoldTest, testAddSubmanager1)
   EXPECT_ANY_THROW(m.getByte(64));
 }
 
-TEST(MemoryManifoldTest, testAddSubmanager2)
+TEST(MemoryManifoldTest, AddSubmanager2)
 {
   MemoryManifold m;
   m.addSubManager(std::make_unique<NullBank>(MemoryArea { 1, 15 }));
@@ -29,7 +29,7 @@ TEST(MemoryManifoldTest, testAddSubmanager2)
   EXPECT_NO_THROW(m.addSubManager(std::make_unique<NullBank>(MemoryArea { 16, 63 })));
 }
 
-TEST(MemoryManifoldTest, testAvailableAreas)
+TEST(MemoryManifoldTest, AvailableAreas)
 {
   MemoryManifold m;
   m.addSubManager(std::make_unique<NullBank>(MemoryArea { 1, 15 }));

@@ -7,7 +7,7 @@
 
 #include "mock/variablebyte.h"
 
-TEST(AluOperationTest, testXor)
+TEST(AluOperationTest, Xor)
 {
   AluOperation xorOp { AluFunction::Xor, Source::Register };
   xorOp.setRegister(ByteRegisters::B);
@@ -28,7 +28,7 @@ TEST(AluOperationTest, testXor)
   EXPECT_EQ(0xC, r.get(ByteRegisters::A).get()); // 1100
 }
 
-TEST(AluOperationTest, testAddImmediate)
+TEST(AluOperationTest, AddImmediate)
 {
   AluOperation addOp { AluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
@@ -46,7 +46,7 @@ TEST(AluOperationTest, testAddImmediate)
   EXPECT_EQ(0x52, r.get(ByteRegisters::A).get());
 }
 
-TEST(AluOperationTest, testDec)
+TEST(AluOperationTest, Dec)
 {
   AluOperation decOp { AluFunction::Dec, Source::None };
   decOp.setRegister(ByteRegisters::B);
@@ -64,7 +64,7 @@ TEST(AluOperationTest, testDec)
   EXPECT_EQ(0x4, r.get(ByteRegisters::B).get()); // 0100
 }
 
-TEST(AluOperationTest, testDecIndirect)
+TEST(AluOperationTest, DecIndirect)
 {
   AluOperation decOp { AluFunction::Dec, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
@@ -80,7 +80,7 @@ TEST(AluOperationTest, testDecIndirect)
   EXPECT_EQ(0x12, m.getByte(0x0100).get());
 }
 
-TEST(AluOperationTest, testThrows)
+TEST(AluOperationTest, Throws)
 {
   CpuRegisters r;
   IMemoryViewSP m;

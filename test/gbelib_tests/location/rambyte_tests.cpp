@@ -2,7 +2,7 @@
 
 #include "location/rambyte.h"
 
-TEST(RamByteTest, testWrite)
+TEST(RamByteTest, Write)
 {
   uint8_t buffer = 0;
   RamByte a(buffer);
@@ -11,7 +11,7 @@ TEST(RamByteTest, testWrite)
   EXPECT_EQ(value, a.get());
 }
 
-TEST(RamByteTest, testRead)
+TEST(RamByteTest, Read)
 {
   uint8_t buffer = 0x2F;
   RamByte a(buffer);

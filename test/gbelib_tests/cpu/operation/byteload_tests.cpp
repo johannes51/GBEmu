@@ -8,7 +8,7 @@
 
 #include "mock/variablebyte.h"
 
-TEST(ByteLoadTest, testImmediate)
+TEST(ByteLoadTest, Immediate)
 {
   ByteLoad loadImmediate { ByteLoad::Destination::Register, ByteLoad::Source::Immediate };
   loadImmediate.setDestination(ByteRegisters::L);
@@ -27,7 +27,7 @@ TEST(ByteLoadTest, testImmediate)
   EXPECT_EQ(0x42, r.get(ByteRegisters::L).get());
 }
 
-TEST(ByteLoadTest, testImmediateIndirect)
+TEST(ByteLoadTest, ImmediateIndirect)
 {
   RamBank b({ 0, 2 });
 
@@ -48,7 +48,7 @@ TEST(ByteLoadTest, testImmediateIndirect)
   EXPECT_EQ(0x42, b.getByte(2).get());
 }
 
-TEST(ByteLoadTest, testImmediateIndirect2)
+TEST(ByteLoadTest, ImmediateIndirect2)
 {
   RamBank b({ 0xFF00, 0xFF02 });
 
@@ -67,7 +67,7 @@ TEST(ByteLoadTest, testImmediateIndirect2)
   EXPECT_EQ(0x42, r.get(ByteRegisters::A).get());
 }
 
-TEST(ByteLoadTest, testRegisterIndirect)
+TEST(ByteLoadTest, RegisterIndirect)
 {
   ByteLoad loadRI { ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register };
   loadRI.setDestination(WordRegisters::HL);
@@ -85,7 +85,7 @@ TEST(ByteLoadTest, testRegisterIndirect)
   EXPECT_EQ(0x3C, m.getByte(0xDFFF).get());
 }
 
-TEST(ByteLoadTest, testRegisterIndirect2)
+TEST(ByteLoadTest, RegisterIndirect2)
 {
   ByteLoad loadRI { ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect };
   loadRI.setDestination(ByteRegisters::A);
@@ -104,7 +104,7 @@ TEST(ByteLoadTest, testRegisterIndirect2)
   EXPECT_EQ(0xF3, r.get(ByteRegisters::A).get());
 }
 
-TEST(ByteLoadTest, testPost)
+TEST(ByteLoadTest, Post)
 {
   ByteLoad loadRI { ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect };
   loadRI.setDestination(ByteRegisters::A);

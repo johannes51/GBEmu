@@ -6,7 +6,7 @@
 
 using namespace std;
 
-TEST(MirrorBankTest, testIndirect)
+TEST(MirrorBankTest, Indirect)
 {
   auto b = std::make_shared<RamBank>(MemoryArea { 0, 15 });
   auto writeByte = b->getByte(4);
@@ -19,7 +19,7 @@ TEST(MirrorBankTest, testIndirect)
   EXPECT_EQ(value, readByte.get());
 }
 
-TEST(MirrorBankTest, testTooBig)
+TEST(MirrorBankTest, TooBig)
 {
   auto b = std::make_shared<RamBank>(MemoryArea { 0, 15 });
   EXPECT_THROW(MirrorBank({ 16, 48 }, { 0, 15 }, b), std::invalid_argument);

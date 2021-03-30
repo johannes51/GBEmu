@@ -6,7 +6,7 @@
 #include "gb_factories/memoryfactory.h"
 #include "sys/systemmanager.h"
 
-TEST(SystemManagerTest, testClock)
+TEST(SystemManagerTest, Clock)
 {
   gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   SystemManager s(m.constructMemoryLayout());

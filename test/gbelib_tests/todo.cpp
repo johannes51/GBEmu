@@ -6,7 +6,7 @@
 
 #include "mock/variablebyte.h"
 
-TEST(TodoTest, testUnimplemented)
+TEST(TodoTest, Unimplemented)
 {
   EXPECT_ANY_THROW(id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))));
   EXPECT_ANY_THROW(id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xCB))));

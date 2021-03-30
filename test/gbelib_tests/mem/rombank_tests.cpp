@@ -3,7 +3,7 @@
 #include "location/location.h"
 #include "mem/rombank.h"
 
-TEST(RomBankTest, testIndirect)
+TEST(RomBankTest, Indirect)
 {
   uint8_t value = 0xA2;
   RomBank b({ 0, 15 }, std::vector<uint8_t>(16, value));

@@ -50,7 +50,7 @@ void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t val
 
 void testMemoryThrows(IMemoryView& memory, address_type testAdress) { EXPECT_ANY_THROW(memory.getWord(testAdress)); }
 
-TEST(GBMemoryFactoryTest, testROM0t1)
+TEST(GBMemoryFactoryTest, ROM0t1)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
@@ -59,7 +59,7 @@ TEST(GBMemoryFactoryTest, testROM0t1)
   EXPECT_ANY_THROW(mem->getByte(startROM0).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM0t2)
+TEST(GBMemoryFactoryTest, ROM0t2)
 {
 
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
@@ -71,7 +71,7 @@ TEST(GBMemoryFactoryTest, testROM0t2)
   EXPECT_ANY_THROW(mem->getByte(startPC).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM0t3)
+TEST(GBMemoryFactoryTest, ROM0t3)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
@@ -80,7 +80,7 @@ TEST(GBMemoryFactoryTest, testROM0t3)
   EXPECT_ANY_THROW(mem->getByte(endROM0).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testROM1t1)
+TEST(GBMemoryFactoryTest, ROM1t1)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
@@ -89,7 +89,7 @@ TEST(GBMemoryFactoryTest, testROM1t1)
   EXPECT_ANY_THROW(mem->getByte(startROM1).set(0x00));
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0t1)
+TEST(GBMemoryFactoryTest, WRAM0t1)
 {
   auto mem = MemoryFactory(nullptr);
   auto gbLayout = mem.constructMemoryLayout();
@@ -99,7 +99,7 @@ TEST(GBMemoryFactoryTest, testWRAM0t1)
   testMemoryRoundtrip(*gbLayout, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0t2)
+TEST(GBMemoryFactoryTest, WRAM0t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -109,7 +109,7 @@ TEST(GBMemoryFactoryTest, testWRAM0t2)
   testMemoryThrows(*gbLayout, endWRAM0);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM0t3)
+TEST(GBMemoryFactoryTest, WRAM0t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -119,7 +119,7 @@ TEST(GBMemoryFactoryTest, testWRAM0t3)
   testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1t1)
+TEST(GBMemoryFactoryTest, WRAM1t1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -129,7 +129,7 @@ TEST(GBMemoryFactoryTest, testWRAM1t1)
   testMemoryRoundtrip(*gbLayout, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1t2)
+TEST(GBMemoryFactoryTest, WRAM1t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -139,7 +139,7 @@ TEST(GBMemoryFactoryTest, testWRAM1t2)
   testMemoryThrows(*gbLayout, endWRAM1);
 }
 
-TEST(GBMemoryFactoryTest, testWRAM1t3)
+TEST(GBMemoryFactoryTest, WRAM1t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -149,7 +149,7 @@ TEST(GBMemoryFactoryTest, testWRAM1t3)
   testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHOt1)
+TEST(GBMemoryFactoryTest, ECHOt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -163,7 +163,7 @@ TEST(GBMemoryFactoryTest, testECHOt1)
   testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHOt2)
+TEST(GBMemoryFactoryTest, ECHOt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -177,7 +177,7 @@ TEST(GBMemoryFactoryTest, testECHOt2)
   testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, testECHOt3)
+TEST(GBMemoryFactoryTest, ECHOt3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -189,7 +189,7 @@ TEST(GBMemoryFactoryTest, testECHOt3)
   testMemoryThrows(*gbLayout, endECHO);
 }
 
-TEST(GBMemoryFactoryTest, testNOTUSEDt1)
+TEST(GBMemoryFactoryTest, NOTUSEDt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -201,7 +201,7 @@ TEST(GBMemoryFactoryTest, testNOTUSEDt1)
   EXPECT_EQ(0, gbLayout->getWord(startNOTUSED).get());
 }
 
-TEST(GBMemoryFactoryTest, testNOTUSEDt2)
+TEST(GBMemoryFactoryTest, NOTUSEDt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -209,7 +209,7 @@ TEST(GBMemoryFactoryTest, testNOTUSEDt2)
   EXPECT_ANY_THROW(gbLayout->getWord(endNOTUSED));
 }
 
-TEST(GBMemoryFactoryTest, testHRAMt1)
+TEST(GBMemoryFactoryTest, HRAMt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
@@ -219,7 +219,7 @@ TEST(GBMemoryFactoryTest, testHRAMt1)
   testMemoryRoundtrip(*gbLayout, startHRAM, value16);
 }
 
-TEST(GBMemoryFactoryTest, testHRAMt2)
+TEST(GBMemoryFactoryTest, HRAMt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();

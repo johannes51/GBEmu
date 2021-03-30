@@ -10,7 +10,7 @@
 using namespace std;
 using namespace gb;
 
-TEST(RomTest, testCpuInstructions)
+TEST(RomTest, CpuInstructions)
 {
   auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb"));
   auto mem = f.constructMemoryLayout();

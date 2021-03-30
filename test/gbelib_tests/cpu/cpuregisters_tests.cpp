@@ -3,13 +3,13 @@
 #include "cpu/cpuregisters.h"
 #include "location/location.h"
 
-TEST(CpuRegistersTest, testInitialPc)
+TEST(CpuRegistersTest, InitialPc)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x0100, regs.get(WordRegisters::PC).get());
 }
 
-TEST(CpuRegistersTest, testWritePc)
+TEST(CpuRegistersTest, WritePc)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x0100, regs.get(WordRegisters::PC).get());
@@ -17,19 +17,19 @@ TEST(CpuRegistersTest, testWritePc)
   EXPECT_EQ(0x3A4C, regs.get(WordRegisters::PC).get());
 }
 
-TEST(CpuRegistersTest, testInitialAF)
+TEST(CpuRegistersTest, InitialAF)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x01B0, regs.get(WordRegisters::AF).get());
 }
 
-TEST(CpuRegistersTest, testInitialBC)
+TEST(CpuRegistersTest, InitialBC)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x0013, regs.get(WordRegisters::BC).get());
 }
 
-TEST(CpuRegistersTest, testInitialBCsplit)
+TEST(CpuRegistersTest, InitialBCsplit)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x0013, regs.get(WordRegisters::BC).get());
@@ -38,13 +38,13 @@ TEST(CpuRegistersTest, testInitialBCsplit)
   EXPECT_EQ(0xF1, regs.get(ByteRegisters::C).get());
 }
 
-TEST(CpuRegistersTest, testInitialDE)
+TEST(CpuRegistersTest, InitialDE)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x00D8, regs.get(WordRegisters::DE).get());
 }
 
-TEST(CpuRegistersTest, testInitialDEsplit)
+TEST(CpuRegistersTest, InitialDEsplit)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x00D8, regs.get(WordRegisters::DE).get());
@@ -53,37 +53,37 @@ TEST(CpuRegistersTest, testInitialDEsplit)
   EXPECT_EQ(0x82B5, regs.get(WordRegisters::DE).get());
 }
 
-TEST(CpuRegistersTest, testInitialHL)
+TEST(CpuRegistersTest, InitialHL)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x014D, regs.get(WordRegisters::HL).get());
 }
 
-TEST(CpuRegistersTest, testInitialH)
+TEST(CpuRegistersTest, InitialH)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x01, regs.get(ByteRegisters::H).get());
 }
 
-TEST(CpuRegistersTest, testInitialL)
+TEST(CpuRegistersTest, InitialL)
 {
   CpuRegisters regs;
   EXPECT_EQ(0x4D, regs.get(ByteRegisters::L).get());
 }
 
-TEST(CpuRegistersTest, testInitialSp)
+TEST(CpuRegistersTest, InitialSp)
 {
   CpuRegisters regs;
   EXPECT_EQ(0xFFFF, regs.get(WordRegisters::SP).get());
 }
 
-TEST(CpuRegistersTest, testNonByte)
+TEST(CpuRegistersTest, NonByte)
 {
   CpuRegisters regs;
   EXPECT_ANY_THROW(regs.get(ByteRegisters::None));
 }
 
-TEST(CpuRegistersTest, testNoneWord)
+TEST(CpuRegistersTest, NoneWord)
 {
   CpuRegisters regs;
   EXPECT_ANY_THROW(regs.get(WordRegisters::None));

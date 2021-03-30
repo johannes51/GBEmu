@@ -11,7 +11,7 @@
 using namespace std;
 using namespace gb;
 
-TEST(CpuTest, testConstruction)
+TEST(CpuTest, Construction)
 {
   auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb"));
   auto mem = f.constructMemoryLayout();
@@ -19,7 +19,7 @@ TEST(CpuTest, testConstruction)
   EXPECT_NO_THROW(Cpu cpu(move(reg), mem));
 }
 
-TEST(CpuTest, testExecution)
+TEST(CpuTest, Execution)
 {
   auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb"));
   auto mem = f.constructMemoryLayout();

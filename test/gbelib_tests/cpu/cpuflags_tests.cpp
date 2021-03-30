@@ -2,7 +2,7 @@
 
 #include "cpu/cpuflags.h"
 
-TEST(CpuFlagsTest, testCarry)
+TEST(CpuFlagsTest, Carry)
 {
   uint8_t buf = 0;
   CpuFlags flags_anon(buf);
@@ -14,7 +14,7 @@ TEST(CpuFlagsTest, testCarry)
   EXPECT_EQ(false, flags.carry());
 }
 
-TEST(CpuFlagsTest, testInterrupt)
+TEST(CpuFlagsTest, Interrupt)
 {
   uint8_t buf = 0;
   CpuFlags flags_anon(buf);

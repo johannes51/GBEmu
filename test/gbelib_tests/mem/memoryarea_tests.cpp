@@ -2,7 +2,7 @@
 
 #include "mem/memoryarea.h"
 
-TEST(MemoryAreaTest, testLessThan)
+TEST(MemoryAreaTest, LessThan)
 {
   MemoryArea a { 0, 16 };
   MemoryArea b { 0, 16 };
@@ -19,7 +19,7 @@ TEST(MemoryAreaTest, testLessThan)
   EXPECT_FALSE(d < a);
 }
 
-TEST(MemoryAreaTest, testEquals)
+TEST(MemoryAreaTest, Equals)
 {
   MemoryArea a { 0, 16 };
   MemoryArea b { 0, 16 };

@@ -5,7 +5,7 @@
 
 using namespace id::jumps_calls;
 
-TEST(ArithmeticTest, testDirect)
+TEST(ArithmeticTest, Direct)
 {
   auto op = jumpDirect();
   ASSERT_TRUE(op);
