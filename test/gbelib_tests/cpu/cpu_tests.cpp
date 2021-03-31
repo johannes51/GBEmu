@@ -28,9 +28,5 @@ TEST(CpuTest, Execution)
   auto* regAsPtr = reg.get();
   Cpu cpu(move(reg), mem, InstructionSetBuilder::construct());
   ASSERT_NO_THROW(cpu.clock()); // NOP
-  ASSERT_NO_THROW(cpu.clock()); // JP
-  ASSERT_NO_THROW(cpu.clock()); // JP
-  ASSERT_NO_THROW(cpu.clock()); // JP
-  ASSERT_NO_THROW(cpu.clock()); // JP
-  EXPECT_EQ(0x0637, regAsPtr->get(WordRegisters::PC).get());
+  EXPECT_EQ(0x0101, regAsPtr->get(WordRegisters::PC).get());
 }
