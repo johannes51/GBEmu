@@ -3,7 +3,7 @@
 
 #include <optional>
 
-#include "../registersinterface.h"
+#include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "operation.h"
 

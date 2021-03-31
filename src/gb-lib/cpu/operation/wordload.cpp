@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "../registersinterface.h"
+#include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "util/helpers.h"

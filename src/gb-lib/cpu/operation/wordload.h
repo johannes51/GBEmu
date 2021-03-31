@@ -5,7 +5,7 @@
 
 #include "operation.h"
 
-#include "../registersinterface.h"
+#include "cpu/registersinterface.h"
 #include "location/location.h"
 
 class WordLoad final : public Operation {

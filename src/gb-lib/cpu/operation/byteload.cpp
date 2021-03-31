@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "../registersinterface.h"
+#include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "util/helpers.h"
@@ -91,7 +91,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     if (destination_ == Destination::RegisterIndirect) {
       address = hlp::indirect(registers.get(destRegister16_));
     } else {
-      address = hlp::indirect(std::move(*immediate16_));
+      address = zeroPage_ ? hlp::indirect(std::move(*immediate8_)) : hlp::indirect(std::move(*immediate16_));
     }
     destination = memory.getByte(address);
   }

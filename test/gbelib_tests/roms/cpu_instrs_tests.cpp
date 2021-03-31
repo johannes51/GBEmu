@@ -29,5 +29,13 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock()); // 0x0431 LD SP, 0xDFFF
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
-  // EXPECT_NO_THROW(cpu.clock()); // 0x0434 LD (0xD600), A
+  EXPECT_NO_THROW(cpu.clock()); // 0x0434 LD (0xD600), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0437 LD A, 0x00
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0439 LDH (0x07), A
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock()); can't execute because would be in I/O area of mem
 }

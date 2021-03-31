@@ -5,7 +5,7 @@
 
 #include "operation.h"
 
-#include "../registersinterface.h"
+#include "cpu/registersinterface.h"
 #include "location/location.h"
 
 class ByteLoad final : public Operation {
