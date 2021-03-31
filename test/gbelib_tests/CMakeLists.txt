@@ -11,7 +11,7 @@ set(TEST_SOURCES
   cpu/cpuflags_tests.cpp
   cpu/cpuregisters_tests.cpp
   cpu/id/arithmetic_tests.cpp
-  cpu/id/instructiondecoder_tests.cpp
+  cpu/id/baseinstructiondecoder_tests.cpp
   cpu/id/jumps_calls_tests.cpp
   cpu/id/loads_tests.cpp
   cpu/id/opcodeview_tests.cpp

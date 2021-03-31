@@ -1,6 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "cpu/id/instructiondecoder.h"
+#include "cpu/id/controldecoder.h"
+#include "cpu/id/jumpscallsdecoder.h"
 #include "cpu/operation/operation.h"
 #include "location/location.h"
 
@@ -8,7 +9,6 @@
 
 TEST(TodoTest, Unimplemented)
 {
-  EXPECT_ANY_THROW(id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x0F))));
-  EXPECT_ANY_THROW(id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xCB))));
-  EXPECT_ANY_THROW(id::decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC1))));
+  EXPECT_ANY_THROW(JumpsCallsDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00))));
+  EXPECT_ANY_THROW(ControlDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x01))));
 }

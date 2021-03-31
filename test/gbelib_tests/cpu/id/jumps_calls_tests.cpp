@@ -1,13 +1,14 @@
 #include "gtest/gtest.h"
 
-#include "cpu/id/jumps_calls.h"
+#include "cpu/id/jumpscallsdecoder.h"
 #include "cpu/operation/operation.h"
+#include "location/location.h"
 
-using namespace id::jumps_calls;
+#include "mock/variablebyte.h"
 
-TEST(ArithmeticTest, Direct)
+TEST(JumpsCallsDecoderTest, Direct)
 {
-  auto op = jumpDirect();
+  auto op = JumpsCallsDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC3)));
   ASSERT_TRUE(op);
   EXPECT_FALSE(op->isComplete());
 }

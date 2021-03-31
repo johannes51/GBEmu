@@ -1,6 +1,8 @@
 #ifndef INSTRUCTIONDECODER_H
 #define INSTRUCTIONDECODER_H
 
+#include <vector>
+
 #include "cpu/cpu_defines.h"
 #include "location/location_defines.h"
 
@@ -9,6 +11,8 @@ public:
   virtual ~InstructionDecoder() = default;
 
   virtual OperationUP decode(const Location<uint8_t>& opcodeLocation) = 0;
+
+  virtual std::vector<uint8_t> decodedOpcodes() const = 0;
 
 protected:
   InstructionDecoder() = default;

@@ -13,15 +13,17 @@ target_sources(gbelib PRIVATE
   cpu/cpuregisters.cpp
   cpu/flagsview.h
   cpu/registersinterface.h
-  cpu/id/arithmetic.h
-  cpu/id/arithmetic.cpp
+  cpu/id/arithmeticdecoder.h
+  cpu/id/arithmeticdecoder.cpp
   cpu/id/instructiondecoder.h
   cpu/id/baseinstructiondecoder.h
   cpu/id/baseinstructiondecoder.cpp
-  cpu/id/jumps_calls.h
-  cpu/id/jumps_calls.cpp
-  cpu/id/loads.h
-  cpu/id/loads.cpp
+  cpu/id/controldecoder.h
+  cpu/id/controldecoder.cpp
+  cpu/id/jumpscallsdecoder.h
+  cpu/id/jumpscallsdecoder.cpp
+  cpu/id/loadsdecoder.h
+  cpu/id/loadsdecoder.cpp
   cpu/id/opcodeview.h
   cpu/id/opcodeview.cpp
   cpu/operation/aluoperation.h
@@ -42,6 +44,8 @@ target_sources(gbelib PRIVATE
   gb_factories/gb_defines.h
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/instructionsetbuilder.h
+  gb_factories/instructionsetbuilder.cpp
   mem/imemoryview.h
   mem/imemorymanager.h
   mem/mem_defines.h

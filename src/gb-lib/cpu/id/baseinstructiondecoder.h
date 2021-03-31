@@ -11,7 +11,9 @@ public:
 
   OperationUP decode(const Location<uint8_t>& opcodeLocation) override;
 
-  void registerOpcode(const uint8_t& opcode, InstructionDecoderSP decoder);
+  void registerDecoder(const InstructionDecoderSP& decoder);
+
+  std::vector<uint8_t> decodedOpcodes() const override;
 
 private:
   std::unordered_map<uint8_t, InstructionDecoderSP> decoders_;
