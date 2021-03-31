@@ -9,6 +9,6 @@
 
 TEST(TodoTest, Unimplemented)
 {
-  EXPECT_ANY_THROW(JumpsCallsDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00))));
-  EXPECT_ANY_THROW(ControlDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x01))));
+  EXPECT_ANY_THROW(JumpsCallsDecoder {}.decode(variableLocation(0x00)));
+  EXPECT_ANY_THROW(ControlDecoder {}.decode(variableLocation(0x01)));
 }

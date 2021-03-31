@@ -10,9 +10,9 @@ TEST(JumpTest, Direct)
 {
   Jump jump { JumpType::Direct };
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x5E))));
+  EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x19))));
+  EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x19)));
   ASSERT_TRUE(jump.isComplete());
 
   EXPECT_EQ(4, jump.cycles());
@@ -27,7 +27,7 @@ TEST(JumpTest, Relative)
 {
   Jump jump { JumpType::Relative };
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x1A))));
+  EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x1A)));
   ASSERT_TRUE(jump.isComplete());
 
   EXPECT_EQ(4, jump.cycles());
@@ -42,9 +42,9 @@ TEST(JumpTest, Next)
 {
   Jump jump { JumpType::Direct };
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x5E))));
+  EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_NO_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x19))));
+  EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x19)));
   ASSERT_TRUE(jump.isComplete());
-  EXPECT_THROW(jump.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x19))), std::logic_error);
+  EXPECT_THROW(jump.nextOpcode(variableLocation(0x19)), std::logic_error);
 }

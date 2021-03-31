@@ -13,10 +13,9 @@ TEST(ByteLoadTest, Immediate)
   ByteLoad loadImmediate { ByteLoad::Destination::Register, ByteLoad::Source::Immediate };
   loadImmediate.setDestination(ByteRegisters::L);
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x42)));
+  loadImmediate.nextOpcode(variableLocation(0x42));
   ASSERT_TRUE(loadImmediate.isComplete());
-  EXPECT_THROW(
-      loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x42))), std::logic_error);
+  EXPECT_THROW(loadImmediate.nextOpcode(variableLocation(0x42)), std::logic_error);
 
   EXPECT_EQ(2, loadImmediate.cycles());
 
@@ -34,9 +33,9 @@ TEST(ByteLoadTest, ImmediateIndirect)
   ByteLoad loadImmediate { ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register };
   loadImmediate.setSource(ByteRegisters::A);
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00)));
+  loadImmediate.nextOpcode(variableLocation(0x00));
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x02)));
+  loadImmediate.nextOpcode(variableLocation(0x02));
   ASSERT_TRUE(loadImmediate.isComplete());
 
   EXPECT_EQ(4, loadImmediate.cycles());
@@ -55,7 +54,7 @@ TEST(ByteLoadTest, ImmediateIndirect2)
   ByteLoad loadImmediate { ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect, true };
   loadImmediate.setDestination(ByteRegisters::A);
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00)));
+  loadImmediate.nextOpcode(variableLocation(0x00));
   ASSERT_TRUE(loadImmediate.isComplete());
 
   EXPECT_EQ(3, loadImmediate.cycles());

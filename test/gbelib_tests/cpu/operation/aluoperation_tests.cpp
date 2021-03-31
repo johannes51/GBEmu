@@ -32,9 +32,9 @@ TEST(AluOperationTest, AddImmediate)
 {
   AluOperation addOp { AluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
-  ASSERT_NO_THROW(addOp.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x4D))));
+  ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(0x4D)));
   ASSERT_TRUE(addOp.isComplete());
-  ASSERT_ANY_THROW(addOp.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x4D))));
+  ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(0x4D)));
 
   EXPECT_EQ(2, addOp.cycles());
 

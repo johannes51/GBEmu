@@ -8,7 +8,7 @@
 
 TEST(JumpsCallsDecoderTest, Direct)
 {
-  auto op = JumpsCallsDecoder {}.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0xC3)));
+  auto op = JumpsCallsDecoder {}.decode(variableLocation(0xC3));
   ASSERT_TRUE(op);
   EXPECT_FALSE(op->isComplete());
 }

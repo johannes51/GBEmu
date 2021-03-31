@@ -20,12 +20,12 @@ TEST(BaseInstructionDecoderTest, Decode)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_NO_THROW(d.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x00))));
+  EXPECT_NO_THROW(d.decode(variableLocation(0x00)));
 }
 
 TEST(BaseInstructionDecoderTest, Exception)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_ANY_THROW(d.decode(Location<uint8_t>::generate(std::make_unique<VariableByte>(0x80))));
+  EXPECT_ANY_THROW(d.decode(variableLocation(0x80)));
 }
