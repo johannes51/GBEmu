@@ -1,6 +1,10 @@
 cmake_minimum_required(VERSION 3.11)
 
 configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/../res/instr_timing.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/instr_timing.gb"
+  COPYONLY)
+configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/../res/cpu_instrs.gb"
   "${CMAKE_CURRENT_BINARY_DIR}/cpu_instrs.gb"
   COPYONLY)
@@ -38,6 +42,7 @@ set(TEST_SOURCES
   mock/variablebyte.h
   mock/variablebyte.cpp
   roms/cpu_instrs_tests.cpp
+  roms/instr_timing_tests.cpp
   util/helpers_tests.cpp
   util/ops_tests.cpp
   sys/systemmanager_tests.cpp
