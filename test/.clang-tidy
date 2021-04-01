@@ -1,4 +1,4 @@
 ---
-Checks: '*,-llvmlibc-*,-fuchsia-*,-readability-redundant-member-init,-google-runtime-references,
+Checks: '*,-llvmlibc-*,-fuchsia-*,-readability-redundant-member-init,-google-runtime-references,-google-readability-todo,
 -cert-*,-google-build-using-namespace,-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-cppcoreguidelines-special-member-functions,-hicpp-special-member-functions,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-avoid-goto,-hicpp-avoid-goto,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg'
 ...
