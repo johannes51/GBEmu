@@ -12,4 +12,8 @@ void SingleOp::nextOpcode(Location<uint8_t> opcode)
 
 auto SingleOp::isComplete() -> bool { return true; }
 
-auto SingleOp::cycles() -> unsigned int { return 1; }
+auto SingleOp::cycles(const RegistersInterface& registers) -> unsigned int
+{
+  (void)registers;
+  return 1;
+}

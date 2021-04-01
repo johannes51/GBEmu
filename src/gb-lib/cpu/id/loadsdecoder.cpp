@@ -162,6 +162,66 @@ auto loadImmediateIndirect(const OpcodeView opcode) -> OperationUP
 {
   OperationUP result;
   switch (opcode.value()) {
+  case 0x02: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
+    p->setDestination(WordRegisters::BC);
+    p->setSource(ByteRegisters::A);
+    result = std::move(p);
+    break;
+  }
+  case 0x12: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
+    p->setDestination(WordRegisters::DE);
+    p->setSource(ByteRegisters::A);
+    result = std::move(p);
+    break;
+  }
+  case 0x22: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
+    p->setDestination(WordRegisters::HL);
+    p->setPostAction(ByteLoad::Post::Increment);
+    p->setSource(ByteRegisters::A);
+    result = std::move(p);
+    break;
+  }
+  case 0x32: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
+    p->setDestination(WordRegisters::HL);
+    p->setPostAction(ByteLoad::Post::Decrement);
+    p->setSource(ByteRegisters::A);
+    result = std::move(p);
+    break;
+  }
+  case 0x0A: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
+    p->setDestination(ByteRegisters::A);
+    p->setSource(WordRegisters::BC);
+    result = std::move(p);
+    break;
+  }
+  case 0x1A: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
+    p->setDestination(ByteRegisters::A);
+    p->setSource(WordRegisters::DE);
+    result = std::move(p);
+    break;
+  }
+  case 0x2A: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
+    p->setDestination(ByteRegisters::A);
+    p->setSource(WordRegisters::HL);
+    p->setPostAction(ByteLoad::Post::Increment);
+    result = std::move(p);
+    break;
+  }
+  case 0x3A: {
+    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
+    p->setDestination(ByteRegisters::A);
+    p->setSource(WordRegisters::HL);
+    p->setPostAction(ByteLoad::Post::Decrement);
+    result = std::move(p);
+    break;
+  }
   case 0xE0: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register, true);
     p->setSource(ByteRegisters::A);
@@ -233,11 +293,13 @@ auto LoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationU
   OpcodeView opc { opcodeLocation.get() };
   if (opc.value() >= 0x40 && opc.value() <= 0x7F) {
     return bulkLoad(opc);
-  } if ((opc.lowerNibble() == 0x1 || opc.lowerNibble() == 0x6 || opc.lowerNibble() == 0xE)
+  }
+  if ((opc.lowerNibble() == 0x1 || opc.lowerNibble() == 0x6 || opc.lowerNibble() == 0xE)
       && (opc.upperNibble() <= 0x3)) {
     return loadImmediate(opc);
-  } else if ((opc.lowerNibble() == 0x0 || opc.lowerNibble() == 0xA)
-      && (opc.upperNibble() <= 0xE || opc.upperNibble() <= 0xF)) {
+  } else if (((opc.lowerNibble() == 0x0 || opc.lowerNibble() == 0xA)
+                 && (opc.upperNibble() <= 0xE || opc.upperNibble() <= 0xF))
+      || ((opc.lowerNibble() == 0x2 || opc.lowerNibble() == 0xA) && (opc.upperNibble() <= 0x3))) {
     return loadImmediateIndirect(opc);
   }
   throw std::logic_error("Unimplmented opcode: " + std::to_string(opc.value()));
@@ -253,6 +315,7 @@ auto LoadsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
           /*0x76, HALT */ 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F }); // bulk loads
   result.insert(
       result.end(), { 0x01, 0x06, 0x0E, 0x11, 0x16, 0x1E, 0x21, 0x26, 0x2E, 0x31, 0x36, 0x3E }); // immediate loads
-  result.insert(result.end(), { 0xE0, 0xEA, 0xF0, 0xFA }); // immediate indirect loads
+  result.insert(result.end(),
+      { 0x02, 0x12, 0x22, 0x32, 0x0A, 0x1A, 0x2A, 0x3A, 0xE0, 0xEA, 0xF0, 0xFA }); // immediate indirect loads
   return result;
 }

@@ -22,9 +22,9 @@ TEST(WordLoadTest, Immediate)
 
   EXPECT_THROW(loadImmediate.nextOpcode(b.getByte(1)), std::logic_error);
 
-  EXPECT_EQ(3, loadImmediate.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(3, loadImmediate.cycles(r));
+
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
   auto value = r.get(WordRegisters::DE).get();
@@ -45,9 +45,9 @@ TEST(WordLoadTest, Immediate2)
   loadImmediate.nextOpcode(b.getByte(1));
   ASSERT_TRUE(loadImmediate.isComplete());
 
-  EXPECT_EQ(3, loadImmediate.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(3, loadImmediate.cycles(r));
+
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
   auto value = r.get(WordRegisters::HL).get();
@@ -62,9 +62,9 @@ TEST(WordLoadTest, Register)
   loadRegister.setSource(WordRegisters::AF);
   ASSERT_TRUE(loadRegister.isComplete());
 
-  EXPECT_EQ(3, loadRegister.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(3, loadRegister.cycles(r));
+
   uint16_t value = 0xDFFF;
   r.get(WordRegisters::AF).set(value);
 
@@ -86,9 +86,9 @@ TEST(WordLoadTest, ImmediateIndirect)
   loadIndirect.nextOpcode(b.getByte(1));
   ASSERT_TRUE(loadIndirect.isComplete());
 
-  EXPECT_EQ(5, loadIndirect.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(5, loadIndirect.cycles(r));
+
   r.get(WordRegisters::HL).set(0xDFFF);
   loadIndirect.execute(r, b);
 
@@ -104,9 +104,9 @@ TEST(WordLoadTest, RegisterIndirect)
   loadIndirect.setDestination(WordRegisters::AF);
   ASSERT_TRUE(loadIndirect.isComplete());
 
-  EXPECT_EQ(3, loadIndirect.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(3, loadIndirect.cycles(r));
+
   r.get(WordRegisters::HL).set(0xDFFF);
   r.get(WordRegisters::AF).set(0x0002);
   loadIndirect.execute(r, b);

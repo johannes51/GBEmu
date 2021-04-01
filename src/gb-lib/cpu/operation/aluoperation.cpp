@@ -30,8 +30,9 @@ auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate ||
 
 void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
 
-auto AluOperation::cycles() -> unsigned int
+auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
 {
+  (void)registers;
   unsigned int result = 1;
   if (source_ == Source::Indirect) {
     ++result;
@@ -56,6 +57,13 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
       ops::decrement(getSource(registers, memory));
     } else {
       ops::decrement(registers.get(*register_));
+    }
+    break;
+  case AluFunction::Inc:
+    if (source_ == Source::Indirect) {
+      ops::increment(getSource(registers, memory));
+    } else {
+      ops::increment(registers.get(*register_));
     }
     break;
   case AluFunction::Xor:

@@ -4,9 +4,6 @@
 #include "instructiondecoder.h"
 
 class JumpsCallsDecoder : public InstructionDecoder {
-  static constexpr uint8_t JumpDirect = 0xC3;
-  static constexpr uint8_t JumpRelative = 0x18;
-
 public:
   JumpsCallsDecoder() = default;
 

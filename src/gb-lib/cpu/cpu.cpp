@@ -28,7 +28,7 @@ void Cpu::clock()
     while (!nextOperation_->isComplete()) {
       nextOperation_->nextOpcode(nextOpcode());
     }
-    ticksTillExecution_ = nextOperation_->cycles();
+    ticksTillExecution_ = nextOperation_->cycles(*registers_);
   }
   --ticksTillExecution_;
   if (ticksTillExecution_ <= 0) {

@@ -38,6 +38,41 @@ CpuRegisters::CpuRegisters()
   flags_ = std::make_unique<CpuFlags>(registers_[RegisterName::F]);
 }
 
+CpuRegisters::~CpuRegisters() = default;
+
+auto CpuRegisters::get(ByteRegisters registerName) -> Location<uint8_t>
+{
+  auto byte = RegisterName::A;
+  switch (registerName) {
+  case ByteRegisters::A:
+    byte = RegisterName::A;
+    break;
+  case ByteRegisters::B:
+    byte = RegisterName::B;
+    break;
+  case ByteRegisters::C:
+    byte = RegisterName::C;
+    break;
+  case ByteRegisters::D:
+    byte = RegisterName::D;
+    break;
+  case ByteRegisters::E:
+    byte = RegisterName::E;
+    break;
+  case ByteRegisters::H:
+    byte = RegisterName::H;
+    break;
+  case ByteRegisters::L:
+    byte = RegisterName::L;
+    break;
+  case ByteRegisters::None:
+  default:
+    throw std::invalid_argument("Unable to provide register");
+    break;
+  }
+  return Location<uint8_t>::generate(std::make_unique<RamByte>(registers_.at(byte)));
+}
+
 auto CpuRegisters::get(WordRegisters registerName) -> Location<uint16_t>
 {
   auto lower = RegisterName::PCl;
@@ -76,39 +111,6 @@ auto CpuRegisters::get(WordRegisters registerName) -> Location<uint16_t>
       std::make_unique<RamByte>(registers_.at(lower)), std::make_unique<RamByte>(registers_.at(upper)));
 }
 
-auto CpuRegisters::get(ByteRegisters registerName) -> Location<uint8_t>
-{
-  auto byte = RegisterName::A;
-  switch (registerName) {
-  case ByteRegisters::A:
-    byte = RegisterName::A;
-    break;
-  case ByteRegisters::B:
-    byte = RegisterName::B;
-    break;
-  case ByteRegisters::C:
-    byte = RegisterName::C;
-    break;
-  case ByteRegisters::D:
-    byte = RegisterName::D;
-    break;
-  case ByteRegisters::E:
-    byte = RegisterName::E;
-    break;
-  case ByteRegisters::H:
-    byte = RegisterName::H;
-    break;
-  case ByteRegisters::L:
-    byte = RegisterName::L;
-    break;
-  case ByteRegisters::None:
-  default:
-    throw std::invalid_argument("Unable to provide register");
-    break;
-  }
-  return Location<uint8_t>::generate(std::make_unique<RamByte>(registers_.at(byte)));
-}
-
-CpuRegisters::~CpuRegisters() = default;
-
 auto CpuRegisters::getFlags() -> FlagsView& { return *flags_; }
+
+auto CpuRegisters::getFlags() const -> const FlagsView& { return *flags_; }

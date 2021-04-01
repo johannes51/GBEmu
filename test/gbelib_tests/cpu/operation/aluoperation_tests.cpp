@@ -13,9 +13,9 @@ TEST(AluOperationTest, Xor)
   xorOp.setRegister(ByteRegisters::B);
   ASSERT_TRUE(xorOp.isComplete());
 
-  EXPECT_EQ(1, xorOp.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(1, xorOp.cycles(r));
+
   auto a = r.get(ByteRegisters::A);
   a.set(0x9); // 1001
   ASSERT_EQ(0x9, a.get());
@@ -36,9 +36,9 @@ TEST(AluOperationTest, AddImmediate)
   ASSERT_TRUE(addOp.isComplete());
   ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(0x4D)));
 
-  EXPECT_EQ(2, addOp.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(2, addOp.cycles(r));
+
   r.get(ByteRegisters::A).set(0x05);
 
   IMemoryViewSP m;
@@ -52,9 +52,9 @@ TEST(AluOperationTest, Dec)
   decOp.setRegister(ByteRegisters::B);
   ASSERT_TRUE(decOp.isComplete());
 
-  EXPECT_EQ(1, decOp.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(1, decOp.cycles(r));
+
   auto b = r.get(ByteRegisters::B);
   b.set(0x5); // 0101
   ASSERT_EQ(0x5, b.get());
@@ -69,9 +69,9 @@ TEST(AluOperationTest, DecIndirect)
   AluOperation decOp { AluFunction::Dec, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
 
-  EXPECT_EQ(3, decOp.cycles());
-
   CpuRegisters r;
+  EXPECT_EQ(3, decOp.cycles(r));
+
   r.get(WordRegisters::HL).set(0x0100);
 
   RamBank m { { 0x0100, 0x0101 } };

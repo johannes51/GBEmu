@@ -9,7 +9,7 @@
 
 enum class Source { Register, Immediate, Indirect, None };
 
-enum class AluFunction { Add, Dec, Xor };
+enum class AluFunction { Add, Inc, Dec, Xor };
 
 class AluOperation final : public Operation {
 public:
@@ -19,7 +19,7 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-  unsigned int cycles() override;
+  unsigned int cycles(const RegistersInterface& registers) override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
   void setRegister(ByteRegisters registerName);
