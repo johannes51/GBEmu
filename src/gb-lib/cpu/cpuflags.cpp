@@ -6,7 +6,7 @@ CpuFlags::CpuFlags(uint8_t& buffer)
 {
 }
 
-void CpuFlags::setZero() { setBit(CARRY_BIT); }
+void CpuFlags::setZero() { setBit(ZERO_BIT); }
 
 void CpuFlags::clearZero() { clearBit(ZERO_BIT); }
 

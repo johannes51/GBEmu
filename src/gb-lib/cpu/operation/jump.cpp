@@ -15,9 +15,6 @@ Jump::Jump(JumpType type, Condition condition)
     , type_(type)
     , condition_(condition)
 {
-  if (type_ == JumpType::Relative) {
-    upper_ = Location<uint8_t>::generate(std::make_unique<ZeroByte>());
-  }
 }
 
 Jump::~Jump() = default;
@@ -49,27 +46,10 @@ auto Jump::isComplete() -> bool
 
 auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 {
-  auto taken = true;
-  switch (condition_) {
-  case Condition::Z:
-    taken = registers.getFlags().zero();
-    break;
-  case Condition::NZ:
-    taken = !registers.getFlags().zero();
-    break;
-  case Condition::C:
-    taken = registers.getFlags().carry();
-    break;
-  case Condition::NC:
-    taken = !registers.getFlags().carry();
-    break;
-  default:
-    break;
-  }
   if (type_ == JumpType::Absolute) {
-    return taken ? 4 : 3;
+    return taken(registers.getFlags()) ? 4 : 3;
   } else if (type_ == JumpType::Relative) {
-    return taken ? 3 : 2;
+    return taken(registers.getFlags()) ? 3 : 2;
   }
   throw std::logic_error("Unimplemented JP type");
 }
@@ -77,15 +57,41 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
-  switch (type_) {
-  case JumpType::Absolute:
-    ops::load(registers.get(WordRegisters::PC), Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
+  auto target = registers.get(WordRegisters::PC);
+  if (taken(registers.getFlags())) {
+    switch (type_) {
+    case JumpType::Absolute:
+      ops::load(target, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
+      break;
+    case JumpType::Relative:
+      auto operandUnsigned = lower_->get();
+      int8_t operand = 0;
+      std::memcpy(
+          &operand, &operandUnsigned, sizeof(operand)); // WARNING: this only works as 2's complement (so always)
+      ops::add(target, operand);
+      break;
+    }
+  }
+}
+
+bool Jump::taken(const FlagsView& flags) const
+{
+  auto result = true;
+  switch (condition_) {
+  case Condition::Z:
+    result = flags.zero();
     break;
-  case JumpType::Relative:
-    auto operandUnsigned = lower_->get();
-    int8_t operand = 0;
-    std::memcpy(&operand, &operandUnsigned, sizeof(operand)); // WARNING: this only works as 2's complement (so always)
-    ops::add(registers.get(WordRegisters::PC), operand);
+  case Condition::NZ:
+    result = !flags.zero();
+    break;
+  case Condition::C:
+    result = flags.carry();
+    break;
+  case Condition::NC:
+    result = !flags.carry();
+    break;
+  default:
     break;
   }
+  return result;
 }

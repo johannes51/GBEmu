@@ -92,7 +92,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     if (destination_ == Destination::RegisterIndirect) {
       address = hlp::indirect(registers.get(destRegister16_));
     } else {
-      address = zeroPage_ ? hlp::indirect(std::move(*immediate8_)) : hlp::indirect(std::move(*immediate16_));
+      address = zeroPage_ ? hlp::indirect(*immediate8_) : hlp::indirect(*immediate16_);
     }
     destination = memory.getByte(address);
   }
@@ -102,8 +102,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     source = std::move(*immediate8_);
     break;
   case Source::ImmediateIndirect:
-    source = zeroPage_ ? memory.getByte(hlp::indirect(std::move(*immediate8_)))
-                       : memory.getByte(hlp::indirect(std::move(*immediate16_)));
+    source = zeroPage_ ? memory.getByte(hlp::indirect(*immediate8_)) : memory.getByte(hlp::indirect(*immediate16_));
     break;
   case Source::Register:
     source = registers.get(srcRegister8_);
@@ -112,5 +111,5 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     source = memory.getByte(hlp::indirect(registers.get(srcRegister16_)));
     break;
   }
-  ops::load(std::move(destination), std::move(source));
+  ops::load(destination, source);
 }

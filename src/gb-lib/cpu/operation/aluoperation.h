@@ -7,6 +7,10 @@
 #include "location/location.h"
 #include "operation.h"
 
+namespace ops {
+struct OpResult;
+}
+
 enum class Source { Register, Immediate, Indirect, None };
 
 enum class AluFunction { Add, Inc, Dec, Xor };
@@ -26,6 +30,7 @@ public:
 
 private:
   Location<uint8_t> getSource(RegistersInterface& reg, IMemoryView& mem);
+  static void apply(FlagsView& flags, const ops::OpResult& result);
 
   const AluFunction function_;
   const Source source_;

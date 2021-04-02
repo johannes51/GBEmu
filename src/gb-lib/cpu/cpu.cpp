@@ -39,7 +39,8 @@ void Cpu::clock()
 
 auto Cpu::nextOpcode() -> Location<uint8_t>
 {
-  auto result = mem_->getByte(hlp::indirect(registers_->get(WordRegisters::PC)));
-  ops::increment(registers_->get(WordRegisters::PC));
+  auto pc = registers_->get(WordRegisters::PC);
+  auto result = mem_->getByte(hlp::indirect(pc));
+  ops::increment(pc);
   return result;
 }

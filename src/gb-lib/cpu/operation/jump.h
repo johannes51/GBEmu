@@ -21,6 +21,8 @@ public:
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:
+  bool taken(const FlagsView& flags) const;
+
   std::optional<Location<uint8_t>> lower_;
   std::optional<Location<uint8_t>> upper_;
   const JumpType type_;

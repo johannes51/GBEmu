@@ -4,78 +4,71 @@
 #include "location/rambyte.h"
 #include "util/ops.h"
 
+#include "mock/variablebyte.h"
+
 TEST(OpsTest, Increment8)
 {
-  uint8_t buffer = 5;
-  auto l = Location<uint8_t>::generate(std::make_unique<RamByte>(buffer));
+  auto l = variableLocation(5);
 
-  ops::increment(std::move(l));
+  ops::increment(l);
 
-  EXPECT_EQ(6, buffer);
+  EXPECT_EQ(6, l.get());
+}
+
+TEST(OpsTest, Increment8Carry)
+{
+  auto l = variableLocation(255);
+
+  ops::increment(l);
+
+  EXPECT_EQ(0, l.get());
 }
 
 TEST(OpsTest, Increment16)
 {
-  uint8_t bufferL = 0xFF;
-  uint8_t bufferU = 0xAF;
-  auto l = Location<uint16_t>::generate(std::make_unique<RamByte>(bufferL), std::make_unique<RamByte>(bufferU));
+  auto l = variableLocation(0xFF, 0xAF);
 
-  ops::increment(std::move(l));
+  ops::increment(l);
 
-  EXPECT_EQ(0x00, bufferL);
-  EXPECT_EQ(0xB0, bufferU);
+  EXPECT_EQ(0xB000, l.get());
 }
 
 TEST(OpsTest, Add8)
 {
-  uint8_t a = 5;
-  uint8_t b = 13;
-  auto lA = Location<uint8_t>::generate(std::make_unique<RamByte>(a));
-  auto lB = Location<uint8_t>::generate(std::make_unique<RamByte>(b));
+  auto lA = variableLocation(5);
+  auto lB = variableLocation(13);
 
-  ops::add(std::move(lA), std::move(lB));
+  ops::add(lA, lB);
 
-  EXPECT_EQ(5 + 13, a);
+  EXPECT_EQ(5 + 13, lA.get());
 }
 
 TEST(OpsTest, Add16)
 {
-  uint8_t aL = 0x35;
-  uint8_t bL = 0xA2;
-  uint8_t aU = 0x14;
-  uint8_t bU = 0xC7;
-  auto lA = Location<uint16_t>::generate(std::make_unique<RamByte>(aL), std::make_unique<RamByte>(aU));
-  auto lB = Location<uint16_t>::generate(std::make_unique<RamByte>(bL), std::make_unique<RamByte>(bU));
+  auto lA = variableLocation(0x35, 0x14);
+  auto lB = variableLocation(0xA2, 0xC7);
 
-  ops::add(std::move(lA), std::move(lB));
+  ops::add(lA, lB);
 
-  EXPECT_EQ(0x35 + 0xA2, aL);
-  EXPECT_EQ(0x14 + 0xC7, aU);
+  EXPECT_EQ(0xDBD7, lA.get());
 }
 
 TEST(OpsTest, Load8)
 {
-  uint8_t dest = 0x3C;
-  uint8_t src = 0xF1;
-  auto d = Location<uint8_t>::generate(std::make_unique<RamByte>(dest));
-  auto s = Location<uint8_t>::generate(std::make_unique<RamByte>(src));
+  auto d = variableLocation(0x3C);
+  auto s = variableLocation(0xF1);
 
-  ops::load(std::move(d), std::move(s));
+  ops::load(d, s);
 
-  EXPECT_EQ(0xF1, dest);
+  EXPECT_EQ(0xF1, d.get());
 }
 
 TEST(OpsTest, Load16)
 {
-  uint8_t destL = 0x3C;
-  uint8_t destU = 0xB8;
-  uint8_t srcL = 0xF1;
-  uint8_t srcU = 0xC3;
-  auto d = Location<uint16_t>::generate(std::make_unique<RamByte>(destL), std::make_unique<RamByte>(destU));
-  auto s = Location<uint16_t>::generate(std::make_unique<RamByte>(srcL), std::make_unique<RamByte>(srcU));
+  auto d = variableLocation(0x3C, 0xB8);
+  auto s = variableLocation(0xF1, 0xC3);
 
-  ops::load(std::move(d), std::move(s));
+  ops::load(d, s);
 
-  EXPECT_EQ(0xF1, destL);
-  EXPECT_EQ(0xC3, destU);
+  EXPECT_EQ(0xC3F1, d.get());
 }

@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 
+#include "cpu/flagsview.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "util/helpers.h"
@@ -48,28 +49,40 @@ auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
 void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
+  ops::OpResult result { 0, 0, 0, 0 };
   switch (function_) {
-  case AluFunction::Add:
-    ops::add(registers.get(ByteRegisters::A), getSource(registers, memory));
-    break;
-  case AluFunction::Dec:
-    if (source_ == Source::Indirect) {
-      ops::decrement(getSource(registers, memory));
-    } else {
-      ops::decrement(registers.get(*register_));
-    }
-    break;
-  case AluFunction::Inc:
-    if (source_ == Source::Indirect) {
-      ops::increment(getSource(registers, memory));
-    } else {
-      ops::increment(registers.get(*register_));
-    }
-    break;
-  case AluFunction::Xor:
-    ops::xorF(registers.get(ByteRegisters::A), getSource(registers, memory));
+  case AluFunction::Add: {
+    auto loc = registers.get(ByteRegisters::A);
+    result = ops::add(loc, getSource(registers, memory));
     break;
   }
+  case AluFunction::Inc: {
+    Location<uint8_t> loc;
+    if (source_ == Source::Indirect) {
+      loc = getSource(registers, memory);
+    } else {
+      loc = registers.get(*register_);
+    }
+    result = ops::increment(loc);
+    break;
+  }
+  case AluFunction::Dec: {
+    Location<uint8_t> loc;
+    if (source_ == Source::Indirect) {
+      loc = getSource(registers, memory);
+    } else {
+      loc = registers.get(*register_);
+    }
+    result = ops::decrement(loc);
+    break;
+  }
+  case AluFunction::Xor: {
+    auto loc = registers.get(ByteRegisters::A);
+    result = ops::xorF(loc, getSource(registers, memory));
+    break;
+  }
+  }
+  apply(registers.getFlags(), result);
 }
 
 auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location<uint8_t>
@@ -91,5 +104,19 @@ auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Locat
   default:
     throw std::invalid_argument("No proper source configured");
     break;
+  }
+}
+
+void AluOperation::apply(FlagsView& flags, const ops::OpResult& result)
+{
+  if (result.z == 0) {
+    flags.clearZero();
+  } else if (result.z == 1) {
+    flags.setZero();
+  }
+  if (result.c == 0) {
+    flags.clearCarry();
+  } else if (result.c == 1) {
+    flags.setCarry();
   }
 }

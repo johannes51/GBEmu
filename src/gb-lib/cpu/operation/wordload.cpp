@@ -61,7 +61,7 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     if (destination_ == Destination::RegisterIndirect) {
       address = hlp::indirect(registers.get(destRegister_));
     } else {
-      address = hlp::indirect(std::move(*immediate16_));
+      address = hlp::indirect(*immediate16_);
     }
     destination = memory.getWord(address);
   }
@@ -71,5 +71,5 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   } else {
     source = std::move(*immediate16_);
   }
-  ops::load(std::move(destination), std::move(source));
+  ops::load(destination, source);
 }
