@@ -90,7 +90,18 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   } else {
     address_type address = 0;
     if (destination_ == Destination::RegisterIndirect) {
-      address = hlp::indirect(registers.get(destRegister16_));
+      auto reg = registers.get(destRegister16_);
+      address = hlp::indirect(reg);
+      switch (postAction_) {
+      case Post::Increment:
+        ops::increment(reg);
+        break;
+      case Post::Decrement:
+        ops::decrement(reg);
+        break;
+      default:
+        break;
+      }
     } else {
       address = zeroPage_ ? hlp::indirect(*immediate8_) : hlp::indirect(*immediate16_);
     }
@@ -108,7 +119,18 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     source = registers.get(srcRegister8_);
     break;
   case Source::RegisterIndirect:
-    source = memory.getByte(hlp::indirect(registers.get(srcRegister16_)));
+    auto reg = registers.get(srcRegister16_);
+    source = memory.getByte(hlp::indirect(reg));
+    switch (postAction_) {
+    case Post::Increment:
+      ops::increment(reg);
+      break;
+    case Post::Decrement:
+      ops::decrement(reg);
+      break;
+    default:
+      break;
+    }
     break;
   }
   ops::load(destination, source);

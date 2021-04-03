@@ -8,10 +8,22 @@
 
 TEST(ControlDecoderTest, Construction) { EXPECT_NO_THROW(ControlDecoder d); }
 
-TEST(ControlDecoderTest, Decode)
+TEST(ControlDecoderTest, DecodeNop)
 {
   ControlDecoder d;
   EXPECT_NO_THROW(d.decode(variableLocation(0x00)));
+}
+
+TEST(ControlDecoderTest, DecodeEi)
+{
+  ControlDecoder d;
+  EXPECT_NO_THROW(d.decode(variableLocation(0xFB)));
+}
+
+TEST(ControlDecoderTest, DecodeDi)
+{
+  ControlDecoder d;
+  EXPECT_NO_THROW(d.decode(variableLocation(0xF3)));
 }
 
 TEST(ControlDecoderTest, Exception)

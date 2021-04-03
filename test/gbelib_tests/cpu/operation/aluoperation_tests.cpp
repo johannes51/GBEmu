@@ -46,6 +46,40 @@ TEST(AluOperationTest, AddImmediate)
   EXPECT_EQ(0x52, r.get(ByteRegisters::A).get());
 }
 
+TEST(AluOperationTest, Inc)
+{
+  AluOperation decOp { AluFunction::Inc, Source::None };
+  decOp.setRegister(ByteRegisters::B);
+  ASSERT_TRUE(decOp.isComplete());
+
+  CpuRegisters r;
+  EXPECT_EQ(1, decOp.cycles(r));
+
+  auto b = r.get(ByteRegisters::B);
+  b.set(0x1); // 0001
+  ASSERT_EQ(0x1, b.get());
+
+  IMemoryViewSP m;
+  decOp.execute(r, *m);
+  EXPECT_EQ(0x2, r.get(ByteRegisters::B).get()); // 0010
+}
+
+TEST(AluOperationTest, IncIndirect)
+{
+  AluOperation decOp { AluFunction::Inc, Source::Indirect };
+  ASSERT_TRUE(decOp.isComplete());
+
+  CpuRegisters r;
+  EXPECT_EQ(3, decOp.cycles(r));
+
+  r.get(WordRegisters::HL).set(0x0100);
+
+  RamBank m { { 0x0100, 0x0101 } };
+  m.getByte(0x0100).set(0x13);
+  decOp.execute(r, m);
+  EXPECT_EQ(0x14, m.getByte(0x0100).get());
+}
+
 TEST(AluOperationTest, Dec)
 {
   AluOperation decOp { AluFunction::Dec, Source::None };
@@ -56,12 +90,12 @@ TEST(AluOperationTest, Dec)
   EXPECT_EQ(1, decOp.cycles(r));
 
   auto b = r.get(ByteRegisters::B);
-  b.set(0x5); // 0101
-  ASSERT_EQ(0x5, b.get());
+  b.set(0x1); // 0001
+  ASSERT_EQ(0x1, b.get());
 
   IMemoryViewSP m;
   decOp.execute(r, *m);
-  EXPECT_EQ(0x4, r.get(ByteRegisters::B).get()); // 0100
+  EXPECT_EQ(0x0, r.get(ByteRegisters::B).get()); // 0000
 }
 
 TEST(AluOperationTest, DecIndirect)

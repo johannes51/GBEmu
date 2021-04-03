@@ -37,5 +37,5 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0439 LDH (0x07), A
   EXPECT_NO_THROW(cpu.clock());
-  //  EXPECT_NO_THROW(cpu.clock()); can't execute because would be in I/O area of mem
+  // EXPECT_NO_THROW(cpu.clock()); can't execute because would be in I/O area of mem
 }

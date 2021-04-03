@@ -84,4 +84,21 @@ TEST(RomTest, InstructionTiming)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC000 JP 0xC220
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC220 DI
+  EXPECT_NO_THROW(cpu.clock()); // 0xC221 LD SP, 0xDFFF
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC224 LD (0xD800), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC227 LD A, 0x00
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC229 LDH (0x07), A
+  EXPECT_NO_THROW(cpu.clock());
+  // EXPECT_NO_THROW(cpu.clock()); can't execute because would be in I/O area of mem
 }

@@ -46,12 +46,13 @@ auto Jump::isComplete() -> bool
 
 auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 {
+  unsigned int result = 0;
   if (type_ == JumpType::Absolute) {
-    return taken(registers.getFlags()) ? 4 : 3;
+    result = taken(registers.getFlags()) ? 4 : 3;
   } else if (type_ == JumpType::Relative) {
-    return taken(registers.getFlags()) ? 3 : 2;
+    result = taken(registers.getFlags()) ? 3 : 2;
   }
-  throw std::logic_error("Unimplemented JP type");
+  return result;
 }
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
@@ -74,7 +75,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
   }
 }
 
-bool Jump::taken(const FlagsView& flags) const
+auto Jump::taken(const FlagsView& flags) const -> bool
 {
   auto result = true;
   switch (condition_) {

@@ -12,3 +12,31 @@ TEST(JumpsCallsDecoderTest, Direct)
   ASSERT_TRUE(op);
   EXPECT_FALSE(op->isComplete());
 }
+
+TEST(JumpsCallsDecoderTest, DirectZ)
+{
+  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x20));
+  ASSERT_TRUE(op);
+  EXPECT_FALSE(op->isComplete());
+}
+
+TEST(JumpsCallsDecoderTest, DirectNZ)
+{
+  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x28));
+  ASSERT_TRUE(op);
+  EXPECT_FALSE(op->isComplete());
+}
+
+TEST(JumpsCallsDecoderTest, DirectC)
+{
+  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x30));
+  ASSERT_TRUE(op);
+  EXPECT_FALSE(op->isComplete());
+}
+
+TEST(JumpsCallsDecoderTest, DirectNC)
+{
+  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x38));
+  ASSERT_TRUE(op);
+  EXPECT_FALSE(op->isComplete());
+}

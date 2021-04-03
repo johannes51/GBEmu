@@ -2,11 +2,21 @@
 
 #include "cpu/cpuflags.h"
 
+TEST(CpuFlagsTest, Zero)
+{
+  uint8_t buf = 0;
+  CpuFlags flags(buf);
+  EXPECT_EQ(false, flags.zero());
+  flags.setZero();
+  EXPECT_EQ(true, flags.zero());
+  flags.clearZero();
+  EXPECT_EQ(false, flags.zero());
+}
+
 TEST(CpuFlagsTest, Carry)
 {
   uint8_t buf = 0;
-  CpuFlags flags_anon(buf);
-  FlagsView& flags = flags_anon;
+  CpuFlags flags(buf);
   EXPECT_EQ(false, flags.carry());
   flags.setCarry();
   EXPECT_EQ(true, flags.carry());
@@ -17,8 +27,7 @@ TEST(CpuFlagsTest, Carry)
 TEST(CpuFlagsTest, Interrupt)
 {
   uint8_t buf = 0;
-  CpuFlags flags_anon(buf);
-  FlagsView& flags = flags_anon;
+  CpuFlags flags(buf);
   EXPECT_EQ(true, flags.interruptEnabled());
   flags.disableInterrupt();
   EXPECT_EQ(false, flags.interruptEnabled());

@@ -37,7 +37,7 @@ auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
   unsigned int result = 1;
   if (source_ == Source::Indirect) {
     ++result;
-    if (function_ == AluFunction::Dec) {
+    if (function_ == AluFunction::Inc || function_ == AluFunction::Dec) {
       ++result;
     }
   } else if (source_ == Source::Immediate) {
@@ -114,9 +114,9 @@ void AluOperation::apply(FlagsView& flags, const ops::OpResult& result)
   } else if (result.z == 1) {
     flags.setZero();
   }
-  if (result.c == 0) {
-    flags.clearCarry();
-  } else if (result.c == 1) {
-    flags.setCarry();
-  }
+  //  if (result.c == 0) {
+  //    flags.clearCarry();
+  //  } else if (result.c == 1) {
+  //    flags.setCarry();
+  //  }
 }

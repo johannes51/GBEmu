@@ -43,6 +43,14 @@ TEST(OpsTest, Add8)
   EXPECT_EQ(5 + 13, lA.get());
 }
 
+TEST(OpsTest, Add8Z)
+{
+  auto lA = variableLocation(0);
+  auto lB = variableLocation(0);
+
+  EXPECT_EQ(1, ops::add(lA, lB).z);
+}
+
 TEST(OpsTest, Add16)
 {
   auto lA = variableLocation(0x35, 0x14);
@@ -51,6 +59,13 @@ TEST(OpsTest, Add16)
   ops::add(lA, lB);
 
   EXPECT_EQ(0xDBD7, lA.get());
+}
+
+TEST(OpsTest, Add16Z)
+{
+  auto lA = variableLocation(0x0, 0x0);
+
+  EXPECT_EQ(1, ops::add(lA, 0).z);
 }
 
 TEST(OpsTest, Load8)
@@ -71,4 +86,21 @@ TEST(OpsTest, Load16)
   ops::load(d, s);
 
   EXPECT_EQ(0xC3F1, d.get());
+}
+
+TEST(OpsTest, Xor)
+{
+  auto d = variableLocation(0x3C);
+  auto s = variableLocation(0xF1);
+
+  ops::xorF(d, s);
+
+  EXPECT_EQ(0xCD, d.get());
+}
+
+TEST(OpsTest, XorZ)
+{
+  auto d = variableLocation(0x3C);
+
+  EXPECT_EQ(1, ops::xorF(d, d).z);
 }
