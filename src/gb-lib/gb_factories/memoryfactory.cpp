@@ -30,6 +30,8 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(buildNullBank(NOT_USED));
   manifold->addSubManager(buildRamBank(HRAM));
 
+  manifold->addSubManager(std::make_shared<RamBank>(FAKE_IO)); // TODO: This is just a fake-out, actually implement!
+
   return manifold;
 }
 
