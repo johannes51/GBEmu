@@ -7,6 +7,7 @@
 #include "mem/mirrorbank.h"
 #include "mem/nullbank.h"
 #include "mem/rambank.h"
+#include "mem/registerbank.h"
 
 gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
     : loader_(std::move(romLoader))
@@ -29,6 +30,7 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(buildMirrorBank(MIRROR_U, WRAM1, wram1));
   manifold->addSubManager(buildNullBank(NOT_USED));
   manifold->addSubManager(buildRamBank(HRAM));
+  manifold->addSubManager(buildIe());
 
   manifold->addSubManager(std::make_shared<RamBank>(FAKE_IO)); // TODO: This is just a fake-out, actually implement!
 
@@ -53,3 +55,5 @@ auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerSP>
   }
   return result;
 }
+
+auto gb::MemoryFactory::buildIe() -> IMemoryManagerSP { return std::make_shared<RegisterBank>(IE); }

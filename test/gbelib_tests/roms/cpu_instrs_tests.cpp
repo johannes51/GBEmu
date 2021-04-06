@@ -38,4 +38,14 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock()); // 0x0439 LDH (0x07), A
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x043B LD A, 0x00
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x043D LD C, 0x0F
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x043F LD A, 0x00
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0441 LDH (0xFF), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
 }

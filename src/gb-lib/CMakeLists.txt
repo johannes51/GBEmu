@@ -61,6 +61,8 @@ target_sources(gbelib PRIVATE
   mem/nullbank.cpp
   mem/rambank.h
   mem/rambank.cpp
+  mem/registerbank.h
+  mem/registerbank.cpp
   mem/rombank.h
   mem/rombank.cpp
   mem/singleareamanager.h

@@ -22,6 +22,7 @@ private:
   static constexpr MemoryArea MIRROR_U = { 0xF000, 0xFDFF };
   static constexpr MemoryArea NOT_USED = { 0xFEA0, 0xFEFF };
   static constexpr MemoryArea HRAM = { 0xFF80, 0xFFFE };
+  static constexpr address_type IE = 0xFFFF;
 
   static constexpr MemoryArea FAKE_IO = { 0xFF00, 0xFF7F }; // TODO: This is just a fake-out, actually implement!
 
@@ -29,6 +30,7 @@ private:
   static IMemoryManagerSP buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin);
   static IMemoryManagerSP buildNullBank(MemoryArea area);
   std::vector<IMemoryManagerSP> buildCartBanks();
+  static IMemoryManagerSP buildIe();
 
   RomLoaderUP loader_;
 };
