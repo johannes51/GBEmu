@@ -48,4 +48,53 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock()); // 0x0441 LDH (0xFF), A
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0443 LD A, 0x00
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0445 LD (0x26), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0447 LD A, 0x80
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0449 LDH (0x26), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x044B LD A, 0xFF
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x044D LDH (0x25), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x044F LD A, 0x77
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0451 LDH (0x24), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0453 LD HL, 0x0B8F
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0456 CALL 0x02A3
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x02A3 LD A, L
+  EXPECT_NO_THROW(cpu.clock()); // 0x02A4 LD (0xD602), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x02A7 LD A, H
+  EXPECT_NO_THROW(cpu.clock()); // 0x02A8 LD (0xD603), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x02AB JR 0x04 (4, 0x02B1)
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x02B1 LD A, 0xC3
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x02B3 LD (0xD601), A
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock());
 }

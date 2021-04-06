@@ -7,12 +7,15 @@
 #include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "location/zerobyte.h"
+#include "mem/imemoryview.h"
+#include "util/helpers.h"
 #include "util/ops.h"
 
-Jump::Jump(JumpType type, Condition condition)
+Jump::Jump(JumpType type, TargetType target, Condition condition)
     : lower_(std::nullopt)
     , upper_(std::nullopt)
     , type_(type)
+    , target_(target)
     , condition_(condition)
 {
 }
@@ -33,26 +36,40 @@ void Jump::nextOpcode(Location<uint8_t> opcode)
 auto Jump::isComplete() -> bool
 {
   auto result = true;
-  switch (type_) {
-  case JumpType::Absolute:
-    result = lower_ && upper_;
-    break;
-  case JumpType::Relative:
-    result = static_cast<bool>(lower_);
-    break;
+  if (type_ == JumpType::Return || type_ == JumpType::RetI) {
+    result = true;
+  } else {
+    switch (target_) {
+    case TargetType::Absolute:
+      result = lower_ && upper_;
+      break;
+    case TargetType::Relative:
+      result = static_cast<bool>(lower_);
+      break;
+    }
   }
   return result;
 }
 
 auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 {
-  unsigned int result = 0;
-  if (type_ == JumpType::Absolute) {
-    result = taken(registers.getFlags()) ? 4 : 3;
-  } else if (type_ == JumpType::Relative) {
-    result = taken(registers.getFlags()) ? 3 : 2;
+  if (target_ == TargetType::Absolute) {
+    switch (type_) {
+    case JumpType::Regular:
+      return taken(registers.getFlags()) ? TakenJump : SkippedJump;
+      break;
+    case JumpType::Call:
+      return taken(registers.getFlags()) ? TakenCall : SkippedCall;
+      break;
+    case JumpType::Return:
+    case JumpType::RetI:
+      return (condition_ == Condition::None) ? NormalReturn : (taken(registers.getFlags()) ? TakenReturn : SkippedReturn);
+      break;
+    }
+  } else /*if (target_ == TargetType::Relative)*/ {
+    return taken(registers.getFlags()) ? 3 : 2;
   }
-  return result;
+  throw std::logic_error("Invalid configuration!");
 }
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
@@ -60,11 +77,27 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
   (void)memory;
   auto target = registers.get(WordRegisters::PC);
   if (taken(registers.getFlags())) {
-    switch (type_) {
-    case JumpType::Absolute:
+    switch (target_) {
+    case TargetType::Absolute: {
+      auto sp = registers.get(WordRegisters::SP);
+      if (type_ == JumpType::Call) {
+        ops::decrement(sp);
+        ops::decrement(sp);
+        auto memLoc = memory.getWord(hlp::indirect(sp));
+        ops::load(memLoc, registers.get(WordRegisters::PC));
+      }
       ops::load(target, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
+      if (type_ == JumpType::Return) {
+        ops::increment(sp);
+        ops::increment(sp);
+      } else if (type_ == JumpType::RetI) {
+        ops::increment(sp);
+        ops::increment(sp);
+        registers.getFlags().enableInterrupt();
+      }
       break;
-    case JumpType::Relative:
+    }
+    case TargetType::Relative:
       auto operandUnsigned = lower_->get();
       int8_t operand = 0;
       std::memcpy(

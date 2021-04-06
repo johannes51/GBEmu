@@ -9,7 +9,7 @@
 
 TEST(JumpTest, Direct)
 {
-  Jump jump { JumpType::Absolute, Condition::None };
+  Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());
@@ -26,7 +26,7 @@ TEST(JumpTest, Direct)
 
 TEST(JumpTest, Relative)
 {
-  Jump jump { JumpType::Relative, Condition::None };
+  Jump jump { JumpType::Regular, TargetType::Relative, Condition::None };
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x1A)));
   ASSERT_TRUE(jump.isComplete());
@@ -41,7 +41,7 @@ TEST(JumpTest, Relative)
 
 TEST(JumpTest, Z)
 {
-  Jump jump { JumpType::Relative, Condition::Z };
+  Jump jump { JumpType::Regular, TargetType::Relative, Condition::Z };
   jump.nextOpcode(variableLocation(0x1A));
 
   CpuRegisters r;
@@ -58,7 +58,7 @@ TEST(JumpTest, Z)
 
 TEST(JumpTest, NZ)
 {
-  Jump jump { JumpType::Relative, Condition::NZ };
+  Jump jump { JumpType::Regular, TargetType::Relative, Condition::NZ };
   jump.nextOpcode(variableLocation(0x1A));
 
   CpuRegisters r;
@@ -75,7 +75,7 @@ TEST(JumpTest, NZ)
 
 TEST(JumpTest, C)
 {
-  Jump jump { JumpType::Relative, Condition::C };
+  Jump jump { JumpType::Regular, TargetType::Relative, Condition::C };
   jump.nextOpcode(variableLocation(0x1A));
 
   CpuRegisters r;
@@ -92,7 +92,7 @@ TEST(JumpTest, C)
 
 TEST(JumpTest, NC)
 {
-  Jump jump { JumpType::Relative, Condition::NC };
+  Jump jump { JumpType::Regular, TargetType::Relative, Condition::NC };
   jump.nextOpcode(variableLocation(0x1A));
 
   CpuRegisters r;
@@ -109,7 +109,7 @@ TEST(JumpTest, NC)
 
 TEST(JumpTest, Next)
 {
-  Jump jump { JumpType::Absolute, Condition::None };
+  Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());

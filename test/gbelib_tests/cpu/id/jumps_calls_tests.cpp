@@ -6,37 +6,24 @@
 
 #include "mock/variablebyte.h"
 
-TEST(JumpsCallsDecoderTest, Direct)
-{
-  auto op = JumpsCallsDecoder {}.decode(variableLocation(0xC3));
-  ASSERT_TRUE(op);
-  EXPECT_FALSE(op->isComplete());
-}
+TEST(JumpsCallsDecoderTest, Construction) { EXPECT_NO_THROW(JumpsCallsDecoder {}); }
 
-TEST(JumpsCallsDecoderTest, DirectZ)
-{
-  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x20));
-  ASSERT_TRUE(op);
-  EXPECT_FALSE(op->isComplete());
-}
+TEST(JumpsCallsDecoderTest, Direct) { EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0xC3))); }
+
+TEST(JumpsCallsDecoderTest, DirectZ) { EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0x20))); }
 
 TEST(JumpsCallsDecoderTest, DirectNZ)
 {
-  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x28));
-  ASSERT_TRUE(op);
-  EXPECT_FALSE(op->isComplete());
+  EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0x28)));
 }
 
-TEST(JumpsCallsDecoderTest, DirectC)
-{
-  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x30));
-  ASSERT_TRUE(op);
-  EXPECT_FALSE(op->isComplete());
-}
+TEST(JumpsCallsDecoderTest, DirectC) { EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0x30))); }
 
 TEST(JumpsCallsDecoderTest, DirectNC)
 {
-  auto op = JumpsCallsDecoder {}.decode(variableLocation(0x38));
-  ASSERT_TRUE(op);
-  EXPECT_FALSE(op->isComplete());
+  EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0x38)));
 }
+
+TEST(JumpsCallsDecoderTest, Call) { EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0xCD))); }
+
+TEST(JumpsCallsDecoderTest, Return) { EXPECT_NO_THROW(auto op = JumpsCallsDecoder {}.decode(variableLocation(0xC9))); }
