@@ -18,6 +18,7 @@ public:
 private:
   static JumpType type(const OpcodeView& opcode);
   static Condition condition(const OpcodeView& opcode);
+  static void feedResetOpcode(Operation& op, OpcodeView opcode);
 };
 
 #endif // JUMPS_CALLS_H
