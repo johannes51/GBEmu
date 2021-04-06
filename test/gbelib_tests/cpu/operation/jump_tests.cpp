@@ -5,7 +5,7 @@
 #include "cpu/operation/jump.h"
 #include "location/location.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(JumpTest, Direct)
 {

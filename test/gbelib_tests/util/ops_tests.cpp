@@ -4,7 +4,7 @@
 #include "location/rambyte.h"
 #include "util/ops.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(OpsTest, Increment8)
 {

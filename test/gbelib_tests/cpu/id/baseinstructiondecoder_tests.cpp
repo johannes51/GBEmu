@@ -5,7 +5,7 @@
 #include "cpu/operation/operation.h"
 #include "location/location.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(BaseInstructionDecoderTest, Construction) { EXPECT_NO_THROW(BaseInstructionDecoder d); }
 

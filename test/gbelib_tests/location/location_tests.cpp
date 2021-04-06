@@ -4,7 +4,7 @@
 #include "location/zerobyte.h"
 #include "mem/rambank.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(LocationTest, Generate1)
 {

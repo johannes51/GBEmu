@@ -81,6 +81,8 @@ target_sources(gbelib PRIVATE
   location/rambyte.cpp
   location/rombyte.h
   location/rombyte.cpp
+  location/variablebyte.h
+  location/variablebyte.cpp
   location/zerobyte.h
   location/zerobyte.cpp
   util/helpers.h

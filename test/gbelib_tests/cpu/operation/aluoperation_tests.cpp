@@ -5,7 +5,7 @@
 #include "location/location.h"
 #include "mem/rambank.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(AluOperationTest, Xor)
 {

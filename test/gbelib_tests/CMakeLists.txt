@@ -40,8 +40,6 @@ set(TEST_SOURCES
   mem/mirrorbank_tests.cpp
   mem/rambank_tests.cpp
   mem/rombank_tests.cpp
-  mock/variablebyte.h
-  mock/variablebyte.cpp
   roms/cpu_instrs_tests.cpp
   roms/instr_timing_tests.cpp
   util/helpers_tests.cpp

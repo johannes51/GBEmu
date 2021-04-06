@@ -4,7 +4,7 @@
 #include "cpu/operation/operation.h"
 #include "location/location.h"
 
-#include "mock/variablebyte.h"
+#include "location/variablebyte.h"
 
 TEST(JumpsCallsDecoderTest, Construction) { EXPECT_NO_THROW(JumpsCallsDecoder {}); }
 
