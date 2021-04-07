@@ -40,32 +40,32 @@ CpuRegisters::CpuRegisters()
 
 CpuRegisters::~CpuRegisters() = default;
 
-auto CpuRegisters::get(ByteRegisters registerName) -> Location<uint8_t>
+auto CpuRegisters::get(ByteRegister registerName) -> Location<uint8_t>
 {
   auto byte = RegisterName::A;
   switch (registerName) {
-  case ByteRegisters::A:
+  case ByteRegister::A:
     byte = RegisterName::A;
     break;
-  case ByteRegisters::B:
+  case ByteRegister::B:
     byte = RegisterName::B;
     break;
-  case ByteRegisters::C:
+  case ByteRegister::C:
     byte = RegisterName::C;
     break;
-  case ByteRegisters::D:
+  case ByteRegister::D:
     byte = RegisterName::D;
     break;
-  case ByteRegisters::E:
+  case ByteRegister::E:
     byte = RegisterName::E;
     break;
-  case ByteRegisters::H:
+  case ByteRegister::H:
     byte = RegisterName::H;
     break;
-  case ByteRegisters::L:
+  case ByteRegister::L:
     byte = RegisterName::L;
     break;
-  case ByteRegisters::None:
+  case ByteRegister::None:
   default:
     throw std::invalid_argument("Unable to provide register");
     break;
@@ -73,36 +73,36 @@ auto CpuRegisters::get(ByteRegisters registerName) -> Location<uint8_t>
   return Location<uint8_t>::generate(std::make_unique<RamByte>(registers_.at(byte)));
 }
 
-auto CpuRegisters::get(WordRegisters registerName) -> Location<uint16_t>
+auto CpuRegisters::get(WordRegister registerName) -> Location<uint16_t>
 {
   auto lower = RegisterName::PCl;
   auto upper = RegisterName::PCu;
   switch (registerName) {
-  case WordRegisters::AF:
+  case WordRegister::AF:
     lower = RegisterName::F;
     upper = RegisterName::A;
     break;
-  case WordRegisters::BC:
+  case WordRegister::BC:
     lower = RegisterName::C;
     upper = RegisterName::B;
     break;
-  case WordRegisters::DE:
+  case WordRegister::DE:
     lower = RegisterName::E;
     upper = RegisterName::D;
     break;
-  case WordRegisters::HL:
+  case WordRegister::HL:
     lower = RegisterName::L;
     upper = RegisterName::H;
     break;
-  case WordRegisters::SP:
+  case WordRegister::SP:
     lower = RegisterName::SPl;
     upper = RegisterName::SPu;
     break;
-  case WordRegisters::PC:
+  case WordRegister::PC:
     lower = RegisterName::PCl;
     upper = RegisterName::PCu;
     break;
-  case WordRegisters::None:
+  case WordRegister::None:
   default:
     throw std::invalid_argument("Unable to provide register");
     break;

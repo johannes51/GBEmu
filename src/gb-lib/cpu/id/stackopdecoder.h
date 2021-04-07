@@ -5,7 +5,7 @@
 
 #include "cpu/id/opcodeview.h"
 
-enum class WordRegisters;
+enum class WordRegister;
 
 class StackOpDecoder : public InstructionDecoder {
 public:
@@ -15,7 +15,7 @@ public:
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:
-  static WordRegisters selectRegister(const OpcodeView& opcode);
+  static WordRegister selectRegister(const OpcodeView& opcode);
 };
 
 #endif // STACKOPDECODER_H

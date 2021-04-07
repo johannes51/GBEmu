@@ -24,14 +24,14 @@ public:
   unsigned int cycles(const RegistersInterface& registers) override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
-  void setDestination(WordRegisters destRegister);
-  void setSource(WordRegisters srcRegister);
+  void setDestination(WordRegister destRegister);
+  void setSource(WordRegister srcRegister);
 
 private:
   const Destination destination_;
   const Source source_;
-  WordRegisters destRegister_ = WordRegisters::None;
-  WordRegisters srcRegister_ = WordRegisters::None;
+  WordRegister destRegister_ = WordRegister::None;
+  WordRegister srcRegister_ = WordRegister::None;
   std::optional<Location<uint8_t>> immediate8_ = std::nullopt;
   std::optional<Location<uint16_t>> immediate16_ = std::nullopt;
 };

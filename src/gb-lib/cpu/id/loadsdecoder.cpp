@@ -6,20 +6,20 @@
 #include "cpu/operation/wordload.h"
 #include "opcodeview.h"
 
-auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, ByteRegisters>
+auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, ByteRegister>
 {
-  auto destRegister = ByteRegisters::A;
+  auto destRegister = ByteRegister::A;
   auto dest = ByteLoad::Destination::Register;
   if (opcode.lowerNibble() <= 0x7) {
     switch (opcode.upperNibble()) {
     case 0x4:
-      destRegister = ByteRegisters::B;
+      destRegister = ByteRegister::B;
       break;
     case 0x5:
-      destRegister = ByteRegisters::D;
+      destRegister = ByteRegister::D;
       break;
     case 0x6:
-      destRegister = ByteRegisters::H;
+      destRegister = ByteRegister::H;
       break;
     case 0x7:
       dest = ByteLoad::Destination::RegisterIndirect;
@@ -31,16 +31,16 @@ auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, B
   } else {
     switch (opcode.upperNibble()) {
     case 0x4:
-      destRegister = ByteRegisters::C;
+      destRegister = ByteRegister::C;
       break;
     case 0x5:
-      destRegister = ByteRegisters::E;
+      destRegister = ByteRegister::E;
       break;
     case 0x6:
-      destRegister = ByteRegisters::L;
+      destRegister = ByteRegister::L;
       break;
     case 0x7:
-      destRegister = ByteRegisters::A;
+      destRegister = ByteRegister::A;
       break;
     default:
       throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
@@ -50,34 +50,34 @@ auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, B
   return std::make_pair(dest, destRegister);
 }
 
-auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegisters>
+auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegister>
 {
-  auto srcRegister = ByteRegisters::A;
+  auto srcRegister = ByteRegister::A;
   auto src = ByteLoad::Source::Register;
   switch (opcode.lowerNibble()) {
   case 0x0:
   case 0x8:
-    srcRegister = ByteRegisters::B;
+    srcRegister = ByteRegister::B;
     break;
   case 0x1:
   case 0x9:
-    srcRegister = ByteRegisters::C;
+    srcRegister = ByteRegister::C;
     break;
   case 0x2:
   case 0xA:
-    srcRegister = ByteRegisters::D;
+    srcRegister = ByteRegister::D;
     break;
   case 0x3:
   case 0xB:
-    srcRegister = ByteRegisters::E;
+    srcRegister = ByteRegister::E;
     break;
   case 0x4:
   case 0xC:
-    srcRegister = ByteRegisters::H;
+    srcRegister = ByteRegister::H;
     break;
   case 0x5:
   case 0xD:
-    srcRegister = ByteRegisters::L;
+    srcRegister = ByteRegister::L;
     break;
   case 0x6:
   case 0xE:
@@ -85,7 +85,7 @@ auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegiste
     break;
   case 0x7:
   case 0xF:
-    srcRegister = ByteRegisters::A;
+    srcRegister = ByteRegister::A;
     break;
   default:
     throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
@@ -117,37 +117,37 @@ auto loadImmediate(const OpcodeView opcode) -> OperationUP
   switch (opcode.value()) {
   case 0x06: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegisters::B);
+    p->setDestination(ByteRegister::B);
     result = std::move(p);
     break;
   }
   case 0x0E: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegisters::C);
+    p->setDestination(ByteRegister::C);
     result = std::move(p);
     break;
   }
   case 0x11: {
     auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegisters::DE);
+    p->setDestination(WordRegister::DE);
     result = std::move(p);
     break;
   }
   case 0x21: {
     auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegisters::HL);
+    p->setDestination(WordRegister::HL);
     result = std::move(p);
     break;
   }
   case 0x31: {
     auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegisters::SP);
+    p->setDestination(WordRegister::SP);
     result = std::move(p);
     break;
   }
   case 0x3E: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegisters::A);
+    p->setDestination(ByteRegister::A);
     result = std::move(p);
     break;
   }
@@ -164,85 +164,85 @@ auto loadImmediateIndirect(const OpcodeView opcode) -> OperationUP
   switch (opcode.value()) {
   case 0x02: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegisters::BC);
-    p->setSource(ByteRegisters::A);
+    p->setDestination(WordRegister::BC);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0x12: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegisters::DE);
-    p->setSource(ByteRegisters::A);
+    p->setDestination(WordRegister::DE);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0x22: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegisters::HL);
+    p->setDestination(WordRegister::HL);
     p->setPostAction(ByteLoad::Post::Increment);
-    p->setSource(ByteRegisters::A);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0x32: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegisters::HL);
+    p->setDestination(WordRegister::HL);
     p->setPostAction(ByteLoad::Post::Decrement);
-    p->setSource(ByteRegisters::A);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0x0A: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegisters::A);
-    p->setSource(WordRegisters::BC);
+    p->setDestination(ByteRegister::A);
+    p->setSource(WordRegister::BC);
     result = std::move(p);
     break;
   }
   case 0x1A: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegisters::A);
-    p->setSource(WordRegisters::DE);
+    p->setDestination(ByteRegister::A);
+    p->setSource(WordRegister::DE);
     result = std::move(p);
     break;
   }
   case 0x2A: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegisters::A);
-    p->setSource(WordRegisters::HL);
+    p->setDestination(ByteRegister::A);
+    p->setSource(WordRegister::HL);
     p->setPostAction(ByteLoad::Post::Increment);
     result = std::move(p);
     break;
   }
   case 0x3A: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegisters::A);
-    p->setSource(WordRegisters::HL);
+    p->setDestination(ByteRegister::A);
+    p->setSource(WordRegister::HL);
     p->setPostAction(ByteLoad::Post::Decrement);
     result = std::move(p);
     break;
   }
   case 0xE0: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register, true);
-    p->setSource(ByteRegisters::A);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0xEA: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect);
-    p->setDestination(ByteRegisters::A);
+    p->setDestination(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0xF0: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register, true);
-    p->setSource(ByteRegisters::A);
+    p->setSource(ByteRegister::A);
     result = std::move(p);
     break;
   }
   case 0xFA: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect);
-    p->setDestination(ByteRegisters::A);
+    p->setDestination(ByteRegister::A);
     result = std::move(p);
     break;
   }
@@ -258,20 +258,20 @@ auto loadRegisterIndirect(const OpcodeView opcode, bool store) -> OperationUP
   auto dest = store ? ByteLoad::Destination::RegisterIndirect : ByteLoad::Destination::Register;
   auto src = store ? ByteLoad::Source::Register : ByteLoad::Source::RegisterIndirect;
   auto result = std::make_unique<ByteLoad>(dest, src);
-  WordRegisters indirectRegister = WordRegisters::HL;
+  WordRegister indirectRegister = WordRegister::HL;
   switch (opcode.upperNibble()) {
   case 0x0:
-    indirectRegister = WordRegisters::BC;
+    indirectRegister = WordRegister::BC;
     break;
   case 0x1:
-    indirectRegister = WordRegisters::DE;
+    indirectRegister = WordRegister::DE;
     break;
   case 0x2:
-    indirectRegister = WordRegisters::HL;
+    indirectRegister = WordRegister::HL;
     result->setPostAction(ByteLoad::Post::Increment);
     break;
   case 0x3:
-    indirectRegister = WordRegisters::HL;
+    indirectRegister = WordRegister::HL;
     result->setPostAction(ByteLoad::Post::Decrement);
     break;
   default:
@@ -280,9 +280,9 @@ auto loadRegisterIndirect(const OpcodeView opcode, bool store) -> OperationUP
   }
   if (store) {
     result->setDestination(indirectRegister);
-    result->setSource(ByteRegisters::A);
+    result->setSource(ByteRegister::A);
   } else {
-    result->setDestination(ByteRegisters::A);
+    result->setDestination(ByteRegister::A);
     result->setSource(indirectRegister);
   }
   return result;

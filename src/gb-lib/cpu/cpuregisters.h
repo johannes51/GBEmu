@@ -12,8 +12,8 @@ public:
   ~CpuRegisters();
   DISABLE_COPY_AND_MOVE(CpuRegisters)
 
-  Location<uint8_t> get(ByteRegisters registerName) override;
-  Location<uint16_t> get(WordRegisters registerName) override;
+  Location<uint8_t> get(ByteRegister registerName) override;
+  Location<uint16_t> get(WordRegister registerName) override;
 
   FlagsView& getFlags() override;
   const FlagsView& getFlags() const override;

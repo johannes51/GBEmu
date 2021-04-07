@@ -29,7 +29,7 @@ void AluOperation::nextOpcode(Location<uint8_t> opcode)
 
 auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate || immediate_; }
 
-void AluOperation::setRegister(ByteRegisters registerName) { register_ = registerName; }
+void AluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
 
 auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
 {
@@ -52,7 +52,7 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
   ops::OpResult result { 0, 0, 0, 0 };
   switch (function_) {
   case AluFunction::Add: {
-    auto loc = registers.get(ByteRegisters::A);
+    auto loc = registers.get(ByteRegister::A);
     result = ops::add(loc, getSource(registers, memory));
     break;
   }
@@ -77,7 +77,7 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
     break;
   }
   case AluFunction::Xor: {
-    auto loc = registers.get(ByteRegisters::A);
+    auto loc = registers.get(ByteRegister::A);
     result = ops::xorF(loc, getSource(registers, memory));
     break;
   }
@@ -92,7 +92,7 @@ auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Locat
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    return mem.getByte(hlp::indirect(reg.get(WordRegisters::HL)));
+    return mem.getByte(hlp::indirect(reg.get(WordRegister::HL)));
     break;
   case Source::Register:
     if (!register_) {

@@ -28,7 +28,7 @@ TEST(CpuTest, Execution)
   auto* regAsPtr = reg.get();
   Cpu cpu(move(reg), mem, InstructionSetBuilder::construct());
   ASSERT_NO_THROW(cpu.clock()); // NOP
-  EXPECT_EQ(0x0101, regAsPtr->get(WordRegisters::PC).get());
+  EXPECT_EQ(0x0101, regAsPtr->get(WordRegister::PC).get());
 }
 
 TEST(CpuTest, Execution2)
@@ -39,11 +39,11 @@ TEST(CpuTest, Execution2)
   auto* regAsPtr = reg.get();
   Cpu cpu(move(reg), mem, InstructionSetBuilder::construct());
   ASSERT_NO_THROW(cpu.clock()); // NOP
-  EXPECT_EQ(0x0101, regAsPtr->get(WordRegisters::PC).get());
+  EXPECT_EQ(0x0101, regAsPtr->get(WordRegister::PC).get());
   EXPECT_NO_THROW(cpu.clock()); // 0x0101 JP 0x0637
-  EXPECT_EQ(0x0104, regAsPtr->get(WordRegisters::PC).get());
+  EXPECT_EQ(0x0104, regAsPtr->get(WordRegister::PC).get());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
-  EXPECT_EQ(0x0637, regAsPtr->get(WordRegisters::PC).get());
+  EXPECT_EQ(0x0637, regAsPtr->get(WordRegister::PC).get());
 }

@@ -5,38 +5,38 @@
 #include "cpu/id/opcodeview.h"
 #include "cpu/operation/aluoperation.h"
 
-auto sourceRegister(const OpcodeView& opcode) -> ByteRegisters
+auto sourceRegister(const OpcodeView& opcode) -> ByteRegister
 {
-  ByteRegisters result;
+  ByteRegister result;
   switch (opcode.lowerNibble()) {
   case 0x0:
   case 0x8:
-    result = ByteRegisters::B;
+    result = ByteRegister::B;
     break;
   case 0x1:
   case 0x9:
-    result = ByteRegisters::C;
+    result = ByteRegister::C;
     break;
   case 0x2:
   case 0xA:
-    result = ByteRegisters::D;
+    result = ByteRegister::D;
     break;
   case 0x3:
   case 0xB:
-    result = ByteRegisters::E;
+    result = ByteRegister::E;
     break;
   case 0x4:
   case 0xC:
-    result = ByteRegisters::H;
+    result = ByteRegister::H;
     break;
   case 0x5:
   case 0xD:
-    result = ByteRegisters::L;
+    result = ByteRegister::L;
     break;
   case 0x7:
   case 0xF:
   default:
-    result = ByteRegisters::A;
+    result = ByteRegister::A;
     break;
   }
   return result;
@@ -96,31 +96,31 @@ auto incDec(const OpcodeView& opcode) -> OperationUP
   switch (opcode.value()) {
   case 0x04:
   case 0x05:
-    result->setRegister(ByteRegisters::B);
+    result->setRegister(ByteRegister::B);
     break;
   case 0x14:
   case 0x15:
-    result->setRegister(ByteRegisters::D);
+    result->setRegister(ByteRegister::D);
     break;
   case 0x24:
   case 0x25:
-    result->setRegister(ByteRegisters::H);
+    result->setRegister(ByteRegister::H);
     break;
   case 0x0C:
   case 0x0D:
-    result->setRegister(ByteRegisters::C);
+    result->setRegister(ByteRegister::C);
     break;
   case 0x1C:
   case 0x1D:
-    result->setRegister(ByteRegisters::E);
+    result->setRegister(ByteRegister::E);
     break;
   case 0x2C:
   case 0x2D:
-    result->setRegister(ByteRegisters::L);
+    result->setRegister(ByteRegister::L);
     break;
   case 0x3C:
   case 0x3D:
-    result->setRegister(ByteRegisters::A);
+    result->setRegister(ByteRegister::A);
     break;
   default:
     break;

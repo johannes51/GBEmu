@@ -19,9 +19,9 @@ TEST(JumpTest, Direct)
   CpuRegisters r;
   EXPECT_EQ(4, jump.cycles(r));
 
-  ASSERT_NE(0x195E, r.get(WordRegisters::PC).get());
+  ASSERT_NE(0x195E, r.get(WordRegister::PC).get());
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x195E, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x195E, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Relative)
@@ -34,9 +34,9 @@ TEST(JumpTest, Relative)
   CpuRegisters r;
   EXPECT_EQ(3, jump.cycles(r));
 
-  r.get(WordRegisters::PC).set(0x1900);
+  r.get(WordRegister::PC).set(0x1900);
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Z)
@@ -46,14 +46,14 @@ TEST(JumpTest, Z)
 
   CpuRegisters r;
 
-  r.get(WordRegisters::PC).set(0x1900);
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setZero();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
-  r.get(WordRegisters::PC).set(0x1900);
+  EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearZero();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x1900, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, NZ)
@@ -63,14 +63,14 @@ TEST(JumpTest, NZ)
 
   CpuRegisters r;
 
-  r.get(WordRegisters::PC).set(0x1900);
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearZero();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
-  r.get(WordRegisters::PC).set(0x1900);
+  EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setZero();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x1900, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, C)
@@ -80,14 +80,14 @@ TEST(JumpTest, C)
 
   CpuRegisters r;
 
-  r.get(WordRegisters::PC).set(0x1900);
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setCarry();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
-  r.get(WordRegisters::PC).set(0x1900);
+  EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearCarry();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x1900, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, NC)
@@ -97,14 +97,14 @@ TEST(JumpTest, NC)
 
   CpuRegisters r;
 
-  r.get(WordRegisters::PC).set(0x1900);
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearCarry();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x191A, r.get(WordRegisters::PC).get());
-  r.get(WordRegisters::PC).set(0x1900);
+  EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setCarry();
   jump.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x1900, r.get(WordRegisters::PC).get());
+  EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Next)
@@ -122,8 +122,8 @@ TEST(JumpTest, CallReturn)
 {
   RamBank b { { 0x00, 0xFF } };
   CpuRegisters r;
-  r.get(WordRegisters::PC).set(0xC300);
-  r.get(WordRegisters::SP).set(0x00FF);
+  r.get(WordRegister::PC).set(0xC300);
+  r.get(WordRegister::SP).set(0x00FF);
 
   Jump call { JumpType::Call, TargetType::Absolute, Condition::None };
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xFE)));
@@ -132,31 +132,31 @@ TEST(JumpTest, CallReturn)
 
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());
   EXPECT_EQ(0x00, b.getByte(0xFF).get());
-  EXPECT_EQ(0xC3FE, r.get(WordRegisters::PC).get());
-  EXPECT_EQ(0xFD, r.get(WordRegisters::SP).get());
+  EXPECT_EQ(0xC3FE, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFD, r.get(WordRegister::SP).get());
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::None };
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0x00, b.getByte(0xFD).get());
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());
-  EXPECT_EQ(0xC300, r.get(WordRegisters::PC).get());
-  EXPECT_EQ(0xFF, r.get(WordRegisters::SP).get());
+  EXPECT_EQ(0xC300, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFF, r.get(WordRegister::SP).get());
 }
 
 TEST(JumpTest, RetI)
 {
   RamBank b { { 0x00, 0xFF } };
   CpuRegisters r;
-  r.get(WordRegisters::PC).set(0x0C56);
-  r.get(WordRegisters::SP).set(0x00FD);
+  r.get(WordRegister::PC).set(0x0C56);
+  r.get(WordRegister::SP).set(0x00FD);
   b.getWord(0xFD).set(0xC003);
   r.getFlags().disableInterrupt();
 
   Jump ret { JumpType::RetI, TargetType::Absolute, Condition::None };
   EXPECT_NO_THROW(ret.execute(r, b));
 
-  EXPECT_EQ(0xC003, r.get(WordRegisters::PC).get());
-  EXPECT_EQ(0xFF, r.get(WordRegisters::SP).get());
+  EXPECT_EQ(0xC003, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFF, r.get(WordRegister::SP).get());
   EXPECT_TRUE(r.getFlags().interruptEnabled());
 }

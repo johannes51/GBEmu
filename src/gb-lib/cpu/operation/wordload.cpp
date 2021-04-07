@@ -37,9 +37,9 @@ auto WordLoad::isComplete() -> bool
   return result;
 }
 
-void WordLoad::setDestination(WordRegisters destRegister) { destRegister_ = destRegister; }
+void WordLoad::setDestination(WordRegister destRegister) { destRegister_ = destRegister; }
 
-void WordLoad::setSource(WordRegisters srcRegister) { srcRegister_ = srcRegister; }
+void WordLoad::setSource(WordRegister srcRegister) { srcRegister_ = srcRegister; }
 
 auto WordLoad::cycles(const RegistersInterface& registers) -> unsigned int
 {

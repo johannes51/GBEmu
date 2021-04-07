@@ -24,19 +24,19 @@ public:
   unsigned int cycles(const RegistersInterface& registers) override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
-  void setDestination(ByteRegisters destRegister);
-  void setDestination(WordRegisters destRegister);
-  void setSource(ByteRegisters srcRegister);
-  void setSource(WordRegisters srcRegister);
+  void setDestination(ByteRegister destRegister);
+  void setDestination(WordRegister destRegister);
+  void setSource(ByteRegister srcRegister);
+  void setSource(WordRegister srcRegister);
   void setPostAction(Post postAction);
 
 private:
   const Destination destination_;
   const Source source_;
-  ByteRegisters destRegister8_ = ByteRegisters::None;
-  ByteRegisters srcRegister8_ = ByteRegisters::None;
-  WordRegisters destRegister16_ = WordRegisters::None;
-  WordRegisters srcRegister16_ = WordRegisters::None;
+  ByteRegister destRegister8_ = ByteRegister::None;
+  ByteRegister srcRegister8_ = ByteRegister::None;
+  WordRegister destRegister16_ = WordRegister::None;
+  WordRegister srcRegister16_ = WordRegister::None;
   Post postAction_ = Post::None;
   std::optional<Location<uint8_t>> immediate8_ = std::nullopt;
   std::optional<Location<uint16_t>> immediate16_ = std::nullopt;

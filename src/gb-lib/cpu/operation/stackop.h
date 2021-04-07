@@ -7,14 +7,14 @@
 
 class StackOp : public SingleOp {
 public:
-  explicit StackOp(bool isPush, WordRegisters target);
+  explicit StackOp(bool isPush, WordRegister target);
 
   unsigned int cycles(const RegistersInterface& registers) override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:
   bool push_;
-  WordRegisters target_;
+  WordRegister target_;
 };
 
 #endif // STACKOP_H

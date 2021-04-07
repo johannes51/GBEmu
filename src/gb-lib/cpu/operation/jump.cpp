@@ -75,17 +75,17 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
-  auto target = registers.get(WordRegisters::PC);
+  auto target = registers.get(WordRegister::PC);
   if (taken(registers.getFlags())) {
     if (target_ == TargetType::Absolute) {
-      auto sp = registers.get(WordRegisters::SP);
+      auto sp = registers.get(WordRegister::SP);
       switch (type_) {
       case JumpType::Call:
         ops::decrement(sp);
         ops::decrement(sp);
         {
           auto memLoc = memory.getWord(hlp::indirect(sp));
-          ops::load(memLoc, registers.get(WordRegisters::PC));
+          ops::load(memLoc, registers.get(WordRegister::PC));
         }
         [[fallthrough]];
       case JumpType::Regular:

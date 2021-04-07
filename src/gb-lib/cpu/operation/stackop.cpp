@@ -4,7 +4,7 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-StackOp::StackOp(bool isPush, WordRegisters target)
+StackOp::StackOp(bool isPush, WordRegister target)
     : push_(isPush)
     , target_(target)
 {
@@ -19,7 +19,7 @@ auto StackOp::cycles(const RegistersInterface& registers) -> unsigned int
 void StackOp::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   auto reg = registers.get(target_);
-  auto sp = registers.get(WordRegisters::SP);
+  auto sp = registers.get(WordRegister::SP);
   if (push_) {
     ops::decrement(sp);
     ops::decrement(sp);
@@ -30,7 +30,7 @@ void StackOp::execute(RegistersInterface& registers, IMemoryView& memory)
     ops::load(reg, memory.getWord(hlp::indirect(sp)));
     ops::increment(sp);
     ops::increment(sp);
-    if (target_ == WordRegisters::AF) {
+    if (target_ == WordRegister::AF) {
       // TODO: sort out flags
     }
   }
