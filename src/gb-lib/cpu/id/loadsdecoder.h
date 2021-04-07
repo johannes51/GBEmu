@@ -10,8 +10,6 @@ public:
   OperationUP decode(const Location<uint8_t>& opcodeLocation) override;
 
   std::vector<uint8_t> decodedOpcodes() const override;
-
-private:
 };
 
 #endif // LOADS_H

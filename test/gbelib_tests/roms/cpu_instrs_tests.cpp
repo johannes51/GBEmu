@@ -100,4 +100,14 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0459 CALL 0x038E
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x038E PUSH HL
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
 }

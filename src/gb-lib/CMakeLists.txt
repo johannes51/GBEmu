@@ -15,30 +15,34 @@ target_sources(gbelib PRIVATE
   cpu/registersinterface.h
   cpu/id/arithmeticdecoder.h
   cpu/id/arithmeticdecoder.cpp
-  cpu/id/instructiondecoder.h
   cpu/id/baseinstructiondecoder.h
   cpu/id/baseinstructiondecoder.cpp
   cpu/id/controldecoder.h
   cpu/id/controldecoder.cpp
+  cpu/id/instructiondecoder.h
   cpu/id/jumpscallsdecoder.h
   cpu/id/jumpscallsdecoder.cpp
   cpu/id/loadsdecoder.h
   cpu/id/loadsdecoder.cpp
   cpu/id/opcodeview.h
   cpu/id/opcodeview.cpp
+  cpu/id/stackopdecoder.h
+  cpu/id/stackopdecoder.cpp
   cpu/operation/aluoperation.h
   cpu/operation/aluoperation.cpp
-  cpu/operation/control.h
-  cpu/operation/control.cpp
-  cpu/operation/operation.h
-  cpu/operation/jump.h
-  cpu/operation/jump.cpp
   cpu/operation/byteload.h
   cpu/operation/byteload.cpp
-  cpu/operation/wordload.h
-  cpu/operation/wordload.cpp
+  cpu/operation/control.h
+  cpu/operation/control.cpp
+  cpu/operation/jump.h
+  cpu/operation/jump.cpp
+  cpu/operation/operation.h
   cpu/operation/singleop.h
   cpu/operation/singleop.cpp
+  cpu/operation/stackop.h
+  cpu/operation/stackop.cpp
+  cpu/operation/wordload.h
+  cpu/operation/wordload.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/gb_defines.h

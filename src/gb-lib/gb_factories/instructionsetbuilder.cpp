@@ -5,6 +5,7 @@
 #include "cpu/id/controldecoder.h"
 #include "cpu/id/jumpscallsdecoder.h"
 #include "cpu/id/loadsdecoder.h"
+#include "cpu/id/stackopdecoder.h"
 
 auto InstructionSetBuilder::construct() -> InstructionDecoderUP
 {
@@ -14,10 +15,12 @@ auto InstructionSetBuilder::construct() -> InstructionDecoderUP
   auto jp_cl = std::make_shared<JumpsCallsDecoder>();
   auto ld = std::make_shared<LoadsDecoder>();
   auto arit = std::make_shared<ArithmeticDecoder>();
+  auto stack = std::make_shared<StackOpDecoder>();
 
   result->registerDecoder(ctrl);
   result->registerDecoder(jp_cl);
   result->registerDecoder(ld);
   result->registerDecoder(arit);
+  result->registerDecoder(stack);
   return result;
 }
