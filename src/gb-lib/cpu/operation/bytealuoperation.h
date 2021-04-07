@@ -1,5 +1,5 @@
-#ifndef ALUOPERATION_H
-#define ALUOPERATION_H
+#ifndef BYTEALUOPERATION_H
+#define BYTEALUOPERATION_H
 
 #include <optional>
 
@@ -15,10 +15,10 @@ enum class Source { Register, Immediate, Indirect, None };
 
 enum class AluFunction { Add, Inc, Dec, Xor };
 
-class AluOperation final : public Operation {
+class ByteAluOperation final : public Operation {
 public:
-  AluOperation(AluFunction function, Source source);
-  ~AluOperation() override;
+  ByteAluOperation(AluFunction function, Source source);
+  ~ByteAluOperation() override = default;
 
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
@@ -38,4 +38,4 @@ private:
   std::optional<Location<uint8_t>> immediate_;
 };
 
-#endif // ALUOPERATION_H
+#endif // BYTEALUOPERATION_H

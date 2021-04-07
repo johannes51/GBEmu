@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "arithmeticdecoder.h"
+#include "bytearithmeticdecoder.h"
 #include "cpu/operation/control.h"
 #include "cpu/operation/operation.h"
 #include "jumpscallsdecoder.h"

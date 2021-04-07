@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "cpu/cpuregisters.h"
-#include "cpu/operation/aluoperation.h"
+#include "cpu/operation/bytealuoperation.h"
 #include "location/location.h"
 #include "mem/rambank.h"
 
@@ -9,7 +9,7 @@
 
 TEST(AluOperationTest, Xor)
 {
-  AluOperation xorOp { AluFunction::Xor, Source::Register };
+  ByteAluOperation xorOp { AluFunction::Xor, Source::Register };
   xorOp.setRegister(ByteRegister::B);
   ASSERT_TRUE(xorOp.isComplete());
 
@@ -30,7 +30,7 @@ TEST(AluOperationTest, Xor)
 
 TEST(AluOperationTest, AddImmediate)
 {
-  AluOperation addOp { AluFunction::Add, Source::Immediate };
+  ByteAluOperation addOp { AluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
   ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(0x4D)));
   ASSERT_TRUE(addOp.isComplete());
@@ -48,7 +48,7 @@ TEST(AluOperationTest, AddImmediate)
 
 TEST(AluOperationTest, Inc)
 {
-  AluOperation decOp { AluFunction::Inc, Source::None };
+  ByteAluOperation decOp { AluFunction::Inc, Source::None };
   decOp.setRegister(ByteRegister::B);
   ASSERT_TRUE(decOp.isComplete());
 
@@ -66,7 +66,7 @@ TEST(AluOperationTest, Inc)
 
 TEST(AluOperationTest, IncIndirect)
 {
-  AluOperation decOp { AluFunction::Inc, Source::Indirect };
+  ByteAluOperation decOp { AluFunction::Inc, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
@@ -82,7 +82,7 @@ TEST(AluOperationTest, IncIndirect)
 
 TEST(AluOperationTest, Dec)
 {
-  AluOperation decOp { AluFunction::Dec, Source::None };
+  ByteAluOperation decOp { AluFunction::Dec, Source::None };
   decOp.setRegister(ByteRegister::B);
   ASSERT_TRUE(decOp.isComplete());
 
@@ -100,7 +100,7 @@ TEST(AluOperationTest, Dec)
 
 TEST(AluOperationTest, DecIndirect)
 {
-  AluOperation decOp { AluFunction::Dec, Source::Indirect };
+  ByteAluOperation decOp { AluFunction::Dec, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
@@ -119,9 +119,9 @@ TEST(AluOperationTest, Throws)
   CpuRegisters r;
   IMemoryViewSP m;
 
-  AluOperation decOp { AluFunction::Add, Source::Register };
+  ByteAluOperation decOp { AluFunction::Add, Source::Register };
   EXPECT_ANY_THROW(decOp.execute(r, *m));
 
-  AluOperation decOp2 { AluFunction::Add, Source::None };
+  ByteAluOperation decOp2 { AluFunction::Add, Source::None };
   EXPECT_ANY_THROW(decOp2.execute(r, *m));
 }

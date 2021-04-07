@@ -1,7 +1,7 @@
 #include "instructionsetbuilder.h"
 
-#include "cpu/id/arithmeticdecoder.h"
 #include "cpu/id/baseinstructiondecoder.h"
+#include "cpu/id/bytearithmeticdecoder.h"
 #include "cpu/id/controldecoder.h"
 #include "cpu/id/jumpscallsdecoder.h"
 #include "cpu/id/loadsdecoder.h"
@@ -14,7 +14,7 @@ auto InstructionSetBuilder::construct() -> InstructionDecoderUP
   auto ctrl = std::make_shared<ControlDecoder>();
   auto jp_cl = std::make_shared<JumpsCallsDecoder>();
   auto ld = std::make_shared<LoadsDecoder>();
-  auto arit = std::make_shared<ArithmeticDecoder>();
+  auto arit = std::make_shared<ByteArithmeticDecoder>();
   auto stack = std::make_shared<StackOpDecoder>();
 
   result->registerDecoder(ctrl);

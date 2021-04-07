@@ -1,9 +1,9 @@
-#include "arithmeticdecoder.h"
+#include "bytearithmeticdecoder.h"
 
 #include <stdexcept>
 
 #include "cpu/id/opcodeview.h"
-#include "cpu/operation/aluoperation.h"
+#include "cpu/operation/bytealuoperation.h"
 
 auto sourceRegister(const OpcodeView& opcode) -> ByteRegister
 {
@@ -81,7 +81,7 @@ auto function(const OpcodeView& opcode) -> AluFunction
 
 auto bulkArithmetic(const OpcodeView& opcode) -> OperationUP
 {
-  auto op = std::make_unique<AluOperation>(function(opcode), Source::Register);
+  auto op = std::make_unique<ByteAluOperation>(function(opcode), Source::Register);
   op->setRegister(sourceRegister(opcode));
   return op;
 }
@@ -92,7 +92,7 @@ auto incDec(const OpcodeView& opcode) -> OperationUP
   auto source = (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC) && opcode.upperNibble() == 0x3
       ? Source::Indirect
       : Source::Register;
-  auto result = std::make_unique<AluOperation>(function, source);
+  auto result = std::make_unique<ByteAluOperation>(function, source);
   switch (opcode.value()) {
   case 0x04:
   case 0x05:
@@ -128,7 +128,7 @@ auto incDec(const OpcodeView& opcode) -> OperationUP
   return result;
 }
 
-auto ArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
   OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
@@ -141,7 +141,7 @@ auto ArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Opera
   throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
 }
 
-auto ArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
+auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
 {
   std::vector<uint8_t> result;
   result.insert(result.end(),

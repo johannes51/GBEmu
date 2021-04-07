@@ -13,10 +13,10 @@ target_sources(gbelib PRIVATE
   cpu/cpuregisters.cpp
   cpu/flagsview.h
   cpu/registersinterface.h
-  cpu/id/arithmeticdecoder.h
-  cpu/id/arithmeticdecoder.cpp
   cpu/id/baseinstructiondecoder.h
   cpu/id/baseinstructiondecoder.cpp
+  cpu/id/bytearithmeticdecoder.h
+  cpu/id/bytearithmeticdecoder.cpp
   cpu/id/controldecoder.h
   cpu/id/controldecoder.cpp
   cpu/id/instructiondecoder.h
@@ -28,8 +28,8 @@ target_sources(gbelib PRIVATE
   cpu/id/opcodeview.cpp
   cpu/id/stackopdecoder.h
   cpu/id/stackopdecoder.cpp
-  cpu/operation/aluoperation.h
-  cpu/operation/aluoperation.cpp
+  cpu/operation/bytealuoperation.h
+  cpu/operation/bytealuoperation.cpp
   cpu/operation/byteload.h
   cpu/operation/byteload.cpp
   cpu/operation/control.h

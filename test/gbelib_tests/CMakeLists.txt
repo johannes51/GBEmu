@@ -14,13 +14,13 @@ set(TEST_SOURCES
   cpu/cpu_tests.cpp
   cpu/cpuflags_tests.cpp
   cpu/cpuregisters_tests.cpp
-  cpu/id/arithmetic_tests.cpp
   cpu/id/baseinstructiondecoder_tests.cpp
+  cpu/id/bytearithmetic_tests.cpp
   cpu/id/control_tests.cpp
   cpu/id/jumps_calls_tests.cpp
   cpu/id/loads_tests.cpp
   cpu/id/opcodeview_tests.cpp
-  cpu/operation/aluoperation_tests.cpp
+  cpu/operation/bytealuoperation_tests.cpp
   cpu/operation/control_tests.cpp
   cpu/operation/jump_tests.cpp
   cpu/operation/wordload_tests.cpp

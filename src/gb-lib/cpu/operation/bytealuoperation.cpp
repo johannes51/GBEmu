@@ -1,4 +1,4 @@
-#include "aluoperation.h"
+#include "bytealuoperation.h"
 
 #include <stdexcept>
 
@@ -8,18 +8,15 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-AluOperation::AluOperation(AluFunction function, Source source)
+ByteAluOperation::ByteAluOperation(AluFunction function, Source source)
     : function_(function)
     , source_(source)
     , register_(std::nullopt)
     , immediate_(std::nullopt)
-
 {
 }
 
-AluOperation::~AluOperation() = default;
-
-void AluOperation::nextOpcode(Location<uint8_t> opcode)
+void ByteAluOperation::nextOpcode(Location<uint8_t> opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already complete");
@@ -27,11 +24,11 @@ void AluOperation::nextOpcode(Location<uint8_t> opcode)
   immediate_ = Location<uint8_t>(std::move(opcode));
 }
 
-auto AluOperation::isComplete() -> bool { return source_ != Source::Immediate || immediate_; }
+auto ByteAluOperation::isComplete() -> bool { return source_ != Source::Immediate || immediate_; }
 
-void AluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
+void ByteAluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
 
-auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
+auto ByteAluOperation::cycles(const RegistersInterface& registers) -> unsigned int
 {
   (void)registers;
   unsigned int result = 1;
@@ -46,7 +43,7 @@ auto AluOperation::cycles(const RegistersInterface& registers) -> unsigned int
   return result;
 }
 
-void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
+void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
   ops::OpResult result { 0, 0, 0, 0 };
@@ -85,7 +82,7 @@ void AluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
   apply(registers.getFlags(), result);
 }
 
-auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location<uint8_t>
+auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location<uint8_t>
 {
   switch (source_) {
   case Source::Immediate:
@@ -107,7 +104,7 @@ auto AluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Locat
   }
 }
 
-void AluOperation::apply(FlagsView& flags, const ops::OpResult& result)
+void ByteAluOperation::apply(FlagsView& flags, const ops::OpResult& result)
 {
   if (result.z == 0) {
     flags.clearZero();
