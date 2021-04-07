@@ -39,6 +39,7 @@ set(TEST_SOURCES
   mem/memtools_tests.cpp
   mem/mirrorbank_tests.cpp
   mem/rambank_tests.cpp
+  mem/registerbank_tests.cpp
   mem/rombank_tests.cpp
   roms/cpu_instrs_tests.cpp
   roms/instr_timing_tests.cpp

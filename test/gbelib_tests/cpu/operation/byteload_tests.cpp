@@ -142,3 +142,43 @@ TEST(ByteLoadTest, Post2)
   r.get(ByteRegisters::A).get();
   EXPECT_EQ(0xDFFE, r.get(WordRegisters::HL).get());
 }
+
+TEST(ByteLoadTest, Post3)
+{
+  ByteLoad loadRI { ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register };
+  loadRI.setDestination(WordRegisters::HL);
+  loadRI.setSource(ByteRegisters::A);
+  ASSERT_TRUE(loadRI.isComplete());
+
+  EXPECT_NO_THROW(loadRI.setPostAction(ByteLoad::Post::Increment));
+
+  CpuRegisters r;
+  r.get(WordRegisters::HL).set(0xDFFF);
+  r.get(ByteRegisters::A).set(0x3C);
+  RamBank m({ 0xDFFF, 0xDFFF });
+  m.getByte(0xDFFF).set(0xF3);
+  loadRI.execute(r, m);
+
+  r.get(ByteRegisters::A).get();
+  EXPECT_EQ(0xE000, r.get(WordRegisters::HL).get());
+}
+
+TEST(ByteLoadTest, Post4)
+{
+  ByteLoad loadRI { ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect };
+  loadRI.setDestination(ByteRegisters::A);
+  loadRI.setSource(WordRegisters::HL);
+  ASSERT_TRUE(loadRI.isComplete());
+
+  EXPECT_NO_THROW(loadRI.setPostAction(ByteLoad::Post::Decrement));
+
+  CpuRegisters r;
+  r.get(WordRegisters::HL).set(0xDFFF);
+  r.get(ByteRegisters::A).set(0x3C);
+  RamBank m({ 0xDFFF, 0xDFFF });
+  m.getByte(0xDFFF).set(0xF3);
+  loadRI.execute(r, m);
+
+  r.get(ByteRegisters::A).get();
+  EXPECT_EQ(0xDFFE, r.get(WordRegisters::HL).get());
+}

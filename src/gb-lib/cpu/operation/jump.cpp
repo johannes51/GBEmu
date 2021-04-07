@@ -95,7 +95,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         registers.getFlags().enableInterrupt();
         [[fallthrough]];
       case JumpType::Return:
-        ops::load(target, sp);
+        ops::load(target, memory.getWord(hlp::indirect(sp)));
         ops::increment(sp);
         ops::increment(sp);
       }

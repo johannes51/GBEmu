@@ -22,6 +22,7 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
     manifold->addSubManager(bankManager);
   }
 
+  manifold->addSubManager(buildRamBank(VRAM));
   auto wram0 = buildRamBank(WRAM0);
   auto wram1 = buildRamBank(WRAM1);
   manifold->addSubManager(wram0);
