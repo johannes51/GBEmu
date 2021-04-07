@@ -28,6 +28,8 @@ target_sources(gbelib PRIVATE
   cpu/id/opcodeview.cpp
   cpu/id/stackopdecoder.h
   cpu/id/stackopdecoder.cpp
+  cpu/id/wordarithmeticdecoder.h
+  cpu/id/wordarithmeticdecoder.cpp
   cpu/operation/bytealuoperation.h
   cpu/operation/bytealuoperation.cpp
   cpu/operation/byteload.h
@@ -41,6 +43,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/singleop.cpp
   cpu/operation/stackop.h
   cpu/operation/stackop.cpp
+  cpu/operation/wordaluoperation.h
+  cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
   gb_factories/cartloader.h
