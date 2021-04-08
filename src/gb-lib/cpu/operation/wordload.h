@@ -10,8 +10,8 @@
 
 class WordLoad final : public Operation {
 public:
-  enum class Destination { Register, ImmediateIndirect, RegisterIndirect };
-  enum class Source { Immediate, Register };
+  enum class Destination { Register, ImmediateIndirect, RegisterIndirect, Stack };
+  enum class Source { Immediate, Register, RegisterImmediate, Stack };
   static constexpr auto BaseDuration = 3U;
   static constexpr auto ImmediateIndirectDuration = 5U;
 

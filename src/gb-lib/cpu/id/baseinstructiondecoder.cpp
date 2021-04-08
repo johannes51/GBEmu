@@ -2,13 +2,8 @@
 
 #include <stdexcept>
 
-#include "bytearithmeticdecoder.h"
-#include "cpu/operation/control.h"
 #include "cpu/operation/operation.h"
-#include "jumpscallsdecoder.h"
-#include "loadsdecoder.h"
 #include "location/location.h"
-#include "opcodeview.h"
 
 BaseInstructionDecoder::BaseInstructionDecoder()
     : decoders_()
@@ -17,16 +12,21 @@ BaseInstructionDecoder::BaseInstructionDecoder()
 
 auto BaseInstructionDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
+  InstructionDecoder* decoder = nullptr;
   try {
-    return decoders_.at(opcodeLocation.get())->decode(opcodeLocation);
+    decoder = decoders_.at(opcodeLocation.get()).get();
   } catch (...) {
     throw std::logic_error("Unimplemented opcode: " + std::to_string(opcodeLocation.get()));
   }
+  return decoder->decode(opcodeLocation);
 }
 
 void BaseInstructionDecoder::registerDecoder(const InstructionDecoderSP& decoder)
 {
   for (const auto& opcode : decoder->decodedOpcodes()) {
+    if (decoders_.find(opcode) != decoders_.end()) {
+      throw std::logic_error("Opcode already registered: " + std::to_string(opcode));
+    }
     decoders_[opcode] = decoder;
   }
 }

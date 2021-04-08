@@ -129,4 +129,12 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x037E INC HL
   EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x037F INC HL
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0380 LD A, (HL+)
+  EXPECT_NO_THROW(cpu.clock());
+  for (int var = 0; var < 96; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  //   EXPECT_NO_THROW(cpu.clock()); // 0x0740 OR C
 }

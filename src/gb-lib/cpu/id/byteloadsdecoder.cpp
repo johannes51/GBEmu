@@ -1,9 +1,8 @@
-#include "loadsdecoder.h"
+#include "byteloadsdecoder.h"
 
 #include <stdexcept>
 
 #include "cpu/operation/byteload.h"
-#include "cpu/operation/wordload.h"
 #include "opcodeview.h"
 
 auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, ByteRegister>
@@ -127,24 +126,6 @@ auto loadImmediate(const OpcodeView opcode) -> OperationUP
     result = std::move(p);
     break;
   }
-  case 0x11: {
-    auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegister::DE);
-    result = std::move(p);
-    break;
-  }
-  case 0x21: {
-    auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegister::HL);
-    result = std::move(p);
-    break;
-  }
-  case 0x31: {
-    auto p = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    p->setDestination(WordRegister::SP);
-    result = std::move(p);
-    break;
-  }
   case 0x3E: {
     auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
     p->setDestination(ByteRegister::A);
@@ -253,8 +234,9 @@ auto loadImmediateIndirect(const OpcodeView opcode) -> OperationUP
   return result;
 }
 
-auto loadRegisterIndirect(const OpcodeView opcode, bool store) -> OperationUP
+auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
 {
+  auto store = opcode.lowerNibble() == 0x2;
   auto dest = store ? ByteLoad::Destination::RegisterIndirect : ByteLoad::Destination::Register;
   auto src = store ? ByteLoad::Source::Register : ByteLoad::Source::RegisterIndirect;
   auto result = std::make_unique<ByteLoad>(dest, src);
@@ -288,24 +270,25 @@ auto loadRegisterIndirect(const OpcodeView opcode, bool store) -> OperationUP
   return result;
 }
 
-auto LoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ByteLoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
   OpcodeView opc { opcodeLocation.get() };
+
   if (opc.value() >= 0x40 && opc.value() <= 0x7F) {
     return bulkLoad(opc);
-  }
-  if ((opc.lowerNibble() == 0x1 || opc.lowerNibble() == 0x6 || opc.lowerNibble() == 0xE)
-      && (opc.upperNibble() <= 0x3)) {
-    return loadImmediate(opc);
-  } else if (((opc.lowerNibble() == 0x0 || opc.lowerNibble() == 0xA)
-                 && (opc.upperNibble() <= 0xE || opc.upperNibble() <= 0xF))
-      || ((opc.lowerNibble() == 0x2 || opc.lowerNibble() == 0xA) && (opc.upperNibble() <= 0x3))) {
+  } else if (opc.upperNibble() <= 0x3) {
+    if (opc.lowerNibble() == 0x6 || opc.lowerNibble() == 0xE) {
+      return loadImmediate(opc);
+    } else if (opc.lowerNibble() == 0x2 || opc.lowerNibble() == 0xA) {
+      return loadRegisterIndirect(opc);
+    }
+  } else if (opc.upperNibble() >= 0xE) {
     return loadImmediateIndirect(opc);
   }
   throw std::logic_error("Unimplmented opcode: " + std::to_string(opc.value()));
 }
 
-auto LoadsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
+auto ByteLoadsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
 {
   std::vector<uint8_t> result;
   result.insert(result.end(),
@@ -313,9 +296,8 @@ auto LoadsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
           0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63,
           0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75,
           /*0x76, HALT */ 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F }); // bulk loads
-  result.insert(
-      result.end(), { 0x01, 0x06, 0x0E, 0x11, 0x16, 0x1E, 0x21, 0x26, 0x2E, 0x31, 0x36, 0x3E }); // immediate loads
-  result.insert(result.end(),
-      { 0x02, 0x12, 0x22, 0x32, 0x0A, 0x1A, 0x2A, 0x3A, 0xE0, 0xEA, 0xF0, 0xFA }); // immediate indirect loads
+  result.insert(result.end(), { 0x06, 0x0E, 0x16, 0x1E, 0x26, 0x2E, 0x3E }); // immediate loads
+  result.insert(result.end(), { 0x02, 0x12, 0x22, 0x32, 0x0A, 0x1A, 0x2A, 0x3A, 0x36 }); // register indirect loads
+  result.insert(result.end(), { 0xE0, 0xE2, 0xEA, 0xF0, 0xF2, 0xFA }); // oddball loads
   return result;
 }

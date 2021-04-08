@@ -7,7 +7,7 @@
 
 #include "location/variablebyte.h"
 
-TEST(AluOperationTest, Xor)
+TEST(ByteAluOperationTest, Xor)
 {
   ByteAluOperation xorOp { AluFunction::Xor, Source::Register };
   xorOp.setRegister(ByteRegister::B);
@@ -28,7 +28,7 @@ TEST(AluOperationTest, Xor)
   EXPECT_EQ(0xC, r.get(ByteRegister::A).get()); // 1100
 }
 
-TEST(AluOperationTest, AddImmediate)
+TEST(ByteAluOperationTest, AddImmediate)
 {
   ByteAluOperation addOp { AluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
@@ -46,7 +46,7 @@ TEST(AluOperationTest, AddImmediate)
   EXPECT_EQ(0x52, r.get(ByteRegister::A).get());
 }
 
-TEST(AluOperationTest, Inc)
+TEST(ByteAluOperationTest, Inc)
 {
   ByteAluOperation decOp { AluFunction::Inc, Source::None };
   decOp.setRegister(ByteRegister::B);
@@ -64,7 +64,7 @@ TEST(AluOperationTest, Inc)
   EXPECT_EQ(0x2, r.get(ByteRegister::B).get()); // 0010
 }
 
-TEST(AluOperationTest, IncIndirect)
+TEST(ByteAluOperationTest, IncIndirect)
 {
   ByteAluOperation decOp { AluFunction::Inc, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
@@ -80,7 +80,7 @@ TEST(AluOperationTest, IncIndirect)
   EXPECT_EQ(0x14, m.getByte(0x0100).get());
 }
 
-TEST(AluOperationTest, Dec)
+TEST(ByteAluOperationTest, Dec)
 {
   ByteAluOperation decOp { AluFunction::Dec, Source::None };
   decOp.setRegister(ByteRegister::B);
@@ -98,7 +98,7 @@ TEST(AluOperationTest, Dec)
   EXPECT_EQ(0x0, r.get(ByteRegister::B).get()); // 0000
 }
 
-TEST(AluOperationTest, DecIndirect)
+TEST(ByteAluOperationTest, DecIndirect)
 {
   ByteAluOperation decOp { AluFunction::Dec, Source::Indirect };
   ASSERT_TRUE(decOp.isComplete());
@@ -114,7 +114,7 @@ TEST(AluOperationTest, DecIndirect)
   EXPECT_EQ(0x12, m.getByte(0x0100).get());
 }
 
-TEST(AluOperationTest, Throws)
+TEST(ByteAluOperationTest, Throws)
 {
   CpuRegisters r;
   IMemoryViewSP m;

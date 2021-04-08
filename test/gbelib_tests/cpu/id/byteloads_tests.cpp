@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "cpu/id/loadsdecoder.h"
+#include "cpu/id/byteloadsdecoder.h"
 #include "cpu/operation/operation.h"
 
 // TODO: rewrite tests

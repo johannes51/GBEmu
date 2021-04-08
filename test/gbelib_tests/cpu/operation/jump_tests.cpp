@@ -128,6 +128,8 @@ TEST(JumpTest, CallReturn)
   Jump call { JumpType::Call, TargetType::Absolute, Condition::None };
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xFE)));
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xC3)));
+  EXPECT_TRUE(call.isComplete());
+  EXPECT_EQ(6, call.cycles(r));
   EXPECT_NO_THROW(call.execute(r, b));
 
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());
@@ -136,11 +138,37 @@ TEST(JumpTest, CallReturn)
   EXPECT_EQ(0xFD, r.get(WordRegister::SP).get());
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::None };
+  EXPECT_TRUE(ret.isComplete());
+  EXPECT_EQ(4, ret.cycles(r));
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0x00, b.getByte(0xFD).get());
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());
   EXPECT_EQ(0xC300, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFF, r.get(WordRegister::SP).get());
+}
+
+TEST(JumpTest, RetZ)
+{
+  RamBank b { { 0x00, 0xFF } };
+  CpuRegisters r;
+  r.get(WordRegister::PC).set(0xE001);
+  r.get(WordRegister::SP).set(0xFD);
+  b.getWord(0xFD).set(0xC003);
+  r.getFlags().clearZero();
+
+  Jump ret { JumpType::Return, TargetType::Absolute, Condition::Z };
+  EXPECT_TRUE(ret.isComplete());
+  EXPECT_EQ(2, ret.cycles(r));
+  EXPECT_NO_THROW(ret.execute(r, b));
+
+  r.getFlags().setZero();
+
+  EXPECT_TRUE(ret.isComplete());
+  EXPECT_EQ(5, ret.cycles(r));
+  EXPECT_NO_THROW(ret.execute(r, b));
+
+  EXPECT_EQ(0xC003, r.get(WordRegister::PC).get());
   EXPECT_EQ(0xFF, r.get(WordRegister::SP).get());
 }
 
@@ -154,6 +182,8 @@ TEST(JumpTest, RetI)
   r.getFlags().disableInterrupt();
 
   Jump ret { JumpType::RetI, TargetType::Absolute, Condition::None };
+  EXPECT_TRUE(ret.isComplete());
+  EXPECT_EQ(4, ret.cycles(r));
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0xC003, r.get(WordRegister::PC).get());

@@ -18,13 +18,14 @@ set(TEST_SOURCES
   cpu/id/bytearithmetic_tests.cpp
   cpu/id/control_tests.cpp
   cpu/id/jumps_calls_tests.cpp
-  cpu/id/loads_tests.cpp
+  cpu/id/byteloads_tests.cpp
   cpu/id/opcodeview_tests.cpp
   cpu/operation/bytealuoperation_tests.cpp
+  cpu/operation/byteload_tests.cpp
   cpu/operation/control_tests.cpp
   cpu/operation/jump_tests.cpp
+  cpu/operation/wordaluoperation_tests.cpp
   cpu/operation/wordload_tests.cpp
-  cpu/operation/byteload_tests.cpp
   location/location_tests.cpp
   location/locationimpl_tests.cpp
   location/nullbyte_tests.cpp

@@ -1,15 +1,15 @@
-#ifndef LOADS_H
-#define LOADS_H
+#ifndef BYTELOADSDECODER_H
+#define BYTELOADSDECODER_H
 
 #include "instructiondecoder.h"
 
-class LoadsDecoder : public InstructionDecoder {
+class ByteLoadsDecoder : public InstructionDecoder {
 public:
-  LoadsDecoder() = default;
+  ByteLoadsDecoder() = default;
 
   OperationUP decode(const Location<uint8_t>& opcodeLocation) override;
 
   std::vector<uint8_t> decodedOpcodes() const override;
 };
 
-#endif // LOADS_H
+#endif // BYTELOADSDECODER_H

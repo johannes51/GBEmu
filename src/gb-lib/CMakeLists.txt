@@ -17,19 +17,19 @@ target_sources(gbelib PRIVATE
   cpu/id/baseinstructiondecoder.cpp
   cpu/id/bytearithmeticdecoder.h
   cpu/id/bytearithmeticdecoder.cpp
+  cpu/id/byteloadsdecoder.h
+  cpu/id/byteloadsdecoder.cpp
   cpu/id/controldecoder.h
   cpu/id/controldecoder.cpp
   cpu/id/instructiondecoder.h
   cpu/id/jumpscallsdecoder.h
   cpu/id/jumpscallsdecoder.cpp
-  cpu/id/loadsdecoder.h
-  cpu/id/loadsdecoder.cpp
   cpu/id/opcodeview.h
   cpu/id/opcodeview.cpp
-  cpu/id/stackopdecoder.h
-  cpu/id/stackopdecoder.cpp
   cpu/id/wordarithmeticdecoder.h
   cpu/id/wordarithmeticdecoder.cpp
+  cpu/id/wordloadsdecoder.h
+  cpu/id/wordloadsdecoder.cpp
   cpu/operation/bytealuoperation.h
   cpu/operation/bytealuoperation.cpp
   cpu/operation/byteload.h
@@ -41,8 +41,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/operation.h
   cpu/operation/singleop.h
   cpu/operation/singleop.cpp
-  cpu/operation/stackop.h
-  cpu/operation/stackop.cpp
   cpu/operation/wordaluoperation.h
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h

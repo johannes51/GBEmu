@@ -23,9 +23,16 @@ TEST(BaseInstructionDecoderTest, Decode)
   EXPECT_NO_THROW(d.decode(variableLocation(0x00)));
 }
 
-TEST(BaseInstructionDecoderTest, Exception)
+TEST(BaseInstructionDecoderTest, UndecodedOpcode)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
   EXPECT_ANY_THROW(d.decode(variableLocation(0x80)));
+}
+
+TEST(BaseInstructionDecoderTest, AlreadyDecodedOpcode)
+{
+  BaseInstructionDecoder d;
+  d.registerDecoder(std::make_shared<ControlDecoder>());
+  EXPECT_ANY_THROW(d.registerDecoder(std::make_shared<ControlDecoder>()));
 }

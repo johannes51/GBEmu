@@ -53,24 +53,25 @@ auto Jump::isComplete() -> bool
 
 auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
 {
+  unsigned int result = 0;
   if (target_ == TargetType::Absolute) {
     switch (type_) {
     case JumpType::Regular:
-      return taken(registers.getFlags()) ? TakenJump : SkippedJump;
+      result = taken(registers.getFlags()) ? TakenJump : SkippedJump;
       break;
     case JumpType::Call:
-      return taken(registers.getFlags()) ? TakenCall : SkippedCall;
+      result = taken(registers.getFlags()) ? TakenCall : SkippedCall;
       break;
     case JumpType::Return:
     case JumpType::RetI:
-      return (condition_ == Condition::None) ? NormalReturn
-                                             : (taken(registers.getFlags()) ? TakenReturn : SkippedReturn);
+      result = (condition_ == Condition::None) ? NormalReturn
+                                               : (taken(registers.getFlags()) ? TakenReturn : SkippedReturn);
       break;
     }
   } else /*if (target_ == TargetType::Relative)*/ {
-    return taken(registers.getFlags()) ? 3 : 2;
+    result = taken(registers.getFlags()) ? 3 : 2;
   }
-  throw std::logic_error("Invalid configuration!");
+  return result;
 }
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)

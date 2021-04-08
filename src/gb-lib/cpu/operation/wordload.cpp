@@ -47,29 +47,52 @@ auto WordLoad::cycles(const RegistersInterface& registers) -> unsigned int
   auto result = BaseDuration;
   if (destination_ == Destination::ImmediateIndirect) {
     result = ImmediateIndirectDuration;
+  } else if (source_ == Source::Register && destination_ == Destination::Register) {
+    result = BaseDuration - 1;
+  } else if (destination_ == Destination::Stack) {
+    result = BaseDuration + 1;
   }
   return result;
 }
 
 void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
 {
-  Location<uint16_t> destination;
-  if (destination_ == Destination::Register) {
-    destination = registers.get(destRegister_);
-  } else {
-    address_type address = 0;
-    if (destination_ == Destination::RegisterIndirect) {
-      address = hlp::indirect(registers.get(destRegister_));
-    } else {
-      address = hlp::indirect(*immediate16_);
-    }
-    destination = memory.getWord(address);
+  auto sp = registers.get(WordRegister::SP);
+  Location<uint16_t> destLoc;
+  switch (destination_) {
+  case Destination::Register:
+    destLoc = registers.get(destRegister_);
+    break;
+  case Destination::ImmediateIndirect:
+    destLoc = memory.getWord(hlp::indirect(*immediate16_));
+    break;
+  case Destination::RegisterIndirect:
+    destLoc = memory.getWord(hlp::indirect(registers.get(destRegister_)));
+    break;
+  case Destination::Stack:
+    ops::decrement(sp);
+    ops::decrement(sp);
+    destLoc = memory.getWord(hlp::indirect(sp));
+    break;
   }
-  Location<uint16_t> source;
-  if (source_ == Source::Register) {
-    source = registers.get(srcRegister_);
-  } else {
-    source = std::move(*immediate16_);
+  Location<uint16_t> srcLoc;
+  switch (source_) {
+  case Source::Immediate:
+    srcLoc = std::move(*immediate16_);
+    break;
+  case Source::Register:
+    srcLoc = registers.get(srcRegister_);
+    break;
+  case Source::Stack:
+    srcLoc = memory.getWord(hlp::indirect(registers.get(WordRegister::SP)));
+    break;
+  case Source::RegisterImmediate:
+    throw std::logic_error("Invalid configuration!");
+    break;
   }
-  ops::load(destination, source);
+  ops::load(destLoc, srcLoc);
+  if (source_ == Source::Stack) {
+    ops::increment(sp);
+    ops::increment(sp);
+  }
 }

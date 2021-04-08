@@ -58,19 +58,19 @@ TEST(WordLoadTest, Immediate2)
 TEST(WordLoadTest, Register)
 {
   WordLoad loadRegister { WordLoad::Destination::Register, WordLoad::Source::Register };
-  loadRegister.setDestination(WordRegister::HL);
-  loadRegister.setSource(WordRegister::AF);
+  loadRegister.setDestination(WordRegister::SP);
+  loadRegister.setSource(WordRegister::HL);
   ASSERT_TRUE(loadRegister.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, loadRegister.cycles(r));
+  EXPECT_EQ(2, loadRegister.cycles(r));
 
   uint16_t value = 0xDFFF;
-  r.get(WordRegister::AF).set(value);
+  r.get(WordRegister::HL).set(value);
 
-  ASSERT_NE(r.get(WordRegister::HL).get(), value);
+  ASSERT_NE(r.get(WordRegister::SP).get(), value);
   loadRegister.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(r.get(WordRegister::HL).get(), value);
+  EXPECT_EQ(r.get(WordRegister::SP).get(), value);
 }
 
 TEST(WordLoadTest, ImmediateIndirect)
@@ -112,4 +112,63 @@ TEST(WordLoadTest, RegisterIndirect)
   loadIndirect.execute(r, b);
 
   EXPECT_EQ(0xDFFF, b.getWord(2).get());
+}
+
+TEST(WordLoadTest, Push)
+{
+  uint16_t value = 0xDFFF;
+  CpuRegisters r;
+  r.get(WordRegister::DE).set(value);
+  r.get(WordRegister::SP).set(0x10);
+
+  RamBank b { { 0x00, 0x10 } };
+
+  WordLoad load { WordLoad::Destination::Stack, WordLoad::Source::Register };
+  load.setSource(WordRegister::DE);
+  ASSERT_TRUE(load.isComplete());
+
+  EXPECT_EQ(4, load.cycles(r));
+
+  load.execute(r, b);
+  EXPECT_EQ(0x0E, r.get(WordRegister::SP).get());
+  EXPECT_EQ(value, b.getWord(0x0E).get());
+}
+
+TEST(WordLoadTest, Pop)
+{
+  uint16_t value = 0xA1F5;
+  CpuRegisters r;
+  r.get(WordRegister::SP).set(0x0E);
+
+  RamBank b { { 0x00, 0x10 } };
+  b.getWord(0x0E).set(value);
+
+  WordLoad load { WordLoad::Destination::Register, WordLoad::Source::Stack };
+  load.setDestination(WordRegister::HL);
+  ASSERT_TRUE(load.isComplete());
+
+  EXPECT_EQ(3, load.cycles(r));
+
+  load.execute(r, b);
+  EXPECT_EQ(0x10, r.get(WordRegister::SP).get());
+  EXPECT_EQ(value, b.getWord(0x0E).get());
+}
+
+TEST(WordLoadTest, RegisterImmediate)
+{
+  uint16_t value = 0xA1F5;
+  CpuRegisters r;
+  r.get(WordRegister::SP).set(0x0E);
+
+  RamBank b { { 0x00, 0x10 } };
+  b.getWord(0x0E).set(value);
+
+  WordLoad load { WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate };
+  load.setDestination(WordRegister::HL);
+  load.setSource(WordRegister::SP);
+  ASSERT_TRUE(load.isComplete());
+
+  EXPECT_EQ(3, load.cycles(r));
+
+  EXPECT_ANY_THROW(load.execute(r, b)); // because unimplemented
 }
