@@ -42,19 +42,19 @@ auto sourceRegister(const OpcodeView& opcode) -> ByteRegister
   return result;
 }
 
-auto function(const OpcodeView& opcode) -> AluFunction
+auto function(const OpcodeView& opcode) -> ByteAluFunction
 {
   if (opcode.lowerNibble() <= 0x7) {
     switch (opcode.upperNibble()) {
     case 0x8:
-      return AluFunction::Add;
+      return ByteAluFunction::Add;
       break;
     case 0x9:
       //      return AluFunction::Sub;
     case 0xA:
       //      return AluFunction::And;
     case 0xB:
-      //      return AluFunction::Or;
+      return ByteAluFunction::Or;
     default:
       throw std::logic_error("Unimplemented");
       break;
@@ -68,7 +68,7 @@ auto function(const OpcodeView& opcode) -> AluFunction
       throw std::logic_error("Unimplemented");
       break;
     case 0xA:
-      return AluFunction::Xor;
+      return ByteAluFunction::Xor;
       break;
     case 0xB:
       //      return AluFunction::Compare;
@@ -88,7 +88,8 @@ auto bulkArithmetic(const OpcodeView& opcode) -> OperationUP
 
 auto incDec(const OpcodeView& opcode) -> OperationUP
 {
-  auto function = opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC ? AluFunction::Inc : AluFunction::Dec;
+  auto function
+      = opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC ? ByteAluFunction::Inc : ByteAluFunction::Dec;
   auto source = (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC) && opcode.upperNibble() == 0x3
       ? Source::Indirect
       : Source::Register;

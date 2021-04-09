@@ -13,11 +13,11 @@ struct OpResult;
 
 enum class Source { Register, Immediate, Indirect, None };
 
-enum class AluFunction { Add, Inc, Dec, Xor };
+enum class ByteAluFunction { Add, Inc, Dec, Or, Xor };
 
 class ByteAluOperation final : public Operation {
 public:
-  ByteAluOperation(AluFunction function, Source source);
+  ByteAluOperation(ByteAluFunction function, Source source);
   ~ByteAluOperation() override = default;
 
   void nextOpcode(Location<uint8_t> opcode) override;
@@ -32,7 +32,7 @@ private:
   Location<uint8_t> getSource(RegistersInterface& reg, IMemoryView& mem);
   static void apply(FlagsView& flags, const ops::OpResult& result);
 
-  const AluFunction function_;
+  const ByteAluFunction function_;
   const Source source_;
   std::optional<ByteRegister> register_;
   std::optional<Location<uint8_t>> immediate_;

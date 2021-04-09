@@ -8,7 +8,7 @@
 #include "util/helpers.h"
 #include "util/ops.h"
 
-ByteAluOperation::ByteAluOperation(AluFunction function, Source source)
+ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
     : function_(function)
     , source_(source)
     , register_(std::nullopt)
@@ -34,7 +34,7 @@ auto ByteAluOperation::cycles(const RegistersInterface& registers) -> unsigned i
   unsigned int result = 1;
   if (source_ == Source::Indirect) {
     ++result;
-    if (function_ == AluFunction::Inc || function_ == AluFunction::Dec) {
+    if (function_ == ByteAluFunction::Inc || function_ == ByteAluFunction::Dec) {
       ++result;
     }
   } else if (source_ == Source::Immediate) {
@@ -48,12 +48,12 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   (void)memory;
   ops::OpResult result { 0, 0, 0, 0 };
   switch (function_) {
-  case AluFunction::Add: {
+  case ByteAluFunction::Add: {
     auto loc = registers.get(ByteRegister::A);
     result = ops::add(loc, getSource(registers, memory));
     break;
   }
-  case AluFunction::Inc: {
+  case ByteAluFunction::Inc: {
     Location<uint8_t> loc;
     if (source_ == Source::Indirect) {
       loc = getSource(registers, memory);
@@ -63,7 +63,7 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::increment(loc);
     break;
   }
-  case AluFunction::Dec: {
+  case ByteAluFunction::Dec: {
     Location<uint8_t> loc;
     if (source_ == Source::Indirect) {
       loc = getSource(registers, memory);
@@ -73,7 +73,12 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::decrement(loc);
     break;
   }
-  case AluFunction::Xor: {
+  case ByteAluFunction::Or: {
+    auto loc = registers.get(ByteRegister::A);
+    result = ops::orF(loc, getSource(registers, memory));
+    break;
+  }
+  case ByteAluFunction::Xor: {
     auto loc = registers.get(ByteRegister::A);
     result = ops::xorF(loc, getSource(registers, memory));
     break;

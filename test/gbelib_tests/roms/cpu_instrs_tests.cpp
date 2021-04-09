@@ -136,5 +136,11 @@ TEST(RomTest, CpuInstructions)
   for (int var = 0; var < 96; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  //   EXPECT_NO_THROW(cpu.clock()); // 0x0740 OR C
+  EXPECT_NO_THROW(cpu.clock()); // 0x0740 OR C
+  EXPECT_NO_THROW(cpu.clock()); // 0x0741 JR Z, 0x06 (+6)
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x0743 LDH A, 0x44
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock()); // 0x074 CP
 }
