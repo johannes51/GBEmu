@@ -198,8 +198,7 @@ auto ByteArithmeticDecoder::immediateFunction(const OpcodeView& opcode) -> ByteA
     throw std::logic_error("SubCarry unimplemented");
     break;
   case 0xE6:
-    //    return ByteAluFunction::And;
-    throw std::logic_error("And unimplemented");
+        return ByteAluFunction::And;
     break;
   case 0xEE:
     return ByteAluFunction::Xor;

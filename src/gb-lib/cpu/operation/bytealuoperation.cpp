@@ -73,6 +73,11 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::decrement(loc);
     break;
   }
+  case ByteAluFunction::And: {
+    auto loc = registers.get(ByteRegister::A);
+    result = ops::andF(loc, getSource(registers, memory));
+    break;
+  }
   case ByteAluFunction::Or: {
     auto loc = registers.get(ByteRegister::A);
     result = ops::orF(loc, getSource(registers, memory));

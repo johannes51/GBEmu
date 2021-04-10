@@ -101,4 +101,27 @@ TEST(RomTest, InstructionTiming)
   EXPECT_NO_THROW(cpu.clock()); // 0xC229 LDH (0x07), A
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+  for (int var = 0; var < 17704; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0xC44F AND 0x10
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC451 CALL NZ, 0xC48B
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC454 LD A, 0x20
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC456 CALL 0xC47D
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC47D LD HL, 0x9800
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC480 LD B, 0x04
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC482 LD (HL), A
+  EXPECT_NO_THROW(cpu.clock()); // TODO: writes to VRAM, make that work
 }

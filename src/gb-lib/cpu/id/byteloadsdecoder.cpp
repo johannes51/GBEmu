@@ -103,6 +103,8 @@ auto bulkLoad(const OpcodeView opcode) -> OperationUP
   auto result = std::make_unique<ByteLoad>(opDestination.first, opSource.first);
   if (opDestination.first == ByteLoad::Destination::Register) {
     result->setDestination(opDestination.second);
+  } else if(opDestination.first == ByteLoad::Destination::RegisterIndirect) {
+    result->setDestination(WordRegister::HL);
   }
   if (opSource.first == ByteLoad::Source::Register) {
     result->setSource(opSource.second);
