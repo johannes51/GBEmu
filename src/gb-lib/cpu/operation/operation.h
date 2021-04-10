@@ -17,7 +17,7 @@ public:
   virtual void nextOpcode(Location<uint8_t> opcode) = 0;
   virtual bool isComplete() = 0;
 
-  virtual unsigned int cycles(const RegistersInterface& registers) = 0;
+  virtual unsigned cycles(const RegistersInterface& registers) = 0;
   virtual void execute(RegistersInterface& registers, IMemoryView& memory) = 0;
 };
 

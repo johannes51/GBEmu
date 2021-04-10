@@ -11,15 +11,10 @@ struct OpResult;
 
 enum class WordAluFunction { Inc, Add, Dec };
 
-class WordAluOperation : public SingleOp {
+class WordAluOperation : public SingleOp<2> {
 public:
   WordAluOperation(WordAluFunction function, WordRegister targetRegister);
 
-  unsigned int cycles(const RegistersInterface& registers) override
-  {
-    (void)registers;
-    return 2;
-  }
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:

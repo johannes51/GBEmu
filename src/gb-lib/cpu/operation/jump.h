@@ -26,7 +26,7 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-  unsigned int cycles(const RegistersInterface& registers) override;
+  unsigned cycles(const RegistersInterface& registers) override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:

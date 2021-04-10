@@ -51,9 +51,9 @@ auto Jump::isComplete() -> bool
   return result;
 }
 
-auto Jump::cycles(const RegistersInterface& registers) -> unsigned int
+auto Jump::cycles(const RegistersInterface& registers) -> unsigned
 {
-  unsigned int result = 0;
+  unsigned result = 0;
   if (target_ == TargetType::Absolute) {
     switch (type_) {
     case JumpType::Regular:

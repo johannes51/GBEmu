@@ -54,7 +54,7 @@ void ByteLoad::setSource(WordRegister srcRegister) { srcRegister16_ = srcRegiste
 
 void ByteLoad::setPostAction(ByteLoad::Post postAction) { postAction_ = postAction; }
 
-auto ByteLoad::cycles(const RegistersInterface& registers) -> unsigned int
+auto ByteLoad::cycles(const RegistersInterface& registers) -> unsigned
 {
   (void)registers;
   auto result = BaseDuration;

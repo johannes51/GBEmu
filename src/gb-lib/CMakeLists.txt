@@ -40,7 +40,6 @@ target_sources(gbelib PRIVATE
   cpu/operation/jump.cpp
   cpu/operation/operation.h
   cpu/operation/singleop.h
-  cpu/operation/singleop.cpp
   cpu/operation/wordaluoperation.h
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h

@@ -28,10 +28,10 @@ auto ByteAluOperation::isComplete() -> bool { return source_ != Source::Immediat
 
 void ByteAluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
 
-auto ByteAluOperation::cycles(const RegistersInterface& registers) -> unsigned int
+auto ByteAluOperation::cycles(const RegistersInterface& registers) -> unsigned
 {
   (void)registers;
-  unsigned int result = 1;
+  unsigned result = 1;
   if (source_ == Source::Indirect) {
     ++result;
     if (function_ == ByteAluFunction::Inc || function_ == ByteAluFunction::Dec) {

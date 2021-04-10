@@ -75,7 +75,7 @@ TEST(GBMemoryFactoryTest, ROM0t3)
 {
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
   auto mem = f.constructMemoryLayout();
-  unsigned int val = mem->getWord(endROM0 - 1).get();
+  unsigned val = mem->getWord(endROM0 - 1).get();
   EXPECT_EQ(0x066E, val);
   EXPECT_ANY_THROW(mem->getByte(endROM0).set(0x00));
 }

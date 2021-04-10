@@ -5,7 +5,7 @@
 
 enum class ControlOp { Nop, EI, DI };
 
-class Control final : public SingleOp {
+class Control final : public SingleOp<1> {
 public:
   Control(ControlOp op);
 

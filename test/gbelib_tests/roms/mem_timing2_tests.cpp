@@ -19,5 +19,5 @@ TEST(RomTest, MemTiming2)
   for (int var = 0; var < 76414; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-//  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 TODO: CB prefix unimplemented
+  //  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 TODO: CB prefix unimplemented
 }

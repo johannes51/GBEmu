@@ -21,7 +21,7 @@ private:
   const RegistersInterfaceUP registers_;
   InstructionDecoderUP instructionDecoder_;
   OperationUP nextOperation_;
-  unsigned int ticksTillExecution_ = 0;
+  unsigned ticksTillExecution_ = 0;
 };
 
 #endif // CPU_H
