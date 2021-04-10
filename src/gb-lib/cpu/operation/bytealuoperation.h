@@ -13,7 +13,7 @@ struct OpResult;
 
 enum class Source { Register, Immediate, Indirect, None };
 
-enum class ByteAluFunction { Add, Inc, Dec, And, Or, Xor, Cp };
+enum class ByteAluFunction { Add, Sub, Inc, Dec, And, Or, Xor, Cp };
 
 class ByteAluOperation final : public Operation {
 public:

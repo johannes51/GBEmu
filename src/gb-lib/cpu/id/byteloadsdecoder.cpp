@@ -103,42 +103,54 @@ auto bulkLoad(const OpcodeView opcode) -> OperationUP
   auto result = std::make_unique<ByteLoad>(opDestination.first, opSource.first);
   if (opDestination.first == ByteLoad::Destination::Register) {
     result->setDestination(opDestination.second);
-  } else if(opDestination.first == ByteLoad::Destination::RegisterIndirect) {
+  } else if (opDestination.first == ByteLoad::Destination::RegisterIndirect) {
     result->setDestination(WordRegister::HL);
   }
   if (opSource.first == ByteLoad::Source::Register) {
     result->setSource(opSource.second);
+  } else if (opSource.first == ByteLoad::Source::RegisterIndirect) {
+    result->setSource(WordRegister::HL);
   }
   return result;
 }
 
 auto loadImmediate(const OpcodeView opcode) -> OperationUP
 {
-  OperationUP result;
+  ByteRegister reg = ByteRegister::None;
   switch (opcode.value()) {
-  case 0x06: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegister::B);
-    result = std::move(p);
+  case 0x06:
+    reg = ByteRegister::B;
     break;
-  }
-  case 0x0E: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegister::C);
-    result = std::move(p);
+  case 0x0E:
+    reg = ByteRegister::C;
     break;
-  }
-  case 0x3E: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    p->setDestination(ByteRegister::A);
-    result = std::move(p);
+  case 0x16:
+    reg = ByteRegister::D;
     break;
-  }
+  case 0x1E:
+    reg = ByteRegister::E;
+    break;
+  case 0x26:
+    reg = ByteRegister::H;
+    break;
+  case 0x2E:
+    reg = ByteRegister::L;
+    break;
+  case 0x3E:
+    reg = ByteRegister::A;
+    break;
   default:
-    throw std::logic_error("Unimplemented");
     break;
   }
-  return result;
+  if (reg != ByteRegister::None) {
+    auto result = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
+    result->setDestination(reg);
+    return result;
+  } else {
+    auto result = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Immediate);
+    result->setDestination(WordRegister::HL);
+    return result;
+  }
 }
 
 auto loadImmediateIndirect(const OpcodeView opcode) -> OperationUP

@@ -53,6 +53,11 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::add(loc, getSource(registers, memory));
     break;
   }
+  case ByteAluFunction::Sub: {
+    auto loc = registers.get(ByteRegister::A);
+    result = ops::sub(loc, getSource(registers, memory));
+    break;
+  }
   case ByteAluFunction::Inc: {
     Location<uint8_t> loc;
     if (source_ == Source::Indirect) {

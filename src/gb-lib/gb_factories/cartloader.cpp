@@ -20,15 +20,15 @@ gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFil
 auto gb::CartLoader::constructBanks() -> std::vector<IMemoryManagerSP>
 {
   std::vector<IMemoryManagerSP> result;
-
-  if (!romFile_.fail()) {
-    auto buffer = read16K(romFile_);
-    auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, std::move(buffer));
-    buffer = read16K(romFile_);
-    auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, std::move(buffer));
-    result.push_back(rom0);
-    result.push_back(rom1);
+  if (romFile_.fail()) {
+    throw std::runtime_error("Could not open ROM file.");
   }
+  auto buffer = read16K(romFile_);
+  auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, std::move(buffer));
+  buffer = read16K(romFile_);
+  auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, std::move(buffer));
+  result.push_back(rom0);
+  result.push_back(rom1);
   return result;
 }
 

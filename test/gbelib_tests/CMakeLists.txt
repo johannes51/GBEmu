@@ -8,6 +8,18 @@ configure_file(
   "${CMAKE_CURRENT_LIST_DIR}/../res/cpu_instrs.gb"
   "${CMAKE_CURRENT_BINARY_DIR}/cpu_instrs.gb"
   COPYONLY)
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/../res/mem_timing.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/mem_timing.gb"
+  COPYONLY)
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/../res/mem_timing2.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/mem_timing2.gb"
+  COPYONLY)
+configure_file(
+  "${CMAKE_CURRENT_LIST_DIR}/../res/interrupt_time.gb"
+  "${CMAKE_CURRENT_BINARY_DIR}/interrupt_time.gb"
+  COPYONLY)
 
 set(TEST_SOURCES
   todo.cpp
@@ -44,9 +56,12 @@ set(TEST_SOURCES
   mem/rombank_tests.cpp
   roms/cpu_instrs_tests.cpp
   roms/instr_timing_tests.cpp
+  roms/interrupt_time_tests.cpp
+  roms/mem_timing_tests.cpp
+  roms/mem_timing2_tests.cpp
+  sys/systemmanager_tests.cpp
   util/helpers_tests.cpp
   util/ops_tests.cpp
-  sys/systemmanager_tests.cpp
   )
 
 add_executable(gbelib_tests ${TEST_SOURCES})
