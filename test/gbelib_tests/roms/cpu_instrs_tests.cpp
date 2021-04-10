@@ -133,14 +133,23 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0380 LD A, (HL+)
   EXPECT_NO_THROW(cpu.clock());
-  for (int var = 0; var < 96; ++var) {
+  for (int var = 0; var < 93; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  EXPECT_NO_THROW(cpu.clock()); // 0x0740 OR C
-  EXPECT_NO_THROW(cpu.clock()); // 0x0741 JR Z, 0x06 (+6)
-  EXPECT_NO_THROW(cpu.clock());
-  EXPECT_NO_THROW(cpu.clock()); // 0x0743 LDH A, 0x44
-  EXPECT_NO_THROW(cpu.clock());
-  EXPECT_NO_THROW(cpu.clock());
-  //  EXPECT_NO_THROW(cpu.clock()); // 0x074 CP
+  for (int var = 0; var < 1000; ++var) {
+    EXPECT_NO_THROW(cpu.clock()); // 0x073E INC BC
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock()); // 0x073F LD A, B
+    EXPECT_NO_THROW(cpu.clock()); // 0x0740 OR C
+    EXPECT_NO_THROW(cpu.clock()); // 0x0741 JR Z, 0x06 (+6)
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock()); // 0x0743 LDH A, (0x44)
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock()); // 0x0745 CP 0x90
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock()); // 0x0747 JR NZ, 0xF5 (-11, 0x0734)
+    EXPECT_NO_THROW(cpu.clock());
+    EXPECT_NO_THROW(cpu.clock());
+  } // TODO: this is waiting on LY, so it won't work for now
 }

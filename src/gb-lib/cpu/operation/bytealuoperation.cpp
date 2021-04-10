@@ -83,6 +83,11 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::xorF(loc, getSource(registers, memory));
     break;
   }
+  case ByteAluFunction::Cp: {
+    auto loc = registers.get(ByteRegister::A);
+    result = ops::cpF(loc, getSource(registers, memory));
+    break;
+  }
   }
   apply(registers.getFlags(), result);
 }

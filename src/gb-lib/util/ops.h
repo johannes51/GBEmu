@@ -78,6 +78,16 @@ template <class T> OpResult xorF(Location<T>& destination, const Location<T>& so
   }
 }
 
+template <class T> OpResult cpF(Location<T>& destination, const Location<T>& source)
+{
+  auto result = source.get() - destination.get();
+  if (result == 0) {
+    return { 1, 1, -1, result < 0 ? 1 : 0 };
+  } else {
+    return { 0, 1, -1, result < 0 ? 1 : 0 };
+  }
+}
+
 } // namespace ops
 
 #endif // OPS_H

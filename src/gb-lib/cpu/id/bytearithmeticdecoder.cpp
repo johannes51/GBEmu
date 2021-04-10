@@ -2,91 +2,55 @@
 
 #include <stdexcept>
 
-#include "cpu/id/opcodeview.h"
 #include "cpu/operation/bytealuoperation.h"
 
-auto sourceRegister(const OpcodeView& opcode) -> ByteRegister
+auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  ByteRegister result;
-  switch (opcode.lowerNibble()) {
-  case 0x0:
-  case 0x8:
-    result = ByteRegister::B;
-    break;
-  case 0x1:
-  case 0x9:
-    result = ByteRegister::C;
-    break;
-  case 0x2:
-  case 0xA:
-    result = ByteRegister::D;
-    break;
-  case 0x3:
-  case 0xB:
-    result = ByteRegister::E;
-    break;
-  case 0x4:
-  case 0xC:
-    result = ByteRegister::H;
-    break;
-  case 0x5:
-  case 0xD:
-    result = ByteRegister::L;
-    break;
-  case 0x7:
-  case 0xF:
-  default:
-    result = ByteRegister::A;
-    break;
+  OpcodeView opcode { opcodeLocation.get() };
+  if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
+    return bulkArithmetic(opcode);
+  } else if (opcode.upperNibble() <= 0x3
+      && (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0x5 || opcode.lowerNibble() == 0xC
+          || opcode.lowerNibble() == 0xD)) {
+    return incDec(opcode);
+  } else if (opcode.upperNibble() >= 0xC) {
+    return immediate(opcode);
   }
+  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
+}
+
+auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
+{
+  std::vector<uint8_t> result;
+  result.insert(result.end(),
+      {
+          0x04,
+          0x14,
+          0x24,
+          0x34,
+          0x05,
+          0x15,
+          0x25,
+          0x35,
+          0x0C,
+          0x1C,
+          0x2C,
+          0x3C,
+          0x0D,
+          0x1D,
+          0x2D,
+          0x3D,
+      }); // inc/dec
+  result.insert(result.end(),
+      { 0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91,
+          0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xA0, 0xA1, 0xA2, 0xA3,
+          0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5,
+          0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF }); // bulk arithmetic
+  result.insert(result.end(), { 0xC6, 0xCE, 0xD6, 0xDE, 0xE6, 0xEE, 0xF6, 0xFE }); // immediate arithmetic
   return result;
 }
 
-auto function(const OpcodeView& opcode) -> ByteAluFunction
-{
-  if (opcode.lowerNibble() <= 0x7) {
-    switch (opcode.upperNibble()) {
-    case 0x8:
-      return ByteAluFunction::Add;
-      break;
-    case 0x9:
-      //      return AluFunction::Sub;
-    case 0xA:
-      //      return AluFunction::And;
-    case 0xB:
-      return ByteAluFunction::Or;
-    default:
-      throw std::logic_error("Unimplemented");
-      break;
-    }
-  } else {
-    switch (opcode.upperNibble()) {
-    case 0x8:
-      //      return AluFunction::AddCarry;
-    case 0x9:
-      //      return AluFunction::SubCarry;
-      throw std::logic_error("Unimplemented");
-      break;
-    case 0xA:
-      return ByteAluFunction::Xor;
-      break;
-    case 0xB:
-      //      return AluFunction::Compare;
-    default:
-      throw std::logic_error("Unimplemented");
-      break;
-    }
-  }
-}
-
-auto bulkArithmetic(const OpcodeView& opcode) -> OperationUP
-{
-  auto op = std::make_unique<ByteAluOperation>(function(opcode), Source::Register);
-  op->setRegister(sourceRegister(opcode));
-  return op;
-}
-
-auto incDec(const OpcodeView& opcode) -> OperationUP
+auto ByteArithmeticDecoder::incDec(const OpcodeView& opcode) -> OperationUP
 {
   auto function
       = opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC ? ByteAluFunction::Inc : ByteAluFunction::Dec;
@@ -129,45 +93,125 @@ auto incDec(const OpcodeView& opcode) -> OperationUP
   return result;
 }
 
-auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ByteArithmeticDecoder::bulkArithmetic(const OpcodeView& opcode) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
-  if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
-    return bulkArithmetic(opcode);
-  } else if (opcode.upperNibble() <= 0x3
-      && (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0x5 || opcode.lowerNibble() == 0xC
-          || opcode.lowerNibble() == 0xD)) {
-    return incDec(opcode);
-  }
-  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
+  auto op = std::make_unique<ByteAluOperation>(bulkFunction(opcode), Source::Register);
+  op->setRegister(sourceRegister(opcode));
+  return op;
 }
 
-auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
+auto ByteArithmeticDecoder::immediate(const OpcodeView& opcode) -> OperationUP
 {
-  std::vector<uint8_t> result;
-  result.insert(result.end(),
-      { 0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91,
-          0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xA0, 0xA1, 0xA2, 0xA3,
-          0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5,
-          0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF }); // bulk arithmetic
-  result.insert(result.end(),
-      {
-          0x04,
-          0x14,
-          0x24,
-          0x34,
-          0x05,
-          0x15,
-          0x25,
-          0x35,
-          0x0C,
-          0x1C,
-          0x2C,
-          0x3C,
-          0x0D,
-          0x1D,
-          0x2D,
-          0x3D,
-      }); // inc/dec
+  return std::make_unique<ByteAluOperation>(immediateFunction(opcode), Source::Immediate);
+}
+
+auto ByteArithmeticDecoder::sourceRegister(const OpcodeView& opcode) -> ByteRegister
+{
+  ByteRegister result = ByteRegister::None;
+  switch (opcode.lowerNibble()) {
+  case 0x0:
+  case 0x8:
+    result = ByteRegister::B;
+    break;
+  case 0x1:
+  case 0x9:
+    result = ByteRegister::C;
+    break;
+  case 0x2:
+  case 0xA:
+    result = ByteRegister::D;
+    break;
+  case 0x3:
+  case 0xB:
+    result = ByteRegister::E;
+    break;
+  case 0x4:
+  case 0xC:
+    result = ByteRegister::H;
+    break;
+  case 0x5:
+  case 0xD:
+    result = ByteRegister::L;
+    break;
+  case 0x7:
+  case 0xF:
+  default:
+    result = ByteRegister::A;
+    break;
+  }
   return result;
+}
+
+auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFunction
+{
+  if (opcode.lowerNibble() <= 0x7) {
+    switch (opcode.upperNibble()) {
+    case 0x8:
+      return ByteAluFunction::Add;
+      break;
+    case 0x9:
+      //      return AluFunction::Sub;
+    case 0xA:
+      //      return AluFunction::And;
+    case 0xB:
+      return ByteAluFunction::Or;
+    default:
+      throw std::logic_error("Unimplemented");
+      break;
+    }
+  } else {
+    switch (opcode.upperNibble()) {
+    case 0x8:
+      //      return AluFunction::AddCarry;
+    case 0x9:
+      //      return AluFunction::SubCarry;
+      throw std::logic_error("Unimplemented");
+      break;
+    case 0xA:
+      return ByteAluFunction::Xor;
+      break;
+    case 0xB:
+      //      return AluFunction::Compare;
+    default:
+      throw std::logic_error("Unimplemented");
+      break;
+    }
+  }
+}
+
+auto ByteArithmeticDecoder::immediateFunction(const OpcodeView& opcode) -> ByteAluFunction
+{
+  switch (opcode.value()) {
+  case 0xC6:
+    return ByteAluFunction::Add;
+    break;
+  case 0xCE:
+    //    return ByteAluFunction::AddCarry;
+    throw std::logic_error("AddCarry unimplemented");
+    break;
+  case 0xD6:
+    //    return ByteAluFunction::Sub;
+    throw std::logic_error("Sub unimplemented");
+    break;
+  case 0xDE:
+    //    return ByteAluFunction::SubCarry;
+    throw std::logic_error("SubCarry unimplemented");
+    break;
+  case 0xE6:
+    //    return ByteAluFunction::And;
+    throw std::logic_error("And unimplemented");
+    break;
+  case 0xEE:
+    return ByteAluFunction::Xor;
+    break;
+  case 0xF6:
+    return ByteAluFunction::Or;
+    break;
+  case 0xFE:
+    return ByteAluFunction::Cp;
+    break;
+  default:
+    throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcode.value()) };
+    break;
+  }
 }
