@@ -41,5 +41,5 @@ TEST(RomTest, MemTiming)
   }
   EXPECT_NO_THROW(cpu.clock()); // 0x0278 LD H, 0x08
   EXPECT_NO_THROW(cpu.clock());
-  //  EXPECT_NO_THROW(cpu.clock()); // 0x027A CB TODO: CB prefix unimplemented
+  EXPECT_NO_THROW(cpu.clock()); // 0x027A CB
 }

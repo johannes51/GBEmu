@@ -19,6 +19,8 @@ target_sources(gbelib PRIVATE
   cpu/id/bytearithmeticdecoder.cpp
   cpu/id/byteloadsdecoder.h
   cpu/id/byteloadsdecoder.cpp
+  cpu/id/cbdecoder.h
+  cpu/id/cbdecoder.cpp
   cpu/id/controldecoder.h
   cpu/id/controldecoder.cpp
   cpu/id/instructiondecoder.h
@@ -34,6 +36,10 @@ target_sources(gbelib PRIVATE
   cpu/operation/bytealuoperation.cpp
   cpu/operation/byteload.h
   cpu/operation/byteload.cpp
+  cpu/operation/cbop.h
+  cpu/operation/cbop.cpp
+  cpu/operation/cbprefix.h
+  cpu/operation/cbprefix.cpp
   cpu/operation/control.h
   cpu/operation/control.cpp
   cpu/operation/jump.h

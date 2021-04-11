@@ -19,5 +19,5 @@ TEST(RomTest, InteruptTime)
   for (int var = 0; var < 117464; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  //  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 TODO: CB prefix unimplemented
+  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 CB
 }

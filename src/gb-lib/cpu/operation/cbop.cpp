@@ -1,0 +1,54 @@
+#include "cbop.h"
+
+#include <stdexcept>
+
+#include "cpu/id/cbdecoder.h"
+#include "location/location.h"
+#include "mem/imemoryview.h"
+#include "util/helpers.h"
+
+CbOp::CbOp(CbFunction function, bool indirect, ByteRegister operand)
+    : function_(function)
+    , indirect_(indirect)
+    , operand_(operand)
+    , affectedBit_(0)
+{
+}
+
+auto CbOp::cycles(const RegistersInterface& registers) -> unsigned
+{
+  (void)registers;
+  if (!indirect_) {
+    return 2;
+  } else {
+    if (function_ == CbFunction::Bit) {
+      return 3;
+    } else {
+      return 4;
+    }
+  }
+}
+
+void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
+{
+  (void)registers;
+  (void)memory; // auto op = selectOperand(registers, memory);
+  switch (function_) {
+  default:
+    throw std::logic_error("Unimplemented.");
+    break;
+  }
+}
+
+void CbOp::setAffectedBit(uint8_t value)
+{
+  if (value > MaxBit) {
+    throw std::invalid_argument("Only bits 0..7 adressable");
+  }
+  affectedBit_ = value;
+}
+
+auto CbOp::selectOperand(RegistersInterface& registers, IMemoryView& memory) -> Location<uint8_t>
+{
+  return indirect_ ? memory.getByte(hlp::indirect(registers.get(WordRegister::HL))) : registers.get(operand_);
+}

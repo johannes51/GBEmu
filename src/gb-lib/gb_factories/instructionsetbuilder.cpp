@@ -3,6 +3,7 @@
 #include "cpu/id/baseinstructiondecoder.h"
 #include "cpu/id/bytearithmeticdecoder.h"
 #include "cpu/id/byteloadsdecoder.h"
+#include "cpu/id/cbdecoder.h"
 #include "cpu/id/controldecoder.h"
 #include "cpu/id/jumpscallsdecoder.h"
 #include "cpu/id/wordarithmeticdecoder.h"
@@ -12,6 +13,7 @@ auto InstructionSetBuilder::construct() -> InstructionDecoderUP
 {
   auto result = std::make_unique<BaseInstructionDecoder>();
 
+  result->registerDecoder(std::make_shared<CbDecoder>());
   result->registerDecoder(std::make_shared<ControlDecoder>());
   result->registerDecoder(std::make_shared<JumpsCallsDecoder>());
   result->registerDecoder(std::make_shared<ByteLoadsDecoder>());
