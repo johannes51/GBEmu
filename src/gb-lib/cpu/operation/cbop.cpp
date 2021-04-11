@@ -5,6 +5,7 @@
 #include "cpu/id/cbdecoder.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
+#include "ops/shiftrotatebitwise.h"
 #include "util/helpers.h"
 
 CbOp::CbOp(CbFunction function, bool indirect, ByteRegister operand)
@@ -31,9 +32,14 @@ auto CbOp::cycles(const RegistersInterface& registers) -> unsigned
 
 void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
 {
-  (void)registers;
-  (void)memory; // auto op = selectOperand(registers, memory);
+  auto op = selectOperand(registers, memory);
   switch (function_) {
+  case CbFunction::ShiftRightLogic:
+    ops::srl(op);
+    break;
+  case CbFunction::RotateRight:
+    ops::rr(op);
+    break;
   default:
     throw std::logic_error("Unimplemented.");
     break;

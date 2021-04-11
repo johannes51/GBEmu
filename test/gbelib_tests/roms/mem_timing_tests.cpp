@@ -41,5 +41,11 @@ TEST(RomTest, MemTiming)
   }
   EXPECT_NO_THROW(cpu.clock()); // 0x0278 LD H, 0x08
   EXPECT_NO_THROW(cpu.clock());
-  EXPECT_NO_THROW(cpu.clock()); // 0x027A CB
+  EXPECT_NO_THROW(cpu.clock()); // 0x027A CB SRL B
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x027C CB RR C
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x027E CB RR D
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock()); // 0x0280 RRA
 }

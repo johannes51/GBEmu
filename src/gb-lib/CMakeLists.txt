@@ -100,6 +100,7 @@ target_sources(gbelib PRIVATE
   ops/logic.h
   ops/memory.h
   ops/ops.h
+  ops/shiftrotatebitwise.h
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/helpers.h
