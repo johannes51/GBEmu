@@ -16,7 +16,7 @@ auto BaseInstructionDecoder::decode(const Location<uint8_t>& opcodeLocation) -> 
   try {
     decoder = decoders_.at(opcodeLocation.get()).get();
   } catch (...) {
-    throw std::logic_error("Unimplemented opcode: " + std::to_string(opcodeLocation.get()));
+    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcodeLocation.get()));
   }
   return decoder->decode(opcodeLocation);
 }

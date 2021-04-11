@@ -24,7 +24,7 @@ auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, B
       dest = ByteLoad::Destination::RegisterIndirect;
       break;
     default:
-      throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
+      throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
       break;
     }
   } else {
@@ -42,7 +42,7 @@ auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, B
       destRegister = ByteRegister::A;
       break;
     default:
-      throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
+      throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
       break;
     }
   }
@@ -87,7 +87,7 @@ auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegiste
     srcRegister = ByteRegister::A;
     break;
   default:
-    throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
+    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
     break;
   }
   return std::make_pair(src, srcRegister);
@@ -271,7 +271,7 @@ auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
     result->setPostAction(ByteLoad::Post::Decrement);
     break;
   default:
-    throw std::logic_error("Unimplemented opcode: " + std::to_string(opcode.value()));
+    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
     break;
   }
   if (store) {
