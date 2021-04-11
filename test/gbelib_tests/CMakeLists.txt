@@ -38,14 +38,17 @@ set(TEST_SOURCES
   cpu/operation/jump_tests.cpp
   cpu/operation/wordaluoperation_tests.cpp
   cpu/operation/wordload_tests.cpp
+  gb/gbmemoryfactory_tests.cpp
+  gb/cartloader_tests.cpp
   location/location_tests.cpp
   location/locationimpl_tests.cpp
   location/nullbyte_tests.cpp
   location/rambyte_tests.cpp
   location/rombyte_tests.cpp
   location/zerobyte_tests.cpp
-  gb/gbmemoryfactory_tests.cpp
-  gb/cartloader_tests.cpp
+  ops/arithmetic_tests.cpp
+  ops/logic_tests.cpp
+  ops/memory_tests.cpp
   mem/nullbank_tests.cpp
   mem/memorymanifold_tests.cpp
   mem/memoryarea_tests.cpp
@@ -61,7 +64,6 @@ set(TEST_SOURCES
   roms/mem_timing2_tests.cpp
   sys/systemmanager_tests.cpp
   util/helpers_tests.cpp
-  util/ops_tests.cpp
   )
 
 add_executable(gbelib_tests ${TEST_SOURCES})

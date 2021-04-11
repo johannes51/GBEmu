@@ -1,6 +1,5 @@
 #include "jump.h"
 
-#include <cstring>
 #include <stdexcept>
 
 #include "cpu/flagsview.h"
@@ -8,8 +7,9 @@
 #include "location/location.h"
 #include "location/zerobyte.h"
 #include "mem/imemoryview.h"
+#include "ops/arithmetic.h"
+#include "ops/memory.h"
 #include "util/helpers.h"
-#include "util/ops.h"
 
 Jump::Jump(JumpType type, TargetType target, Condition condition)
     : lower_(std::nullopt)
@@ -101,11 +101,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         ops::increment(sp);
       }
     } else /*if (target_ == TargetType::Relative)*/ {
-      auto operandUnsigned = lower_->get();
-      int8_t operand = 0;
-      std::memcpy(
-          &operand, &operandUnsigned, sizeof(operand)); // WARNING: this only works as 2's complement (so always)
-      ops::add(target, operand);
+      ops::addSigned(target, *lower_);
     }
   }
 }

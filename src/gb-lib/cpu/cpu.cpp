@@ -7,9 +7,9 @@
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "operation/operation.h"
+#include "ops/arithmetic.h"
 #include "registersinterface.h"
 #include "util/helpers.h"
-#include "util/ops.h"
 
 Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem, InstructionDecoderUP instructionDecoder)
     : mem_(std::move(mem))

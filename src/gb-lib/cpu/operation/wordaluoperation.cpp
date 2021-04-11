@@ -1,7 +1,7 @@
 #include "wordaluoperation.h"
 
 #include "location/location.h"
-#include "util/ops.h"
+#include "ops/arithmetic.h"
 
 WordAluOperation::WordAluOperation(WordAluFunction function, WordRegister targetRegister)
     : function_(function)

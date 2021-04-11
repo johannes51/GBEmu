@@ -6,7 +6,7 @@
 #include "defines.h"
 
 
-template<class T>
+template<typename T>
 class Location;
 
 class LocationByte;

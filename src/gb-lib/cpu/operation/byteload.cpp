@@ -5,8 +5,9 @@
 #include "cpu/registersinterface.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
+#include "ops/arithmetic.h"
+#include "ops/memory.h"
 #include "util/helpers.h"
-#include "util/ops.h"
 
 ByteLoad::ByteLoad(Destination destination, Source source, bool zeroPage)
     : destination_(destination)

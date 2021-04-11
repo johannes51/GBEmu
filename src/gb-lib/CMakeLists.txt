@@ -96,12 +96,14 @@ target_sources(gbelib PRIVATE
   location/variablebyte.cpp
   location/zerobyte.h
   location/zerobyte.cpp
-  util/helpers.h
-  util/helpers.cpp
-  util/ops.h
-  util/ops.cpp
+  ops/arithmetic.h
+  ops/logic.h
+  ops/memory.h
+  ops/ops.h
   sys/systemmanager.cpp
   sys/systemmanager.h
+  util/helpers.h
+  util/helpers.cpp
   )
 
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")

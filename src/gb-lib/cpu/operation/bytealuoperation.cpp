@@ -5,8 +5,9 @@
 #include "cpu/flagsview.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
+#include "ops/arithmetic.h"
+#include "ops/logic.h"
 #include "util/helpers.h"
-#include "util/ops.h"
 
 ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
     : function_(function)

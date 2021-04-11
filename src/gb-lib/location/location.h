@@ -5,7 +5,7 @@
 #include "mem/mem_defines.h"
 #include "nullbyte.h"
 
-template <class T> class Location final : LocationImpl {
+template <typename T> class Location final : LocationImpl {
 public:
   static Location<T> generate(LocationByteUP lower, LocationByteUP upper = std::make_unique<NullByte>());
   static Location<uint16_t> fuse(Location<uint8_t> lower, Location<uint8_t> upper);
@@ -22,19 +22,19 @@ private:
   Location(LocationByteUP lower, LocationByteUP upper);
 };
 
-template <class T>
+template <typename T>
 Location<T>::Location()
     : LocationImpl(nullptr, nullptr)
 {
 }
 
-template <class T>
+template <typename T>
 Location<T>::Location(LocationByteUP lower, LocationByteUP upper)
     : LocationImpl(std::move(lower), std::move(upper))
 {
 }
 
-template <class T> Location<T> Location<T>::generate(LocationByteUP lower, LocationByteUP upper)
+template <typename T> Location<T> Location<T>::generate(LocationByteUP lower, LocationByteUP upper)
 {
   return Location<T>(std::move(lower), std::move(upper));
 }
