@@ -19,5 +19,11 @@ TEST(RomTest, InteruptTime)
   for (int var = 0; var < 117464; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 CB
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C1 CB SRL B
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C3 CB RR C
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C5 CB RR D
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock()); // 0xC2C7 RRA
 }

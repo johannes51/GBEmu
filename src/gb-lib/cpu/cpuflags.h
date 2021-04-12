@@ -27,10 +27,6 @@ public:
 private:
   uint8_t& buffer_;
   bool interrupt_;
-
-  void setBit(uint8_t pos);
-  void clearBit(uint8_t pos);
-  bool checkBit(uint8_t pos) const;
 };
 
 #endif // CPUFLAGS_H

@@ -15,6 +15,8 @@ target_sources(gbelib PRIVATE
   cpu/registersinterface.h
   cpu/id/baseinstructiondecoder.h
   cpu/id/baseinstructiondecoder.cpp
+  cpu/id/basicrotatedecoder.h
+  cpu/id/basicrotatedecoder.cpp
   cpu/id/bytearithmeticdecoder.h
   cpu/id/bytearithmeticdecoder.cpp
   cpu/id/byteloadsdecoder.h
@@ -32,6 +34,8 @@ target_sources(gbelib PRIVATE
   cpu/id/wordarithmeticdecoder.cpp
   cpu/id/wordloadsdecoder.h
   cpu/id/wordloadsdecoder.cpp
+  cpu/operation/basicrotate.h
+  cpu/operation/basicrotate.cpp
   cpu/operation/bytealuoperation.h
   cpu/operation/bytealuoperation.cpp
   cpu/operation/byteload.h

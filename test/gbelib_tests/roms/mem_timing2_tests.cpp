@@ -19,5 +19,11 @@ TEST(RomTest, MemTiming2)
   for (int var = 0; var < 76414; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 CB
+  EXPECT_NO_THROW(cpu.clock()); // 0x24D1 CB SRL B
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x24D3 CB RR C
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0x24D5 CB RR D
+  EXPECT_NO_THROW(cpu.clock());
+  //  EXPECT_NO_THROW(cpu.clock()); // 0x24D7 RRCA
 }
