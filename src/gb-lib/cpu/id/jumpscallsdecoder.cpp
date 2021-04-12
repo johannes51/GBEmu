@@ -3,8 +3,8 @@
 #include <stdexcept>
 
 #include "cpu/operation/jump.h"
-#include "location/nullbyte.h"
 #include "location/variablebyte.h"
+#include "location/zerobyte.h"
 
 auto JumpsCallsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
@@ -58,6 +58,9 @@ auto JumpsCallsDecoder::type(const OpcodeView& opcode) -> JumpType
       throw std::logic_error("Unhandled opcode: " + std::to_string(opcode.value()));
     }
     break;
+  case 0x7:
+  case 0xF:
+    return JumpType::Reset;
   default:
     throw std::logic_error("Unhandled opcode: " + std::to_string(opcode.value()));
   }
@@ -71,6 +74,14 @@ auto JumpsCallsDecoder::condition(const OpcodeView& opcode) -> Condition
   case 0xC9:
   case 0xCD:
   case 0xD9:
+  case 0xC7:
+  case 0xD7:
+  case 0xE7:
+  case 0xF7:
+  case 0xCF:
+  case 0xDF:
+  case 0xEF:
+  case 0xFF:
     return Condition::None;
     break;
   case 0x20:
@@ -135,5 +146,5 @@ void JumpsCallsDecoder::feedResetOpcode(Operation& op, OpcodeView opcode)
     break;
   }
   op.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(lower)));
-  op.nextOpcode(Location<uint8_t>::generate(std::make_unique<NullByte>()));
+  op.nextOpcode(Location<uint8_t>::generate(std::make_unique<ZeroByte>()));
 }

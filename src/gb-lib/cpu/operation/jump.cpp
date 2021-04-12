@@ -64,6 +64,7 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned
       break;
     case JumpType::Return:
     case JumpType::RetI:
+    case JumpType::Reset:
       result = (condition_ == Condition::None) ? NormalReturn
                                                : (taken(registers.getFlags()) ? TakenReturn : SkippedReturn);
       break;
@@ -76,12 +77,13 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned
 
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
-  auto target = registers.get(WordRegister::PC);
+  auto pc = registers.get(WordRegister::PC);
   if (taken(registers.getFlags())) {
     if (target_ == TargetType::Absolute) {
       auto sp = registers.get(WordRegister::SP);
       switch (type_) {
       case JumpType::Call:
+      case JumpType::Reset:
         ops::decrement(sp);
         ops::decrement(sp);
         {
@@ -90,18 +92,18 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         }
         [[fallthrough]];
       case JumpType::Regular:
-        ops::load(target, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
+        ops::load(pc, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
         break;
       case JumpType::RetI:
         registers.getFlags().enableInterrupt();
         [[fallthrough]];
       case JumpType::Return:
-        ops::load(target, memory.getWord(hlp::indirect(sp)));
+        ops::load(pc, memory.getWord(hlp::indirect(sp)));
         ops::increment(sp);
         ops::increment(sp);
       }
     } else /*if (target_ == TargetType::Relative)*/ {
-      ops::addSigned(target, *lower_);
+      ops::addSigned(pc, *lower_);
     }
   }
 }

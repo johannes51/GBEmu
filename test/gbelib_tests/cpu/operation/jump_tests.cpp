@@ -190,3 +190,23 @@ TEST(JumpTest, RetI)
   EXPECT_EQ(0xFF, r.get(WordRegister::SP).get());
   EXPECT_TRUE(r.getFlags().interruptEnabled());
 }
+
+TEST(JumpTest, Reset)
+{
+  RamBank b { { 0x00, 0xFF } };
+  CpuRegisters r;
+  r.get(WordRegister::PC).set(0xC300);
+  r.get(WordRegister::SP).set(0x00FF);
+
+  Jump call { JumpType::Reset, TargetType::Absolute, Condition::None };
+  ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xFE)));
+  ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xC3)));
+  EXPECT_TRUE(call.isComplete());
+  EXPECT_EQ(4, call.cycles(r));
+  EXPECT_NO_THROW(call.execute(r, b));
+
+  EXPECT_EQ(0xC3, b.getByte(0xFE).get());
+  EXPECT_EQ(0x00, b.getByte(0xFF).get());
+  EXPECT_EQ(0xC3FE, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFD, r.get(WordRegister::SP).get());
+}

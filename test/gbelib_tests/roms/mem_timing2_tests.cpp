@@ -25,5 +25,9 @@ TEST(RomTest, MemTiming2)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x24D5 CB RR D
   EXPECT_NO_THROW(cpu.clock());
-  //  EXPECT_NO_THROW(cpu.clock()); // 0x24D7 RRCA
+  EXPECT_NO_THROW(cpu.clock()); // 0x24D7 RRCA
+  for (int var = 0; var < 5110; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  //  EXPECT_NO_THROW(cpu.clock()); // 0x2519 JP (HL)
 }

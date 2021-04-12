@@ -48,4 +48,12 @@ TEST(RomTest, MemTiming)
   EXPECT_NO_THROW(cpu.clock()); // 0x027E CB RR D
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x0280 RRA
+  EXPECT_NO_THROW(cpu.clock());
+  for (int var = 0; var < 2768; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0xDFED RST 38H
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
 }
