@@ -35,20 +35,14 @@ void Jump::nextOpcode(Location<uint8_t> opcode)
 
 auto Jump::isComplete() -> bool
 {
-  auto result = true;
-  if (type_ == JumpType::Return || type_ == JumpType::RetI) {
-    result = true;
-  } else {
-    switch (target_) {
-    case TargetType::Absolute:
-      result = lower_ && upper_;
-      break;
-    case TargetType::Relative:
-      result = static_cast<bool>(lower_);
-      break;
-    }
+  switch (type_) {
+  case JumpType::Regular:
+    return (target_ == TargetType::Absolute) ? lower_ && upper_ : static_cast<bool>(lower_);
+  case JumpType::Call:
+    return lower_ && upper_;
+  default:
+    return true;
   }
-  return result;
 }
 
 auto Jump::cycles(const RegistersInterface& registers) -> unsigned
@@ -56,6 +50,9 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned
   unsigned result = 0;
   if (target_ == TargetType::Absolute) {
     switch (type_) {
+    case JumpType::Indirect:
+      result = 1;
+      break;
     case JumpType::Regular:
       result = taken(registers.getFlags()) ? TakenJump : SkippedJump;
       break;
@@ -93,6 +90,9 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         [[fallthrough]];
       case JumpType::Regular:
         ops::load(pc, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
+        break;
+      case JumpType::Indirect:
+        ops::load(pc, registers.get(WordRegister::HL));
         break;
       case JumpType::RetI:
         registers.getFlags().enableInterrupt();

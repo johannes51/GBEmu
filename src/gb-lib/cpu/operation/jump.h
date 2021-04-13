@@ -6,7 +6,7 @@
 #include "location/location.h"
 #include "operation.h"
 
-enum class JumpType { Regular, Call, Return, RetI, Reset };
+enum class JumpType { Regular, Indirect, Call, Return, RetI, Reset };
 enum class TargetType { Absolute, Relative };
 enum class Condition { None, Z, NZ, C, NC };
 
