@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <cstring>
 
+#include "mem/rambank.h"
 #include "mem/rombank.h"
 
 gb::CartLoader::CartLoader(const std::string& romFile)
@@ -29,6 +30,7 @@ auto gb::CartLoader::constructBanks() -> std::vector<IMemoryManagerSP>
   auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, std::move(buffer));
   result.push_back(rom0);
   result.push_back(rom1);
+  result.push_back(std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }));
   return result;
 }
 

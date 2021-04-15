@@ -30,4 +30,25 @@ TEST(RomTest, MemTiming2)
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
   EXPECT_NO_THROW(cpu.clock()); // 0x2519 JP (HL)
+  for (int var = 0; var < 37996; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0x231F CB SRL A
+  EXPECT_NO_THROW(cpu.clock());
+  for (int var = 0; var < 12; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0x2329 CB SWAP A
+  EXPECT_NO_THROW(cpu.clock());
+  for (int var = 0; var < 15; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0x2344 CALL 0x250D
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock());
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

@@ -40,9 +40,11 @@ void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
   case CbFunction::RotateRight:
     ops::rr(op);
     break;
+  case CbFunction::Swap:
+    ops::swap(op);
+    break;
   default:
     throw std::logic_error("Unimplemented.");
-    break;
   }
 }
 

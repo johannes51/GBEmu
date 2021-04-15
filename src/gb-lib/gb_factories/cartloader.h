@@ -20,6 +20,8 @@ private:
   static constexpr address_type EndROM0 = 0x3FFF;
   static constexpr address_type StartROM1 = 0x4000;
   static constexpr address_type EndROM1 = 0x7FFF;
+  static constexpr address_type StartExtRAM = 0xA000;
+  static constexpr address_type EndExtRAM = 0xBFFF;
 
   static std::vector<uint8_t> read16K(std::ifstream& file);
 

@@ -152,4 +152,6 @@ TEST(RomTest, CpuInstructions)
     EXPECT_NO_THROW(cpu.clock());
     EXPECT_NO_THROW(cpu.clock());
   } // TODO: this is waiting on LY, so it won't work for now
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

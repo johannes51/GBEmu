@@ -89,6 +89,10 @@ auto CbDecoder::operand(const OpcodeView& opcode) -> ByteRegister
     break;
   case 0x7:
   case 0xF:
+    return ByteRegister::A;
+    break;
+  case 0x6:
+  case 0xE:
   default:
     throw std::logic_error("Unimplemented");
     break;

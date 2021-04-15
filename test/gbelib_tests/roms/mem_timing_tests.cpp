@@ -56,4 +56,6 @@ TEST(RomTest, MemTiming)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

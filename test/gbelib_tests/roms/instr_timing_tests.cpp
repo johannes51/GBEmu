@@ -124,4 +124,6 @@ TEST(RomTest, InstructionTiming)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0xC482 LD (HL), A
   EXPECT_NO_THROW(cpu.clock()); // TODO: writes to VRAM, make that work
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

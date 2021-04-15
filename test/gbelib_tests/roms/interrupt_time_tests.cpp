@@ -25,5 +25,11 @@ TEST(RomTest, InteruptTime)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0xC2C5 CB RR D
   EXPECT_NO_THROW(cpu.clock());
-  //  EXPECT_NO_THROW(cpu.clock()); // 0xC2C7 RRA
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C7 RRA
+  for (int var = 0; var < 6901; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0xC261 ADC A, 0x01
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

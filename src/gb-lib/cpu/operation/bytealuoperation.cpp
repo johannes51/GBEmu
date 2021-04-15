@@ -49,14 +49,23 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   (void)memory;
   ops::OpResult result { 0, 0, 0, 0 };
   switch (function_) {
-  case ByteAluFunction::Add: {
+  case ByteAluFunction::Add:
+  case ByteAluFunction::AddCarry: {
     auto loc = registers.get(ByteRegister::A);
     result = ops::add(loc, getSource(registers, memory));
+    if (function_ == ByteAluFunction::AddCarry && registers.getFlags().carry()) {
+      ops::increment(loc);
+    }
     break;
   }
-  case ByteAluFunction::Sub: {
+  case ByteAluFunction::Sub:
+  case ByteAluFunction::SubCarry: {
     auto loc = registers.get(ByteRegister::A);
     result = ops::sub(loc, getSource(registers, memory));
+    if (function_ == ByteAluFunction::SubCarry && registers.getFlags().carry()) {
+      ops::decrement(loc);
+    }
+    break;
     break;
   }
   case ByteAluFunction::Inc: {
