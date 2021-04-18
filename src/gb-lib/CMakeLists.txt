@@ -57,10 +57,28 @@ target_sources(gbelib PRIVATE
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/gb_defines.h
-  gb_factories/memoryfactory.h
-  gb_factories/memoryfactory.cpp
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp
+  gb_factories/memoryfactory.h
+  gb_factories/memoryfactory.cpp
+  location/bufferbyte.h
+  location/bufferbyte.cpp
+  location/location.h
+  location/location.cpp
+  location/location_defines
+  location/locationbyte.h
+  location/locationimpl.h
+  location/locationimpl.cpp
+  location/nullbyte.h
+  location/nullbyte.cpp
+  location/rambyte.h
+  location/rambyte.cpp
+  location/rombyte.h
+  location/rombyte.cpp
+  location/variablebyte.h
+  location/variablebyte.cpp
+  location/zerobyte.h
+  location/zerobyte.cpp
   mem/imemoryview.h
   mem/imemorymanager.h
   mem/mem_defines.h
@@ -82,29 +100,15 @@ target_sources(gbelib PRIVATE
   mem/rombank.cpp
   mem/singleareamanager.h
   mem/singleareamanager.cpp
-  location/bufferbyte.h
-  location/bufferbyte.cpp
-  location/location.h
-  location/location.cpp
-  location/location_defines
-  location/locationbyte.h
-  location/locationimpl.h
-  location/locationimpl.cpp
-  location/nullbyte.h
-  location/nullbyte.cpp
-  location/rambyte.h
-  location/rambyte.cpp
-  location/rombyte.h
-  location/rombyte.cpp
-  location/variablebyte.h
-  location/variablebyte.cpp
-  location/zerobyte.h
-  location/zerobyte.cpp
   ops/arithmetic.h
   ops/logic.h
   ops/memory.h
   ops/ops.h
   ops/shiftrotatebitwise.h
+  peripherals/joypad.h
+  peripherals/joypad.cpp
+  peripherals/peri_defines.h
+  peripherals/peripheral.h
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/helpers.h
