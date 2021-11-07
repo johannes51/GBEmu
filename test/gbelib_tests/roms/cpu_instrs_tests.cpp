@@ -151,7 +151,7 @@ TEST(RomTest, CpuInstructions)
     EXPECT_NO_THROW(cpu.clock()); // 0x0747 JR NZ, 0xF5 (-11, 0x0734)
     EXPECT_NO_THROW(cpu.clock());
     EXPECT_NO_THROW(cpu.clock());
-  } // TODO: this is waiting on LY, so it won't work for now
+  } // NOTE: this is waiting on LY, so it won't work for now
 
   //-----------------------------------------------DONE-----------------------------------------------------------------
 }
