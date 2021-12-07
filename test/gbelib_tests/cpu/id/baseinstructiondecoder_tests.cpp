@@ -7,30 +7,40 @@
 
 #include "location/variablebyte.h"
 
-TEST(BaseInstructionDecoderTest, Construction) { EXPECT_NO_THROW(BaseInstructionDecoder d); }
+class BaseInstructionDecoderTest : public ::testing::Test {
+public:
+  BaseInstructionDecoderTest()
+      : d()
+  {
+  }
 
-TEST(BaseInstructionDecoderTest, Register)
-{
+protected:
   BaseInstructionDecoder d;
+};
+
+TEST(BaseInstructionDecoderTestNF, Construction) { EXPECT_NO_THROW(BaseInstructionDecoder d); }
+
+TEST_F(BaseInstructionDecoderTest, Register)
+{
   d.registerDecoder(std::make_shared<ControlDecoder>());
   EXPECT_EQ(3, d.decodedOpcodes().size());
 }
 
-TEST(BaseInstructionDecoderTest, Decode)
+TEST_F(BaseInstructionDecoderTest, Decode)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
   EXPECT_NO_THROW(d.decode(variableLocation(0x00)));
 }
 
-TEST(BaseInstructionDecoderTest, UndecodedOpcode)
+TEST_F(BaseInstructionDecoderTest, UndecodedOpcode)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
   EXPECT_ANY_THROW(d.decode(variableLocation(0x80)));
 }
 
-TEST(BaseInstructionDecoderTest, AlreadyDecodedOpcode)
+TEST_F(BaseInstructionDecoderTest, AlreadyDecodedOpcode)
 {
   BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());

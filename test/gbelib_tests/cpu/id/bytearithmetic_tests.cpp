@@ -1,56 +1,72 @@
 #include "gtest/gtest.h"
 
-#include "cpu/id/bytearithmeticdecoder.h"
 #include "cpu/operation/operation.h"
+#include "location/location.h"
+#include "location/variablebyte.h"
 
-// TODO: rewrite tests
-// TEST(ArithmeticTest, Bulk)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x80));
-//  ASSERT_TRUE(op);
-//  EXPECT_TRUE(op->isComplete());
-//}
+#include "cpu/id/bytearithmeticdecoder.h"
 
-// TEST(ArithmeticTest, Unimplemented) { EXPECT_THROW(auto op = bulkArithmetic(OpcodeView(0xC0)), std::logic_error); }
+class ByteArithmeticTest : public ::testing::Test {
+public:
+  ByteArithmeticTest()
+      : b()
+  {
+  }
 
-// TEST(ArithmeticTest, SourceA)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x87));
-//  EXPECT_TRUE(op);
-//}
+protected:
+  ByteArithmeticDecoder b;
+};
 
-// TEST(ArithmeticTest, SourceB)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x80));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, Bulk)
+{
+  auto op = b.decode(variableLocation(0x80));
+  ASSERT_TRUE(op);
+  EXPECT_TRUE(op->isComplete());
+}
 
-// TEST(ArithmeticTest, SourceC)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x81));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, Unimplemented)
+{
+  EXPECT_THROW(auto op = b.decode(variableLocation(0xC0)), std::logic_error);
+}
 
-// TEST(ArithmeticTest, SourceD)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x82));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, SourceA)
+{
+  auto op = b.decode(variableLocation(0x87));
+  EXPECT_TRUE(op);
+}
 
-// TEST(ArithmeticTest, SourceE)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x83));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, SourceB)
+{
+  auto op = b.decode(variableLocation(0x80));
+  EXPECT_TRUE(op);
+}
 
-// TEST(ArithmeticTest, SourceH)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x84));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, SourceC)
+{
+  auto op = b.decode(variableLocation(0x81));
+  EXPECT_TRUE(op);
+}
 
-// TEST(ArithmeticTest, SourceL)
-//{
-//  auto op = bulkArithmetic(OpcodeView(0x85));
-//  EXPECT_TRUE(op);
-//}
+TEST_F(ByteArithmeticTest, SourceD)
+{
+  auto op = b.decode(variableLocation(0x82));
+  EXPECT_TRUE(op);
+}
+
+TEST_F(ByteArithmeticTest, SourceE)
+{
+  auto op = b.decode(variableLocation(0x83));
+  EXPECT_TRUE(op);
+}
+
+TEST_F(ByteArithmeticTest, SourceH)
+{
+  auto op = b.decode(variableLocation(0x84));
+  EXPECT_TRUE(op);
+}
+
+TEST_F(ByteArithmeticTest, SourceL)
+{
+  auto op = b.decode(variableLocation(0x85));
+  EXPECT_TRUE(op);
+}
