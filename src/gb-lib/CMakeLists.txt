@@ -23,6 +23,8 @@ target_sources(gbelib PRIVATE
   cpu/id/byteloadsdecoder.cpp
   cpu/id/cbdecoder.h
   cpu/id/cbdecoder.cpp
+  cpu/id/cbopdecoder.h
+  cpu/id/cbopdecoder.cpp
   cpu/id/controldecoder.h
   cpu/id/controldecoder.cpp
   cpu/id/instructiondecoder.h

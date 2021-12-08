@@ -7,7 +7,7 @@ class InstructionDecoder;
 
 class CbPrefix : public Operation {
 public:
-  explicit CbPrefix(InstructionDecoder* decoder);
+  explicit CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder);
   DISABLE_COPY_AND_MOVE(CbPrefix)
 
   void nextOpcode(Location<uint8_t> opcode) override;
@@ -17,7 +17,7 @@ public:
 
 private:
   OperationUP realOp_;
-  InstructionDecoder* decoder_;
+  std::unique_ptr<InstructionDecoder> decoder_;
 };
 
 #endif // CBPREFIX_H

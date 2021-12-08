@@ -2,12 +2,12 @@
 
 #include <stdexcept>
 
-#include "cpu/id/cbdecoder.h"
+#include "cpu/id/cbopdecoder.h"
 #include "location/location.h"
 
-CbPrefix::CbPrefix(InstructionDecoder* decoder)
+CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
     : realOp_()
-    , decoder_(decoder)
+    , decoder_(std::move(decoder))
 {
 }
 

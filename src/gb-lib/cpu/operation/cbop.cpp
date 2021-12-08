@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "cpu/id/cbdecoder.h"
+#include "cpu/id/cbopdecoder.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "ops/shiftrotatebitwise.h"
