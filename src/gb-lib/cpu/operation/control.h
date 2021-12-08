@@ -3,7 +3,7 @@
 
 #include "singleop.h"
 
-enum class ControlOp { Nop, EI, DI };
+enum class ControlOp { Nop, EI, DI, Halt, Stop };
 
 class Control final : public SingleOp<1> {
 public:
