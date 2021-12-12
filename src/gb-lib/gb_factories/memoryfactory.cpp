@@ -11,6 +11,7 @@
 
 gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
     : loader_(std::move(romLoader))
+    , ioBank_()
 {
 }
 
@@ -33,7 +34,9 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(buildRamBank(HRAM));
   manifold->addSubManager(buildIe());
 
-  manifold->addSubManager(std::make_shared<RamBank>(FAKE_IO)); // TODO: This is just a fake-out, actually implement!
+  auto ioManager = std::make_shared<RamBank>(IO);
+  manifold->addSubManager(ioManager); // TODO: This is just a fake-out, actually implement!
+  ioBank_ = ioManager;
 
   return manifold;
 }

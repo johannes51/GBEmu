@@ -13,6 +13,9 @@ public:
   Location<uint8_t> getByte(address_type address);
   Location<uint16_t> getWord(address_type address);
 
+  uint8_t& buffer() { return buffer_; }
+  const uint8_t& buffer() const { return buffer_; }
+
 private:
   address_type start_;
   uint8_t buffer_;

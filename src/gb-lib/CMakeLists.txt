@@ -4,6 +4,12 @@ project(gb-lib C CXX)
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
   defines.h
+  apu/apu.h
+  apu/apu.cpp
+  apu/gbmixer.h
+  apu/gbmixer.cpp
+  apu/ichannel.h
+  apu/imixer.h
   cpu/cpu.h
   cpu/cpu.cpp
   cpu/cpu_defines.h
@@ -102,6 +108,11 @@ target_sources(gbelib PRIVATE
   mem/rombank.cpp
   mem/singleareamanager.h
   mem/singleareamanager.cpp
+  mem/registers/iregisteradapter.h
+  mem/registers/memoryregisteradapter.h
+  mem/registers/memoryregisteradapter.cpp
+  mem/registers/registerbankadapter.h
+  mem/registers/registerbankadapter.cpp
   ops/arithmetic.h
   ops/logic.h
   ops/memory.h
