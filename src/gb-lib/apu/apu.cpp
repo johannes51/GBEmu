@@ -1,6 +1,6 @@
 #include "apu.h"
 
-Apu::Apu(std::vector<IChannelUP>&& channels, IMixerUP&& mixer)
+Apu::Apu(std::vector<IChannelSP>&& channels, IMixerUP&& mixer)
     : channels_(std::move(channels))
     , mixer_(std::move(mixer))
 {

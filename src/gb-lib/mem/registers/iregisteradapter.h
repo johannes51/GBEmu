@@ -11,6 +11,6 @@ protected:
   IRegisterAdapter() = default;
 };
 
-using IRegisterAdapterUP = std::unique_ptr<IRegisterAdapter>;
+using IRegisterAdapterSP = std::shared_ptr<IRegisterAdapter>;
 
 #endif // IREGISTERADAPTER_H

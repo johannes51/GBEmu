@@ -10,11 +10,11 @@
 
 class GbMixer : public IMixer {
 public:
-  GbMixer(std::array<IChannel*, 4>&& channels, IRegisterAdapterUP&& registers);
+  GbMixer(std::array<IChannel*, 4>&& channels, IRegisterAdapterSP&& registers);
 
 private:
   std::array<IChannel*, 4> channels_;
-  IRegisterAdapterUP registers_;
+  IRegisterAdapterSP registers_;
 };
 
 #endif // GBMIXER_H

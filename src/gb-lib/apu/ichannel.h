@@ -11,6 +11,6 @@ protected:
   IChannel() = default;
 };
 
-using IChannelUP = std::unique_ptr<IChannel>;
+using IChannelSP = std::shared_ptr<IChannel>;
 
 #endif // ICHANNEL_H

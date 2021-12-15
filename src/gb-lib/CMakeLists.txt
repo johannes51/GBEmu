@@ -6,6 +6,14 @@ target_sources(gbelib PRIVATE
   defines.h
   apu/apu.h
   apu/apu.cpp
+  apu/gbchannel1.h
+  apu/gbchannel1.cpp
+  apu/gbchannel2.h
+  apu/gbchannel2.cpp
+  apu/gbchannel3.h
+  apu/gbchannel3.cpp
+  apu/gbchannel4.h
+  apu/gbchannel4.cpp
   apu/gbmixer.h
   apu/gbmixer.cpp
   apu/ichannel.h
@@ -64,6 +72,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/wordload.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
+  gb_factories/channelfactory.h
+  gb_factories/channelfactory.cpp
   gb_factories/gb_defines.h
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp
