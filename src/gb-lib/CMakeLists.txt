@@ -81,6 +81,8 @@ target_sources(gbelib PRIVATE
   gb_factories/instructionsetbuilder.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/ppuregisterfactory.h
+  gb_factories/ppuregisterfactory.cpp
   gb_factories/registerfactory.h
   location/bufferbyte.h
   location/bufferbyte.cpp
