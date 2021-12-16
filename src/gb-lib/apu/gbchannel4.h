@@ -7,7 +7,8 @@
 
 class GbChannel4 : public IChannel {
 public:
-  GbChannel4(IRegisterAdapterSP nr41, IRegisterAdapterSP nr42, IRegisterAdapterSP nr43, IRegisterAdapterSP nr44);
+  GbChannel4(IRegisterAdapterSP nr41, IRegisterAdapterSP nr42, IRegisterAdapterSP nr43, IRegisterAdapterSP nr44,
+      IRegisterAdapterSP nr52);
 };
 
 #endif // GBCHANNEL4_H

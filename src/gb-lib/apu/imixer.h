@@ -11,6 +11,6 @@ protected:
   IMixer() = default;
 };
 
-using IMixerUP = std::unique_ptr<IMixer>;
+using IMixerSP = std::shared_ptr<IMixer>;
 
 #endif // IMIXER_H

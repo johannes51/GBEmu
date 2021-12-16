@@ -10,14 +10,14 @@
 
 class Apu : public Peripheral {
 public:
-  Apu(std::vector<IChannelSP>&& channels, IMixerUP&& mixer);
+  Apu(std::vector<IChannelSP>&& channels, IMixerSP&& mixer);
   ~Apu() override = default;
 
   void clock() override;
 
 private:
   std::vector<IChannelSP> channels_;
-  IMixerUP mixer_;
+  IMixerSP mixer_;
 };
 
 #endif // APU_H

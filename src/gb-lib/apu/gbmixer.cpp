@@ -1,7 +1,6 @@
 #include "gbmixer.h"
 
-GbMixer::GbMixer(std::array<IChannel*, 4>&& channels, IRegisterAdapterSP&& registers)
-    : channels_(channels)
-    , registers_(std::move(registers))
+GbMixer::GbMixer(IRegisterAdapterSP nr12, IRegisterAdapterSP nr22, IRegisterAdapterSP nr32, IRegisterAdapterSP nr42,
+    IRegisterAdapterSP nr50, IRegisterAdapterSP nr51, IRegisterAdapterSP nr52)
 {
 }

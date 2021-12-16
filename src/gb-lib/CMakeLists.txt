@@ -74,8 +74,8 @@ target_sources(gbelib PRIVATE
   gb_factories/apuregisterfactory.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
-  gb_factories/channelfactory.h
-  gb_factories/channelfactory.cpp
+  gb_factories/apufactory.h
+  gb_factories/apufactory.cpp
   gb_factories/gb_defines.h
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp

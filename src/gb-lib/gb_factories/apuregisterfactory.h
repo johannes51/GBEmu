@@ -34,7 +34,7 @@ public:
   ApuRegisterFactory(const IMemoryViewSP& ioBank);
 
 private:
-  static std::unordered_map<ApuRegisters, address_type> ApuRegisterAdresses;
+  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAdresses;
 };
 
 #endif // APUREGISTERFACTORY_H
