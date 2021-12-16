@@ -4,19 +4,20 @@
 #include <vector>
 
 #include "apu/ichannel.h"
+#include "apuregisterfactory.h"
 #include "mem/imemoryview.h"
 
 class ChannelFactory {
 public:
-  explicit ChannelFactory(IMemoryViewSP ioBank)
-      : ioBank_(std::move(ioBank))
+  explicit ChannelFactory(ApuRegisterFactory& registerFactory)
+      : registerFactory_(registerFactory)
   {
   }
 
   std::vector<IChannelSP> constructChannels();
 
 private:
-  IMemoryViewSP ioBank_;
+  ApuRegisterFactory& registerFactory_;
 };
 
 #endif // CHANNELFACTORY_H

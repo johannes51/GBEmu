@@ -70,6 +70,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
+  gb_factories/apuregisterfactory.h
+  gb_factories/apuregisterfactory.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/channelfactory.h
@@ -79,6 +81,7 @@ target_sources(gbelib PRIVATE
   gb_factories/instructionsetbuilder.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/registerfactory.h
   location/bufferbyte.h
   location/bufferbyte.cpp
   location/location.h
