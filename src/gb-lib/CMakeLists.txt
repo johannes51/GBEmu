@@ -4,6 +4,20 @@ project(gb-lib C CXX)
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
   defines.h
+  apu/apu.h
+  apu/apu.cpp
+  apu/gbchannel1.h
+  apu/gbchannel1.cpp
+  apu/gbchannel2.h
+  apu/gbchannel2.cpp
+  apu/gbchannel3.h
+  apu/gbchannel3.cpp
+  apu/gbchannel4.h
+  apu/gbchannel4.cpp
+  apu/gbmixer.h
+  apu/gbmixer.cpp
+  apu/ichannel.h
+  apu/imixer.h
   cpu/cpu.h
   cpu/cpu.cpp
   cpu/cpu_defines.h
@@ -56,13 +70,18 @@ target_sources(gbelib PRIVATE
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
+  gb_factories/apuregisterfactory.h
+  gb_factories/apuregisterfactory.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
+  gb_factories/apufactory.h
+  gb_factories/apufactory.cpp
   gb_factories/gb_defines.h
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/registerfactory.h
   location/bufferbyte.h
   location/bufferbyte.cpp
   location/location.h
@@ -102,6 +121,11 @@ target_sources(gbelib PRIVATE
   mem/rombank.cpp
   mem/singleareamanager.h
   mem/singleareamanager.cpp
+  mem/registers/iregisteradapter.h
+  mem/registers/memoryregisteradapter.h
+  mem/registers/memoryregisteradapter.cpp
+  mem/registers/registerbankadapter.h
+  mem/registers/registerbankadapter.cpp
   ops/arithmetic.h
   ops/logic.h
   ops/memory.h
