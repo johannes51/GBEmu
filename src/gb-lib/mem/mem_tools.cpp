@@ -4,24 +4,24 @@
 
 #include <numeric>
 
-auto mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& area) -> address_type
+auto mem_tools::translateAddressSafe(const address_type& inputAddress, const MemoryArea& area) -> address_type
 {
-  assertSafe(inputAdress, area);
-  return inputAdress - area.from;
+  assertSafe(inputAddress, area);
+  return inputAddress - area.from;
 }
 
-auto mem_tools::translateAdressSafe(
-    const address_type& inputAdress, const address_type& startAdress, const address_type& size) -> address_type
+auto mem_tools::translateAddressSafe(
+    const address_type& inputAddress, const address_type& startAddress, const address_type& size) -> address_type
 {
-  assertSafe(inputAdress, startAdress, size);
-  return inputAdress - startAdress;
+  assertSafe(inputAddress, startAddress, size);
+  return inputAddress - startAddress;
 }
 
-auto mem_tools::translateAdressSafe(const address_type& inputAdress, const MemoryArea& mirror, const int offset)
+auto mem_tools::translateAddressSafe(const address_type& inputAddress, const MemoryArea& mirror, const int offset)
     -> address_type
 {
-  assertSafe(inputAdress, mirror);
-  return inputAdress + offset;
+  assertSafe(inputAddress, mirror);
+  return inputAddress + offset;
 }
 
 void mem_tools::assertSafe(const address_type& address, const MemoryArea& area)
@@ -31,9 +31,9 @@ void mem_tools::assertSafe(const address_type& address, const MemoryArea& area)
   }
 }
 
-void mem_tools::assertSafe(const address_type& inputAdress, const address_type& startAdress, const address_type& size)
+void mem_tools::assertSafe(const address_type& inputAddress, const address_type& startAddress, const address_type& size)
 {
-  if (!isSafe(inputAdress, startAdress, size)) {
+  if (!isSafe(inputAddress, startAddress, size)) {
     throw std::invalid_argument("Out of bounds");
   }
 }
@@ -43,10 +43,10 @@ auto mem_tools::isSafe(const address_type& address, const MemoryArea& area) -> b
   return (address >= area.from && address <= area.to);
 }
 
-auto mem_tools::isSafe(const address_type& inputAdress, const address_type& startAdress, const address_type& size)
+auto mem_tools::isSafe(const address_type& inputAddress, const address_type& startAddress, const address_type& size)
     -> bool
 {
-  return (inputAdress >= startAdress && inputAdress < startAdress + size);
+  return (inputAddress >= startAddress && inputAddress < startAddress + size);
 }
 
 auto mem_tools::isDisjunct(const MemoryArea& area, const std::vector<MemoryArea>& oldAreas) -> bool

@@ -1,6 +1,6 @@
 #include "apuregisterfactory.h"
 
-const std::unordered_map<ApuRegisters, address_type> ApuRegisterFactory::ApuRegisterAdresses = {
+const std::unordered_map<ApuRegisters, address_type> ApuRegisterFactory::ApuRegisterAddresses = {
   { ApuRegisters::NR10, 0xFF10 }, // NOLINT
   { ApuRegisters::NR11, 0xFF11 }, // NOLINT
   { ApuRegisters::NR12, 0xFF12 }, // NOLINT

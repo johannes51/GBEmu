@@ -1,6 +1,6 @@
 #include "ppuregisterfactory.h"
 
-const std::unordered_map<PpuRegisters, address_type> PpuRegisterFactory::PpuRegisterAdresses = {
+const std::unordered_map<PpuRegisters, address_type> PpuRegisterFactory::PpuRegisterAddresses = {
   { PpuRegisters::LCDC, 0xFF40 }, // NOLINT
   { PpuRegisters::STAT, 0xFF41 }, // NOLINT
   { PpuRegisters::SCY, 0xFF42 }, // NOLINT

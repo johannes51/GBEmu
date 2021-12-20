@@ -21,12 +21,12 @@ enum class PpuRegisters {
 class PpuRegisterFactory : public RegisterFactory<PpuRegisters> {
 public:
   explicit PpuRegisterFactory(const IMemoryViewSP& ioBank)
-      : RegisterFactory(ioBank, PpuRegisterAdresses)
+      : RegisterFactory(ioBank, PpuRegisterAddresses)
   {
   }
 
 private:
-  static const std::unordered_map<PpuRegisters, address_type> PpuRegisterAdresses;
+  static const std::unordered_map<PpuRegisters, address_type> PpuRegisterAddresses;
 };
 
 #endif // PPUREGISTERFACTORY_H

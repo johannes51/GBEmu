@@ -32,12 +32,12 @@ enum class ApuRegisters {
 class ApuRegisterFactory : public RegisterFactory<ApuRegisters> {
 public:
   explicit ApuRegisterFactory(const IMemoryViewSP& ioBank)
-      : RegisterFactory(ioBank, ApuRegisterAdresses)
+      : RegisterFactory(ioBank, ApuRegisterAddresses)
   {
   }
 
 private:
-  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAdresses;
+  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAddresses;
 };
 
 #endif // APUREGISTERFACTORY_H
