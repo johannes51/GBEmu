@@ -14,5 +14,5 @@ auto PpuFactory::constructPpu() -> std::shared_ptr<Ppu>
       std::make_shared<GbRenderer>(std::make_shared<GbBg>(rf.get(PpuRegisters::LCDC), rf.get(PpuRegisters::SCX),
                                        rf.get(PpuRegisters::SCY), rf.get(PpuRegisters::BGP), mem_),
           std::make_shared<GbWindow>(), std::make_shared<GbObjects>()));
-  return {};
+  return result;
 }

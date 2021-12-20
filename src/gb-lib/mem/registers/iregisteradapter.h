@@ -7,6 +7,8 @@ class IRegisterAdapter {
 public:
   virtual ~IRegisterAdapter() = default;
 
+  virtual bool testBit(uint8_t pos) const = 0;
+
 protected:
   IRegisterAdapter() = default;
 };

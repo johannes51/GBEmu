@@ -2,10 +2,10 @@
 #define GBBG_H
 
 #include "ibackground.h"
+
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
-
-class TileMap;
+#include "tilemap.h"
 
 class GbBg : public IBackground {
 public:
@@ -16,6 +16,8 @@ public:
   void draw(IPixelBuffer& buffer) override;
 
 private:
+  std::pair<TileAddress, std::pair<uint8_t, uint8_t>> decomposePos(uint8_t x, uint8_t y);
+
   IRegisterAdapterSP lcdc_;
   IRegisterAdapterSP scx_;
   IRegisterAdapterSP scy_;

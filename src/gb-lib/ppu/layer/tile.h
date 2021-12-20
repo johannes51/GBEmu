@@ -1,0 +1,21 @@
+#ifndef TILE_H
+#define TILE_H
+
+#include <array>
+#include <cstdint>
+
+class Tile {
+public:
+  explicit Tile(std::array<uint8_t, 16> data);
+
+  uint8_t get(uint8_t x, uint8_t y) { return data_.at(y).at(x); }
+
+private:
+  uint8_t toDataIndex(uint8_t x, uint8_t y);
+  uint8_t toByteIndex(uint8_t x);
+  uint8_t adjustData(uint8_t dataByte, uint8_t byteIndex);
+
+  std::array<std::array<uint8_t, 8>, 8> data_;
+};
+
+#endif // TILE_H
