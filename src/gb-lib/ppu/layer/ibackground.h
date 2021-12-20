@@ -6,6 +6,9 @@
 #include "ilayer.h"
 
 class IBackground : public ILayer {
+public:
+  ~IBackground() override = default;
+
 protected:
   IBackground() = default;
 };

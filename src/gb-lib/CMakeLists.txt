@@ -154,6 +154,10 @@ target_sources(gbelib PRIVATE
   ppu/layer/ibackground.h
   ppu/layer/iobjects.h
   ppu/layer/iwindow.h
+  ppu/layer/tiledata.h
+  ppu/layer/tiledata.cpp
+  ppu/layer/tilemap.h
+  ppu/layer/tilemap.cpp
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/helpers.h

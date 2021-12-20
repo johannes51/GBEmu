@@ -6,6 +6,8 @@
 class GbWindow : public IWindow {
 public:
   GbWindow() = default;
+
+  void draw(IPixelBuffer& buffer) override;
 };
 
 #endif // GBWINDOW_H

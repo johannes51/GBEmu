@@ -6,6 +6,8 @@
 class GbObjects : public IObjects {
 public:
   GbObjects() = default;
+
+  void draw(IPixelBuffer& buffer) override;
 };
 
 #endif // GBOBJECTS_H

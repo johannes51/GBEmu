@@ -9,15 +9,15 @@ class Ppu;
 
 class PpuFactory {
 public:
-  explicit PpuFactory(IMemoryViewSP ioBank)
-      : ioBank_(std::move(ioBank))
+  explicit PpuFactory(IMemoryViewSP mem)
+      : mem_(std::move(mem))
   {
   }
 
   std::shared_ptr<Ppu> constructPpu();
 
 private:
-  IMemoryViewSP ioBank_;
+  IMemoryViewSP mem_;
 };
 
 #endif // PPUFACTORY_H

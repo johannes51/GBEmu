@@ -5,8 +5,7 @@
 
 #include "ilayer.h"
 
-class IObjects : public ILayer
-{
+class IObjects : public ILayer {
 protected:
   IObjects() = default;
 };

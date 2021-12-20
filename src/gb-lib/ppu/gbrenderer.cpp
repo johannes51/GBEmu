@@ -7,4 +7,9 @@ GbRenderer::GbRenderer(IBackgroundSP bg, IWindowSP win, IObjectsSP obj)
 {
 }
 
-void GbRenderer::render(IPixelBuffer& buffer) { (void)buffer; }
+void GbRenderer::render(IPixelBuffer& buffer)
+{
+  bg_->draw(buffer);
+  win_->draw(buffer);
+  obj_->draw(buffer);
+}
