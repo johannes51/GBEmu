@@ -160,6 +160,8 @@ target_sources(gbelib PRIVATE
   ppu/layer/tiledata.cpp
   ppu/layer/tilemap.h
   ppu/layer/tilemap.cpp
+  ppu/layer/palette.h
+  ppu/layer/palette.cpp
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/helpers.h
