@@ -12,7 +12,7 @@ class TileMap;
 class GbBg : public IBackground {
 public:
   explicit GbBg(IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp,
-      IMemoryViewSP mem);
+      std::unique_ptr<TileMap> map);
   ~GbBg() override;
 
   void draw(IPixelBuffer& buffer) override;

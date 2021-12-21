@@ -8,7 +8,7 @@ MemoryRegisterAdapter::MemoryRegisterAdapter(IMemoryViewSP mem, address_type add
 {
 }
 
-uint8_t MemoryRegisterAdapter::get() const { return mem_->getByte(address_).get(); }
+auto MemoryRegisterAdapter::get() const -> uint8_t { return mem_->getByte(address_).get(); }
 
 auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool
 {

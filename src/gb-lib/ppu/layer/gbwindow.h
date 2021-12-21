@@ -13,8 +13,8 @@ class TileMap;
 
 class GbWindow : public IWindow {
 public:
-  explicit GbWindow(
-      IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp, IMemoryViewSP mem);
+  explicit GbWindow(IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp,
+      std::unique_ptr<TileMap> map);
   ~GbWindow() override;
 
   void draw(IPixelBuffer& buffer) override;
