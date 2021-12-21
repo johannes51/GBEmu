@@ -3,7 +3,7 @@
 
 #include <memory>
 
-class IPixelBuffer;
+using IPixelBuffer = std::array<std::array<uint8_t, 144>, 160>;
 
 class IRenderer {
 public:

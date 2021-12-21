@@ -9,6 +9,7 @@ GbBg::GbBg(
     , scy_(std::move(scy))
     , bgp_(std::move(bgp))
     , map_(std::make_unique<TileMap>(lcdc_, std::move(mem)))
+    , pal_(bgp_)
 {
 }
 
@@ -20,9 +21,14 @@ void GbBg::draw(IPixelBuffer& buffer)
     for (uint8_t x = 0; x < 160; ++x) {
       auto [tileAddress, tilePos] = decomposePos(x, y);
       auto tile = map_->getTile(tileAddress);
-      tile.get(tilePos.first, tilePos.second);
+      buffer[y][x] = static_cast<unsigned char>(pal_.getColor(tile.get(tilePos)));
     }
   }
 }
 
-auto GbBg::decomposePos(uint8_t x, uint8_t y) -> std::pair<TileAddress, std::pair<uint8_t, uint8_t>> { return {}; }
+auto GbBg::decomposePos(uint8_t x, uint8_t y) -> std::pair<TileAddress, Pos>
+{
+  auto ta = TileAddress { static_cast<uint8_t>(x / 8U), static_cast<uint8_t>(y / 8U) };
+  auto po = Pos { static_cast<uint8_t>(x % 8U), static_cast<uint8_t>(y % 8U) };
+  return { ta, po };
+}

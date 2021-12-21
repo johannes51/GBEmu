@@ -8,13 +8,9 @@ MemoryRegisterAdapter::MemoryRegisterAdapter(IMemoryViewSP mem, address_type add
 {
 }
 
-uint8_t MemoryRegisterAdapter::get() const
-{
-  return mem_->getByte(address_).get();
-}
+uint8_t MemoryRegisterAdapter::get() const { return mem_->getByte(address_).get(); }
 
 auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool
 {
   return (mem_->getByte(address_).get() & (1U << pos)) > 0;
 }
-

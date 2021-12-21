@@ -4,13 +4,9 @@
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "tile.h"
+#include "tileaddress.h"
 
 class TileData;
-
-struct TileAddress {
-  uint8_t x;
-  uint8_t y;
-};
 
 class TileMap {
 public:

@@ -3,12 +3,7 @@
 
 #include "mem/registers/iregisteradapter.h"
 
-enum class Colors {
-  White,
-  LightGray,
-  DarnkGray,
-  Black
-};
+enum class Colors { White, LightGray, DarnkGray, Black };
 
 class Palette {
 public:

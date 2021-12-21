@@ -1,7 +1,10 @@
 #ifndef ILAYER_H
 #define ILAYER_H
 
-class IPixelBuffer;
+#include <array>
+#include <cstdint>
+
+using IPixelBuffer = std::array<std::array<uint8_t, 144>, 160>;
 
 class ILayer {
 public:

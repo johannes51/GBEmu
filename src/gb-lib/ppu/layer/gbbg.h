@@ -5,7 +5,11 @@
 
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
-#include "tilemap.h"
+#include "palette.h"
+#include "pos.h"
+#include "tileaddress.h"
+
+class TileMap;
 
 class GbBg : public IBackground {
 public:
@@ -16,13 +20,14 @@ public:
   void draw(IPixelBuffer& buffer) override;
 
 private:
-  std::pair<TileAddress, std::pair<uint8_t, uint8_t>> decomposePos(uint8_t x, uint8_t y);
+  std::pair<TileAddress, Pos> decomposePos(uint8_t x, uint8_t y);
 
   IRegisterAdapterSP lcdc_;
   IRegisterAdapterSP scx_;
   IRegisterAdapterSP scy_;
   IRegisterAdapterSP bgp_;
   std::unique_ptr<TileMap> map_;
+  Palette pal_;
 };
 
 #endif // GBBG_H

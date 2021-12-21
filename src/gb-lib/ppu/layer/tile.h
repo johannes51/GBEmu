@@ -4,11 +4,13 @@
 #include <array>
 #include <cstdint>
 
+#include "pos.h"
+
 class Tile {
 public:
   explicit Tile(std::array<uint8_t, 16> data);
 
-  uint8_t get(uint8_t x, uint8_t y) { return data_.at(y).at(x); }
+  uint8_t get(const Pos& pos) { return data_.at(pos.y).at(pos.x); }
 
 private:
   uint8_t toDataIndex(uint8_t x, uint8_t y);
