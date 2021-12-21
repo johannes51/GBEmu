@@ -20,8 +20,6 @@ private:
   IMemoryViewSP mem_;
 
   const int8_t Bit_;
-  static constexpr address_type SetBaseAddress = 0x8000;
-  static constexpr address_type ResetBaseAddress = 0x8800;
 };
 
 #endif // TILEDATA_H

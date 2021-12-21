@@ -2,13 +2,15 @@
 
 #include <stdexcept>
 
-Colors Palette::getColor(uint8_t index)
+#include <type_traits>
+
+auto Palette::getColor(uint8_t index) -> Colors
 {
   if (index > 3) {
     throw std::invalid_argument("bad color index");
   }
-  const auto offset = (3 - index) * 2;
-  auto colorCode = (bgp_->get() >> offset) & 0b11;
+  const auto offset = (3U - index) * 2U;
+  auto colorCode = (static_cast<unsigned int>(bgp_->get()) >> offset) & 0b11U; // suppress promotion to signed
   switch (colorCode) {
   case 0:
     return Colors::White;

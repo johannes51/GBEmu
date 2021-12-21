@@ -1,5 +1,6 @@
 #include "gbwindow.h"
 
+#include "../ppu_constants.h"
 #include "helper.h"
 #include "tilemap.h"
 
@@ -18,8 +19,8 @@ GbWindow::~GbWindow() = default;
 
 void GbWindow::draw(IPixelBuffer& buffer)
 {
-  for (uint8_t y = wy_->get(); y < 144; ++y) {
-    for (uint8_t x = wx_->get(); x < 160; ++x) {
+  for (uint8_t y = wy_->get(); y < LcdHeight; ++y) {
+    for (uint8_t x = wx_->get(); x < LcdWidth; ++x) {
       auto [tileAddress, tilePos] = decomposePos(x, y, -wx_->get(), -wy_->get());
       auto tile = map_->getTile(tileAddress);
       buffer[y][x] = static_cast<unsigned char>(pal_.getColor(tile.get(tilePos)));

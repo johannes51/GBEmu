@@ -144,6 +144,7 @@ target_sources(gbelib PRIVATE
   ppu/gbrenderer.cpp
   ppu/ppu.h
   ppu/ppu.cpp
+  ppu/ppu_constants.h
   ppu/layer/gbbg.h
   ppu/layer/gbbg.cpp
   ppu/layer/gbobjects.h
