@@ -51,7 +51,7 @@ void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
 void CbOp::setAffectedBit(uint8_t value)
 {
   if (value > MaxBit) {
-    throw std::invalid_argument("Only bits 0..7 adressable");
+    throw std::invalid_argument("Only bits 0..7 addressable");
   }
   affectedBit_ = value;
 }

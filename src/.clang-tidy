@@ -1,5 +1,5 @@
 ---
 Checks: '*,-llvmlibc-*,-fuchsia-*,
 -readability-redundant-member-init,-google-readability-todo,-llvm-else-after-return,-readability-else-after-return,
--google-runtime-references,-cert-err58-cpp'
+-google-runtime-references,-cert-err58-cpp,-cppcoreguidelines-pro-bounds-constant-array-index'
 ...

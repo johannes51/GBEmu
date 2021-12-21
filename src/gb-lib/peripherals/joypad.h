@@ -9,7 +9,7 @@
 
 enum class Button { Up, Down, Left, Right, A, B, Start, Select };
 
-constexpr address_type ControllerRegisterAdress = 0xFF00;
+constexpr address_type ControllerRegisterAddress = 0xFF00;
 
 constexpr uint8_t RightOrA = 0x0;
 constexpr uint8_t LeftOrB = 0x1;

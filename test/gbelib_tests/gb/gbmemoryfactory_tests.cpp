@@ -24,31 +24,31 @@ address_type startHRAM = 0xFF80;
 address_type endHRAM = 0xFFFE;
 address_type startPC = 0x0100;
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_type readAdress, uint16_t value)
+void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint16_t value)
 {
-  auto writeLocation = memory.getWord(writeAdress);
+  auto writeLocation = memory.getWord(writeAddress);
   writeLocation.set(value);
-  EXPECT_EQ(value, memory.getWord(readAdress).get());
+  EXPECT_EQ(value, memory.getWord(readAddress).get());
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint16_t value)
+void testMemoryRoundtrip(IMemoryView& memory, address_type rwAddress, uint16_t value)
 {
-  testMemoryRoundtrip(memory, rwAdress, rwAdress, value);
+  testMemoryRoundtrip(memory, rwAddress, rwAddress, value);
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type writeAdress, address_type readAdress, uint8_t value)
+void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint8_t value)
 {
-  auto writeLocation = memory.getByte(writeAdress);
+  auto writeLocation = memory.getByte(writeAddress);
   writeLocation.set(value);
-  EXPECT_EQ(value, memory.getByte(readAdress).get());
+  EXPECT_EQ(value, memory.getByte(readAddress).get());
 }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type rwAdress, uint8_t value)
+void testMemoryRoundtrip(IMemoryView& memory, address_type rwAddress, uint8_t value)
 {
-  testMemoryRoundtrip(memory, rwAdress, rwAdress, value);
+  testMemoryRoundtrip(memory, rwAddress, rwAddress, value);
 }
 
-void testMemoryThrows(IMemoryView& memory, address_type testAdress) { EXPECT_ANY_THROW(memory.getWord(testAdress)); }
+void testMemoryThrows(IMemoryView& memory, address_type testAddress) { EXPECT_ANY_THROW(memory.getWord(testAddress)); }
 
 TEST(GBMemoryFactoryTest, ROM0t1)
 {

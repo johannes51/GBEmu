@@ -5,8 +5,8 @@
 
 #include "registerfactory.h"
 
-enum class ApuRegisters : uint8_t {
-  NR10 = 0,
+enum class ApuRegisters {
+  NR10,
   NR11,
   NR12,
   NR13,
@@ -31,10 +31,13 @@ enum class ApuRegisters : uint8_t {
 
 class ApuRegisterFactory : public RegisterFactory<ApuRegisters> {
 public:
-  ApuRegisterFactory(const IMemoryViewSP& ioBank);
+  explicit ApuRegisterFactory(const IMemoryViewSP& ioBank)
+      : RegisterFactory(ioBank, ApuRegisterAddresses)
+  {
+  }
 
 private:
-  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAdresses;
+  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAddresses;
 };
 
 #endif // APUREGISTERFACTORY_H

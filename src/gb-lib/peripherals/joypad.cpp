@@ -11,7 +11,7 @@ Joypad::Joypad(IMemoryViewSP controllerRegister)
 
 void Joypad::clock()
 {
-  auto ctrReg = controllerRegister_->getByte(ControllerRegisterAdress).get();
+  auto ctrReg = controllerRegister_->getByte(ControllerRegisterAddress).get();
   if (hlp::checkBit(ctrReg, SelectAction)) {
     affectInputBit(ctrReg, Button::A, RightOrA);
     affectInputBit(ctrReg, Button::B, LeftOrB);
@@ -24,7 +24,7 @@ void Joypad::clock()
     affectInputBit(ctrReg, Button::Up, UpOrSelect);
     affectInputBit(ctrReg, Button::Down, DownOrStart);
   }
-  controllerRegister_->getByte(ControllerRegisterAdress).set(ctrReg);
+  controllerRegister_->getByte(ControllerRegisterAddress).set(ctrReg);
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }

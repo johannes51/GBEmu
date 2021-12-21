@@ -30,6 +30,7 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(wram1);
   manifold->addSubManager(buildMirrorBank(MIRROR_L, WRAM0, wram0));
   manifold->addSubManager(buildMirrorBank(MIRROR_U, WRAM1, wram1));
+  manifold->addSubManager(buildRamBank(OAM));
   manifold->addSubManager(buildNullBank(NOT_USED));
   manifold->addSubManager(buildRamBank(HRAM));
   manifold->addSubManager(buildIe());

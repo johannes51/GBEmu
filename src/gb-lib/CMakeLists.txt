@@ -81,6 +81,10 @@ target_sources(gbelib PRIVATE
   gb_factories/instructionsetbuilder.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/ppufactory.h
+  gb_factories/ppufactory.cpp
+  gb_factories/ppuregisterfactory.h
+  gb_factories/ppuregisterfactory.cpp
   gb_factories/registerfactory.h
   location/bufferbyte.h
   location/bufferbyte.cpp
@@ -135,6 +139,34 @@ target_sources(gbelib PRIVATE
   peripherals/joypad.cpp
   peripherals/peri_defines.h
   peripherals/peripheral.h
+  ppu/irenderer.h
+  ppu/gbrenderer.h
+  ppu/gbrenderer.cpp
+  ppu/ppu.h
+  ppu/ppu.cpp
+  ppu/ppu_constants.h
+  ppu/layer/gbbg.h
+  ppu/layer/gbbg.cpp
+  ppu/layer/gbobjects.h
+  ppu/layer/gbobjects.cpp
+  ppu/layer/gbwindow.h
+  ppu/layer/gbwindow.cpp
+  ppu/layer/helper.h
+  ppu/layer/helper.cpp
+  ppu/layer/ilayer.h
+  ppu/layer/ibackground.h
+  ppu/layer/iobjects.h
+  ppu/layer/iwindow.h
+  ppu/layer/tile.h
+  ppu/layer/tile.cpp
+  ppu/layer/tileaddress.h
+  ppu/layer/tiledata.h
+  ppu/layer/tiledata.cpp
+  ppu/layer/tilemap.h
+  ppu/layer/tilemap.cpp
+  ppu/layer/palette.h
+  ppu/layer/palette.cpp
+  ppu/layer/pos.h
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/helpers.h

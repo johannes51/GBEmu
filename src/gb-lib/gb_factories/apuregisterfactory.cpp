@@ -1,8 +1,6 @@
 #include "apuregisterfactory.h"
 
-#include "mem/registers/memoryregisteradapter.h"
-
-const std::unordered_map<ApuRegisters, address_type> ApuRegisterFactory::ApuRegisterAdresses = {
+const std::unordered_map<ApuRegisters, address_type> ApuRegisterFactory::ApuRegisterAddresses = {
   { ApuRegisters::NR10, 0xFF10 }, // NOLINT
   { ApuRegisters::NR11, 0xFF11 }, // NOLINT
   { ApuRegisters::NR12, 0xFF12 }, // NOLINT
@@ -25,10 +23,3 @@ const std::unordered_map<ApuRegisters, address_type> ApuRegisterFactory::ApuRegi
   { ApuRegisters::NR51, 0xFF25 }, // NOLINT
   { ApuRegisters::NR52, 0xFF26 }, // NOLINT
 };
-
-ApuRegisterFactory::ApuRegisterFactory(const IMemoryViewSP& ioBank)
-{
-  for (const auto& regAddPair : ApuRegisterAdresses) {
-    add(regAddPair.first, std::make_shared<MemoryRegisterAdapter>(ioBank, regAddPair.second));
-  }
-}
