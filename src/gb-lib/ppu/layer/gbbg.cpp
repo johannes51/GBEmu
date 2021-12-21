@@ -1,5 +1,6 @@
 #include "gbbg.h"
 
+#include "helper.h"
 #include "tilemap.h"
 
 GbBg::GbBg(
@@ -19,16 +20,9 @@ void GbBg::draw(IPixelBuffer& buffer)
 {
   for (uint8_t y = 0; y < 144; ++y) {
     for (uint8_t x = 0; x < 160; ++x) {
-      auto [tileAddress, tilePos] = decomposePos(x, y);
+      auto [tileAddress, tilePos] = decomposePos(x, y, scx_->get(), scy_->get());
       auto tile = map_->getTile(tileAddress);
       buffer[y][x] = static_cast<unsigned char>(pal_.getColor(tile.get(tilePos)));
     }
   }
-}
-
-auto GbBg::decomposePos(uint8_t x, uint8_t y) -> std::pair<TileAddress, Pos>
-{
-  auto ta = TileAddress { static_cast<uint8_t>(x / 8U), static_cast<uint8_t>(y / 8U) };
-  auto po = Pos { static_cast<uint8_t>(x % 8U), static_cast<uint8_t>(y % 8U) };
-  return { ta, po };
 }

@@ -150,6 +150,8 @@ target_sources(gbelib PRIVATE
   ppu/layer/gbobjects.cpp
   ppu/layer/gbwindow.h
   ppu/layer/gbwindow.cpp
+  ppu/layer/helper.h
+  ppu/layer/helper.cpp
   ppu/layer/ilayer.h
   ppu/layer/ibackground.h
   ppu/layer/iobjects.h
