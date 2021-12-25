@@ -11,9 +11,9 @@ class TileData;
 class TileMap {
 public:
   explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, std::unique_ptr<TileData> tiles, uint8_t bit);
-  ~TileMap();
+  virtual ~TileMap();
 
-  Tile getTile(const TileAddress& address);
+  virtual Tile getTile(const TileAddress& address);
 
 private:
   static uint8_t toFlatAddress(const TileAddress& address);

@@ -10,7 +10,7 @@ class TileData {
 public:
   explicit TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit = -1);
 
-  Tile getTile(uint8_t index);
+  Tile getTile(int8_t index);
 
 private:
   address_type baseAdress() const;

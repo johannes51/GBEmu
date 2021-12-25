@@ -51,9 +51,6 @@ set(TEST_SOURCES
     location/rambyte_tests.cpp
     location/rombyte_tests.cpp
     location/zerobyte_tests.cpp
-    ops/arithmetic_tests.cpp
-    ops/logic_tests.cpp
-    ops/memory_tests.cpp
     mem/nullbank_tests.cpp
     mem/memorymanifold_tests.cpp
     mem/memoryarea_tests.cpp
@@ -62,6 +59,21 @@ set(TEST_SOURCES
     mem/rambank_tests.cpp
     mem/registerbank_tests.cpp
     mem/rombank_tests.cpp
+    mock/mocktilemap.h
+    mock/mockregisteradapter.h
+    ops/arithmetic_tests.cpp
+    ops/logic_tests.cpp
+    ops/memory_tests.cpp
+    ppu/gbrenderer_tests.cpp
+    ppu/ppu_tests.cpp
+    ppu/layer/gbbg_tests.cpp
+    ppu/layer/gbobjects_tests.cpp
+    ppu/layer/gbwindow_tests.cpp
+    ppu/layer/helper_tests.cpp
+    ppu/layer/palette_tests.cpp
+    ppu/layer/tile_tests.cpp
+    ppu/layer/tiledata_tests.cpp
+    ppu/layer/tilemap_tests.cpp
     roms/cpu_instrs_tests.cpp
     roms/instr_timing_tests.cpp
     roms/interrupt_time_tests.cpp
