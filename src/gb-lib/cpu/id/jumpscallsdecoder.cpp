@@ -8,7 +8,7 @@
 
 auto JumpsCallsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() <= 0x3) {
     return std::make_unique<Jump>(JumpType::Regular, TargetType::Relative, condition(opcode));
   } else {

@@ -12,9 +12,7 @@ auto LocationImpl::getByte() const -> uint8_t { return lower_->get(); }
 
 auto LocationImpl::getWord() const -> uint16_t
 {
-  uint16_t result
-      = static_cast<uint16_t>(static_cast<uint16_t>(upper_->get()) << BYTE_SIZE) | static_cast<uint16_t>(lower_->get());
-  return result;
+  return static_cast<uint16_t>(static_cast<uint16_t>(upper_->get()) << BYTE_SIZE) | static_cast<uint16_t>(lower_->get());
 }
 
 void LocationImpl::setByte(uint8_t value) { lower_->set(value); }

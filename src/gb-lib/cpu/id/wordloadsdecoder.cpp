@@ -9,7 +9,7 @@
 auto WordLoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
   std::unique_ptr<WordLoad> result;
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.value() == 0x08) {
     result = std::make_unique<WordLoad>(WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register);
     result->setSource(WordRegister::SP);

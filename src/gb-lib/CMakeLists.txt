@@ -90,7 +90,7 @@ target_sources(gbelib PRIVATE
   location/bufferbyte.cpp
   location/location.h
   location/location.cpp
-  location/location_defines
+  location/location_defines.h
   location/locationbyte.h
   location/locationimpl.h
   location/locationimpl.cpp

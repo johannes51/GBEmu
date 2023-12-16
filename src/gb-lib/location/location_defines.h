@@ -5,9 +5,7 @@
 
 #include "defines.h"
 
-
-template<typename T>
-class Location;
+template <typename T> class Location;
 
 class LocationByte;
 using LocationByteUP = std::unique_ptr<LocationByte>;

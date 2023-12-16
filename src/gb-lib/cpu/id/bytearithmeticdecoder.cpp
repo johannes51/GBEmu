@@ -6,7 +6,7 @@
 
 auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
     return bulkArithmetic(opcode);
   } else if (opcode.upperNibble() <= 0x3

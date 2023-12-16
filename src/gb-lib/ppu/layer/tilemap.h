@@ -17,7 +17,7 @@ public:
 
 private:
   static uint8_t toFlatAddress(const TileAddress& address);
-  uint8_t getIndex(uint8_t flatAddress) const;
+  int8_t getIndex(uint8_t flatAddress) const;
   address_type baseAdress() const;
 
   IRegisterAdapterSP lcdc_;

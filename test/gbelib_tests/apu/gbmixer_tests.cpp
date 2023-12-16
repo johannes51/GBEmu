@@ -4,5 +4,6 @@
 
 TEST(GbMixerTests, Construction)
 {
-  EXPECT_NO_THROW(GbMixer m(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr));
+  EXPECT_NO_THROW(
+      GbMixer m(nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, std::array<IChannelSP, 4>()));
 }

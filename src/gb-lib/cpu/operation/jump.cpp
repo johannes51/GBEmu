@@ -89,6 +89,9 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         }
         [[fallthrough]];
       case JumpType::Regular:
+        if (!lower_ || !upper_) {
+          throw std::invalid_argument("Adress location bytes not configured");
+        }
         ops::load(pc, Location<uint8_t>::fuse(std::move(*lower_), std::move(*upper_)));
         break;
       case JumpType::Indirect:
@@ -103,6 +106,9 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         ops::increment(sp);
       }
     } else /*if (target_ == TargetType::Relative)*/ {
+      if (!lower_) {
+        throw std::invalid_argument("Adress location byte not configured");
+      }
       ops::addSigned(pc, *lower_);
     }
   }

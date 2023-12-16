@@ -9,7 +9,7 @@
 
 auto CbDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.value() == 0xCB) {
     return std::make_unique<CbPrefix>(std::make_unique<CbOpDecoder>());
   } else {

@@ -16,6 +16,7 @@ TEST(RomTest, InteruptTime)
   Cpu cpu(make_unique<CpuRegisters>(),
       MemoryFactory { make_unique<CartLoader>("interrupt_time.gb") }.constructMemoryLayout(),
       InstructionSetBuilder::construct());
+
   for (int var = 0; var < 117464; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }

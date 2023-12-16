@@ -93,9 +93,9 @@ TEST(GBMemoryFactoryTest, WRAM0t1)
 {
   auto mem = MemoryFactory(nullptr);
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM0, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM0, value16);
 }
 
@@ -103,7 +103,7 @@ TEST(GBMemoryFactoryTest, WRAM0t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, endWRAM0, value8);
 
   testMemoryThrows(*gbLayout, endWRAM0);
@@ -113,9 +113,9 @@ TEST(GBMemoryFactoryTest, WRAM0t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value16);
 }
 
@@ -123,9 +123,9 @@ TEST(GBMemoryFactoryTest, WRAM1t1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM1, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM1, value16);
 }
 
@@ -133,7 +133,7 @@ TEST(GBMemoryFactoryTest, WRAM1t2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, endWRAM1, value8);
 
   testMemoryThrows(*gbLayout, endWRAM1);
@@ -143,9 +143,9 @@ TEST(GBMemoryFactoryTest, WRAM1t3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value16);
 }
 
@@ -153,13 +153,13 @@ TEST(GBMemoryFactoryTest, ECHOt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value8);
-  value8 = static_cast<uint8_t>(rand());
+  value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value16);
-  value16 = static_cast<uint16_t>(rand());
+  value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value16);
 }
 
@@ -167,13 +167,13 @@ TEST(GBMemoryFactoryTest, ECHOt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value8);
-  value8 = static_cast<uint8_t>(rand());
+  value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value16);
-  value16 = static_cast<uint16_t>(rand());
+  value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
 }
 
@@ -181,9 +181,9 @@ TEST(GBMemoryFactoryTest, ECHOt3)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startWRAM0 + endECHO - startECHO, endECHO, value8);
-  value8 = static_cast<uint8_t>(rand());
+  value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO, value8);
 
   testMemoryThrows(*gbLayout, endECHO);
@@ -194,7 +194,7 @@ TEST(GBMemoryFactoryTest, NOTUSEDt1)
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
 
-  auto value = static_cast<uint16_t>(rand());
+  auto value = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   auto writeLocation = gbLayout->getWord(startNOTUSED);
   writeLocation.set(value);
 
@@ -213,9 +213,9 @@ TEST(GBMemoryFactoryTest, HRAMt1)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startHRAM, value8);
-  auto value16 = static_cast<uint16_t>(rand());
+  auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, startHRAM, value16);
 }
 
@@ -223,7 +223,7 @@ TEST(GBMemoryFactoryTest, HRAMt2)
 {
   auto mem = MemoryFactory { nullptr };
   auto gbLayout = mem.constructMemoryLayout();
-  auto value8 = static_cast<uint8_t>(rand());
+  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
   testMemoryRoundtrip(*gbLayout, endHRAM, value8);
 
   testMemoryThrows(*gbLayout, endHRAM);

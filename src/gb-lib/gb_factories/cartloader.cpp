@@ -6,6 +6,8 @@
 #include "mem/rambank.h"
 #include "mem/rombank.h"
 
+#include <array>
+
 gb::CartLoader::CartLoader(const std::string& romFile)
     : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
     , ramFile_()

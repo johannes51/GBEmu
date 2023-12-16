@@ -65,6 +65,9 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     destLoc = registers.get(destRegister_);
     break;
   case Destination::ImmediateIndirect:
+    if (!immediate16_) {
+      throw std::invalid_argument("No immediate value configured");
+    }
     destLoc = memory.getWord(hlp::indirect(*immediate16_));
     break;
   case Destination::RegisterIndirect:
@@ -79,6 +82,9 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
   Location<uint16_t> srcLoc;
   switch (source_) {
   case Source::Immediate:
+    if (!immediate16_) {
+      throw std::invalid_argument("No immediate value configured");
+    }
     srcLoc = std::move(*immediate16_);
     break;
   case Source::Register:

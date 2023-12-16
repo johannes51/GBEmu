@@ -69,22 +69,12 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     break;
   }
   case ByteAluFunction::Inc: {
-    Location<uint8_t> loc;
-    if (source_ == Source::Indirect) {
-      loc = getSource(registers, memory);
-    } else {
-      loc = registers.get(*register_);
-    }
+    Location<uint8_t> loc = getSource(registers, memory);
     result = ops::increment(loc);
     break;
   }
   case ByteAluFunction::Dec: {
-    Location<uint8_t> loc;
-    if (source_ == Source::Indirect) {
-      loc = getSource(registers, memory);
-    } else {
-      loc = registers.get(*register_);
-    }
+    Location<uint8_t> loc = getSource(registers, memory);
     result = ops::decrement(loc);
     break;
   }
@@ -116,6 +106,9 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
 {
   switch (source_) {
   case Source::Immediate:
+    if (!immediate_) {
+        throw std::invalid_argument("No immediate value configured");
+    }
     return std::move(*immediate_);
     break;
   case Source::Indirect:

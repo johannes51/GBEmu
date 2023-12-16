@@ -35,7 +35,7 @@ auto BaseInstructionDecoder::decodedOpcodes() const -> std::vector<uint8_t>
 {
   std::vector<uint8_t> result;
   for (const auto& decoder : decoders_) {
-    result.push_back(decoder.first);
+    result.push_back(decoder.first); // NOLINT(performance-inefficient-vector-operation)
   }
   return result;
 }

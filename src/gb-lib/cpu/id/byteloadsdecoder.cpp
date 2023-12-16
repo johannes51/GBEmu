@@ -286,7 +286,7 @@ auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
 
 auto ByteLoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opc { opcodeLocation.get() };
+  const OpcodeView opc { opcodeLocation.get() };
 
   if (opc.value() >= 0x40 && opc.value() <= 0x7F) {
     return bulkLoad(opc);

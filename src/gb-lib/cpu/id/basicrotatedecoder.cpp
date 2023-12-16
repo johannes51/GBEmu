@@ -5,7 +5,7 @@
 
 auto BasicRotateDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   return std::make_unique<BasicRotate>(
       (opcode.lowerNibble() == 0x7) ? RotateDirection::Left : RotateDirection::Right, opcode.upperNibble() == 0x0);
 }

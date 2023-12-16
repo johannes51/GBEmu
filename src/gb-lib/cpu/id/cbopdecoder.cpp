@@ -6,7 +6,7 @@
 
 auto CbOpDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
 {
-  OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (indirect(opcode)) {
     return std::make_unique<CbOp>(function(opcode), true);
   } else {

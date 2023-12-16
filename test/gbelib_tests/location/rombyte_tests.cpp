@@ -5,7 +5,7 @@
 TEST(RomByteTest, Read)
 {
   uint8_t buffer = 0x4E;
-  RomByte byte { buffer };
+  const RomByte byte { buffer };
   EXPECT_EQ(0x4E, byte.get());
 }
 

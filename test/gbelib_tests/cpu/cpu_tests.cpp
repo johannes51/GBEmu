@@ -17,7 +17,7 @@ TEST(CpuTest, Construction)
   auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb"));
   auto mem = f.constructMemoryLayout();
   auto reg = make_unique<CpuRegisters>();
-  EXPECT_NO_THROW(Cpu cpu(move(reg), mem, InstructionDecoderUP {}));
+  EXPECT_NO_THROW(Cpu cpu(std::move(reg), mem, InstructionDecoderUP {}));
 }
 
 TEST(CpuTest, Execution)
@@ -26,7 +26,7 @@ TEST(CpuTest, Execution)
   auto mem = f.constructMemoryLayout();
   auto reg = make_unique<CpuRegisters>();
   auto* regAsPtr = reg.get();
-  Cpu cpu(move(reg), mem, InstructionSetBuilder::construct());
+  Cpu cpu(std::move(reg), mem, InstructionSetBuilder::construct());
   ASSERT_NO_THROW(cpu.clock()); // NOP
   EXPECT_EQ(0x0101, regAsPtr->get(WordRegister::PC).get());
 }
@@ -37,7 +37,7 @@ TEST(CpuTest, Execution2)
   auto mem = f.constructMemoryLayout();
   auto reg = make_unique<CpuRegisters>();
   auto* regAsPtr = reg.get();
-  Cpu cpu(move(reg), mem, InstructionSetBuilder::construct());
+  Cpu cpu(std::move(reg), mem, InstructionSetBuilder::construct());
   ASSERT_NO_THROW(cpu.clock()); // NOP
   EXPECT_EQ(0x0101, regAsPtr->get(WordRegister::PC).get());
   EXPECT_NO_THROW(cpu.clock()); // 0x0101 JP 0x0637

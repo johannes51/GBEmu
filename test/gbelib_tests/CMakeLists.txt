@@ -88,7 +88,7 @@ target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main)
 target_include_directories(gbelib_tests PRIVATE $<TARGET_PROPERTY:gbelib,INCLUDE_DIRECTORIES>)
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 get_target_property(gtest_include_dirs GTest::GTest INTERFACE_INCLUDE_DIRECTORIES)
-target_include_directories(gbelib_tests SYSTEM PRIVATE ${gtest_include_dirs})
+target_include_directories(gbelib_tests SYSTEM PRIVATE ${GTEST_INCLUDE_DIRS})
 
 gtest_add_tests(TARGET gbelib_tests)
 add_dependencies(tests gbelib_tests)
