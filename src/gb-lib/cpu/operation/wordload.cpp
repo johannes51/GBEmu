@@ -42,9 +42,8 @@ void WordLoad::setDestination(WordRegister destRegister) { destRegister_ = destR
 
 void WordLoad::setSource(WordRegister srcRegister) { srcRegister_ = srcRegister; }
 
-auto WordLoad::cycles(const RegistersInterface& registers) -> unsigned
+auto WordLoad::cycles() -> unsigned
 {
-  (void)registers;
   auto result = BaseDuration;
   if (destination_ == Destination::ImmediateIndirect) {
     result = ImmediateIndirectDuration;

@@ -24,7 +24,7 @@ public:
   CbOp(CbFunction function, bool indirect, ByteRegister operand = ByteRegister::None);
 
   bool isComplete() override { return true; }
-  unsigned cycles(const RegistersInterface& registers) override;
+  unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
   void setAffectedBit(uint8_t value);

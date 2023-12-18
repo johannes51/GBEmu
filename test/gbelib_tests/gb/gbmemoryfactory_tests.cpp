@@ -139,6 +139,7 @@ TEST(GBMemoryFactoryTest, WRAM1t2)
   testMemoryThrows(*gbLayout, endWRAM1);
 }
 
+
 TEST(GBMemoryFactoryTest, WRAM1t3)
 {
   auto mem = MemoryFactory { nullptr };

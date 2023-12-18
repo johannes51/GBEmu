@@ -23,7 +23,7 @@ public:
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-  unsigned cycles(const RegistersInterface& registers) override;
+  unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
   void setRegister(ByteRegister registerName);

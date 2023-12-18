@@ -54,7 +54,7 @@ auto ByteArithmeticDecoder::incDec(const OpcodeView& opcode) -> OperationUP
 {
   auto function
       = opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC ? ByteAluFunction::Inc : ByteAluFunction::Dec;
-  auto source = (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC) && opcode.upperNibble() == 0x3
+  auto source = (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0x5) && opcode.upperNibble() == 0x3
       ? Source::Indirect
       : Source::Register;
   auto result = std::make_unique<ByteAluOperation>(function, source);

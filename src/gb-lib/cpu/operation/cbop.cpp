@@ -16,9 +16,8 @@ CbOp::CbOp(CbFunction function, bool indirect, ByteRegister operand)
 {
 }
 
-auto CbOp::cycles(const RegistersInterface& registers) -> unsigned
+auto CbOp::cycles() -> unsigned
 {
-  (void)registers;
   if (!indirect_) {
     return 2;
   } else {

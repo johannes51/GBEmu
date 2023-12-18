@@ -14,7 +14,7 @@ TEST(ByteAluOperationTest, Xor)
   ASSERT_TRUE(xorOp.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(1, xorOp.cycles(r));
+  EXPECT_EQ(1, xorOp.cycles());
 
   auto a = r.get(ByteRegister::A);
   a.set(0x9); // 1001
@@ -37,7 +37,7 @@ TEST(ByteAluOperationTest, AddImmediate)
   ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(0x4D)));
 
   CpuRegisters r;
-  EXPECT_EQ(2, addOp.cycles(r));
+  EXPECT_EQ(2, addOp.cycles());
 
   r.get(ByteRegister::A).set(0x05);
 
@@ -48,12 +48,12 @@ TEST(ByteAluOperationTest, AddImmediate)
 
 TEST(ByteAluOperationTest, Inc)
 {
-  ByteAluOperation decOp { ByteAluFunction::Inc, Source::None };
+  ByteAluOperation decOp { ByteAluFunction::Inc, Source::Register };
   decOp.setRegister(ByteRegister::B);
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(1, decOp.cycles(r));
+  EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
   b.set(0x1); // 0001
@@ -70,7 +70,7 @@ TEST(ByteAluOperationTest, IncIndirect)
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, decOp.cycles(r));
+  EXPECT_EQ(3, decOp.cycles());
 
   r.get(WordRegister::HL).set(0x0100);
 
@@ -82,12 +82,12 @@ TEST(ByteAluOperationTest, IncIndirect)
 
 TEST(ByteAluOperationTest, Dec)
 {
-  ByteAluOperation decOp { ByteAluFunction::Dec, Source::None };
+  ByteAluOperation decOp { ByteAluFunction::Dec, Source::Register };
   decOp.setRegister(ByteRegister::B);
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(1, decOp.cycles(r));
+  EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
   b.set(0x1); // 0001
@@ -104,7 +104,7 @@ TEST(ByteAluOperationTest, DecIndirect)
   ASSERT_TRUE(decOp.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, decOp.cycles(r));
+  EXPECT_EQ(3, decOp.cycles());
 
   r.get(WordRegister::HL).set(0x0100);
 
@@ -122,6 +122,5 @@ TEST(ByteAluOperationTest, Throws)
   ByteAluOperation decOp { ByteAluFunction::Add, Source::Register };
   EXPECT_ANY_THROW(decOp.execute(r, *m));
 
-  ByteAluOperation decOp2 { ByteAluFunction::Add, Source::None };
-  EXPECT_ANY_THROW(decOp2.execute(r, *m));
+  EXPECT_ANY_THROW(ByteAluOperation decOp2 (ByteAluFunction::Add, Source::None));
 }

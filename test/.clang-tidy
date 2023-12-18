@@ -1,3 +1,11 @@
 ---
-Checks: '*,-llvmlibc-*,-fuchsia-*,-altera-*,-bugprone-easily-swappable-parameters,-cert-err58-cpp,-cppcoreguidelines-pro-bounds-constant-array-index,-google-readability-todo,-google-runtime-references,-llvm-else-after-return,-readability-else-after-return,-readability-identifier-length,-readability-redundant-member-init,-cert-*,-google-build-using-namespace,-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-cppcoreguidelines-special-member-functions,-hicpp-special-member-functions,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-avoid-goto,-hicpp-avoid-goto,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,-google-readability-function-size,-hicpp-function-size,-readability-function-size,-cppcoreguidelines-non-private-member-variables-in-classes,-misc-non-private-member-variables-in-classes,-misc-const-correctness,-readability-function-cognitive-complexity'
+Checks: '*,-llvmlibc-*,-fuchsia-*,-altera-*,-cert-*,
+-google-readability-todo,-google-runtime-references,-cppcoreguidelines-pro-bounds-constant-array-index,
+-llvm-else-after-return,-readability-else-after-return,-readability-identifier-length,
+-bugprone-easily-swappable-parameters,-readability-redundant-member-init,
+-cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-cppcoreguidelines-special-member-functions,
+-hicpp-special-member-functions,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-avoid-goto,
+-hicpp-avoid-goto,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,-google-readability-function-size,-hicpp-function-size,
+-readability-function-size,-cppcoreguidelines-non-private-member-variables-in-classes,-google-build-using-namespace,
+-misc-non-private-member-variables-in-classes,-misc-const-correctness,-readability-function-cognitive-complexity'
 ...

@@ -15,6 +15,9 @@ ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
     , register_(std::nullopt)
     , immediate_(std::nullopt)
 {
+  if (source == Source::None) {
+    throw std::invalid_argument("source can't be None");
+  }
 }
 
 void ByteAluOperation::nextOpcode(Location<uint8_t> opcode)
@@ -25,23 +28,27 @@ void ByteAluOperation::nextOpcode(Location<uint8_t> opcode)
   immediate_ = Location<uint8_t>(std::move(opcode));
 }
 
-auto ByteAluOperation::isComplete() -> bool { return source_ != Source::Immediate || immediate_; }
+auto ByteAluOperation::isComplete() -> bool
+{
+  return (source_ == Source::Register && register_) || (source_ == Source::Immediate && immediate_) ||
+      (source_ != Source::Register && source_ != Source::Immediate);
+}
 
 void ByteAluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
 
-auto ByteAluOperation::cycles(const RegistersInterface& registers) -> unsigned
+auto ByteAluOperation::cycles() -> unsigned
 {
-  (void)registers;
-  unsigned result = 1;
-  if (source_ == Source::Indirect) {
-    ++result;
+  if (source_ == Source::Immediate) {
+    return 2;
+  } else if (source_ == Source::Indirect) {
     if (function_ == ByteAluFunction::Inc || function_ == ByteAluFunction::Dec) {
-      ++result;
+      return 3;
+    } else {
+      return 2;
     }
-  } else if (source_ == Source::Immediate) {
-    ++result;
+  } else {
+    return 1;
   }
-  return result;
 }
 
 void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)

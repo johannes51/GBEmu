@@ -25,10 +25,11 @@ void Cpu::clock()
 {
   if (!nextOperation_) {
     nextOperation_ = instructionDecoder_->decode(nextOpcode());
+    nextOperation_->showFlags(registers_->getFlags());
     while (!nextOperation_->isComplete()) {
       nextOperation_->nextOpcode(nextOpcode());
     }
-    ticksTillExecution_ = nextOperation_->cycles(*registers_);
+    ticksTillExecution_ = nextOperation_->cycles();
   }
   --ticksTillExecution_;
   if (ticksTillExecution_ <= 0) {

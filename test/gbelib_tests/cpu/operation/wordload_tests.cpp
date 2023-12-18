@@ -23,7 +23,7 @@ TEST(WordLoadTest, Immediate)
   EXPECT_THROW(loadImmediate.nextOpcode(b.getByte(1)), std::logic_error);
 
   CpuRegisters r;
-  EXPECT_EQ(3, loadImmediate.cycles(r));
+  EXPECT_EQ(3, loadImmediate.cycles());
 
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
@@ -46,7 +46,7 @@ TEST(WordLoadTest, Immediate2)
   ASSERT_TRUE(loadImmediate.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, loadImmediate.cycles(r));
+  EXPECT_EQ(3, loadImmediate.cycles());
 
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
@@ -63,7 +63,7 @@ TEST(WordLoadTest, Register)
   ASSERT_TRUE(loadRegister.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(2, loadRegister.cycles(r));
+  EXPECT_EQ(2, loadRegister.cycles());
 
   uint16_t value = 0xDFFF;
   r.get(WordRegister::HL).set(value);
@@ -87,7 +87,7 @@ TEST(WordLoadTest, ImmediateIndirect)
   ASSERT_TRUE(loadIndirect.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(5, loadIndirect.cycles(r));
+  EXPECT_EQ(5, loadIndirect.cycles());
 
   r.get(WordRegister::HL).set(0xDFFF);
   loadIndirect.execute(r, b);
@@ -105,7 +105,7 @@ TEST(WordLoadTest, RegisterIndirect)
   ASSERT_TRUE(loadIndirect.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, loadIndirect.cycles(r));
+  EXPECT_EQ(3, loadIndirect.cycles());
 
   r.get(WordRegister::HL).set(0xDFFF);
   r.get(WordRegister::AF).set(0x0002);
@@ -127,7 +127,7 @@ TEST(WordLoadTest, Push)
   load.setSource(WordRegister::DE);
   ASSERT_TRUE(load.isComplete());
 
-  EXPECT_EQ(4, load.cycles(r));
+  EXPECT_EQ(4, load.cycles());
 
   load.execute(r, b);
   EXPECT_EQ(0x0E, r.get(WordRegister::SP).get());
@@ -147,7 +147,7 @@ TEST(WordLoadTest, Pop)
   load.setDestination(WordRegister::HL);
   ASSERT_TRUE(load.isComplete());
 
-  EXPECT_EQ(3, load.cycles(r));
+  EXPECT_EQ(3, load.cycles());
 
   load.execute(r, b);
   EXPECT_EQ(0x10, r.get(WordRegister::SP).get());
@@ -168,7 +168,7 @@ TEST(WordLoadTest, RegisterImmediate)
   load.setSource(WordRegister::SP);
   ASSERT_TRUE(load.isComplete());
 
-  EXPECT_EQ(3, load.cycles(r));
+  EXPECT_EQ(3, load.cycles());
 
   EXPECT_ANY_THROW(load.execute(r, b)); // because unimplemented
 }

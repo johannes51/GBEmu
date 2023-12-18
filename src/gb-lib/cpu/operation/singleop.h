@@ -14,7 +14,7 @@ public:
   virtual void nextOpcode(Location<uint8_t> opcode) override;
   virtual bool isComplete() override { return true; }
 
-  virtual unsigned cycles(const RegistersInterface& registers) override;
+  virtual unsigned cycles() override;
 };
 
 template <unsigned Cycles> void SingleOp<Cycles>::nextOpcode(Location<uint8_t> opcode)
@@ -23,9 +23,8 @@ template <unsigned Cycles> void SingleOp<Cycles>::nextOpcode(Location<uint8_t> o
   throw std::logic_error("Single Opcode instruction");
 }
 
-template <unsigned Cycles> unsigned SingleOp<Cycles>::cycles(const RegistersInterface& registers)
+template <unsigned Cycles> unsigned SingleOp<Cycles>::cycles()
 {
-  (void)registers;
   return Cycles;
 }
 

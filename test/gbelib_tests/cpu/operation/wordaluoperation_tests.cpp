@@ -12,7 +12,7 @@ TEST(WordAluOperationTest, Inc)
 
   WordAluOperation op { WordAluFunction::Inc, WordRegister::DE };
   ASSERT_TRUE(op.isComplete());
-  EXPECT_EQ(2, op.cycles(r));
+  EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
   EXPECT_EQ(0xC3A2, r.get(WordRegister::DE).get());
@@ -26,7 +26,7 @@ TEST(WordAluOperationTest, Dec)
 
   WordAluOperation op { WordAluFunction::Dec, WordRegister::HL };
   ASSERT_TRUE(op.isComplete());
-  EXPECT_EQ(2, op.cycles(r));
+  EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
   EXPECT_EQ(0xC3A0, r.get(WordRegister::HL).get());
@@ -41,7 +41,7 @@ TEST(WordAluOperationTest, Add)
 
   WordAluOperation op { WordAluFunction::Add, WordRegister::BC };
   ASSERT_TRUE(op.isComplete());
-  EXPECT_EQ(2, op.cycles(r));
+  EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
   EXPECT_EQ(0x7A13, r.get(WordRegister::HL).get());

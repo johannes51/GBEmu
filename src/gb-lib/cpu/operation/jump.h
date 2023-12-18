@@ -23,20 +23,20 @@ public:
   Jump(JumpType type, TargetType target, Condition condition);
   ~Jump();
 
+  void showFlags(const FlagsView &flags);
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 
-  unsigned cycles(const RegistersInterface& registers) override;
+  unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:
-  bool taken(const FlagsView& flags) const;
-
   std::optional<Location<uint8_t>> lower_;
   std::optional<Location<uint8_t>> upper_;
   const JumpType type_;
   const TargetType target_;
   const Condition condition_;
+  std::optional<bool> taken_;
 };
 
 #endif // JUMP_H

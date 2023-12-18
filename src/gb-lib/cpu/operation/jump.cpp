@@ -17,10 +17,34 @@ Jump::Jump(JumpType type, TargetType target, Condition condition)
     , type_(type)
     , target_(target)
     , condition_(condition)
+    , taken_(std::nullopt)
 {
+  if (condition_ == Condition::None) {
+    taken_ = true;
+  }
 }
 
 Jump::~Jump() = default;
+
+void Jump::showFlags(const FlagsView& flags)
+{
+  switch (condition_) {
+  case Condition::Z:
+    taken_ = flags.zero();
+    break;
+  case Condition::NZ:
+    taken_ = !flags.zero();
+    break;
+  case Condition::C:
+    taken_ = flags.carry();
+    break;
+  case Condition::NC:
+    taken_ = !flags.carry();
+    break;
+  case Condition::None:
+    break; // already true by constructor
+  }
+}
 
 void Jump::nextOpcode(Location<uint8_t> opcode)
 {
@@ -37,15 +61,15 @@ auto Jump::isComplete() -> bool
 {
   switch (type_) {
   case JumpType::Regular:
-    return (target_ == TargetType::Absolute) ? lower_ && upper_ : static_cast<bool>(lower_);
+    return taken_.has_value() && ( (target_ == TargetType::Absolute) ? lower_ && upper_ : lower_.has_value() );
   case JumpType::Call:
-    return lower_ && upper_;
+    return taken_.has_value() && lower_ && upper_;
   default:
-    return true;
+    return taken_.has_value();
   }
 }
 
-auto Jump::cycles(const RegistersInterface& registers) -> unsigned
+auto Jump::cycles() -> unsigned
 {
   unsigned result = 0;
   if (target_ == TargetType::Absolute) {
@@ -54,20 +78,20 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned
       result = 1;
       break;
     case JumpType::Regular:
-      result = taken(registers.getFlags()) ? TakenJump : SkippedJump;
+      result = *taken_ ? TakenJump : SkippedJump;
       break;
     case JumpType::Call:
-      result = taken(registers.getFlags()) ? TakenCall : SkippedCall;
+      result = *taken_ ? TakenCall : SkippedCall;
       break;
     case JumpType::Return:
     case JumpType::RetI:
     case JumpType::Reset:
       result = (condition_ == Condition::None) ? NormalReturn
-                                               : (taken(registers.getFlags()) ? TakenReturn : SkippedReturn);
+                                               : (*taken_ ? TakenReturn : SkippedReturn);
       break;
     }
   } else /*if (target_ == TargetType::Relative)*/ {
-    result = taken(registers.getFlags()) ? 3 : 2;
+    result = *taken_ ? 3 : 2;
   }
   return result;
 }
@@ -75,7 +99,7 @@ auto Jump::cycles(const RegistersInterface& registers) -> unsigned
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   auto pc = registers.get(WordRegister::PC);
-  if (taken(registers.getFlags())) {
+  if (*taken_) {
     if (target_ == TargetType::Absolute) {
       auto sp = registers.get(WordRegister::SP);
       switch (type_) {
@@ -114,24 +138,3 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
   }
 }
 
-auto Jump::taken(const FlagsView& flags) const -> bool
-{
-  auto result = true;
-  switch (condition_) {
-  case Condition::Z:
-    result = flags.zero();
-    break;
-  case Condition::NZ:
-    result = !flags.zero();
-    break;
-  case Condition::C:
-    result = flags.carry();
-    break;
-  case Condition::NC:
-    result = !flags.carry();
-    break;
-  default:
-    break;
-  }
-  return result;
-}

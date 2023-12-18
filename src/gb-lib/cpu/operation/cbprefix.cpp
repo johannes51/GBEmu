@@ -15,12 +15,12 @@ void CbPrefix::nextOpcode(Location<uint8_t> opcode) { realOp_ = decoder_->decode
 
 auto CbPrefix::isComplete() -> bool { return static_cast<bool>(realOp_); }
 
-auto CbPrefix::cycles(const RegistersInterface& registers) -> unsigned
+auto CbPrefix::cycles() -> unsigned
 {
   if (!isComplete()) {
     throw std::logic_error("Actual operation not yet set.");
   }
-  return realOp_->cycles(registers);
+  return realOp_->cycles();
 }
 
 void CbPrefix::execute(RegistersInterface& registers, IMemoryView& memory)

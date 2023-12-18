@@ -9,15 +9,16 @@
 
 TEST(JumpTest, Direct)
 {
+  CpuRegisters r;
   Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
+
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x19)));
   ASSERT_TRUE(jump.isComplete());
 
-  CpuRegisters r;
-  EXPECT_EQ(4, jump.cycles(r));
+  EXPECT_EQ(4, jump.cycles());
 
   ASSERT_NE(0x195E, r.get(WordRegister::PC).get());
   jump.execute(r, *IMemoryViewSP());
@@ -26,13 +27,14 @@ TEST(JumpTest, Direct)
 
 TEST(JumpTest, Relative)
 {
+  CpuRegisters r;
   Jump jump { JumpType::Regular, TargetType::Relative, Condition::None };
+
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x1A)));
   ASSERT_TRUE(jump.isComplete());
 
-  CpuRegisters r;
-  EXPECT_EQ(3, jump.cycles(r));
+  EXPECT_EQ(3, jump.cycles());
 
   r.get(WordRegister::PC).set(0x1900);
   jump.execute(r, *IMemoryViewSP());
@@ -48,10 +50,16 @@ TEST(JumpTest, Z)
 
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setZero();
+
+  EXPECT_FALSE(jump.isComplete());
+  EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
+  EXPECT_TRUE(jump.isComplete());
+
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearZero();
+  jump.showFlags(r.getFlags());
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
@@ -65,10 +73,16 @@ TEST(JumpTest, NZ)
 
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearZero();
+
+  EXPECT_FALSE(jump.isComplete());
+  EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
+  EXPECT_TRUE(jump.isComplete());
+
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setZero();
+  jump.showFlags(r.getFlags());
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
@@ -82,10 +96,16 @@ TEST(JumpTest, C)
 
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setCarry();
+
+  EXPECT_FALSE(jump.isComplete());
+  EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
+  EXPECT_TRUE(jump.isComplete());
+
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearCarry();
+  jump.showFlags(r.getFlags());
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
@@ -99,21 +119,30 @@ TEST(JumpTest, NC)
 
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().clearCarry();
+
+  EXPECT_FALSE(jump.isComplete());
+  EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
+  EXPECT_TRUE(jump.isComplete());
+
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x191A, r.get(WordRegister::PC).get());
   r.get(WordRegister::PC).set(0x1900);
   r.getFlags().setCarry();
+  jump.showFlags(r.getFlags());
   jump.execute(r, *IMemoryViewSP());
   EXPECT_EQ(0x1900, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Next)
 {
+  CpuRegisters r;
   Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
+
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x5E)));
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(0x19)));
+
   ASSERT_TRUE(jump.isComplete());
   EXPECT_THROW(jump.nextOpcode(variableLocation(0x19)), std::logic_error);
 }
@@ -129,7 +158,8 @@ TEST(JumpTest, CallReturn)
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xFE)));
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xC3)));
   EXPECT_TRUE(call.isComplete());
-  EXPECT_EQ(6, call.cycles(r));
+
+  EXPECT_EQ(6, call.cycles());
   EXPECT_NO_THROW(call.execute(r, b));
 
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());
@@ -138,8 +168,8 @@ TEST(JumpTest, CallReturn)
   EXPECT_EQ(0xFD, r.get(WordRegister::SP).get());
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::None };
-  EXPECT_TRUE(ret.isComplete());
-  EXPECT_EQ(4, ret.cycles(r));
+  EXPECT_TRUE(call.isComplete());
+  EXPECT_EQ(4, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0x00, b.getByte(0xFD).get());
@@ -158,14 +188,18 @@ TEST(JumpTest, RetZ)
   r.getFlags().clearZero();
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::Z };
+
+  EXPECT_FALSE(ret.isComplete());
+  EXPECT_NO_THROW(ret.showFlags(r.getFlags()));
   EXPECT_TRUE(ret.isComplete());
-  EXPECT_EQ(2, ret.cycles(r));
+  EXPECT_EQ(2, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
   r.getFlags().setZero();
+  EXPECT_NO_THROW(ret.showFlags(r.getFlags()));
 
   EXPECT_TRUE(ret.isComplete());
-  EXPECT_EQ(5, ret.cycles(r));
+  EXPECT_EQ(5, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0xC003, r.get(WordRegister::PC).get());
@@ -183,7 +217,7 @@ TEST(JumpTest, RetI)
 
   Jump ret { JumpType::RetI, TargetType::Absolute, Condition::None };
   EXPECT_TRUE(ret.isComplete());
-  EXPECT_EQ(4, ret.cycles(r));
+  EXPECT_EQ(4, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
   EXPECT_EQ(0xC003, r.get(WordRegister::PC).get());
@@ -202,7 +236,7 @@ TEST(JumpTest, Reset)
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xFE)));
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(0xC3)));
   EXPECT_TRUE(call.isComplete());
-  EXPECT_EQ(4, call.cycles(r));
+  EXPECT_EQ(4, call.cycles());
   EXPECT_NO_THROW(call.execute(r, b));
 
   EXPECT_EQ(0xC3, b.getByte(0xFE).get());

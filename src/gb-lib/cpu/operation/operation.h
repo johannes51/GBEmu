@@ -14,10 +14,11 @@ public:
   virtual ~Operation() = default;
   DISABLE_COPY_AND_MOVE(Operation)
 
+  virtual void showFlags(const FlagsView& flags) { (void) flags; }
   virtual void nextOpcode(Location<uint8_t> opcode) = 0;
   virtual bool isComplete() = 0;
 
-  virtual unsigned cycles(const RegistersInterface& registers) = 0;
+  virtual unsigned cycles() = 0;
   virtual void execute(RegistersInterface& registers, IMemoryView& memory) = 0;
 };
 

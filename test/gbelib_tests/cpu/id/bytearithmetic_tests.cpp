@@ -69,4 +69,14 @@ TEST_F(ByteArithmeticTest, SourceL)
 {
   auto op = b.decode(variableLocation(0x85));
   EXPECT_TRUE(op);
+  EXPECT_TRUE(op->isComplete());
+}
+
+TEST_F(ByteArithmeticTest, SourceHL)
+{
+  auto op = b.decode(variableLocation(0x35));
+
+  EXPECT_TRUE(op);
+  EXPECT_TRUE(op->isComplete());
+  EXPECT_EQ(3, op->cycles());
 }

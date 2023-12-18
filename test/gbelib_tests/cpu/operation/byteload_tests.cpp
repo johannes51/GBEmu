@@ -18,7 +18,7 @@ TEST(ByteLoadTest, Immediate)
   EXPECT_THROW(loadImmediate.nextOpcode(variableLocation(0x42)), std::logic_error);
 
   CpuRegisters r;
-  EXPECT_EQ(2, loadImmediate.cycles(r));
+  EXPECT_EQ(2, loadImmediate.cycles());
 
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
@@ -39,7 +39,7 @@ TEST(ByteLoadTest, ImmediateIndirect)
   ASSERT_TRUE(loadImmediate.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(4, loadImmediate.cycles(r));
+  EXPECT_EQ(4, loadImmediate.cycles());
 
   r.get(ByteRegister::A).set(0x42);
   loadImmediate.execute(r, b);
@@ -58,7 +58,7 @@ TEST(ByteLoadTest, ImmediateIndirect2)
   ASSERT_TRUE(loadImmediate.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(3, loadImmediate.cycles(r));
+  EXPECT_EQ(3, loadImmediate.cycles());
 
   b.getByte(0xFF00).set(0x42);
   loadImmediate.execute(r, b);
@@ -74,7 +74,7 @@ TEST(ByteLoadTest, RegisterIndirect)
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(2, loadRI.cycles(r));
+  EXPECT_EQ(2, loadRI.cycles());
 
   r.get(WordRegister::HL).set(0xDFFF);
   r.get(ByteRegister::A).set(0x3C);
@@ -92,7 +92,7 @@ TEST(ByteLoadTest, RegisterIndirect2)
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;
-  EXPECT_EQ(2, loadRI.cycles(r));
+  EXPECT_EQ(2, loadRI.cycles());
 
   r.get(WordRegister::DE).set(0xDFFF);
   r.get(ByteRegister::A).set(0x3C);
