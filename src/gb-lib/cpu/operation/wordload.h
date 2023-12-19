@@ -14,6 +14,7 @@ public:
   enum class Source { Immediate, Register, RegisterImmediate, Stack };
   static constexpr auto BaseDuration = 3U;
   static constexpr auto ImmediateIndirectDuration = 5U;
+  static constexpr auto RegisterImmediateDuration = 3U;
 
   WordLoad(Destination destination, Source source);
   ~WordLoad();

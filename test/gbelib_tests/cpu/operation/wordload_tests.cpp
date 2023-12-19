@@ -5,6 +5,7 @@
 #include "cpu/cpuregisters.h"
 #include "location/location.h"
 #include "location/rambyte.h"
+#include "location/variablebyte.h"
 #include "mem/rambank.h"
 
 TEST(WordLoadTest, Immediate)
@@ -156,19 +157,44 @@ TEST(WordLoadTest, Pop)
 
 TEST(WordLoadTest, RegisterImmediate)
 {
-  uint16_t value = 0xA1F5;
   CpuRegisters r;
-  r.get(WordRegister::SP).set(0x0E);
+  r.get(WordRegister::SP).set(0x0F0E);
 
   RamBank b { { 0x00, 0x10 } };
-  b.getWord(0x0E).set(value);
+
+  WordLoad load { WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate };
+  load.setDestination(WordRegister::SP);
+  load.setSource(WordRegister::SP);
+  EXPECT_FALSE(load.isComplete());
+  load.nextOpcode(variableLocation(0x03));
+  ASSERT_TRUE(load.isComplete());
+
+  EXPECT_EQ(4, load.cycles());
+
+  EXPECT_NO_THROW(load.execute(r, b));
+
+  EXPECT_EQ(0x0F11, r.get(WordRegister::SP).get());
+}
+
+TEST(WordLoadTest, RegisterImmediate2)
+{
+  CpuRegisters r;
+  r.get(WordRegister::SP).set(0x0F0E);
+  r.get(WordRegister::HL).set(0xFFFF);
+
+  RamBank b { { 0x00, 0x10 } };
 
   WordLoad load { WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate };
   load.setDestination(WordRegister::HL);
   load.setSource(WordRegister::SP);
+  EXPECT_FALSE(load.isComplete());
+  load.nextOpcode(variableLocation(0x03));
   ASSERT_TRUE(load.isComplete());
 
   EXPECT_EQ(3, load.cycles());
 
-  EXPECT_ANY_THROW(load.execute(r, b)); // because unimplemented
+  EXPECT_NO_THROW(load.execute(r, b));
+
+  EXPECT_EQ(0x0F11, r.get(WordRegister::HL).get());
 }
+

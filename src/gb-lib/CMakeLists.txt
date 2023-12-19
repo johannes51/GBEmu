@@ -46,6 +46,8 @@ target_sources(gbelib PRIVATE
   cpu/id/jumpscallsdecoder.cpp
   cpu/id/opcodeview.h
   cpu/id/opcodeview.cpp
+  cpu/id/unimplementeddecoder.h
+  cpu/id/unimplementeddecoder.cpp
   cpu/id/wordarithmeticdecoder.h
   cpu/id/wordarithmeticdecoder.cpp
   cpu/id/wordloadsdecoder.h

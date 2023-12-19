@@ -4,6 +4,7 @@
 
 #include "cpu/registersinterface.h"
 #include "location/location.h"
+#include "location/variablebyte.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
 #include "ops/memory.h"
@@ -31,11 +32,13 @@ void WordLoad::nextOpcode(Location<uint8_t> opcode)
 
 auto WordLoad::isComplete() -> bool
 {
-  bool result = true;
   if (source_ == Source::Immediate || destination_ == Destination::ImmediateIndirect) {
-    result = static_cast<bool>(immediate16_);
+    return static_cast<bool>(immediate16_);
+  } else if (source_ == Source::RegisterImmediate) {
+    return static_cast<bool>(immediate8_);
+  } else {
+    return true;
   }
-  return result;
 }
 
 void WordLoad::setDestination(WordRegister destRegister) { destRegister_ = destRegister; }
@@ -51,6 +54,8 @@ auto WordLoad::cycles() -> unsigned
     result = BaseDuration - 1;
   } else if (destination_ == Destination::Stack) {
     result = BaseDuration + 1;
+  } else if (source_ == Source::RegisterImmediate) {
+    result = RegisterImmediateDuration + ((destRegister_ == WordRegister::SP) ? 1 : 0);
   }
   return result;
 }
@@ -93,12 +98,14 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     srcLoc = memory.getWord(hlp::indirect(registers.get(WordRegister::SP)));
     break;
   case Source::RegisterImmediate:
-    throw std::logic_error("Invalid configuration!");
+    srcLoc = registers.get(WordRegister::SP);
     break;
   }
   ops::load(destLoc, srcLoc);
   if (source_ == Source::Stack) {
     ops::increment(sp);
     ops::increment(sp);
+  } else if (source_ == Source::RegisterImmediate) {
+    ops::addSigned(destLoc, *immediate8_);
   }
 }

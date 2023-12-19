@@ -12,11 +12,11 @@ auto ControlDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Operatio
   case 0x00:
     return std::make_unique<Control>(ControlOp::Nop);
     break;
-  case 0x76:
-    return std::make_unique<Control>(ControlOp::Halt);
-    break;
   case 0x10:
     return std::make_unique<Control>(ControlOp::Stop);
+    break;
+  case 0x76:
+    return std::make_unique<Control>(ControlOp::Halt);
     break;
   case 0xFB:
     return std::make_unique<Control>(ControlOp::EI);
@@ -30,4 +30,4 @@ auto ControlDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Operatio
   }
 }
 
-auto ControlDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return { 0x00, 0x10, 0xF3, 0xFB }; }
+auto ControlDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return { 0x00, 0x10, 0x76, 0xF3, 0xFB }; }

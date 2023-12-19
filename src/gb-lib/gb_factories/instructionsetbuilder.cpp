@@ -7,6 +7,7 @@
 #include "cpu/id/cbdecoder.h"
 #include "cpu/id/controldecoder.h"
 #include "cpu/id/jumpscallsdecoder.h"
+#include "cpu/id/unimplementeddecoder.h"
 #include "cpu/id/wordarithmeticdecoder.h"
 #include "cpu/id/wordloadsdecoder.h"
 
@@ -22,6 +23,7 @@ auto InstructionSetBuilder::construct() -> InstructionDecoderUP
   result->registerDecoder(std::make_shared<WordArithmeticDecoder>());
   result->registerDecoder(std::make_shared<JumpsCallsDecoder>());
   result->registerDecoder(std::make_shared<CbDecoder>());
+  result->registerDecoder(std::make_shared<UnimplmentedDecoder>());
 
   return result;
 }

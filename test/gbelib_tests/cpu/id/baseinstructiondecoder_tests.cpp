@@ -23,7 +23,7 @@ TEST(BaseInstructionDecoderTestNF, Construction) { EXPECT_NO_THROW(BaseInstructi
 TEST_F(BaseInstructionDecoderTest, Register)
 {
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_EQ(4, d.decodedOpcodes().size());
+  EXPECT_EQ(5, d.decodedOpcodes().size());
 }
 
 TEST_F(BaseInstructionDecoderTest, Decode)
