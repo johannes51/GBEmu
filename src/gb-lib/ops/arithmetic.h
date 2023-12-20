@@ -65,6 +65,19 @@ template <typename T> OpResult sub(Location<T>& a, const Location<T>& b)
   }
 }
 
+template <typename T> OpResult complement(Location<T>& operand)
+{
+  operand.set(operand.get() xor 0xFF);
+  return { FlagResult::NoChange, FlagResult::Set, FlagResult::Set, FlagResult::NoChange };
+}
+
+template <typename T> OpResult decimalAdjust(Location<T>& operand)
+{
+  (void)operand; // TODO: look up and implement
+  return { (operand.get() == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange, FlagResult::Reset,
+    FlagResult::NoChange };
+}
+
 } // namespace ops
 
 #endif // ARITHMETIC_H

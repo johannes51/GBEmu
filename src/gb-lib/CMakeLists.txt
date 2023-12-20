@@ -46,6 +46,8 @@ target_sources(gbelib PRIVATE
   cpu/id/jumpscallsdecoder.cpp
   cpu/id/opcodeview.h
   cpu/id/opcodeview.cpp
+  cpu/id/miscarithmeticdecoder.h
+  cpu/id/miscarithmeticdecoder.cpp
   cpu/id/unimplementeddecoder.h
   cpu/id/unimplementeddecoder.cpp
   cpu/id/wordarithmeticdecoder.h
@@ -66,6 +68,8 @@ target_sources(gbelib PRIVATE
   cpu/operation/control.cpp
   cpu/operation/jump.h
   cpu/operation/jump.cpp
+  cpu/operation/miscarithmetic.h
+  cpu/operation/miscarithmetic.cpp
   cpu/operation/operation.h
   cpu/operation/singleop.h
   cpu/operation/wordaluoperation.h

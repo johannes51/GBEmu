@@ -34,7 +34,7 @@ template <typename T> OpResult xorF(Location<T>& destination, const Location<T>&
   if (result == 0) {
     return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
+    return { FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -44,7 +44,7 @@ template <typename T> OpResult cpF(Location<T>& destination, const Location<T>& 
   if (result == 0) {
     return { FlagResult::Set, FlagResult::Set, FlagResult::NoChange, result < 0 ? FlagResult::Set : FlagResult::Reset };
   } else {
-    return { FlagResult::NoChange, FlagResult::Set, FlagResult::NoChange,
+    return { FlagResult::Reset, FlagResult::Set, FlagResult::NoChange,
       result < 0 ? FlagResult::Set : FlagResult::Reset };
   }
 }
