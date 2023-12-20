@@ -106,6 +106,9 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     ops::increment(sp);
     ops::increment(sp);
   } else if (source_ == Source::RegisterImmediate) {
+    if (!immediate8_) {
+      throw std::invalid_argument("No immediate value configured");
+    }
     ops::addSigned(destLoc, *immediate8_);
   }
 }

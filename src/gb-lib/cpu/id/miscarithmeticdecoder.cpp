@@ -18,9 +18,9 @@ auto MiscArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> O
   return std::make_unique<MiscArithmetic>(decodeFunction(opcode.value()));
 }
 
-std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes() const { return decodedOpcodes_; }
+auto MiscArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return decodedOpcodes_; }
 
-MiscArithmeticFunction MiscArithmeticDecoder::decodeFunction(uint8_t opcode)
+auto MiscArithmeticDecoder::decodeFunction(uint8_t opcode) -> MiscArithmeticFunction
 {
   switch (opcode) {
   case 0x27:

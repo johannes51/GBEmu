@@ -71,6 +71,9 @@ auto Jump::isComplete() -> bool
 
 auto Jump::cycles() -> unsigned
 {
+  if (!taken_) {
+    throw std::logic_error("Flags not shown");
+  }
   unsigned result = 0;
   if (target_ == TargetType::Absolute) {
     switch (type_) {
@@ -98,6 +101,9 @@ auto Jump::cycles() -> unsigned
 void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   auto pc = registers.get(WordRegister::PC);
+  if (!taken_) {
+    throw std::logic_error("Registers not shown");
+  }
   if (*taken_) {
     if (target_ == TargetType::Absolute) {
       auto sp = registers.get(WordRegister::SP);

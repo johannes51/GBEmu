@@ -14,4 +14,4 @@ auto UnimplmentedDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Ope
   return {};
 }
 
-std::vector<uint8_t> UnimplmentedDecoder::decodedOpcodes() const { return decodedOpcodes_; }
+auto UnimplmentedDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return decodedOpcodes_; }
