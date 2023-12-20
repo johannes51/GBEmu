@@ -61,7 +61,7 @@ auto Jump::isComplete() -> bool
 {
   switch (type_) {
   case JumpType::Regular:
-    return taken_.has_value() && ( (target_ == TargetType::Absolute) ? lower_ && upper_ : lower_.has_value() );
+    return taken_.has_value() && ((target_ == TargetType::Absolute) ? lower_ && upper_ : lower_.has_value());
   case JumpType::Call:
     return taken_.has_value() && lower_ && upper_;
   default:
@@ -86,8 +86,7 @@ auto Jump::cycles() -> unsigned
     case JumpType::Return:
     case JumpType::RetI:
     case JumpType::Reset:
-      result = (condition_ == Condition::None) ? NormalReturn
-                                               : (*taken_ ? TakenReturn : SkippedReturn);
+      result = (condition_ == Condition::None) ? NormalReturn : (*taken_ ? TakenReturn : SkippedReturn);
       break;
     }
   } else /*if (target_ == TargetType::Relative)*/ {
@@ -137,4 +136,3 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
     }
   }
 }
-

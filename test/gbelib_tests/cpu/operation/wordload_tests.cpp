@@ -197,4 +197,3 @@ TEST(WordLoadTest, RegisterImmediate2)
 
   EXPECT_EQ(0x0F11, r.get(WordRegister::HL).get());
 }
-

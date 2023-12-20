@@ -23,9 +23,6 @@ template <unsigned Cycles> void SingleOp<Cycles>::nextOpcode(Location<uint8_t> o
   throw std::logic_error("Single Opcode instruction");
 }
 
-template <unsigned Cycles> unsigned SingleOp<Cycles>::cycles()
-{
-  return Cycles;
-}
+template <unsigned Cycles> unsigned SingleOp<Cycles>::cycles() { return Cycles; }
 
 #endif // SINGLEOP_H

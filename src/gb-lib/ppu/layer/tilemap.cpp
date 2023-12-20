@@ -18,7 +18,7 @@ auto TileMap::toFlatAddress(const TileAddress& address) -> uint8_t { return addr
 
 auto TileMap::getIndex(uint8_t flatAddress) const -> int8_t
 {
-    return static_cast<int8_t>(mem_->getByte(baseAdress() + flatAddress).get());
+  return static_cast<int8_t>(mem_->getByte(baseAdress() + flatAddress).get());
 }
 
 auto TileMap::baseAdress() const -> address_type

@@ -30,8 +30,8 @@ void ByteAluOperation::nextOpcode(Location<uint8_t> opcode)
 
 auto ByteAluOperation::isComplete() -> bool
 {
-  return (source_ == Source::Register && register_) || (source_ == Source::Immediate && immediate_) ||
-      (source_ != Source::Register && source_ != Source::Immediate);
+  return (source_ == Source::Register && register_) || (source_ == Source::Immediate && immediate_)
+      || (source_ != Source::Register && source_ != Source::Immediate);
 }
 
 void ByteAluOperation::setRegister(ByteRegister registerName) { register_ = registerName; }
@@ -114,7 +114,7 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
   switch (source_) {
   case Source::Immediate:
     if (!immediate_) {
-        throw std::invalid_argument("No immediate value configured");
+      throw std::invalid_argument("No immediate value configured");
     }
     return std::move(*immediate_);
     break;

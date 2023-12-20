@@ -23,7 +23,7 @@ public:
   Jump(JumpType type, TargetType target, Condition condition);
   ~Jump();
 
-  void showFlags(const FlagsView &flags);
+  void showFlags(const FlagsView& flags);
   void nextOpcode(Location<uint8_t> opcode) override;
   bool isComplete() override;
 

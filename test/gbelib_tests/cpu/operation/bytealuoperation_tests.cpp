@@ -122,5 +122,5 @@ TEST(ByteAluOperationTest, Throws)
   ByteAluOperation decOp { ByteAluFunction::Add, Source::Register };
   EXPECT_ANY_THROW(decOp.execute(r, *m));
 
-  EXPECT_ANY_THROW(ByteAluOperation decOp2 (ByteAluFunction::Add, Source::None));
+  EXPECT_ANY_THROW(ByteAluOperation decOp2(ByteAluFunction::Add, Source::None));
 }

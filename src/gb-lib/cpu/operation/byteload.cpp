@@ -10,9 +10,9 @@
 #include "util/helpers.h"
 
 ByteLoad::ByteLoad(Destination destination, Source source, bool zeroPage)
-  : destination_(destination)
-  , source_(source)
-  , zeroPage_(zeroPage)
+    : destination_(destination)
+    , source_(source)
+    , zeroPage_(zeroPage)
 {
 }
 
@@ -104,7 +104,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
         break;
       }
     } else {
-      if ( (zeroPage_ && !immediate8_) || (!zeroPage_ && !immediate16_) ) {
+      if ((zeroPage_ && !immediate8_) || (!zeroPage_ && !immediate16_)) {
         throw std::invalid_argument("No immediate value configured");
       }
       address = zeroPage_ ? hlp::indirect(*immediate8_) : hlp::indirect(*immediate16_);
@@ -120,7 +120,7 @@ void ByteLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     source = std::move(*immediate8_);
     break;
   case Source::ImmediateIndirect:
-    if ( (zeroPage_ && !immediate8_) || (!zeroPage_ && !immediate16_) ) {
+    if ((zeroPage_ && !immediate8_) || (!zeroPage_ && !immediate16_)) {
       throw std::invalid_argument("No immediate value configured");
     }
     source = zeroPage_ ? memory.getByte(hlp::indirect(*immediate8_)) : memory.getByte(hlp::indirect(*immediate16_));
