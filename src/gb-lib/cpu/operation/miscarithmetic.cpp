@@ -29,10 +29,15 @@ void MiscArithmetic::execute(RegistersInterface& registers, IMemoryView& memory)
     } else {
       flags.setCarry();
     }
+    flags.clearSubtract();
+    flags.clearHalfCarry();
     break;
   }
   case MiscArithmeticFunction::SetCarry: {
-    registers.getFlags().setCarry();
+    auto& flags = registers.getFlags();
+    flags.clearSubtract();
+    flags.clearHalfCarry();
+    flags.setCarry();
     break;
   }
   }

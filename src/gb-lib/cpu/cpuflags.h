@@ -7,6 +7,8 @@
 class CpuFlags final : public FlagsView {
 public:
   static constexpr auto ZERO_BIT = 7U;
+  static constexpr auto SUBTRACT_BIT = 6U;
+  static constexpr auto HALF_CARRY_BIT = 5U;
   static constexpr auto CARRY_BIT = 4U;
 
   CpuFlags(uint8_t& buffer);
@@ -15,6 +17,14 @@ public:
   void setZero() override;
   void clearZero() override;
   bool zero() const override;
+
+  void setSubtract();
+  void clearSubtract();
+  bool subtract() const;
+
+  void setHalfCarry();
+  void clearHalfCarry();
+  bool halfCarry() const;
 
   void setCarry() override;
   void clearCarry() override;

@@ -9,44 +9,32 @@ template <typename T> OpResult andF(Location<T>& destination, const Location<T>&
 {
   T result = source.get() and destination.get();
   destination.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::Reset };
 }
 
 template <typename T> OpResult orF(Location<T>& destination, const Location<T>& source)
 {
   T result = source.get() or destination.get();
   destination.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Reset,
+    FlagResult::Reset };
 }
 
 template <typename T> OpResult xorF(Location<T>& destination, const Location<T>& source)
 {
   T result = source.get() xor destination.get();
   destination.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Reset,
+    FlagResult::Reset };
 }
 
 template <typename T> OpResult cpF(Location<T>& destination, const Location<T>& source)
 {
-  T result = source.get() - destination.get();
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Set, FlagResult::NoChange, result < 0 ? FlagResult::Set : FlagResult::Reset };
-  } else {
-    return { FlagResult::Reset, FlagResult::Set, FlagResult::NoChange,
-      result < 0 ? FlagResult::Set : FlagResult::Reset };
-  }
+  auto zero = source.get() == destination.get();
+  auto carry = source.get() < source.get();
+  auto halfCarry = (0xF & source.get()) < (0xF & source.get());
+  return { zero ? FlagResult::Set : FlagResult::Reset, FlagResult::Set, halfCarry ? FlagResult::Set : FlagResult::Reset,
+    carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 } // namespace ops

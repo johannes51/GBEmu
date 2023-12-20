@@ -17,9 +17,20 @@ TEST(RomTest, InteruptTime)
       MemoryFactory { make_unique<CartLoader>("interrupt_time.gb") }.constructMemoryLayout(),
       InstructionSetBuilder::construct());
 
-  for (int var = 0; var < 82455; ++var) { // 117464; ++var) {
+  for (int var = 0; var < 117464; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
-  EXPECT_NO_THROW(cpu.clock()); // 0xC4AE LD (HL), D
-  EXPECT_ANY_THROW(cpu.clock()); // TODO: what goes on here?
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C1 CB SRL B
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C3 CB RR C
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C5 CB RR D
+  EXPECT_NO_THROW(cpu.clock());
+  EXPECT_NO_THROW(cpu.clock()); // 0xC2C7 RRA
+  for (int var = 0; var < 6901; ++var) {
+    EXPECT_NO_THROW(cpu.clock()) << var;
+  }
+  EXPECT_NO_THROW(cpu.clock()); // 0xC261 ADC A, 0x01
+
+  //-----------------------------------------------DONE-----------------------------------------------------------------
 }

@@ -31,6 +31,16 @@ protected:
     } else if (result.z == ops::FlagResult::Set) {
       flags.setZero();
     }
+    if (result.n == ops::FlagResult::Reset) {
+      flags.clearSubtract();
+    } else if (result.n == ops::FlagResult::Set) {
+      flags.setSubtract();
+    }
+    if (result.h == ops::FlagResult::Reset) {
+      flags.clearHalfCarry();
+    } else if (result.h == ops::FlagResult::Set) {
+      flags.setHalfCarry();
+    }
     if (result.c == ops::FlagResult::Reset) {
       flags.clearCarry();
     } else if (result.c == ops::FlagResult::Set) {

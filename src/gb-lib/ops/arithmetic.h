@@ -2,6 +2,7 @@
 #define ARITHMETIC_H
 
 #include <cstring>
+#include <limits>
 
 #include "ops.h"
 
@@ -11,33 +12,28 @@ template <typename T> OpResult increment(Location<T>& location)
 {
   T result = location.get() + 1;
   location.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  auto halfCarry = (result & 0xF) != 0;
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
+    halfCarry ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange };
 }
 
 template <typename T> OpResult decrement(Location<T>& location)
 {
   T result = location.get() - 1;
   location.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  auto halfCarry = (result & 0xF) != 0xF;
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
+    halfCarry ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange };
 }
 
 template <typename T> OpResult add(Location<T>& a, const Location<T>& b)
 {
   T result = a.get() + b.get();
   a.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  auto carry = std::numeric_limits<T>::max() - a.get() < b.get();
+  auto halfCarry = (0xF & a.get()) + (0xF & b.get()) > 0xF;
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
+    halfCarry ? FlagResult::Set : FlagResult::Reset, carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 template <typename T> auto addSigned(Location<T>& a, const Location<uint8_t>& bUnsigned) -> OpResult
@@ -47,22 +43,19 @@ template <typename T> auto addSigned(Location<T>& a, const Location<uint8_t>& bU
   std::memcpy(&operand, &operandUnsigned, sizeof(operand)); // NOTE: this only works as 2's complement (so always)
   T result = a.get() + operand;
   a.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  }
+
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange,
+    FlagResult::NoChange };
 }
 
 template <typename T> OpResult sub(Location<T>& a, const Location<T>& b)
 {
   T result = a.get() - b.get();
   a.set(result);
-  if (result == 0) {
-    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  } else {
-    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
-  }
+  auto carry = a.get() < b.get();
+  auto halfCarry = (0xF & a.get()) < (0xF & b.get());
+  return { (result == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::Set,
+    halfCarry ? FlagResult::Set : FlagResult::Reset, carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 template <typename T> OpResult complement(Location<T>& operand)
@@ -74,8 +67,9 @@ template <typename T> OpResult complement(Location<T>& operand)
 template <typename T> OpResult decimalAdjust(Location<T>& operand)
 {
   (void)operand; // TODO: look up and implement
+  auto carry = false;
   return { (operand.get() == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange, FlagResult::Reset,
-    FlagResult::NoChange };
+    carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 } // namespace ops
