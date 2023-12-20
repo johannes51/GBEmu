@@ -16,7 +16,7 @@ public:
   const MemoryArea& singleArea() const;
 
 private:
-  std::vector<MemoryArea> availableAreas_; // NOTE: das muss wegen geerbert availableAreas() ein Vektor sein
+  std::vector<MemoryArea> availableAreas_; // NOTE: is a vector of length one because of availableAreas()
 };
 
 #endif // SINGLEAREAMANAGER_H

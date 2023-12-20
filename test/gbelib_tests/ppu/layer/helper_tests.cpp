@@ -11,5 +11,3 @@ TEST(HelperTests, ZeroZero)
   EXPECT_EQ(result.second.x, 0);
   EXPECT_EQ(result.second.y, 0);
 }
-
-// TODO: write more tests
