@@ -150,11 +150,14 @@ auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFun
       return ByteAluFunction::Add;
       break;
     case 0x9:
-      //      return AluFunction::Sub;
+      return ByteAluFunction::Sub;
+      break;
     case 0xA:
-      //      return AluFunction::And;
+      return ByteAluFunction::And;
+      break;
     case 0xB:
       return ByteAluFunction::Or;
+      break;
     default:
       throw std::logic_error("Unimplemented");
       break;
@@ -162,16 +165,17 @@ auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFun
   } else {
     switch (opcode.upperNibble()) {
     case 0x8:
-      //      return AluFunction::AddCarry;
+      return ByteAluFunction::AddCarry;
+      break;
     case 0x9:
-      //      return AluFunction::SubCarry;
-      throw std::logic_error("Unimplemented");
+      return ByteAluFunction::SubCarry;
       break;
     case 0xA:
       return ByteAluFunction::Xor;
       break;
     case 0xB:
-      //      return AluFunction::Compare;
+      return ByteAluFunction::Cp;
+      break;
     default:
       throw std::logic_error("Unimplemented");
       break;
