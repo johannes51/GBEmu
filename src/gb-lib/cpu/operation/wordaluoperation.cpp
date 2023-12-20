@@ -27,10 +27,3 @@ void WordAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     break;
   }
 }
-
-void WordAluOperation::apply(FlagsView& flags, const ops::OpResult& result)
-{
-  (void)flags;
-  (void)result;
-  //  TODO: deal with flags
-}

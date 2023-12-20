@@ -20,5 +20,5 @@ TEST(LogicTest, XorZ)
 {
   auto d = variableLocation(0x3C);
 
-  EXPECT_EQ(1, ops::xorF(d, d).z);
+  EXPECT_EQ(ops::FlagResult::Set, ops::xorF(d, d).z);
 }

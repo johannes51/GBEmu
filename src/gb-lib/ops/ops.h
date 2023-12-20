@@ -3,18 +3,24 @@
 
 namespace ops {
 
+enum class FlagResult {
+  Set,
+  Reset,
+  NoChange,
+};
+
 struct OpResult {
-  OpResult(int z, int n, int h, int c)
+  OpResult(FlagResult z, FlagResult n, FlagResult h, FlagResult c)
       : z(z)
       , n(n)
       , h(h)
       , c(c)
   {
   }
-  int z;
-  int n;
-  int h;
-  int c;
+  FlagResult z;
+  FlagResult n;
+  FlagResult h;
+  FlagResult c;
 };
 
 } // namespace ops

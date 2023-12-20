@@ -18,8 +18,6 @@ public:
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:
-  static void apply(FlagsView& flags, const ops::OpResult& result);
-
   WordAluFunction function_;
   WordRegister register_;
 };

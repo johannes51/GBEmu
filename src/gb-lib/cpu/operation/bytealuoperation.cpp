@@ -54,7 +54,8 @@ auto ByteAluOperation::cycles() -> unsigned
 void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
-  ops::OpResult result { 0, 0, 0, 0 };
+  ops::OpResult result { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
+    ops::FlagResult::Reset };
   switch (function_) {
   case ByteAluFunction::Add:
   case ByteAluFunction::AddCarry: {
@@ -132,18 +133,4 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
     throw std::invalid_argument("No proper source configured");
     break;
   }
-}
-
-void ByteAluOperation::apply(FlagsView& flags, const ops::OpResult& result)
-{
-  if (result.z == 0) {
-    flags.clearZero();
-  } else if (result.z == 1) {
-    flags.setZero();
-  }
-  //  if (result.c == 0) {
-  //    flags.clearCarry();
-  //  } else if (result.c == 1) {
-  //    flags.setCarry();
-  //  }
 }

@@ -48,7 +48,7 @@ TEST(ArithmeticTest, Add8Z)
   auto lA = variableLocation(0);
   auto lB = variableLocation(0);
 
-  EXPECT_EQ(1, ops::add(lA, lB).z);
+  EXPECT_EQ(ops::FlagResult::Set, ops::add(lA, lB).z);
 }
 
 TEST(ArithmeticTest, Add16)
@@ -66,5 +66,5 @@ TEST(ArithmeticTest, Add16Z)
   auto lA = variableLocation(0x0, 0x0);
   auto lB = variableLocation(0x0, 0x0);
 
-  EXPECT_EQ(1, ops::add(lA, lB).z);
+  EXPECT_EQ(ops::FlagResult::Set, ops::add(lA, lB).z);
 }

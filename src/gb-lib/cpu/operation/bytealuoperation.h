@@ -30,7 +30,6 @@ public:
 
 private:
   Location<uint8_t> getSource(RegistersInterface& reg, IMemoryView& mem);
-  static void apply(FlagsView& flags, const ops::OpResult& result);
 
   const ByteAluFunction function_;
   const Source source_;

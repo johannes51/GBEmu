@@ -12,9 +12,9 @@ template <typename T> OpResult increment(Location<T>& location)
   T result = location.get() + 1;
   location.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -23,9 +23,9 @@ template <typename T> OpResult decrement(Location<T>& location)
   T result = location.get() - 1;
   location.set(result);
   if (result == 0) {
-    return { 1, 1, -1, -1 };
+    return { FlagResult::Set, FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 1, -1, -1 };
+    return { FlagResult::Reset, FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -34,9 +34,9 @@ template <typename T> OpResult add(Location<T>& a, const Location<T>& b)
   T result = a.get() + b.get();
   a.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -48,9 +48,9 @@ template <typename T> auto addSigned(Location<T>& a, const Location<uint8_t>& bU
   T result = a.get() + operand;
   a.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -59,9 +59,9 @@ template <typename T> OpResult sub(Location<T>& a, const Location<T>& b)
   T result = a.get() - b.get();
   a.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::Reset, FlagResult::Reset, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 

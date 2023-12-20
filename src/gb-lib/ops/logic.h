@@ -10,9 +10,9 @@ template <typename T> OpResult andF(Location<T>& destination, const Location<T>&
   T result = source.get() and destination.get();
   destination.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -21,9 +21,9 @@ template <typename T> OpResult orF(Location<T>& destination, const Location<T>& 
   T result = source.get() or destination.get();
   destination.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -32,9 +32,9 @@ template <typename T> OpResult xorF(Location<T>& destination, const Location<T>&
   T result = source.get() xor destination.get();
   destination.set(result);
   if (result == 0) {
-    return { 1, 0, -1, -1 };
+    return { FlagResult::Set, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   } else {
-    return { 0, 0, -1, -1 };
+    return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
   }
 }
 
@@ -42,9 +42,10 @@ template <typename T> OpResult cpF(Location<T>& destination, const Location<T>& 
 {
   T result = source.get() - destination.get();
   if (result == 0) {
-    return { 1, 1, -1, result < 0 ? 1 : 0 };
+    return { FlagResult::Set, FlagResult::Set, FlagResult::NoChange, result < 0 ? FlagResult::Set : FlagResult::Reset };
   } else {
-    return { 0, 1, -1, result < 0 ? 1 : 0 };
+    return { FlagResult::NoChange, FlagResult::Set, FlagResult::NoChange,
+      result < 0 ? FlagResult::Set : FlagResult::Reset };
   }
 }
 
