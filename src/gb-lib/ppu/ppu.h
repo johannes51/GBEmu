@@ -10,8 +10,11 @@ public:
 
   void clock() override;
 
+  const IPixelBuffer& getBuffer() const;
+
 private:
   IRendererSP renderer_;
+  IPixelBuffer buffer_;
 };
 
 #endif // PPU_H

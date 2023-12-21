@@ -4,8 +4,7 @@
 #include <memory>
 
 #include "mem/mem_defines.h"
-
-class Ppu;
+#include "peripherals/peri_defines.h"
 
 class PpuFactory {
 public:
@@ -14,7 +13,7 @@ public:
   {
   }
 
-  std::shared_ptr<Ppu> constructPpu();
+  PeripheralSP constructPpu();
 
 private:
   IMemoryViewSP mem_;

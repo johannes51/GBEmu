@@ -1,5 +1,6 @@
 #include "apufactory.h"
 
+#include "apu/apu.h"
 #include "apu/gbchannel1.h"
 #include "apu/gbchannel2.h"
 #include "apu/gbchannel3.h"

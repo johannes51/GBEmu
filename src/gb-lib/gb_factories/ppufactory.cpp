@@ -10,7 +10,7 @@
 #include "ppu/ppu_constants.h"
 #include "ppuregisterfactory.h"
 
-auto PpuFactory::constructPpu() -> std::shared_ptr<Ppu>
+auto PpuFactory::constructPpu() -> PeripheralSP
 {
   PpuRegisterFactory rf { mem_ };
   auto lcdc = rf.get(PpuRegisters::LCDC);

@@ -3,6 +3,11 @@
 
 #include <QMainWindow>
 
+#include <QTimer>
+
+#include "sys/systemmanager.h"
+#include "ppu/ppu.h"
+
 namespace Ui {
 class MainWindow;
 }
@@ -15,8 +20,19 @@ public:
   explicit MainWindow(QWidget *parent = nullptr);
   ~MainWindow();
 
+public slots:
+  void drawGbFrame();
+
 private:
-  Ui::MainWindow *ui;
+  std::unique_ptr<Ui::MainWindow> ui_;
+
+  std::unique_ptr<SystemManager> sm_;
+
+  QTimer timer_;
+
+  const IPixelBuffer* buffer_;
+
+  QImage img_;
 };
 
 #endif // MAINWINDOW_H

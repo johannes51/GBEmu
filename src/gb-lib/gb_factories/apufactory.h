@@ -1,10 +1,8 @@
 #ifndef APUFACTORY_H
 #define APUFACTORY_H
 
-#include <vector>
-
-#include "apu/apu.h"
-#include "mem/imemoryview.h"
+#include "mem/mem_defines.h"
+#include "peripherals/peri_defines.h"
 
 class ApuFactory {
 public:

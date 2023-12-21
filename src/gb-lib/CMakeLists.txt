@@ -179,8 +179,8 @@ target_sources(gbelib PRIVATE
   util/helpers.cpp
   )
 
-set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "systemmanager.h")
-target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "sys/systemmanager.h")
+target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_code_coverage(gbelib)
 enable_wall(gbelib)

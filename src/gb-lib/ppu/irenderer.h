@@ -1,6 +1,7 @@
 #ifndef IRENDERER_H
 #define IRENDERER_H
 
+#include <array>
 #include <memory>
 
 using IPixelBuffer = std::array<std::array<uint8_t, 144>, 160>;
