@@ -23,5 +23,5 @@ TEST(TileDataTests, GetTileContent)
   TileData td(MockRegisterAdapter::make(), r);
   auto tile = td.getTile(0);
 
-  EXPECT_EQ(tile.get(Pos { 5, 0 }), 3);
+  EXPECT_EQ(tile.get(TilePos { 5, 0 }), 3);
 }

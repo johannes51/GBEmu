@@ -6,8 +6,6 @@
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "palette.h"
-#include "pos.h"
-#include "tileaddress.h"
 
 class TileMap;
 
