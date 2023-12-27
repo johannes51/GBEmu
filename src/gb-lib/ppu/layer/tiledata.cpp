@@ -9,7 +9,7 @@ TileData::TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit /* = -
 {
 }
 
-auto TileData::getTile(int8_t index) -> Tile { return Tile { loadTile(baseAdress() + TileDataSize * index) }; }
+auto TileData::getTile(int16_t index) -> Tile { return Tile { loadTile(baseAdress() + TileDataSize * index) }; }
 
 auto TileData::baseAdress() const -> address_type
 {

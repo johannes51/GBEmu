@@ -22,15 +22,18 @@ auto Tile::toByteIndex(uint8_t x) -> uint8_t
     return 0;
     break;
   case 1:
-  case 5: // NOLINT
+    [[fallthrough]];
+  case 5: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     return 1;
     break;
   case 2:
-  case 6: // NOLINT
+    [[fallthrough]];
+  case 6: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     return 2;
     break;
   case 3:
-  case 7: // NOLINT
+    [[fallthrough]];
+  case 7: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
     return 3;
     break;
   default:

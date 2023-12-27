@@ -163,6 +163,10 @@ target_sources(gbelib PRIVATE
   ppu/layer/ibackground.h
   ppu/layer/iobjects.h
   ppu/layer/iwindow.h
+  ppu/layer/oam.h
+  ppu/layer/oam.cpp
+  ppu/layer/object.h
+  ppu/layer/object.cpp
   ppu/layer/tile.h
   ppu/layer/tile.cpp
   ppu/layer/tiledata.h
@@ -183,7 +187,7 @@ target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_code_coverage(gbelib)
 enable_wall(gbelib)
 enable_effcpp(gbelib)
-cxx_17(gbelib)
+cxx_20(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib)
 cppcheck(gbelib)

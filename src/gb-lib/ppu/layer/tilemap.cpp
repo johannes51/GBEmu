@@ -4,7 +4,7 @@
 #include "location/location.h"
 #include "tiledata.h"
 
-TileMap::TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, std::unique_ptr<TileData> tiles, uint8_t bit)
+TileMap::TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, TileDataUP tiles, uint8_t bit)
     : lcdc_(std::move(lcdc))
     , mem_(std::move(mem))
     , tiles_(std::move(tiles))

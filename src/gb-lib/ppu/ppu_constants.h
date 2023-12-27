@@ -5,9 +5,18 @@
 
 #include "mem/mem_defines.h"
 
-constexpr uint8_t BgWindowTileDataBit = 4;
+// LCDC Bits
+constexpr uint8_t ObjSizeBit = 2;
 constexpr uint8_t BgTileMapBit = 3;
+constexpr uint8_t BgWindowTileDataBit = 4;
 constexpr uint8_t WindowTileMapBit = 6;
+
+// OAM Bits
+constexpr uint8_t PalleteBit = 4;
+constexpr uint8_t FlipXBit = 5;
+constexpr uint8_t FlipYBit = 6;
+constexpr uint8_t PriorityBit = 7;
+
 constexpr uint8_t LcdWidth = 160;
 constexpr uint8_t LcdHeight = 144;
 constexpr uint8_t TileSize = 8;

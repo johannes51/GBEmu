@@ -1,6 +1,8 @@
 #ifndef TILEDATA_H
 #define TILEDATA_H
 
+#include <memory>
+
 #include "location/location.h"
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
@@ -10,7 +12,7 @@ class TileData {
 public:
   explicit TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit = -1);
 
-  Tile getTile(int8_t index);
+  Tile getTile(int16_t index);
 
 private:
   address_type baseAdress() const;
@@ -21,5 +23,7 @@ private:
 
   const int8_t Bit_;
 };
+
+using TileDataUP = std::unique_ptr<TileData>;
 
 #endif // TILEDATA_H

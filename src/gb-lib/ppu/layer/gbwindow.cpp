@@ -4,8 +4,8 @@
 #include "helper.h"
 #include "tilemap.h"
 
-GbWindow::GbWindow(IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp,
-    std::unique_ptr<TileMap> map)
+GbWindow::GbWindow(
+    IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp, TileMapUP map)
     : lcdc_(std::move(lcdc))
     , wx_(std::move(wx))
     , wy_(std::move(wy))

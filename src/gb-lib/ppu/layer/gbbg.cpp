@@ -4,14 +4,13 @@
 #include "helper.h"
 #include "tilemap.h"
 
-GbBg::GbBg(IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp,
-    std::unique_ptr<TileMap> map)
+GbBg::GbBg(
+    IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp, TileMapUP map)
     : lcdc_(std::move(lcdc))
     , scx_(std::move(scx))
     , scy_(std::move(scy))
-    , bgp_(std::move(bgp))
     , map_(std::move(map))
-    , pal_(bgp_)
+    , pal_(std::move(bgp))
 {
 }
 

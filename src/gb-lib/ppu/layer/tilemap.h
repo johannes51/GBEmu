@@ -4,8 +4,7 @@
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "tile.h"
-
-class TileData;
+#include "tiledata.h"
 
 struct TileAddress {
   uint8_t x;
@@ -14,7 +13,7 @@ struct TileAddress {
 
 class TileMap {
 public:
-  explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, std::unique_ptr<TileData> tiles, uint8_t bit);
+  explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, TileDataUP tiles, uint8_t bit);
   virtual ~TileMap();
 
   virtual Tile getTile(const TileAddress& address);
@@ -27,9 +26,11 @@ private:
   IRegisterAdapterSP lcdc_;
   IMemoryViewSP mem_;
 
-  std::unique_ptr<TileData> tiles_;
+  TileDataUP tiles_;
 
   const uint8_t bit_;
 };
+
+using TileMapUP = std::unique_ptr<TileMap>;
 
 #endif // TILEMAP_H

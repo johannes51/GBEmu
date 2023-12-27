@@ -6,13 +6,12 @@
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "palette.h"
-
-class TileMap;
+#include "tilemap.h"
 
 class GbWindow : public IWindow {
 public:
-  explicit GbWindow(IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp,
-      std::unique_ptr<TileMap> map);
+  explicit GbWindow(
+      IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp, TileMapUP map);
   ~GbWindow() override;
 
   void draw(IPixelBuffer& buffer) override;
@@ -22,7 +21,7 @@ private:
   IRegisterAdapterSP wx_;
   IRegisterAdapterSP wy_;
   IRegisterAdapterSP bgp_;
-  std::unique_ptr<TileMap> map_;
+  TileMapUP map_;
   Palette pal_;
 };
 

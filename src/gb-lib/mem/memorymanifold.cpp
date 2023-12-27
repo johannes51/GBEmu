@@ -13,7 +13,7 @@ void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
   const auto oldAreas = availableAreas();
 
   if (!std::accumulate(newAreas.begin(), newAreas.end(), true,
-          [oldAreas](auto& a, const auto& b) { return a && mem_tools::isDisjunct(b, oldAreas); })) {
+          [oldAreas](const auto& a, const auto& b) { return a && mem_tools::isDisjunct(b, oldAreas); })) {
     throw std::invalid_argument("Areas collide");
   }
 

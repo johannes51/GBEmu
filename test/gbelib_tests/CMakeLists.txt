@@ -59,6 +59,7 @@ set(TEST_SOURCES
     mem/rambank_tests.cpp
     mem/registerbank_tests.cpp
     mem/rombank_tests.cpp
+    mock/mockoam.h
     mock/mocktilemap.h
     mock/mockregisteradapter.h
     ops/arithmetic_tests.cpp
