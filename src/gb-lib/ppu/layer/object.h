@@ -2,11 +2,11 @@
 #define OBJECT_H
 
 #include <cstdint>
+#include <span>
 
 class Object {
 public:
-  Object();
-  Object(uint8_t (*buffer)[4]);
+  Object(std::span<uint8_t, 4> buffer);
 
   uint8_t getY() const;
   uint8_t getX() const;
@@ -18,7 +18,7 @@ public:
   bool isSecondPalette() const;
 
 private:
-  uint8_t (*buffer_)[4];
+  std::span<uint8_t, 4> buffer_;
 };
 
 #endif // OBJECT_H

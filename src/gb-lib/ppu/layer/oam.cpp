@@ -1,7 +1,6 @@
 #include "oam.h"
 
 #include <algorithm>
-#include <array>
 
 #include "location/location.h"
 
@@ -10,10 +9,11 @@ Oam::Oam(IMemoryViewSP mem)
 {
 }
 
-auto Oam::getAll() -> std::array<Object, NUM_OBJECTS>
+auto Oam::getAll() -> std::vector<Object>
 {
-  std::array<Object, NUM_OBJECTS> result;
-  for (auto ptr = OAM_BASE; ptr < OAM_TOP; ++ptr) {
+  std::vector<Object> result;
+  result.reserve(NUM_OBJECTS);
+  for (auto ptr = OAM_BASE; ptr < OAM_TOP && result.size() <= NUM_OBJECTS; ++ptr) {
     mem_->getByte(ptr);
   }
   return result;

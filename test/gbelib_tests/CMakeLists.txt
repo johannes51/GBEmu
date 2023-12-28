@@ -96,7 +96,7 @@ add_dependencies(tests gbelib_tests)
 
 enable_wall(gbelib_tests)
 enable_effcpp(gbelib_tests)
-cxx_17(gbelib_tests)
+cxx_20(gbelib_tests)
 clang_format(format_gbelib_tests gbelib_tests)
 clang_tidy(gbelib_tests)
 
