@@ -7,7 +7,7 @@ using namespace std;
 
 TEST(RamBankTest, Write8)
 {
-  std::vector<uint8_t> v{16U};
+  std::vector<uint8_t> v { 16U };
   RamBank b({ 0, 16 }, v);
   auto writeByte = b.getLocation(4);
   uint8_t value = 0xA2;

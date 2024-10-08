@@ -1,15 +1,14 @@
 #include "gtest/gtest.h"
 
-#include "cpu/operation/byteloadstandard.h"
 #include "cpu/operation/byteloadimmediate.h"
 #include "cpu/operation/byteloadindirect.h"
 #include "cpu/operation/byteloadoddball.h"
+#include "cpu/operation/byteloadstandard.h"
 
 #include "mock/testbank.h"
 
 #include "cpu/cpuregisters.h"
 #include "location/variablelocation.h"
-
 
 TEST(ByteLoadTest, Immediate)
 {
@@ -34,7 +33,8 @@ TEST(ByteLoadTest, ImmediateIndirect)
 
   *b.getLocation(0, true) = uint16_t(0x0002);
 
-  ByteLoadOddball loadImmediateIndirect { ByteLoadOddball::Direction::Indirect, ByteLoadOddball::Indirection::ImmediateStandard };
+  ByteLoadOddball loadImmediateIndirect { ByteLoadOddball::Direction::Indirect,
+    ByteLoadOddball::Indirection::ImmediateStandard };
   EXPECT_FALSE(loadImmediateIndirect.isComplete());
   loadImmediateIndirect.nextOpcode(b.getLocation(0));
   EXPECT_FALSE(loadImmediateIndirect.isComplete());
@@ -54,7 +54,8 @@ TEST(ByteLoadTest, ImmediateIndirect2)
 {
   TestBank b({ 0xFF00, 0xFF02 });
 
-  ByteLoadOddball loadImmediateIndirect2 { ByteLoadOddball::Direction::Register, ByteLoadOddball::Indirection::ImmediateZeroPage};
+  ByteLoadOddball loadImmediateIndirect2 { ByteLoadOddball::Direction::Register,
+    ByteLoadOddball::Indirection::ImmediateZeroPage };
   EXPECT_FALSE(loadImmediateIndirect2.isComplete());
   loadImmediateIndirect2.nextOpcode(variableLocation(uint8_t(0x00)));
   ASSERT_TRUE(loadImmediateIndirect2.isComplete());
@@ -109,7 +110,7 @@ TEST(ByteLoadTest, Post)
   TestBank m({ 0xDFFF, 0xDFFF });
 
   ByteLoadIndirect loadRI { ByteLoadIndirect::Direction::Register, ByteRegister::A, WordRegister::HL,
-                          ByteLoadIndirect::Post::Increment };
+    ByteLoadIndirect::Post::Increment };
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;
@@ -127,7 +128,7 @@ TEST(ByteLoadTest, Post2)
   TestBank m({ 0xDFFF, 0xDFFF });
 
   ByteLoadIndirect loadRI { ByteLoadIndirect::Direction::Indirect, ByteRegister::A, WordRegister::HL,
-                          ByteLoadIndirect::Post::Decrement };
+    ByteLoadIndirect::Post::Decrement };
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;
@@ -145,7 +146,7 @@ TEST(ByteLoadTest, Post3)
   TestBank m({ 0xDFFF, 0xDFFF });
 
   ByteLoadIndirect loadRI { ByteLoadIndirect::Direction::Indirect, ByteRegister::A, WordRegister::HL,
-                          ByteLoadIndirect::Post::Increment };
+    ByteLoadIndirect::Post::Increment };
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;
@@ -163,7 +164,7 @@ TEST(ByteLoadTest, Post4)
   TestBank m({ 0xDFFF, 0xDFFF });
 
   ByteLoadIndirect loadRI { ByteLoadIndirect::Direction::Indirect, ByteRegister::A, WordRegister::HL,
-                          ByteLoadIndirect::Post::Decrement };
+    ByteLoadIndirect::Post::Decrement };
   ASSERT_TRUE(loadRI.isComplete());
 
   CpuRegisters r;

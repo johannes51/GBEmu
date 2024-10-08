@@ -20,8 +20,7 @@ LocationUP RamBank::getLocation(const address_type address, bool tryWord)
   if (tryWord && !mem_tools::isSafe(address + 1, singleArea())) {
     throw std::invalid_argument("Out of bounds");
   }
-  return std::make_unique<RamLocation>(tryWord && mem_tools::isSafe(address + 1, singleArea()) ?
-          Location::Type::Both :
-          Location::Type::Single,
-      *this, address);
+  return std::make_unique<RamLocation>(
+      tryWord && mem_tools::isSafe(address + 1, singleArea()) ? Location::Type::Both : Location::Type::Single, *this,
+      address);
 }

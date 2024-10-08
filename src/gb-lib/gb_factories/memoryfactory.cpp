@@ -52,8 +52,8 @@ auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerSP
   return result;
 }
 
-auto gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
-    -> IMemoryManagerSP
+auto gb::MemoryFactory::buildMirrorBank(
+    MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin) -> IMemoryManagerSP
 {
   return std::make_shared<MirrorBank>(mirrorArea, originArea, std::move(origin));
 }

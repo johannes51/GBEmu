@@ -21,9 +21,7 @@ auto Register::getWord() const -> const uint16_t& { return buffer_; }
 
 Register& Register::operator=(const uint8_t& rhs)
 {
-  buffer_ =  upper_ ?
-      ((buffer_ & 0x00FF) | (rhs << 8U)) :
-      ((buffer_ & 0xFF00) | (rhs));
+  buffer_ = upper_ ? ((buffer_ & 0x00FF) | (rhs << 8U)) : ((buffer_ & 0xFF00) | (rhs));
   return *this;
 }
 

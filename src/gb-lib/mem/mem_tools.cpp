@@ -17,8 +17,8 @@ auto mem_tools::translateAddressSafe(
   return inputAddress - startAddress;
 }
 
-auto mem_tools::translateAddressSafe(const address_type& inputAddress, const MemoryArea& mirror, const int offset)
-    -> address_type
+auto mem_tools::translateAddressSafe(
+    const address_type& inputAddress, const MemoryArea& mirror, const int offset) -> address_type
 {
   assertSafe(inputAddress, mirror);
   return inputAddress + offset;
@@ -43,8 +43,8 @@ auto mem_tools::isSafe(const address_type& address, const MemoryArea& area) -> b
   return ((address >= area.from) && (address <= area.to));
 }
 
-auto mem_tools::isSafe(const address_type& inputAddress, const address_type& startAddress, const address_type& size)
-    -> bool
+auto mem_tools::isSafe(
+    const address_type& inputAddress, const address_type& startAddress, const address_type& size) -> bool
 {
   return (inputAddress >= startAddress && inputAddress < startAddress + size);
 }

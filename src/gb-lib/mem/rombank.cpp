@@ -11,7 +11,7 @@ RomBank::RomBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent>
 
 LocationUP RomBank::getLocation(const address_type address, bool tryWord)
 {
-  return std::make_unique<RomLocation>(tryWord && mem_tools::isSafe(address + 1, singleArea()) ? Location::Type::Both : Location::Type::Single,
-      *this, address);
+  return std::make_unique<RomLocation>(
+      tryWord && mem_tools::isSafe(address + 1, singleArea()) ? Location::Type::Both : Location::Type::Single, *this,
+      address);
 }
-

@@ -12,6 +12,8 @@ NullBank::NullBank(const MemoryArea& area)
 LocationUP NullBank::getLocation(const address_type address, bool tryWord)
 {
   mem_tools::assertSafe(address, singleArea());
-  if (tryWord) { mem_tools::assertSafe(address + 1, singleArea()); }
+  if (tryWord) {
+    mem_tools::assertSafe(address + 1, singleArea());
+  }
   return std::make_unique<ZeroLocation>();
 }

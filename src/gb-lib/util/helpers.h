@@ -14,9 +14,7 @@ address_type indirectZeroPage(const Location& location);
 
 constexpr void setBit(uint8_t& value, uint8_t pos) { value |= (1U << pos); }
 
-constexpr void clearBit(uint8_t& value, uint8_t pos) {
-  value &= ~(1U << pos);
-}
+constexpr void clearBit(uint8_t& value, uint8_t pos) { value &= ~(1U << pos); }
 
 constexpr auto checkBit(const uint8_t& value, uint8_t pos) -> bool { return (value & (1U << pos)) != 0; }
 

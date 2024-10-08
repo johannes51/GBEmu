@@ -60,7 +60,7 @@ void testMemoryThrowsWord(IMemoryView& memory, address_type testAddress)
 
 TEST(GBMemoryFactoryTest, ROM0t1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0x3C, mem->getLocation(startROM0)->getByte());
@@ -70,7 +70,7 @@ TEST(GBMemoryFactoryTest, ROM0t1)
 
 TEST(GBMemoryFactoryTest, ROM0t2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0x00, mem->getLocation(startPC)->getByte());
@@ -82,7 +82,7 @@ TEST(GBMemoryFactoryTest, ROM0t2)
 
 TEST(GBMemoryFactoryTest, ROM0t3)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.constructMemoryLayout();
   unsigned val = mem->getLocation(endROM0 - 1)->getWord();
@@ -92,7 +92,7 @@ TEST(GBMemoryFactoryTest, ROM0t3)
 
 TEST(GBMemoryFactoryTest, ROM1t1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.constructMemoryLayout();
   EXPECT_EQ(0xC3, mem->getLocation(startROM1)->getByte());
@@ -102,7 +102,7 @@ TEST(GBMemoryFactoryTest, ROM1t1)
 
 TEST(GBMemoryFactoryTest, WRAM0t1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory(nullptr, v);
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -113,7 +113,7 @@ TEST(GBMemoryFactoryTest, WRAM0t1)
 
 TEST(GBMemoryFactoryTest, WRAM0t2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -124,7 +124,7 @@ TEST(GBMemoryFactoryTest, WRAM0t2)
 
 TEST(GBMemoryFactoryTest, WRAM0t3)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -135,7 +135,7 @@ TEST(GBMemoryFactoryTest, WRAM0t3)
 
 TEST(GBMemoryFactoryTest, WRAM1t1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -146,7 +146,7 @@ TEST(GBMemoryFactoryTest, WRAM1t1)
 
 TEST(GBMemoryFactoryTest, WRAM1t2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -157,7 +157,7 @@ TEST(GBMemoryFactoryTest, WRAM1t2)
 
 TEST(GBMemoryFactoryTest, WRAM1t3)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -168,7 +168,7 @@ TEST(GBMemoryFactoryTest, WRAM1t3)
 
 TEST(GBMemoryFactoryTest, ECHOt1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -183,7 +183,7 @@ TEST(GBMemoryFactoryTest, ECHOt1)
 
 TEST(GBMemoryFactoryTest, ECHOt2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -198,7 +198,7 @@ TEST(GBMemoryFactoryTest, ECHOt2)
 
 TEST(GBMemoryFactoryTest, ECHOt3)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -211,7 +211,7 @@ TEST(GBMemoryFactoryTest, ECHOt3)
 
 TEST(GBMemoryFactoryTest, NOTUSEDt1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
 
@@ -224,7 +224,7 @@ TEST(GBMemoryFactoryTest, NOTUSEDt1)
 
 TEST(GBMemoryFactoryTest, NOTUSEDt2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
 
@@ -233,7 +233,7 @@ TEST(GBMemoryFactoryTest, NOTUSEDt2)
 
 TEST(GBMemoryFactoryTest, HRAMt1)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
@@ -244,7 +244,7 @@ TEST(GBMemoryFactoryTest, HRAMt1)
 
 TEST(GBMemoryFactoryTest, HRAMt2)
 {
-  auto v = std::vector<uint8_t>{};
+  auto v = std::vector<uint8_t> {};
   auto mem = MemoryFactory { nullptr, v };
   auto gbLayout = mem.constructMemoryLayout();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)

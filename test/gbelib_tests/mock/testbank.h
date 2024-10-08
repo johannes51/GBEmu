@@ -3,8 +3,7 @@
 
 #include "mem/rambank.h"
 
-class TestBank : public RamBank
-{
+class TestBank : public RamBank {
 public:
   TestBank(const MemoryArea& area);
 

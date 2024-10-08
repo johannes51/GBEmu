@@ -1,14 +1,8 @@
 #include "bufferlocation.h"
 
-const uint8_t& BufferLocation::getByte() const
-{
-  return area_.getByteReference(start_);
-}
+const uint8_t& BufferLocation::getByte() const { return area_.getByteReference(start_); }
 
-const uint16_t& BufferLocation::getWord() const
-{
-  return area_.getWordReference(start_);
-}
+const uint16_t& BufferLocation::getWord() const { return area_.getWordReference(start_); }
 
 Location& BufferLocation::operator=(const uint8_t& rhs)
 {
