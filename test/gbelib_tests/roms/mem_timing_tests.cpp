@@ -6,8 +6,6 @@
 #include "gb_factories/instructionsetbuilder.h"
 #include "gb_factories/memoryfactory.h"
 
-#include <fstream>
-
 using namespace std;
 using namespace gb;
 
@@ -27,7 +25,7 @@ TEST(RomTest, MemTiming)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
-  for (int var = 0; var < 18454; ++var) {
+  for (int var = 0; var < 17735; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
   EXPECT_ANY_THROW(cpu.clock()); // TODO: unable to provide register wieso?

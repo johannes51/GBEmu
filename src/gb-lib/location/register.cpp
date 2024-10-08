@@ -1,5 +1,7 @@
 #include "register.h"
 
+#include "constants.h"
+
 Register::Register(uint16_t& buffer, bool upper)
     : Location(Type::Both)
     , buffer_(buffer)
@@ -7,7 +9,7 @@ Register::Register(uint16_t& buffer, bool upper)
 {
 }
 
-uint8_t& Register::getReference()
+auto Register::getReference() -> uint8_t&
 {
   return *(upper_ ? reinterpret_cast<uint8_t*>(&buffer_) + 1 : reinterpret_cast<uint8_t*>(&buffer_));
 }
@@ -19,13 +21,15 @@ auto Register::getByte() const -> const uint8_t&
 
 auto Register::getWord() const -> const uint16_t& { return buffer_; }
 
-Register& Register::operator=(const uint8_t& rhs)
+auto Register::operator=(const uint8_t& rhs) -> Register&
 {
-  buffer_ = upper_ ? ((buffer_ & 0x00FF) | (rhs << 8U)) : ((buffer_ & 0xFF00) | (rhs));
+  buffer_ = upper_
+      ? (static_cast<unsigned int>(buffer_ & MASK_LOWER_BYTE) | static_cast<unsigned int>(rhs << BYTE_SHIFT))
+      : (static_cast<unsigned int>(buffer_ & MASK_UPPER_BYTE) | rhs);
   return *this;
 }
 
-Register& Register::operator=(const uint16_t& rhs)
+auto Register::operator=(const uint16_t& rhs) -> Register&
 {
   buffer_ = rhs;
   return *this;

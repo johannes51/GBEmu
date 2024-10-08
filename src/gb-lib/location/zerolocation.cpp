@@ -2,17 +2,17 @@
 
 std::array<uint8_t, 2> ZeroLocation::zero_ = { 0 };
 
-const uint8_t& ZeroLocation::getByte() const { return zero_.front(); }
+auto ZeroLocation::getByte() const -> const uint8_t& { return zero_.front(); }
 
-const uint16_t& ZeroLocation::getWord() const { return *reinterpret_cast<uint16_t*>(&zero_.front()); }
+auto ZeroLocation::getWord() const -> const uint16_t& { return *reinterpret_cast<uint16_t*>(&zero_.front()); }
 
-Location& ZeroLocation::operator=(const uint8_t& rhs)
+auto ZeroLocation::operator=(const uint8_t& rhs) -> ZeroLocation&
 {
   (void)rhs;
   return *this;
 }
 
-Location& ZeroLocation::operator=(const uint16_t& rhs)
+auto ZeroLocation::operator=(const uint16_t& rhs) -> ZeroLocation&
 {
   (void)rhs;
   return *this;

@@ -5,7 +5,6 @@
 #include "cpu/flagsview.h"
 #include "cpu/registersinterface.h"
 #include "location/location.h"
-#include "location/zerolocation.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
 #include "ops/memory.h"
@@ -88,7 +87,11 @@ auto Jump::cycles() -> unsigned
     case JumpType::Return:
     case JumpType::RetI:
     case JumpType::Reset:
-      result = (condition_ == Condition::None) ? NormalReturn : (*taken_ ? TakenReturn : SkippedReturn);
+      if (condition_ == Condition::None) {
+        result = NormalReturn;
+      } else {
+        result = *taken_ ? TakenReturn : SkippedReturn;
+      }
       break;
     }
   } else /*if (target_ == TargetType::Relative)*/ {

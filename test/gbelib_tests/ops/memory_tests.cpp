@@ -7,8 +7,8 @@
 
 TEST(OpsTest, Load8)
 {
-  auto d = variableLocation(uint8_t(0x3C));
-  auto s = variableLocation(uint8_t(0xF1));
+  auto d = variableLocation(uint8_t { 0x3C });
+  auto s = variableLocation(uint8_t { 0xF1 });
 
   ops::load<uint8_t>(*d, *s);
 

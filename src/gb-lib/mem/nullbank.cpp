@@ -9,7 +9,7 @@ NullBank::NullBank(const MemoryArea& area)
 {
 }
 
-LocationUP NullBank::getLocation(const address_type address, bool tryWord)
+auto NullBank::getLocation(const address_type address, bool tryWord) -> LocationUP
 {
   mem_tools::assertSafe(address, singleArea());
   if (tryWord) {

@@ -12,19 +12,19 @@ auto WordArithmeticDecoder::decode(const Location& opcodeLocation) const -> Oper
 
 auto WordArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
 {
-  return { 0x03, 0x13, 0x23, 0x33, 0x09, 0x19, 0x29, 0x39, 0x0B, 0x1B, 0x2B, 0x3B };
+  return { 0x03U, 0x13U, 0x23U, 0x33U, 0x09U, 0x19U, 0x29U, 0x39U, 0x0BU, 0x1BU, 0x2BU, 0x3BU };
 }
 
 auto WordArithmeticDecoder::determineFunction(const OpcodeView& opcode) -> WordAluFunction
 {
   switch (opcode.lowerNibble()) {
-  case 0x3:
+  case 0x3U:
     return WordAluFunction::Inc;
     break;
-  case 0x9:
+  case 0x9U:
     return WordAluFunction::Add;
     break;
-  case 0xB:
+  case 0xBU:
     return WordAluFunction::Dec;
     break;
   default:
@@ -36,16 +36,16 @@ auto WordArithmeticDecoder::determineFunction(const OpcodeView& opcode) -> WordA
 auto WordArithmeticDecoder::determineRegister(const OpcodeView& opcode) -> WordRegister
 {
   switch (opcode.upperNibble()) {
-  case 0x0:
+  case 0x0U:
     return WordRegister::BC;
     break;
-  case 0x1:
+  case 0x1U:
     return WordRegister::DE;
     break;
-  case 0x2:
+  case 0x2U:
     return WordRegister::HL;
     break;
-  case 0x3:
+  case 0x3U:
     return WordRegister::SP;
     break;
   default:

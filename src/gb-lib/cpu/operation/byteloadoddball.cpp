@@ -69,7 +69,7 @@ auto ByteLoadOddball::cycles() -> unsigned
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
 void ByteLoadOddball::execute(RegistersInterface& registers, IMemoryView& memory)
 {
-  address_type indirAdress;
+  address_type indirAdress = 0U;
   switch (indirection_) {
   case Indirection::RegisterC:
     indirAdress = hlp::indirect(*registers.get(ByteRegister::C));

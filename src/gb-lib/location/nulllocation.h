@@ -10,8 +10,8 @@ public:
 
   const uint8_t& getByte() const override;
   const uint16_t& getWord() const override;
-  Location& operator=(const uint8_t& rhs) override;
-  Location& operator=(const uint16_t& rhs) override;
+  NullLocation& operator=(const uint8_t& rhs) override;
+  NullLocation& operator=(const uint16_t& rhs) override;
 };
 
 #endif // NULLLOCATION_H

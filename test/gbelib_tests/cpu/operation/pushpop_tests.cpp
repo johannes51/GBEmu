@@ -9,8 +9,8 @@ TEST(PushPopTest, Push)
 {
   uint16_t value = 0xDFFF;
   CpuRegisters r;
-  *r.get(WordRegister::DE) = uint16_t(value);
-  *r.get(WordRegister::SP) = uint16_t(0x10);
+  *r.get(WordRegister::DE) = value;
+  *r.get(WordRegister::SP) = uint16_t { 0x10 };
 
   TestBank b { { 0x00, 0x10 } };
 
@@ -28,10 +28,10 @@ TEST(PushPopTest, Pop)
 {
   uint16_t value = 0xA1F5;
   CpuRegisters r;
-  *r.get(WordRegister::SP) = uint16_t(0x0E);
+  *r.get(WordRegister::SP) = uint16_t { 0x0E };
 
   TestBank b { { 0x00, 0x10 } };
-  *b.getLocation(0x0E) = uint16_t(value);
+  *b.getLocation(0x0E) = value;
 
   PushPop pp { PushPop::Direction::Pop, WordRegister::HL };
   ASSERT_TRUE(pp.isComplete());

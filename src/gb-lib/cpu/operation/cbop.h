@@ -32,6 +32,8 @@ public:
   static constexpr uint8_t MaxBit = 7;
 
 private:
+  static constexpr uint8_t INVALID_BIT = 8U;
+
   CbFunction function_;
   ByteRegister operand_;
   bool indirect_;

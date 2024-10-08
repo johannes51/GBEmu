@@ -9,13 +9,13 @@
 auto ByteArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.getByte() };
-  if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
+  if (opcode.upperNibble() >= 0x8U && opcode.upperNibble() <= 0xBU) {
     return bulkArithmetic(opcode);
-  } else if (opcode.upperNibble() <= 0x3
-      && (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0x5 || opcode.lowerNibble() == 0xC
-          || opcode.lowerNibble() == 0xD)) {
+  } else if (opcode.upperNibble() <= 0x3U
+      && (opcode.lowerNibble() == 0x4U || opcode.lowerNibble() == 0x5U || opcode.lowerNibble() == 0xCU
+          || opcode.lowerNibble() == 0xDU)) {
     return incDec(opcode);
-  } else if (opcode.upperNibble() >= 0xC) {
+  } else if (opcode.upperNibble() >= 0xCU) {
     return immediate(opcode);
   }
   throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()) };
@@ -26,67 +26,68 @@ auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>
   std::vector<uint8_t> result;
   result.insert(result.end(),
       {
-          0x04,
-          0x14,
-          0x24,
-          0x34,
-          0x05,
-          0x15,
-          0x25,
-          0x35,
-          0x0C,
-          0x1C,
-          0x2C,
-          0x3C,
-          0x0D,
-          0x1D,
-          0x2D,
-          0x3D,
+          0x04U,
+          0x14U,
+          0x24U,
+          0x34U,
+          0x05U,
+          0x15U,
+          0x25U,
+          0x35U,
+          0x0CU,
+          0x1CU,
+          0x2CU,
+          0x3CU,
+          0x0DU,
+          0x1DU,
+          0x2DU,
+          0x3DU,
       }); // inc/dec
   result.insert(result.end(),
-      { 0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0x86, 0x87, 0x88, 0x89, 0x8A, 0x8B, 0x8C, 0x8D, 0x8E, 0x8F, 0x90, 0x91,
-          0x92, 0x93, 0x94, 0x95, 0x96, 0x97, 0x98, 0x99, 0x9A, 0x9B, 0x9C, 0x9D, 0x9E, 0x9F, 0xA0, 0xA1, 0xA2, 0xA3,
-          0xA4, 0xA5, 0xA6, 0xA7, 0xA8, 0xA9, 0xAA, 0xAB, 0xAC, 0xAD, 0xAE, 0xAF, 0xB0, 0xB1, 0xB2, 0xB3, 0xB4, 0xB5,
-          0xB6, 0xB7, 0xB8, 0xB9, 0xBA, 0xBB, 0xBC, 0xBD, 0xBE, 0xBF }); // bulk arithmetic
-  result.insert(result.end(), { 0xC6, 0xCE, 0xD6, 0xDE, 0xE6, 0xEE, 0xF6, 0xFE }); // immediate arithmetic
+      { 0x80U, 0x81U, 0x82U, 0x83U, 0x84U, 0x85U, 0x86U, 0x87U, 0x88U, 0x89U, 0x8AU, 0x8BU, 0x8CU, 0x8DU, 0x8EU, 0x8FU,
+          0x90U, 0x91U, 0x92U, 0x93U, 0x94U, 0x95U, 0x96U, 0x97U, 0x98U, 0x99U, 0x9AU, 0x9BU, 0x9CU, 0x9DU, 0x9EU,
+          0x9FU, 0xA0U, 0xA1U, 0xA2U, 0xA3U, 0xA4U, 0xA5U, 0xA6U, 0xA7U, 0xA8U, 0xA9U, 0xAAU, 0xABU, 0xACU, 0xADU,
+          0xAEU, 0xAFU, 0xB0U, 0xB1U, 0xB2U, 0xB3U, 0xB4U, 0xB5U, 0xB6U, 0xB7U, 0xB8U, 0xB9U, 0xBAU, 0xBBU, 0xBCU,
+          0xBDU, 0xBEU, 0xBFU }); // bulk arithmetic
+  result.insert(result.end(), { 0xC6U, 0xCEU, 0xD6U, 0xDEU, 0xE6U, 0xEEU, 0xF6U, 0xFEU }); // immediate arithmetic
   return result;
 }
 
 auto ByteArithmeticDecoder::incDec(const OpcodeView& opcode) -> OperationUP
 {
   auto function
-      = opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0xC ? ByteAluFunction::Inc : ByteAluFunction::Dec;
-  auto source = (opcode.lowerNibble() == 0x4 || opcode.lowerNibble() == 0x5) && opcode.upperNibble() == 0x3
+      = opcode.lowerNibble() == 0x4U || opcode.lowerNibble() == 0xCU ? ByteAluFunction::Inc : ByteAluFunction::Dec;
+  auto source = (opcode.lowerNibble() == 0x4U || opcode.lowerNibble() == 0x5U) && opcode.upperNibble() == 0x3U
       ? Source::Indirect
       : Source::Register;
   auto result = std::make_unique<ByteAluOperation>(function, source);
   switch (opcode.value()) {
-  case 0x04:
-  case 0x05:
+  case 0x04U:
+  case 0x05U:
     result->setRegister(ByteRegister::B);
     break;
-  case 0x14:
-  case 0x15:
+  case 0x14U:
+  case 0x15U:
     result->setRegister(ByteRegister::D);
     break;
-  case 0x24:
-  case 0x25:
+  case 0x24U:
+  case 0x25U:
     result->setRegister(ByteRegister::H);
     break;
-  case 0x0C:
-  case 0x0D:
+  case 0x0CU:
+  case 0x0DU:
     result->setRegister(ByteRegister::C);
     break;
-  case 0x1C:
-  case 0x1D:
+  case 0x1CU:
+  case 0x1DU:
     result->setRegister(ByteRegister::E);
     break;
-  case 0x2C:
-  case 0x2D:
+  case 0x2CU:
+  case 0x2DU:
     result->setRegister(ByteRegister::L);
     break;
-  case 0x3C:
-  case 0x3D:
+  case 0x3CU:
+  case 0x3DU:
     result->setRegister(ByteRegister::A);
     break;
   default:
@@ -111,32 +112,32 @@ auto ByteArithmeticDecoder::sourceRegister(const OpcodeView& opcode) -> ByteRegi
 {
   ByteRegister result = ByteRegister::None;
   switch (opcode.lowerNibble()) {
-  case 0x0:
-  case 0x8:
+  case 0x0U:
+  case 0x8U:
     result = ByteRegister::B;
     break;
-  case 0x1:
-  case 0x9:
+  case 0x1U:
+  case 0x9U:
     result = ByteRegister::C;
     break;
-  case 0x2:
-  case 0xA:
+  case 0x2U:
+  case 0xAU:
     result = ByteRegister::D;
     break;
-  case 0x3:
-  case 0xB:
+  case 0x3U:
+  case 0xBU:
     result = ByteRegister::E;
     break;
-  case 0x4:
-  case 0xC:
+  case 0x4U:
+  case 0xCU:
     result = ByteRegister::H;
     break;
-  case 0x5:
-  case 0xD:
+  case 0x5U:
+  case 0xDU:
     result = ByteRegister::L;
     break;
-  case 0x7:
-  case 0xF:
+  case 0x7U:
+  case 0xFU:
   default:
     result = ByteRegister::A;
     break;
@@ -146,18 +147,18 @@ auto ByteArithmeticDecoder::sourceRegister(const OpcodeView& opcode) -> ByteRegi
 
 auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFunction
 {
-  if (opcode.lowerNibble() <= 0x7) {
+  if (opcode.lowerNibble() <= 0x7U) {
     switch (opcode.upperNibble()) {
-    case 0x8:
+    case 0x8U:
       return ByteAluFunction::Add;
       break;
-    case 0x9:
+    case 0x9U:
       return ByteAluFunction::Sub;
       break;
-    case 0xA:
+    case 0xAU:
       return ByteAluFunction::And;
       break;
-    case 0xB:
+    case 0xBU:
       return ByteAluFunction::Or;
       break;
     default:
@@ -166,16 +167,16 @@ auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFun
     }
   } else {
     switch (opcode.upperNibble()) {
-    case 0x8:
+    case 0x8U:
       return ByteAluFunction::AddCarry;
       break;
-    case 0x9:
+    case 0x9U:
       return ByteAluFunction::SubCarry;
       break;
-    case 0xA:
+    case 0xAU:
       return ByteAluFunction::Xor;
       break;
-    case 0xB:
+    case 0xBU:
       return ByteAluFunction::Cp;
       break;
     default:
@@ -188,28 +189,28 @@ auto ByteArithmeticDecoder::bulkFunction(const OpcodeView& opcode) -> ByteAluFun
 auto ByteArithmeticDecoder::immediateFunction(const OpcodeView& opcode) -> ByteAluFunction
 {
   switch (opcode.value()) {
-  case 0xC6:
+  case 0xC6U:
     return ByteAluFunction::Add;
     break;
-  case 0xCE:
+  case 0xCEU:
     return ByteAluFunction::AddCarry;
     break;
-  case 0xD6:
+  case 0xD6U:
     return ByteAluFunction::Sub;
     break;
-  case 0xDE:
+  case 0xDEU:
     return ByteAluFunction::SubCarry;
     break;
-  case 0xE6:
+  case 0xE6U:
     return ByteAluFunction::And;
     break;
-  case 0xEE:
+  case 0xEEU:
     return ByteAluFunction::Xor;
     break;
-  case 0xF6:
+  case 0xF6U:
     return ByteAluFunction::Or;
     break;
-  case 0xFE:
+  case 0xFEU:
     return ByteAluFunction::Cp;
     break;
   default:

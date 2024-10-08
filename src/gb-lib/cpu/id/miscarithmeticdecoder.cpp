@@ -7,7 +7,7 @@
 #include "location/location.h"
 #include "opcodeview.h"
 
-const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27, 0x37, 0x2F, 0x3F };
+const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27U, 0x37U, 0x2FU, 0x3FU };
 
 auto MiscArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
@@ -23,16 +23,16 @@ auto MiscArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t> { ret
 auto MiscArithmeticDecoder::decodeFunction(uint8_t opcode) -> MiscArithmeticFunction
 {
   switch (opcode) {
-  case 0x27:
+  case 0x27U:
     return MiscArithmeticFunction::DecimalAdjustA;
     break;
-  case 0x37:
+  case 0x37U:
     return MiscArithmeticFunction::SetCarry;
     break;
-  case 0x2F:
+  case 0x2FU:
     return MiscArithmeticFunction::ComplementA;
     break;
-  case 0x3F:
+  case 0x3FU:
     return MiscArithmeticFunction::ComplementCarry;
     break;
   default:

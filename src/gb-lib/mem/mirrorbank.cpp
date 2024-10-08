@@ -15,7 +15,7 @@ MirrorBank::MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalA
   }
 }
 
-LocationUP MirrorBank::getLocation(const address_type address, bool tryWord)
+auto MirrorBank::getLocation(const address_type address, bool tryWord) -> LocationUP
 {
   if (tryWord) {
     mem_tools::assertSafe(address + 1, singleArea());

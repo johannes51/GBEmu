@@ -1,8 +1,6 @@
 #ifndef APUREGISTERFACTORY_H
 #define APUREGISTERFACTORY_H
 
-#include <cstdint>
-
 #include "registerfactory.h"
 
 enum class ApuRegisters {

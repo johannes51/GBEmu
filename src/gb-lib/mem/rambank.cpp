@@ -6,13 +6,13 @@
 #include "mem_tools.h"
 
 RamBank::RamBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer)
-    : BufferBank(area, std::move(buffer))
+    : BufferBank(area, buffer)
     , start_(area.from)
     , size_(area.to - area.from + 1)
 {
 }
 
-LocationUP RamBank::getLocation(const address_type address, bool tryWord)
+auto RamBank::getLocation(const address_type address, bool tryWord) -> LocationUP
 {
   if (!mem_tools::isSafe(address, singleArea())) {
     throw std::invalid_argument("Out of bounds");

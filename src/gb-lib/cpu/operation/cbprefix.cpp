@@ -28,5 +28,5 @@ void CbPrefix::execute(RegistersInterface& registers, IMemoryView& memory)
   if (!isComplete()) {
     throw std::logic_error("Actual operation not yet set.");
   }
-  return realOp_->execute(registers, memory);
+  realOp_->execute(registers, memory);
 }

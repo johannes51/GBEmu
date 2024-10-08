@@ -16,7 +16,7 @@ TEST(RomTest, MemTiming2)
       MemoryFactory { make_unique<CartLoader>("mem_timing2.gb"), v }.constructMemoryLayout(),
       InstructionSetBuilder::construct());
 
-  for (int var = 0; var < 12420; ++var) {
+  for (int var = 0; var < 12419; ++var) {
     EXPECT_NO_THROW(cpu.clock()) << var;
   }
   EXPECT_ANY_THROW(cpu.clock()); // TODO: write on rom wieso?

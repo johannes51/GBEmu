@@ -14,7 +14,7 @@ public:
   CartLoader(const std::string& romFile);
   CartLoader(const std::string& romFile, const std::string& ramFile);
 
-  size_t calculateNeccessarySize() const;
+  static size_t calculateNeccessarySize();
   std::vector<IMemoryManagerSP> constructBanks(std::span<uint8_t, std::dynamic_extent> buffer);
 
 private:

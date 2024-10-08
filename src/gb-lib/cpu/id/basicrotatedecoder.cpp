@@ -7,7 +7,7 @@ auto BasicRotateDecoder::decode(const Location& opcodeLocation) const -> Operati
 {
   const OpcodeView opcode { opcodeLocation.getByte() };
   return std::make_unique<BasicRotate>(
-      (opcode.lowerNibble() == 0x7) ? RotateDirection::Left : RotateDirection::Right, opcode.upperNibble() == 0x0);
+      (opcode.lowerNibble() == 0x7U) ? RotateDirection::Left : RotateDirection::Right, opcode.upperNibble() == 0x0U);
 }
 
-auto BasicRotateDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return { 0x07, 0x0F, 0x17, 0x1F }; }
+auto BasicRotateDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return { 0x07U, 0x0FU, 0x17U, 0x1FU }; }

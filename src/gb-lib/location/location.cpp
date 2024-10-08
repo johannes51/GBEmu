@@ -1,6 +1,6 @@
 #include "location.h"
 
-bool Location::isWord() const { return (type_ == Type::Both); }
+auto Location::isWord() const -> bool { return (type_ == Type::Both); }
 
 void Location::fuse(const Location& other)
 {

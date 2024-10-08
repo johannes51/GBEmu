@@ -7,8 +7,8 @@
 
 TEST(LogicTest, Xor)
 {
-  auto d = variableLocation(uint8_t(0x3C));
-  auto s = variableLocation(uint8_t(0xF1));
+  auto d = variableLocation(uint8_t { 0x3C });
+  auto s = variableLocation(uint8_t { 0xF1 });
 
   ops::xorF(*d, *s);
 
@@ -17,7 +17,7 @@ TEST(LogicTest, Xor)
 
 TEST(LogicTest, XorZ)
 {
-  auto d = variableLocation(uint8_t(0x3C));
+  auto d = variableLocation(uint8_t { 0x3C });
 
   EXPECT_EQ(ops::FlagResult::Set, ops::xorF(*d, *d).z);
 }

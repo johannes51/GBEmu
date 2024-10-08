@@ -8,7 +8,7 @@
 
 TEST(ArithmeticTest, Increment8)
 {
-  auto l = variableLocation(uint8_t(5));
+  auto l = variableLocation(uint8_t { 5 });
 
   ops::increment<uint8_t>(*l);
 
@@ -17,7 +17,7 @@ TEST(ArithmeticTest, Increment8)
 
 TEST(ArithmeticTest, Increment8Carry)
 {
-  auto l = variableLocation(uint8_t(255));
+  auto l = variableLocation(uint8_t { 255 });
 
   ops::increment<uint8_t>(*l);
 
@@ -35,8 +35,8 @@ TEST(ArithmeticTest, Increment16)
 
 TEST(ArithmeticTest, Add8)
 {
-  auto lA = variableLocation(uint8_t(5));
-  auto lB = variableLocation(uint8_t(13));
+  auto lA = variableLocation(uint8_t { 5 });
+  auto lB = variableLocation(uint8_t { 13 });
 
   ops::add<uint8_t>(*lA, *lB);
 
@@ -45,8 +45,8 @@ TEST(ArithmeticTest, Add8)
 
 TEST(ArithmeticTest, Add8Z)
 {
-  auto lA = variableLocation(uint8_t(0));
-  auto lB = variableLocation(uint8_t(0));
+  auto lA = variableLocation(uint8_t { 0 });
+  auto lB = variableLocation(uint8_t { 0 });
 
   EXPECT_EQ(ops::FlagResult::Set, ops::add<uint8_t>(*lA, *lB).z);
 }

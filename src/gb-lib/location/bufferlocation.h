@@ -12,8 +12,8 @@ public:
 
   const uint8_t& getByte() const override;
   const uint16_t& getWord() const override;
-  Location& operator=(const uint8_t& rhs) override;
-  Location& operator=(const uint16_t& rhs) override;
+  BufferLocation& operator=(const uint8_t& rhs) override;
+  BufferLocation& operator=(const uint16_t& rhs) override;
 
 protected:
   BufferLocation(Type type, BufferBank& area, address_type start);

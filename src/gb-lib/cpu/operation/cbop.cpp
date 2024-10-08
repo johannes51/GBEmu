@@ -13,14 +13,14 @@ CbOp::CbOp(CbFunction function, ByteRegister operand, bool indirect)
     : function_(function)
     , operand_(operand)
     , indirect_(indirect)
-    , affectedBit_(8)
+    , affectedBit_(INVALID_BIT)
 {
 }
 
-bool CbOp::isComplete()
+auto CbOp::isComplete() -> bool
 {
   return (function_ != CbFunction::Bit && function_ != CbFunction::Set && function_ != CbFunction::Reset)
-      || (affectedBit_ < 8);
+      || (affectedBit_ < INVALID_BIT);
 }
 
 auto CbOp::cycles() -> unsigned { return indirect_ ? 4 : 2; }

@@ -9,7 +9,7 @@
 auto CbDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.getByte() };
-  if (opcode.value() == 0xCB) {
+  if (opcode.value() == 0xCBU) {
     return std::make_unique<CbPrefix>(std::make_unique<CbOpDecoder>());
   } else {
     throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));

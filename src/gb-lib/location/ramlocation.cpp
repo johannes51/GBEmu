@@ -5,13 +5,13 @@ RamLocation::RamLocation(Type type, BufferBank& area, address_type start)
 {
 }
 
-Location& RamLocation::operator=(const uint8_t& rhs)
+auto RamLocation::operator=(const uint8_t& rhs) -> RamLocation&
 {
   this->BufferLocation::operator=(rhs);
   return *this;
 }
 
-Location& RamLocation::operator=(const uint16_t& rhs)
+auto RamLocation::operator=(const uint16_t& rhs) -> RamLocation&
 {
   this->BufferLocation::operator=(rhs);
   return *this;

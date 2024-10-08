@@ -7,13 +7,13 @@ RomLocation::RomLocation(Type type, BufferBank& area, address_type start)
 {
 }
 
-Location& RomLocation::operator=(const uint8_t& rhs)
+auto RomLocation::operator=(const uint8_t& rhs) -> RomLocation&
 {
   (void)rhs;
   throw std::logic_error("Write on ROM");
 }
 
-Location& RomLocation::operator=(const uint16_t& rhs)
+auto RomLocation::operator=(const uint16_t& rhs) -> RomLocation&
 {
   (void)rhs;
   throw std::logic_error("Write on ROM");

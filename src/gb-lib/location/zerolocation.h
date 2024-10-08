@@ -13,8 +13,8 @@ public:
 
   const uint8_t& getByte() const override;
   const uint16_t& getWord() const override;
-  Location& operator=(const uint8_t& rhs) override;
-  Location& operator=(const uint16_t& rhs) override;
+  ZeroLocation& operator=(const uint8_t& rhs) override;
+  ZeroLocation& operator=(const uint16_t& rhs) override;
 
 private:
   static std::array<uint8_t, 2> zero_;

@@ -2,5 +2,6 @@
 Checks: '*,-llvmlibc-*,-fuchsia-*,-altera-*,
 -cert-err58-cpp,-google-readability-todo,-google-runtime-references,-cppcoreguidelines-pro-bounds-constant-array-index,
 -llvm-else-after-return,-readability-else-after-return,-readability-identifier-length,
--bugprone-easily-swappable-parameters,-readability-redundant-member-init'
+-bugprone-easily-swappable-parameters,-readability-redundant-member-init,-misc-include-cleaner,-google-default-arguments,
+-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-bounds-pointer-arithmetic'
 ...

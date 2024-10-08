@@ -20,7 +20,7 @@ gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFil
 {
 }
 
-size_t gb::CartLoader::calculateNeccessarySize() const { return 3 * BankSize; }
+auto gb::CartLoader::calculateNeccessarySize() -> size_t { return 3 * BankSize; }
 
 auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buffer) -> std::vector<IMemoryManagerSP>
 {

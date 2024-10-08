@@ -17,10 +17,10 @@ TEST(ByteAluOperationTest, Xor)
   EXPECT_EQ(1, xorOp.cycles());
 
   auto a = r.get(ByteRegister::A);
-  *a = uint8_t(0x9); // 1001
+  *a = uint8_t { 0x9 }; // 1001
   ASSERT_EQ(0x9, a->getByte());
   auto b = r.get(ByteRegister::B);
-  *b = uint8_t(0x5); // 0101
+  *b = uint8_t { 0x5 }; // 0101
   ASSERT_EQ(0x5, b->getByte());
 
   IMemoryViewSP m;
@@ -32,14 +32,14 @@ TEST(ByteAluOperationTest, AddImmediate)
 {
   ByteAluOperation addOp { ByteAluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
-  ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(uint8_t(0x4D))));
+  ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(uint8_t { 0x4D })));
   ASSERT_TRUE(addOp.isComplete());
-  ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(uint8_t(0x4D))));
+  ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(uint8_t { 0x4D })));
 
   CpuRegisters r;
   EXPECT_EQ(2, addOp.cycles());
 
-  *r.get(ByteRegister::A) = uint8_t(0x05);
+  *r.get(ByteRegister::A) = uint8_t { 0x05 };
 
   IMemoryViewSP m;
   addOp.execute(r, *m);
@@ -56,7 +56,7 @@ TEST(ByteAluOperationTest, Inc)
   EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
-  *b = uint8_t(0x1); // 0001
+  *b = uint8_t { 0x1 }; // 0001
   ASSERT_EQ(0x1, b->getByte());
 
   IMemoryViewSP m;
@@ -72,10 +72,10 @@ TEST(ByteAluOperationTest, IncIndirect)
   CpuRegisters r;
   EXPECT_EQ(3, decOp.cycles());
 
-  *r.get(WordRegister::HL) = uint16_t(0x0100);
+  *r.get(WordRegister::HL) = uint16_t { 0x0100 };
 
   TestBank m { { 0x0100, 0x0101 } };
-  *m.getLocation(0x0100) = uint8_t(0x13);
+  *m.getLocation(0x0100) = uint8_t { 0x13 };
   decOp.execute(r, m);
   EXPECT_EQ(0x14, m.getLocation(0x0100)->getByte());
 }
@@ -90,7 +90,7 @@ TEST(ByteAluOperationTest, Dec)
   EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
-  *b = uint8_t(0x1); // 0001
+  *b = uint8_t { 0x1 }; // 0001
   ASSERT_EQ(0x1, b->getByte());
 
   IMemoryViewSP m;
@@ -106,10 +106,10 @@ TEST(ByteAluOperationTest, DecIndirect)
   CpuRegisters r;
   EXPECT_EQ(3, decOp.cycles());
 
-  *r.get(WordRegister::HL) = uint16_t(0x0100);
+  *r.get(WordRegister::HL) = uint16_t { 0x0100 };
 
   TestBank m { { 0x0100, 0x0101 } };
-  *m.getLocation(0x0100) = uint8_t(0x13);
+  *m.getLocation(0x0100) = uint8_t { 0x13 };
   decOp.execute(r, m);
   EXPECT_EQ(0x12, m.getLocation(0x0100)->getByte());
 }

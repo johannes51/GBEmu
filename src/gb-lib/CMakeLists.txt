@@ -3,6 +3,7 @@ project(gb-lib C CXX)
 
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
+  constants.h
   defines.h
   apu/apu.h
   apu/apu.cpp
@@ -199,7 +200,6 @@ target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_code_coverage(gbelib)
 enable_wall(gbelib)
-enable_effcpp(gbelib)
 cxx_20(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib)
