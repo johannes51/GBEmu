@@ -11,14 +11,14 @@ TEST(MemoryManifoldTest, AddSubmanager1)
   m.addSubManager(std::make_unique<NullBank>(MemoryArea { 32, 63 }));
 
   EXPECT_EQ(2, m.availableAreas().size());
-  EXPECT_ANY_THROW(m.getByte(0));
-  EXPECT_NO_THROW(m.getByte(5));
-  EXPECT_NO_THROW(m.getByte(15));
-  EXPECT_ANY_THROW(m.getByte(27));
-  EXPECT_NO_THROW(m.getByte(32));
-  EXPECT_NO_THROW(m.getByte(50));
-  EXPECT_NO_THROW(m.getByte(63));
-  EXPECT_ANY_THROW(m.getByte(64));
+  EXPECT_ANY_THROW(m.getLocation(0));
+  EXPECT_NO_THROW(m.getLocation(5));
+  EXPECT_NO_THROW(m.getLocation(15));
+  EXPECT_ANY_THROW(m.getLocation(27));
+  EXPECT_NO_THROW(m.getLocation(32));
+  EXPECT_NO_THROW(m.getLocation(50));
+  EXPECT_NO_THROW(m.getLocation(63));
+  EXPECT_ANY_THROW(m.getLocation(64));
 }
 
 TEST(MemoryManifoldTest, AddSubmanager2)

@@ -11,7 +11,7 @@ namespace gb {
 
 class MemoryFactory {
 public:
-  MemoryFactory(RomLoaderUP&& romLoader);
+  MemoryFactory(RomLoaderUP&& romLoader, std::vector<uint8_t>& buffer);
 
   IMemoryViewSP constructMemoryLayout();
 
@@ -29,7 +29,7 @@ private:
   static constexpr MemoryArea HRAM = { 0xFF80, 0xFFFE };
   static constexpr address_type IE = 0xFFFF;
 
-  static IMemoryManagerSP buildRamBank(MemoryArea area);
+  IMemoryManagerSP buildRamBank(MemoryArea area);
   static IMemoryManagerSP buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin);
   static IMemoryManagerSP buildNullBank(MemoryArea area);
   std::vector<IMemoryManagerSP> buildCartBanks();
@@ -37,6 +37,8 @@ private:
 
   RomLoaderUP loader_;
   IMemoryViewSP ioBank_;
+  std::vector<uint8_t>& buffer_;
+  std::vector<uint8_t>::iterator ptr_;
 };
 
 } // namespace gb

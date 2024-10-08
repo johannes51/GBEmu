@@ -18,13 +18,13 @@ public:
   void clearZero() override;
   bool zero() const override;
 
-  void setSubtract();
-  void clearSubtract();
-  bool subtract() const;
+  void setSubtract() override;
+  void clearSubtract() override;
+  bool subtract() const override;
 
-  void setHalfCarry();
-  void clearHalfCarry();
-  bool halfCarry() const;
+  void setHalfCarry() override;
+  void clearHalfCarry() override;
+  bool halfCarry() const override;
 
   void setCarry() override;
   void clearCarry() override;

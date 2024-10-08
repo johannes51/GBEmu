@@ -1,157 +1,150 @@
 #include "cbopdecoder.h"
 
 #include "cpu/operation/cbop.h"
-#include "cpu/operation/cbprefix.h"
 #include "opcodeview.h"
 
-auto CbOpDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto function(const OpcodeView& opcode) -> CbOp::CbFunction
 {
-  const OpcodeView opcode { opcodeLocation.get() };
-  if (indirect(opcode)) {
-    return std::make_unique<CbOp>(function(opcode), true);
+  if (opcode.upperNibble() >= 0xCU) {
+    return CbOp::CbFunction::Set;
+  } else if (opcode.upperNibble() >= 0x8U) {
+    return CbOp::CbFunction::Reset;
+  } else if (opcode.upperNibble() >= 0x4U) {
+    return CbOp::CbFunction::Bit;
   } else {
-    auto fun = function(opcode);
-    auto op = std::make_unique<CbOp>(fun, false, operand(opcode));
-    if (fun == CbFunction::Bit || fun == CbFunction::Set || fun == CbFunction::Reset) {
-      op->setAffectedBit(bit(opcode));
-    }
-    return op;
-  }
-}
-
-auto CbOpDecoder::decodedOpcodes() const -> std::vector<uint8_t> { return {}; }
-
-auto CbOpDecoder::function(const OpcodeView& opcode) -> CbFunction
-{
-  if (opcode.upperNibble() >= 0xC) {
-    return CbFunction::Set;
-  } else if (opcode.upperNibble() >= 0x8) {
-    return CbFunction::Reset;
-  } else if (opcode.upperNibble() >= 0x4) {
-    return CbFunction::Bit;
-  } else {
-    if (opcode.lowerNibble() <= 0x7) {
-      if (opcode.upperNibble() == 0x0) {
-        return CbFunction::RotateLeftCarry;
-      } else if (opcode.upperNibble() == 0x1) {
-        return CbFunction::RotateLeft;
-      } else if (opcode.upperNibble() == 0x2) {
-        return CbFunction::ShiftLeftArit;
-      } else if (opcode.upperNibble() == 0x3) {
-        return CbFunction::Swap;
+    if (opcode.lowerNibble() <= 0x7U) {
+      if (opcode.upperNibble() == 0x0U) {
+        return CbOp::CbFunction::RotateLeftCarry;
+      } else if (opcode.upperNibble() == 0x1U) {
+        return CbOp::CbFunction::RotateLeft;
+      } else if (opcode.upperNibble() == 0x2U) {
+        return CbOp::CbFunction::ShiftLeftArithmetic;
+      } else if (opcode.upperNibble() == 0x3U) {
+        return CbOp::CbFunction::Swap;
       }
     } else {
-      if (opcode.upperNibble() == 0x0) {
-        return CbFunction::RotateRightCarry;
-      } else if (opcode.upperNibble() == 0x1) {
-        return CbFunction::RotateRight;
-      } else if (opcode.upperNibble() == 0x2) {
-        return CbFunction::ShiftRightArit;
-      } else if (opcode.upperNibble() == 0x3) {
-        return CbFunction::ShiftRightLogic;
+      if (opcode.upperNibble() == 0x0U) {
+        return CbOp::CbFunction::RotateRightCarry;
+      } else if (opcode.upperNibble() == 0x1U) {
+        return CbOp::CbFunction::RotateRight;
+      } else if (opcode.upperNibble() == 0x2U) {
+        return CbOp::CbFunction::ShiftRightArithmetic;
+      } else if (opcode.upperNibble() == 0x3U) {
+        return CbOp::CbFunction::ShiftRightLogic;
       }
     }
   }
   throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
 }
 
-auto CbOpDecoder::indirect(const OpcodeView& opcode) -> bool
-{
-  return opcode.lowerNibble() == 0x6 || opcode.lowerNibble() == 0xE;
-}
+auto indirect(const OpcodeView& opcode) -> bool { return opcode.lowerNibble() == 0x6U || opcode.lowerNibble() == 0xEU; }
 
-auto CbOpDecoder::operand(const OpcodeView& opcode) -> ByteRegister
+auto operand(const OpcodeView& opcode) -> ByteRegister
 {
   switch (opcode.lowerNibble()) {
-  case 0x0:
-  case 0x8:
+  case 0x0U:
+  case 0x8U:
     return ByteRegister::B;
     break;
-  case 0x1:
-  case 0x9:
+  case 0x1U:
+  case 0x9U:
     return ByteRegister::C;
     break;
-  case 0x2:
-  case 0xA:
+  case 0x2U:
+  case 0xAU:
     return ByteRegister::D;
     break;
-  case 0x3:
-  case 0xB:
+  case 0x3U:
+  case 0xBU:
     return ByteRegister::E;
     break;
-  case 0x4:
-  case 0xC:
+  case 0x4U:
+  case 0xCU:
     return ByteRegister::H;
     break;
-  case 0x5:
-  case 0xD:
+  case 0x5U:
+  case 0xDU:
     return ByteRegister::L;
     break;
-  case 0x7:
-  case 0xF:
+  case 0x7U:
+  case 0xFU:
     return ByteRegister::A;
     break;
-  case 0x6:
-  case 0xE:
+  case 0x6U:
+  case 0xEU:
   default:
-    throw std::logic_error("Unimplemented");
+    return ByteRegister::None;
     break;
   }
 }
 
-auto CbOpDecoder::bit(const OpcodeView& opcode) -> unsigned
+auto bit(const OpcodeView& opcode) -> unsigned
 {
   if (opcode.lowerNibble() <= 7) {
     switch (opcode.upperNibble()) {
-    case 0x4:
-    case 0x8:
-    case 0xC:
+    case 0x4U:
+    case 0x8U:
+    case 0xCU:
       return 0;
       break;
-    case 0x5:
-    case 0x9:
-    case 0xD:
+    case 0x5U:
+    case 0x9U:
+    case 0xDU:
       return 2;
       break;
-    case 0x6:
-    case 0xA:
-    case 0xE:
+    case 0x6U:
+    case 0xAU:
+    case 0xEU:
       return 4;
       break;
-    case 0x7:
-    case 0xB:
-    case 0xF:
+    case 0x7U:
+    case 0xBU:
+    case 0xFU:
       return 6;
       break;
     default:
-      throw std::logic_error("Invalid opcode (non-bit instr).");
+      return 8;
       break;
     }
   } else {
     switch (opcode.upperNibble()) {
-    case 0x4:
-    case 0x8:
-    case 0xC:
+    case 0x4U:
+    case 0x8U:
+    case 0xCU:
       return 1;
       break;
-    case 0x5:
-    case 0x9:
-    case 0xD:
+    case 0x5U:
+    case 0x9U:
+    case 0xDU:
       return 3;
       break;
-    case 0x6:
-    case 0xA:
-    case 0xE:
+    case 0x6U:
+    case 0xAU:
+    case 0xEU:
       return 5;
       break;
-    case 0x7:
-    case 0xB:
-    case 0xF:
+    case 0x7U:
+    case 0xBU:
+    case 0xFU:
       return 7;
       break;
     default:
-      throw std::logic_error("Invalid opcode (non-bit instr).");
+      return 8;
       break;
     }
+  }
+}
+
+auto CbOpDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+{
+  const OpcodeView opcode { opcodeLocation.getByte() };
+
+  const auto fun = function(opcode);
+  if (fun != CbOp::CbFunction::Bit && fun != CbOp::CbFunction::Set && fun != CbOp::CbFunction::Reset) {
+    return std::make_unique<CbOp>(fun, operand(opcode), indirect(opcode));
+  } else {
+    auto result = std::make_unique<CbOp>(fun, operand(opcode), indirect(opcode));
+    result->setAffectedBit(bit(opcode));
+    return result;
   }
 }

@@ -2,6 +2,7 @@
 #define OAM_H
 
 #include <memory>
+#include <vector>
 
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
@@ -14,7 +15,7 @@ public:
   explicit Oam(IMemoryViewSP mem);
   virtual ~Oam() = default;
 
-  virtual std::array<Object, NUM_OBJECTS> getAll();
+  virtual std::vector<Object> getAll();
 
 private:
   static constexpr address_type OAM_BASE = 0xFE00;

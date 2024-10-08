@@ -2,7 +2,6 @@
 
 #include "widgets/mainwindow.h"
 
-
 auto main(int argc, char* argv[]) -> int
 {
   QApplication a(argc, argv); // NOLINT(misc-const-correctness)

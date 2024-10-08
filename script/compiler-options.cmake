@@ -27,14 +27,3 @@ function(enable_wnone TARGET)
   endif()
 endfunction()
 
-function(enable_effcpp TARGET)
-  if("${CMAKE_C_COMPILER_ID}" MATCHES "GNU")
-    # GCC
-    target_compile_options(${TARGET} PRIVATE "-Weffc++")
-  elseif("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-         OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-    # Clang
-    target_compile_options(${TARGET} PRIVATE "-Weffc++")
-  endif()
-endfunction()
-

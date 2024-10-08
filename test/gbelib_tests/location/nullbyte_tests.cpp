@@ -1,17 +1,17 @@
 #include "gtest/gtest.h"
 
-#include "location/nullbyte.h"
+#include "location/nulllocation.h"
 
 using namespace std;
 
-TEST(NullByteTest, Read)
+TEST(NullLocationTest, Read)
 {
-  NullByte a;
-  EXPECT_ANY_THROW(a.get());
+  NullLocation a;
+  EXPECT_ANY_THROW(a.getWord());
 }
 
-TEST(NullByteTest, Write)
+TEST(NullLocationTest, Write)
 {
-  NullByte a;
-  EXPECT_ANY_THROW(a.set(0x3));
+  NullLocation a;
+  EXPECT_ANY_THROW(a = uint8_t(0x3));
 }

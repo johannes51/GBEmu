@@ -16,14 +16,14 @@ void WordAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   switch (function_) {
   case WordAluFunction::Add: {
     auto hl = registers.get(WordRegister::HL);
-    apply(registers.getFlags(), ops::add(hl, reg));
+    apply(registers.getFlags(), ops::add<uint16_t>(*hl, *reg));
     break;
   }
   case WordAluFunction::Inc:
-    ops::increment(reg);
+    ops::increment<uint16_t>(*reg);
     break;
   case WordAluFunction::Dec:
-    ops::decrement(reg);
+    ops::decrement<uint16_t>(*reg);
     break;
   }
 }

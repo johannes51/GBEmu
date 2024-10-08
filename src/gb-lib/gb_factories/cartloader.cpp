@@ -20,32 +20,40 @@ gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFil
 {
 }
 
-auto gb::CartLoader::constructBanks() -> std::vector<IMemoryManagerSP>
+auto gb::CartLoader::calculateNeccessarySize() -> size_t { return 3 * BankSize; }
+
+auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buffer) -> std::vector<IMemoryManagerSP>
 {
   std::vector<IMemoryManagerSP> result;
   if (romFile_.fail()) {
     throw std::runtime_error("Could not open ROM file.");
   }
-  auto buffer = read16K(romFile_);
-  auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, std::move(buffer));
-  buffer = read16K(romFile_);
-  auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, std::move(buffer));
+
+  auto rom0Span = std::span<uint8_t, BankSize> { buffer.subspan(0, BankSize) };
+  read16K(rom0Span, romFile_);
+  auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, rom0Span);
+
+  auto rom1Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
+  read16K(rom1Span, romFile_);
+  auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
+
+  auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
+  read16K(ram0Span, romFile_);
+  auto ram0 = std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
+
   result.push_back(rom0);
   result.push_back(rom1);
-  result.push_back(std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }));
+  result.push_back(ram0);
+
   return result;
 }
 
-auto gb::CartLoader::read16K(std::ifstream& file) -> std::vector<uint8_t>
+void gb::CartLoader::read16K(std::span<uint8_t, BankSize> buffer, std::ifstream& file)
 {
-  static constexpr address_type Size = 0x4000;
-  std::vector<uint8_t> result(Size);
-  std::array<std::ifstream::char_type, Size> temp {};
+  std::array<std::ifstream::char_type, BankSize> temp {};
 
   static_assert(sizeof(std::ifstream::char_type) == sizeof(uint8_t), "Non-portable if this doesn't hold");
 
-  std::copy_n(std::istreambuf_iterator(file), Size * sizeof(std::ifstream::char_type), temp.begin());
-  std::memcpy(result.data(), temp.data(), Size * sizeof(uint8_t));
-
-  return result;
+  std::copy_n(std::istreambuf_iterator(file), BankSize * sizeof(std::ifstream::char_type), temp.begin());
+  std::memcpy(buffer.data(), temp.data(), BankSize * sizeof(uint8_t));
 }

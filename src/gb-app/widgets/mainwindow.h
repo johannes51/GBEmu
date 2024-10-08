@@ -5,19 +5,20 @@
 
 #include <QTimer>
 
-#include "sys/systemmanager.h"
+#include "defines.h"
 #include "ppu/ppu.h"
+#include "sys/systemmanager.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
+class MainWindow : public QMainWindow {
   Q_OBJECT
 
 public:
-  explicit MainWindow(QWidget *parent = nullptr);
+  explicit MainWindow(QWidget* parent = nullptr);
+  DISABLE_COPY_AND_MOVE(MainWindow)
   ~MainWindow();
 
 public slots:
@@ -27,6 +28,7 @@ private:
   std::unique_ptr<Ui::MainWindow> ui_;
 
   std::unique_ptr<SystemManager> sm_;
+  std::vector<uint8_t> v_;
 
   QTimer timer_;
 

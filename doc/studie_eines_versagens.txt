@@ -1,0 +1,4 @@
+Dieser Merge ist das Ende mit Schrecken eines Schreckens ohne Ende.
+Wie dieser Branch gelaufen ist, sollte sich nicht wiederholen. Er hat mir jetzt
+fast ein Jahr den Spaß an diesem Projekt genommen. Mach regelmäßige Commits und
+dokumentiere was du machst!

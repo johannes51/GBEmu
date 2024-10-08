@@ -1,5 +1,5 @@
-#ifndef CBPREFIX_H
-#define CBPREFIX_H
+#ifndef CB_PREFIX_H
+#define CB_PREFIX_H
 
 #include "operation.h"
 
@@ -10,7 +10,7 @@ public:
   explicit CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder);
   DISABLE_COPY_AND_MOVE(CbPrefix)
 
-  void nextOpcode(Location<uint8_t> opcode) override;
+  void nextOpcode(LocationUP opcode) override;
   bool isComplete() override;
   unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
@@ -20,4 +20,4 @@ private:
   std::unique_ptr<InstructionDecoder> decoder_;
 };
 
-#endif // CBPREFIX_H
+#endif // CB_PREFIX_H

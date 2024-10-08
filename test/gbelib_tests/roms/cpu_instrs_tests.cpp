@@ -13,8 +13,9 @@ using namespace gb;
 
 TEST(RomTest, CpuInstructions)
 {
+  std::vector<uint8_t> v;
   Cpu cpu(make_unique<CpuRegisters>(),
-      MemoryFactory { make_unique<CartLoader>("cpu_instrs.gb") }.constructMemoryLayout(),
+      MemoryFactory { make_unique<CartLoader>("cpu_instrs.gb"), v }.constructMemoryLayout(),
       InstructionSetBuilder::construct());
   EXPECT_NO_THROW(cpu.clock()); // 0x0100 NOP
   EXPECT_NO_THROW(cpu.clock()); // 0x0101 JP 0x0637
@@ -45,6 +46,7 @@ TEST(RomTest, CpuInstructions)
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock()); // 0x043F LD A, 0x00
   EXPECT_NO_THROW(cpu.clock());
+
   EXPECT_NO_THROW(cpu.clock()); // 0x0441 LDH (0xFF), A
   EXPECT_NO_THROW(cpu.clock());
   EXPECT_NO_THROW(cpu.clock());
@@ -151,7 +153,7 @@ TEST(RomTest, CpuInstructions)
     EXPECT_NO_THROW(cpu.clock()); // 0x0747 JR NZ, 0xF5 (-11, 0x0734)
     EXPECT_NO_THROW(cpu.clock());
     EXPECT_NO_THROW(cpu.clock());
-  } // FIXME: this is waiting on LY, so it won't work for now
+  } // TODO: this is waiting on LY, so it won't work for now
 
   //-----------------------------------------------DONE-----------------------------------------------------------------
 }

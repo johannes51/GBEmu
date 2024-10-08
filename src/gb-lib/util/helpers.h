@@ -8,12 +8,13 @@ namespace hlp {
 
 constexpr address_type ZeroPageBase = 0xFF00;
 
-address_type indirect(const Location<address_type>& location);
-address_type indirect(const Location<uint8_t>& location);
+template <typename T> address_type indirect(const T& location) { return location.getWord(); }
 
-constexpr void setBit(uint8_t& value, uint8_t pos) { value |= (1ULL << pos); }
+address_type indirectZeroPage(const Location& location);
 
-constexpr void clearBit(uint8_t& value, uint8_t pos) { value &= ~(1ULL << pos); }
+constexpr void setBit(uint8_t& value, uint8_t pos) { value |= (1U << pos); }
+
+constexpr void clearBit(uint8_t& value, uint8_t pos) { value &= ~(1U << pos); }
 
 constexpr auto checkBit(const uint8_t& value, uint8_t pos) -> bool { return (value & (1U << pos)) != 0; }
 

@@ -10,6 +10,10 @@ enum class FlagResult {
 };
 
 struct OpResult {
+  OpResult()
+      : OpResult(FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange)
+  {
+  }
   OpResult(FlagResult z, FlagResult n, FlagResult h, FlagResult c)
       : z(z)
       , n(n)

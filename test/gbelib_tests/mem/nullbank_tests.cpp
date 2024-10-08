@@ -11,7 +11,7 @@ TEST(NullBankTest, Write)
   address_type loc = 0x03;
   uint8_t value = 0xA2;
 
-  b.getByte(loc).set(value);
+  *b.getLocation(loc) = value;
 
-  EXPECT_EQ(0, b.getByte(3).get());
+  EXPECT_EQ(0, b.getLocation(3)->getByte());
 }

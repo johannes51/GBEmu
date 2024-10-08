@@ -20,27 +20,27 @@ TEST(RegisterBankTest, Initial)
   uint8_t initial = 0xC4;
   address_type address = 0xFF3B;
   RegisterBank b { address, initial };
-  EXPECT_EQ(initial, b.getByte(address).get());
+  EXPECT_EQ(initial, b.getLocation(address)->getByte());
 }
 
 TEST(RegisterBankTest, Write8)
 {
   RegisterBank b { 0, 0x16 };
-  auto writeByte = b.getByte(0);
+  auto writeByte = b.getLocation(0);
   uint8_t value = 0xA2;
-  writeByte.set(value);
-  auto readByte = b.getByte(0);
-  EXPECT_EQ(value, readByte.get());
+  *writeByte = value;
+  auto readByte = b.getLocation(0);
+  EXPECT_EQ(value, readByte->getByte());
 }
 
 TEST(RegisterBankTest, Write16)
 {
-  RegisterBank b { 0 };
-  EXPECT_ANY_THROW(b.getWord(0));
+  RegisterBank b { 0, 0x16 };
+  EXPECT_ANY_THROW(b.getLocation(0, true));
 }
 
 TEST(RegisterBankTest, Oob)
 {
   RegisterBank b { 0 };
-  EXPECT_ANY_THROW(b.getByte(4));
+  EXPECT_ANY_THROW(b.getLocation(4));
 }

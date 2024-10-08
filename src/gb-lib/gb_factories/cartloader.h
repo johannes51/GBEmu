@@ -2,6 +2,7 @@
 #define CARTLOADER_H
 
 #include <fstream>
+#include <span>
 #include <vector>
 
 #include "mem/mem_defines.h"
@@ -13,7 +14,8 @@ public:
   CartLoader(const std::string& romFile);
   CartLoader(const std::string& romFile, const std::string& ramFile);
 
-  std::vector<IMemoryManagerSP> constructBanks();
+  static size_t calculateNeccessarySize();
+  std::vector<IMemoryManagerSP> constructBanks(std::span<uint8_t, std::dynamic_extent> buffer);
 
 private:
   static constexpr address_type StartROM0 = 0x0000;
@@ -23,7 +25,9 @@ private:
   static constexpr address_type StartExtRAM = 0xA000;
   static constexpr address_type EndExtRAM = 0xBFFF;
 
-  static std::vector<uint8_t> read16K(std::ifstream& file);
+  static constexpr size_t BankSize = 0x4000;
+
+  static void read16K(std::span<uint8_t, BankSize> buffer, std::ifstream& file);
 
   std::ifstream romFile_;
   std::fstream ramFile_;

@@ -11,7 +11,7 @@ public:
   }
   ~MockOam() override = default;
 
-  std::array<Object, 40> getAll() override { return { 0 }; }
+  std::vector<Object> getAll() override { return {}; }
 };
 
 #endif // MOCKTILEMAP_H

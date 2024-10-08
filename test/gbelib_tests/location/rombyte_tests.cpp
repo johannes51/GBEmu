@@ -1,17 +1,23 @@
 #include "gtest/gtest.h"
 
-#include "location/rombyte.h"
+#include "mem/rambank.h"
 
-TEST(RomByteTest, Read)
+#include "location/romlocation.h"
+
+TEST(RomLocationTest, Read)
 {
-  uint8_t buffer = 0x4E;
-  const RomByte byte { buffer };
-  EXPECT_EQ(0x4E, byte.get());
+  std::vector<uint8_t> buffer = { 0x4E };
+  RamBank b { { 0, 2 }, buffer };
+  RomLocation a { Location::Type::Single, b, 0 };
+
+  EXPECT_EQ(buffer[0], a.getByte());
 }
 
-TEST(RomByteTest, Write)
+TEST(RomLocationTest, Write)
 {
-  uint8_t buffer = 0x4E;
-  RomByte byte { buffer };
-  EXPECT_ANY_THROW(byte.set(0));
+  std::vector<uint8_t> buffer = { 0x4E };
+  RamBank b { { 0, 2 }, buffer };
+  RomLocation a { Location::Type::Single, b, 0 };
+
+  EXPECT_ANY_THROW(a = uint8_t(0));
 }

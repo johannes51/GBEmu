@@ -2,27 +2,21 @@
 
 #include <stdexcept>
 
-#include "location/location.h"
-#include "location/rambyte.h"
+#include "location/ramlocation.h"
 
 RegisterBank::RegisterBank(const address_type& start, const uint8_t& initial)
-    : start_(start)
-    , buffer_(initial)
+    : BufferBank({ start, start }, { std::addressof(value_), 1 })
+    , start_(start)
+    , value_(initial)
 {
+}
+
+auto RegisterBank::getLocation(const address_type address, bool tryWord) -> LocationUP
+{
+  if (address != start_ || tryWord) {
+    throw std::invalid_argument("Out of bounds");
+  }
+  return std::make_unique<RamLocation>(Location::Type::Single, *this, start_);
 }
 
 auto RegisterBank::availableAreas() -> std::vector<MemoryArea> { return { { start_, start_ } }; }
-
-auto RegisterBank::getByte(address_type address) -> Location<uint8_t>
-{
-  if (address != start_) {
-    throw std::invalid_argument("Out of bounds");
-  }
-  return Location<uint8_t>::generate(std::make_unique<RamByte>(buffer_));
-}
-
-auto RegisterBank::getWord(address_type address) -> Location<uint16_t>
-{
-  (void)address;
-  throw std::invalid_argument("Out of bounds");
-}

@@ -2,302 +2,161 @@
 
 #include <stdexcept>
 
-#include "cpu/operation/byteload.h"
+#include "cpu/operation/byteloadimmediate.h"
+#include "cpu/operation/byteloadindirect.h"
+#include "cpu/operation/byteloadoddball.h"
+#include "cpu/operation/byteloadstandard.h"
 #include "opcodeview.h"
 
-auto destination(const OpcodeView& opcode) -> std::pair<ByteLoad::Destination, ByteRegister>
+auto destination(const OpcodeView& opcode) -> ByteRegister
 {
-  auto destRegister = ByteRegister::A;
-  auto dest = ByteLoad::Destination::Register;
-  if (opcode.lowerNibble() <= 0x7) {
-    switch (opcode.upperNibble()) {
-    case 0x4:
-      destRegister = ByteRegister::B;
+  if (opcode.lowerNibble() < 0x8U) {
+    switch (opcode.upperNibble() % 0x4U) {
+    case 0x0U:
+      return ByteRegister::B;
       break;
-    case 0x5:
-      destRegister = ByteRegister::D;
+    case 0x1U:
+      return ByteRegister::D;
       break;
-    case 0x6:
-      destRegister = ByteRegister::H;
-      break;
-    case 0x7:
-      dest = ByteLoad::Destination::RegisterIndirect;
+    case 0x2U:
+      return ByteRegister::H;
       break;
     default:
-      throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
+      return ByteRegister::None;
       break;
     }
   } else {
-    switch (opcode.upperNibble()) {
-    case 0x4:
-      destRegister = ByteRegister::C;
+    switch (opcode.upperNibble() % 0x4U) {
+    case 0x0U:
+      return ByteRegister::C;
       break;
-    case 0x5:
-      destRegister = ByteRegister::E;
+    case 0x1U:
+      return ByteRegister::E;
       break;
-    case 0x6:
-      destRegister = ByteRegister::L;
+    case 0x2U:
+      return ByteRegister::L;
       break;
-    case 0x7:
-      destRegister = ByteRegister::A;
+    case 0x3U:
+      return ByteRegister::A;
       break;
     default:
-      throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
+      return ByteRegister::None;
       break;
     }
   }
-  return std::make_pair(dest, destRegister);
 }
 
-auto source(const OpcodeView& opcode) -> std::pair<ByteLoad::Source, ByteRegister>
+auto bulkSource(const OpcodeView& opcode) -> ByteRegister
 {
-  auto srcRegister = ByteRegister::A;
-  auto src = ByteLoad::Source::Register;
-  switch (opcode.lowerNibble()) {
-  case 0x0:
-  case 0x8:
-    srcRegister = ByteRegister::B;
+  switch (opcode.lowerNibble() % 0x8U) {
+  case 0x0U:
+    return ByteRegister::B;
     break;
-  case 0x1:
-  case 0x9:
-    srcRegister = ByteRegister::C;
+  case 0x1U:
+    return ByteRegister::C;
     break;
-  case 0x2:
-  case 0xA:
-    srcRegister = ByteRegister::D;
+  case 0x2U:
+    return ByteRegister::D;
     break;
-  case 0x3:
-  case 0xB:
-    srcRegister = ByteRegister::E;
+  case 0x3U:
+    return ByteRegister::E;
     break;
-  case 0x4:
-  case 0xC:
-    srcRegister = ByteRegister::H;
+  case 0x4U:
+    return ByteRegister::H;
     break;
-  case 0x5:
-  case 0xD:
-    srcRegister = ByteRegister::L;
+  case 0x5U:
+    return ByteRegister::L;
     break;
-  case 0x6:
-  case 0xE:
-    src = ByteLoad::Source::RegisterIndirect;
-    break;
-  case 0x7:
-  case 0xF:
-    srcRegister = ByteRegister::A;
+  case 0x7U:
+    return ByteRegister::A;
     break;
   default:
-    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
+    return ByteRegister::None;
     break;
   }
-  return std::make_pair(src, srcRegister);
 }
 
 auto bulkLoad(const OpcodeView opcode) -> OperationUP
 {
-  if (opcode.value() == 0x76) {
-    throw std::logic_error("HALT unimplemented");
-  }
-  const auto opDestination = destination(opcode);
-  const auto opSource = source(opcode);
-  auto result = std::make_unique<ByteLoad>(opDestination.first, opSource.first);
-  if (opDestination.first == ByteLoad::Destination::Register) {
-    result->setDestination(opDestination.second);
-  } else if (opDestination.first == ByteLoad::Destination::RegisterIndirect) {
-    result->setDestination(WordRegister::HL);
-  }
-  if (opSource.first == ByteLoad::Source::Register) {
-    result->setSource(opSource.second);
-  } else if (opSource.first == ByteLoad::Source::RegisterIndirect) {
-    result->setSource(WordRegister::HL);
-  }
-  return result;
+  return std::make_unique<ByteLoadStandard>(destination(opcode), bulkSource(opcode));
 }
 
 auto loadImmediate(const OpcodeView opcode) -> OperationUP
 {
-  ByteRegister reg = ByteRegister::None;
-  switch (opcode.value()) {
-  case 0x06:
-    reg = ByteRegister::B;
-    break;
-  case 0x0E:
-    reg = ByteRegister::C;
-    break;
-  case 0x16:
-    reg = ByteRegister::D;
-    break;
-  case 0x1E:
-    reg = ByteRegister::E;
-    break;
-  case 0x26:
-    reg = ByteRegister::H;
-    break;
-  case 0x2E:
-    reg = ByteRegister::L;
-    break;
-  case 0x3E:
-    reg = ByteRegister::A;
-    break;
-  default:
-    break;
-  }
-  if (reg != ByteRegister::None) {
-    auto result = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::Immediate);
-    result->setDestination(reg);
-    return result;
+  const auto dest = destination(opcode);
+  if (dest != ByteRegister::None) {
+    return std::make_unique<ByteLoadImmediate>(dest);
   } else {
-    auto result = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Immediate);
-    result->setDestination(WordRegister::HL);
-    return result;
+    return std::make_unique<ByteLoadImmediate>(WordRegister::HL);
   }
 }
 
-auto loadImmediateIndirect(const OpcodeView opcode) -> OperationUP
+auto loadOddbal(const OpcodeView opcode) -> OperationUP
 {
-  OperationUP result;
-  switch (opcode.value()) {
-  case 0x02: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegister::BC);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
+  const auto direction
+      = (opcode.upperNibble() == 0xEU) ? ByteLoadOddball::Direction::Indirect : ByteLoadOddball::Direction::Register;
+  switch (opcode.lowerNibble()) {
+  case 0x0U:
+    return std::make_unique<ByteLoadOddball>(direction, ByteLoadOddball::Indirection::ImmediateZeroPage);
     break;
-  }
-  case 0x12: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegister::DE);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
+  case 0x2U:
+    return std::make_unique<ByteLoadOddball>(direction, ByteLoadOddball::Indirection::RegisterC);
     break;
-  }
-  case 0x22: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegister::HL);
-    p->setPostAction(ByteLoad::Post::Increment);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
+  case 0xAU:
+    return std::make_unique<ByteLoadOddball>(direction, ByteLoadOddball::Indirection::ImmediateStandard);
     break;
-  }
-  case 0x32: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::RegisterIndirect, ByteLoad::Source::Register);
-    p->setDestination(WordRegister::HL);
-    p->setPostAction(ByteLoad::Post::Decrement);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
-    break;
-  }
-  case 0x0A: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegister::A);
-    p->setSource(WordRegister::BC);
-    result = std::move(p);
-    break;
-  }
-  case 0x1A: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegister::A);
-    p->setSource(WordRegister::DE);
-    result = std::move(p);
-    break;
-  }
-  case 0x2A: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegister::A);
-    p->setSource(WordRegister::HL);
-    p->setPostAction(ByteLoad::Post::Increment);
-    result = std::move(p);
-    break;
-  }
-  case 0x3A: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::RegisterIndirect);
-    p->setDestination(ByteRegister::A);
-    p->setSource(WordRegister::HL);
-    p->setPostAction(ByteLoad::Post::Decrement);
-    result = std::move(p);
-    break;
-  }
-  case 0xE0: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register, true);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
-    break;
-  }
-  case 0xEA: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect);
-    p->setDestination(ByteRegister::A);
-    result = std::move(p);
-    break;
-  }
-  case 0xF0: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::ImmediateIndirect, ByteLoad::Source::Register, true);
-    p->setSource(ByteRegister::A);
-    result = std::move(p);
-    break;
-  }
-  case 0xFA: {
-    auto p = std::make_unique<ByteLoad>(ByteLoad::Destination::Register, ByteLoad::Source::ImmediateIndirect);
-    p->setDestination(ByteRegister::A);
-    result = std::move(p);
-    break;
-  }
   default:
-    throw std::logic_error("Unimplemented");
+    throw std::logic_error("Unreachable");
     break;
   }
-  return result;
 }
 
 auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
 {
-  auto store = opcode.lowerNibble() == 0x2;
-  auto dest = store ? ByteLoad::Destination::RegisterIndirect : ByteLoad::Destination::Register;
-  auto src = store ? ByteLoad::Source::Register : ByteLoad::Source::RegisterIndirect;
-  auto result = std::make_unique<ByteLoad>(dest, src);
-  WordRegister indirectRegister = WordRegister::HL;
-  switch (opcode.upperNibble()) {
-  case 0x0:
-    indirectRegister = WordRegister::BC;
-    break;
-  case 0x1:
-    indirectRegister = WordRegister::DE;
-    break;
-  case 0x2:
-    indirectRegister = WordRegister::HL;
-    result->setPostAction(ByteLoad::Post::Increment);
-    break;
-  case 0x3:
-    indirectRegister = WordRegister::HL;
-    result->setPostAction(ByteLoad::Post::Decrement);
-    break;
-  default:
-    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcode.value()));
-    break;
-  }
-  if (store) {
-    result->setDestination(indirectRegister);
-    result->setSource(ByteRegister::A);
+  const auto direction = ((opcode.upperNibble() <= 0x3U && opcode.lowerNibble() == 0x2U)
+                             || (opcode.upperNibble() == 0x7U && opcode.lowerNibble() <= 0x7U))
+      ? ByteLoadIndirect::Direction::Indirect
+      : ByteLoadIndirect::Direction::Register;
+
+  const auto dirReg = (opcode.lowerNibble() <= 0x3U) ? ByteRegister::A : destination(opcode);
+
+  auto indirReg = WordRegister::None;
+  if (opcode.upperNibble() >= 0x2U) {
+    indirReg = WordRegister::HL;
+  } else if (opcode.upperNibble() == 0x0U) {
+    indirReg = WordRegister::BC;
   } else {
-    result->setDestination(ByteRegister::A);
-    result->setSource(indirectRegister);
+    indirReg = WordRegister::DE;
   }
-  return result;
+  auto postAction = ByteLoadIndirect::Post::None;
+  if (opcode.upperNibble() == 0x2U) {
+    postAction = ByteLoadIndirect::Post::Increment;
+  } else if (opcode.upperNibble() == 0x1U) {
+    postAction = ByteLoadIndirect::Post::Decrement;
+  }
+
+  return std::make_unique<ByteLoadIndirect>(direction, dirReg, indirReg, postAction);
 }
 
-auto ByteLoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ByteLoadsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opc { opcodeLocation.get() };
+  const OpcodeView opc { opcodeLocation.getByte() };
 
-  if (opc.value() >= 0x40 && opc.value() <= 0x7F) {
-    return bulkLoad(opc);
-  } else if (opc.upperNibble() <= 0x3) {
-    if (opc.lowerNibble() == 0x6 || opc.lowerNibble() == 0xE) {
+  if (opc.value() >= 0x40U && opc.value() <= 0x7FU) {
+    if (opc.lowerNibble() == 0x6U || opc.lowerNibble() == 0xEU
+        || (opc.upperNibble() == 0x7U && opc.lowerNibble() <= 0x7U)) {
+      return loadRegisterIndirect(opc);
+    } else {
+      return bulkLoad(opc);
+    }
+  } else if (opc.upperNibble() <= 0x3U) {
+    if (opc.lowerNibble() == 0x6U || opc.lowerNibble() == 0xEU) {
       return loadImmediate(opc);
-    } else if (opc.lowerNibble() == 0x2 || opc.lowerNibble() == 0xA) {
+    } else if (opc.lowerNibble() == 0x2U || opc.lowerNibble() == 0xAU) {
       return loadRegisterIndirect(opc);
     }
-  } else if (opc.upperNibble() >= 0xE) {
-    return loadImmediateIndirect(opc);
+  } else if (opc.upperNibble() >= 0xEU) {
+    return loadOddbal(opc);
   }
   throw std::logic_error("Unimplmented opcode: " + std::to_string(opc.value()));
 }
@@ -306,12 +165,14 @@ auto ByteLoadsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
 {
   std::vector<uint8_t> result;
   result.insert(result.end(),
-      { 0x40, 0x41, 0x42, 0x43, 0x44, 0x45, 0x46, 0x47, 0x48, 0x49, 0x4A, 0x4B, 0x4C, 0x4D, 0x4E, 0x4F, 0x50, 0x51,
-          0x52, 0x53, 0x54, 0x55, 0x56, 0x57, 0x58, 0x59, 0x5A, 0x5B, 0x5C, 0x5D, 0x5E, 0x5F, 0x60, 0x61, 0x62, 0x63,
-          0x64, 0x65, 0x66, 0x67, 0x68, 0x69, 0x6A, 0x6B, 0x6C, 0x6D, 0x6E, 0x6F, 0x70, 0x71, 0x72, 0x73, 0x74, 0x75,
-          /*0x76, HALT */ 0x77, 0x78, 0x79, 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F }); // bulk loads
-  result.insert(result.end(), { 0x06, 0x0E, 0x16, 0x1E, 0x26, 0x2E, 0x3E }); // immediate loads
-  result.insert(result.end(), { 0x02, 0x12, 0x22, 0x32, 0x0A, 0x1A, 0x2A, 0x3A, 0x36 }); // register indirect loads
-  result.insert(result.end(), { 0xE0, 0xE2, 0xEA, 0xF0, 0xF2, 0xFA }); // oddball loads
+      { 0x40U, 0x41U, 0x42U, 0x43U, 0x44U, 0x45U, 0x46U, 0x47U, 0x48U, 0x49U, 0x4AU, 0x4BU, 0x4CU, 0x4DU, 0x4EU, 0x4FU,
+          0x50U, 0x51U, 0x52U, 0x53U, 0x54U, 0x55U, 0x56U, 0x57U, 0x58U, 0x59U, 0x5AU, 0x5BU, 0x5CU, 0x5DU, 0x5EU,
+          0x5FU, 0x60U, 0x61U, 0x62U, 0x63U, 0x64U, 0x65U, 0x66U, 0x67U, 0x68U, 0x69U, 0x6AU, 0x6BU, 0x6CU, 0x6DU,
+          0x6EU, 0x6FU, 0x70U, 0x71U, 0x72U, 0x73U, 0x74U, 0x75U,
+          /*0x76U, HALT */ 0x77U, 0x78U, 0x79U, 0x7AU, 0x7BU, 0x7CU, 0x7DU, 0x7EU, 0x7FU }); // bulk loads
+  result.insert(result.end(), { 0x06U, 0x0EU, 0x16U, 0x1EU, 0x26U, 0x2EU, 0x3EU }); // immediate loads
+  result.insert(
+      result.end(), { 0x02U, 0x12U, 0x22U, 0x32U, 0x0AU, 0x1AU, 0x2AU, 0x3AU, 0x36U }); // register indirect loads
+  result.insert(result.end(), { 0xE0U, 0xE2U, 0xEAU, 0xF0U, 0xF2U, 0xFAU }); // oddball loads
   return result;
 }

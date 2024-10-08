@@ -20,12 +20,12 @@ ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
   }
 }
 
-void ByteAluOperation::nextOpcode(Location<uint8_t> opcode)
+void ByteAluOperation::nextOpcode(LocationUP opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already complete");
   }
-  immediate_ = Location<uint8_t>(std::move(opcode));
+  immediate_ = std::move(opcode);
 }
 
 auto ByteAluOperation::isComplete() -> bool
@@ -60,57 +60,57 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   case ByteAluFunction::Add:
   case ByteAluFunction::AddCarry: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::add(loc, getSource(registers, memory));
+    result = ops::add<uint8_t>(*loc, *getSource(registers, memory));
     if (function_ == ByteAluFunction::AddCarry && registers.getFlags().carry()) {
-      ops::increment(loc);
+      ops::increment<uint8_t>(*loc);
     }
     break;
   }
   case ByteAluFunction::Sub:
   case ByteAluFunction::SubCarry: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::sub(loc, getSource(registers, memory));
+    result = ops::sub(*loc, *getSource(registers, memory));
     if (function_ == ByteAluFunction::SubCarry && registers.getFlags().carry()) {
-      ops::decrement(loc);
+      ops::decrement<uint8_t>(*loc);
     }
     break;
     break;
   }
   case ByteAluFunction::Inc: {
-    Location<uint8_t> loc = getSource(registers, memory);
-    result = ops::increment(loc);
+    auto loc = getSource(registers, memory);
+    result = ops::increment<uint8_t>(*loc);
     break;
   }
   case ByteAluFunction::Dec: {
-    Location<uint8_t> loc = getSource(registers, memory);
-    result = ops::decrement(loc);
+    auto loc = getSource(registers, memory);
+    result = ops::decrement<uint8_t>(*loc);
     break;
   }
   case ByteAluFunction::And: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::andF(loc, getSource(registers, memory));
+    result = ops::andF(*loc, *getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Or: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::orF(loc, getSource(registers, memory));
+    result = ops::orF(*loc, *getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Xor: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::xorF(loc, getSource(registers, memory));
+    result = ops::xorF(*loc, *getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Cp: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::cpF(loc, getSource(registers, memory));
+    result = ops::cpF(*loc, *getSource(registers, memory));
     break;
   }
   }
   apply(registers.getFlags(), result);
 }
 
-auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location<uint8_t>
+auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> LocationUP
 {
   switch (source_) {
   case Source::Immediate:
@@ -120,7 +120,7 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    return mem.getByte(hlp::indirect(reg.get(WordRegister::HL)));
+    return mem.getLocation(hlp::indirect(*reg.get(WordRegister::HL)));
     break;
   case Source::Register:
     if (!register_) {

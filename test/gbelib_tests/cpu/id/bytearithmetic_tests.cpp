@@ -2,7 +2,7 @@
 
 #include "cpu/operation/operation.h"
 #include "location/location.h"
-#include "location/variablebyte.h"
+#include "location/variablelocation.h"
 
 #include "cpu/id/bytearithmeticdecoder.h"
 
@@ -19,62 +19,62 @@ protected:
 
 TEST_F(ByteArithmeticTest, Bulk)
 {
-  auto op = b.decode(variableLocation(0x80));
+  auto op = b.decode(*variableLocation(uint8_t { 0x80 }));
   ASSERT_TRUE(op);
   EXPECT_TRUE(op->isComplete());
 }
 
 TEST_F(ByteArithmeticTest, Unimplemented)
 {
-  EXPECT_THROW(auto op = b.decode(variableLocation(0xC0)), std::logic_error);
+  EXPECT_THROW(auto op = b.decode(*variableLocation(uint8_t { 0xC0 })), std::logic_error);
 }
 
 TEST_F(ByteArithmeticTest, SourceA)
 {
-  auto op = b.decode(variableLocation(0x87));
+  auto op = b.decode(*variableLocation(uint8_t { 0x87 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceB)
 {
-  auto op = b.decode(variableLocation(0x80));
+  auto op = b.decode(*variableLocation(uint8_t { 0x80 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceC)
 {
-  auto op = b.decode(variableLocation(0x81));
+  auto op = b.decode(*variableLocation(uint8_t { 0x81 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceD)
 {
-  auto op = b.decode(variableLocation(0x82));
+  auto op = b.decode(*variableLocation(uint8_t { 0x82 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceE)
 {
-  auto op = b.decode(variableLocation(0x83));
+  auto op = b.decode(*variableLocation(uint8_t { 0x83 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceH)
 {
-  auto op = b.decode(variableLocation(0x84));
+  auto op = b.decode(*variableLocation(uint8_t { 0x84 }));
   EXPECT_TRUE(op);
 }
 
 TEST_F(ByteArithmeticTest, SourceL)
 {
-  auto op = b.decode(variableLocation(0x85));
+  auto op = b.decode(*variableLocation(uint8_t { 0x85 }));
   EXPECT_TRUE(op);
   EXPECT_TRUE(op->isComplete());
 }
 
 TEST_F(ByteArithmeticTest, SourceHL)
 {
-  auto op = b.decode(variableLocation(0x35));
+  auto op = b.decode(*variableLocation(uint8_t { 0x35 }));
 
   EXPECT_TRUE(op);
   EXPECT_TRUE(op->isComplete());

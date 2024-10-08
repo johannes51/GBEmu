@@ -3,6 +3,7 @@ project(gb-lib C CXX)
 
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
+  constants.h
   defines.h
   apu/apu.h
   apu/apu.cpp
@@ -58,10 +59,14 @@ target_sources(gbelib PRIVATE
   cpu/operation/basicrotate.cpp
   cpu/operation/bytealuoperation.h
   cpu/operation/bytealuoperation.cpp
-  cpu/operation/byteload.h
-  cpu/operation/byteload.cpp
-  cpu/operation/cbop.h
-  cpu/operation/cbop.cpp
+  cpu/operation/byteloadstandard.h
+  cpu/operation/byteloadstandard.cpp
+  cpu/operation/byteloadindirect.h
+  cpu/operation/byteloadindirect.cpp
+  cpu/operation/byteloadimmediate.h
+  cpu/operation/byteloadimmediate.cpp
+  cpu/operation/byteloadoddball.h
+  cpu/operation/byteloadoddball.cpp
   cpu/operation/cbprefix.h
   cpu/operation/cbprefix.cpp
   cpu/operation/control.h
@@ -71,6 +76,10 @@ target_sources(gbelib PRIVATE
   cpu/operation/miscarithmetic.h
   cpu/operation/miscarithmetic.cpp
   cpu/operation/operation.h
+  cpu/operation/pushpop.h
+  cpu/operation/pushpop.cpp
+  cpu/operation/cbop.h
+  cpu/operation/cbop.cpp
   cpu/operation/singleop.h
   cpu/operation/wordaluoperation.h
   cpu/operation/wordaluoperation.cpp
@@ -92,24 +101,24 @@ target_sources(gbelib PRIVATE
   gb_factories/ppuregisterfactory.h
   gb_factories/ppuregisterfactory.cpp
   gb_factories/registerfactory.h
-  location/bufferbyte.h
-  location/bufferbyte.cpp
+  location/bufferlocation.h
+  location/bufferlocation.cpp
   location/location.h
   location/location.cpp
-  location/location_defines.h
-  location/locationbyte.h
-  location/locationimpl.h
-  location/locationimpl.cpp
-  location/nullbyte.h
-  location/nullbyte.cpp
-  location/rambyte.h
-  location/rambyte.cpp
-  location/rombyte.h
-  location/rombyte.cpp
-  location/variablebyte.h
-  location/variablebyte.cpp
-  location/zerobyte.h
-  location/zerobyte.cpp
+  location/nulllocation.h
+  location/nulllocation.cpp
+  location/ramlocation.h
+  location/ramlocation.cpp
+  location/register.h
+  location/register.cpp
+  location/romlocation.h
+  location/romlocation.cpp
+  location/variablelocation.h
+  location/variablelocation.cpp
+  location/zerolocation.h
+  location/zerolocation.cpp
+  mem/bufferbank.h
+  mem/bufferbank.cpp
   mem/imemoryview.h
   mem/imemorymanager.h
   mem/mem_defines.h
@@ -137,10 +146,15 @@ target_sources(gbelib PRIVATE
   mem/registers/registerbankadapter.h
   mem/registers/registerbankadapter.cpp
   ops/arithmetic.h
+  ops/arithmetic.cpp
+  ops/bitmanip.h
+  ops/bitmanip.cpp
   ops/logic.h
+  ops/logic.cpp
   ops/memory.h
   ops/ops.h
-  ops/shiftrotatebitwise.h
+  ops/shiftrotate.h
+  ops/shiftrotate.cpp
   peripherals/joypad.h
   peripherals/joypad.cpp
   peripherals/peri_defines.h
@@ -186,7 +200,6 @@ target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_code_coverage(gbelib)
 enable_wall(gbelib)
-enable_effcpp(gbelib)
 cxx_20(gbelib)
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib)

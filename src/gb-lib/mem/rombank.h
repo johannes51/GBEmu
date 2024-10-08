@@ -1,18 +1,14 @@
 #ifndef ROMBANK_H
 #define ROMBANK_H
 
-#include "singleareamanager.h"
+#include "bufferbank.h"
 
-class RomBank final : public SingleAreaManager {
+class RomBank final : public BufferBank {
 public:
-  RomBank(const MemoryArea& area, std::vector<uint8_t>&& buffer);
+  RomBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer);
   DISABLE_COPY_AND_MOVE(RomBank)
 
-  Location<uint8_t> getByte(address_type address) override;
-  Location<uint16_t> getWord(address_type address) override;
-
-private:
-  std::vector<uint8_t> buffer_;
+  LocationUP getLocation(const address_type address, bool tryWord = false) override;
 };
 
 #endif // ROMBANK_H

@@ -9,9 +9,11 @@
 #include "mem/rambank.h"
 #include "mem/registerbank.h"
 
-gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader)
+gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader, std::vector<uint8_t>& buffer)
     : loader_(std::move(romLoader))
     , ioBank_()
+    , buffer_(buffer)
+    , ptr_(buffer_.begin())
 {
 }
 
@@ -35,17 +37,23 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(buildRamBank(HRAM));
   manifold->addSubManager(buildIe());
 
-  auto ioManager = std::make_shared<RamBank>(IO);
+  auto ioManager = std::make_shared<RamBank>(IO, std::span(ptr_, IO.size()));
+  std::advance(ptr_, IO.size());
   manifold->addSubManager(ioManager); // TODO: This is just a fake-out, actually implement!
   ioBank_ = ioManager;
 
   return manifold;
 }
 
-auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerSP { return std::make_shared<RamBank>(area); }
+auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerSP
+{
+  auto result = std::make_shared<RamBank>(area, std::span(ptr_, area.size()));
+  std::advance(ptr_, area.size());
+  return result;
+}
 
-auto gb::MemoryFactory::buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin)
-    -> IMemoryManagerSP
+auto gb::MemoryFactory::buildMirrorBank(
+    MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin) -> IMemoryManagerSP
 {
   return std::make_shared<MirrorBank>(mirrorArea, originArea, std::move(origin));
 }
@@ -54,9 +62,14 @@ auto gb::MemoryFactory::buildNullBank(MemoryArea area) -> IMemoryManagerSP { ret
 
 auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerSP>
 {
+  const auto cartSize = loader_->calculateNeccessarySize();
+  const auto fullSize = cartSize + VRAM.size() + WRAM0.size() + WRAM1.size() + OAM.size() + IO.size() + HRAM.size();
+  buffer_.resize(fullSize);
+  ptr_ = buffer_.begin();
   std::vector<IMemoryManagerSP> result {};
   if (loader_) {
-    result = loader_->constructBanks();
+    result = loader_->constructBanks(std::span { buffer_ }.subspan(0, cartSize));
+    std::advance(ptr_, cartSize);
   }
   return result;
 }
