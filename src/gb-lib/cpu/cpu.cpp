@@ -24,24 +24,26 @@ Cpu::~Cpu() = default;
 void Cpu::clock()
 {
   if (!nextOperation_) {
-    nextOperation_ = instructionDecoder_->decode(nextOpcode());
+    auto next = nextOpcode();
+    nextOperation_ = instructionDecoder_->decode(*next);
     nextOperation_->showFlags(registers_->getFlags());
     while (!nextOperation_->isComplete()) {
-      nextOperation_->nextOpcode(nextOpcode());
+      next = nextOpcode();
+      nextOperation_->nextOpcode(std::move(next));
     }
     ticksTillExecution_ = nextOperation_->cycles();
   }
   --ticksTillExecution_;
-  if (ticksTillExecution_ <= 0) {
+  if (ticksTillExecution_ == 0) {
     nextOperation_->execute(*registers_, *mem_);
     nextOperation_.reset();
   }
 }
 
-auto Cpu::nextOpcode() -> Location<uint8_t>
+auto Cpu::nextOpcode() -> LocationUP
 {
   auto pc = registers_->get(WordRegister::PC);
-  auto result = mem_->getByte(hlp::indirect(pc));
-  ops::increment(pc);
+  auto result = mem_->getLocation(hlp::indirect(*pc));
+  ops::increment<uint16_t>(*pc);
   return result;
 }

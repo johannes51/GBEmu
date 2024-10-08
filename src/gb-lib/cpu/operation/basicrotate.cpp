@@ -2,7 +2,7 @@
 
 #include "cpu/flagsview.h"
 #include "cpu/registersinterface.h"
-#include "ops/shiftrotatebitwise.h"
+#include "ops/shiftrotate.h"
 #include "util/helpers.h"
 
 BasicRotate::BasicRotate(const RotateDirection& direction, bool throughCarry)
@@ -16,36 +16,16 @@ void BasicRotate::execute(RegistersInterface& registers, IMemoryView& memory)
   (void)memory;
   auto reg = registers.get(ByteRegister::A);
   if (direction_ == RotateDirection::Right) {
-    ops::rr(reg);
     if (throughCarry_) {
-      const auto oldCarry = registers.getFlags().carry();
-      auto value = reg.get();
-      if (hlp::checkBit(value, hlp::MinBit)) {
-        registers.getFlags().setCarry();
-      } else {
-        registers.getFlags().clearCarry();
-      }
-      if (oldCarry) {
-        hlp::setBit(value, hlp::MaxBit);
-      } else {
-        hlp::clearBit(value, hlp::MaxBit);
-      }
+      ops::rr(*reg, registers.getFlags().carry());
+    } else {
+      ops::rrc(*reg);
     }
   } else /*if (direction_ == RotateDirection::Left)*/ {
-    ops::rl(reg);
     if (throughCarry_) {
-      const auto oldCarry = registers.getFlags().carry();
-      auto value = reg.get();
-      if (hlp::checkBit(value, hlp::MaxBit)) {
-        registers.getFlags().setCarry();
-      } else {
-        registers.getFlags().clearCarry();
-      }
-      if (oldCarry) {
-        hlp::setBit(value, hlp::MinBit);
-      } else {
-        hlp::clearBit(value, hlp::MinBit);
-      }
+      ops::rl(*reg, registers.getFlags().carry());
+    } else {
+      ops::rlc(*reg);
     }
   }
 }

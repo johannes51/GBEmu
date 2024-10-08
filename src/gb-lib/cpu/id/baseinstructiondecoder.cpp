@@ -10,13 +10,13 @@ BaseInstructionDecoder::BaseInstructionDecoder()
 {
 }
 
-auto BaseInstructionDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto BaseInstructionDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
   InstructionDecoder* decoder = nullptr;
   try {
-    decoder = decoders_.at(opcodeLocation.get()).get();
+    decoder = decoders_.at(opcodeLocation.getByte()).get();
   } catch (...) {
-    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcodeLocation.get()));
+    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()));
   }
   return decoder->decode(opcodeLocation);
 }

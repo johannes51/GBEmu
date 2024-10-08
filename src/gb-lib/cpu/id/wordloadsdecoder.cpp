@@ -2,40 +2,41 @@
 
 #include <stdexcept>
 
+#include "cpu/operation/pushpop.h"
 #include "cpu/operation/wordload.h"
 #include "cpu/registersinterface.h"
 #include "location/location.h"
 
-auto WordLoadsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto WordLoadsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  std::unique_ptr<WordLoad> result;
-  const OpcodeView opcode { opcodeLocation.get() };
+  OperationUP result;
+  const OpcodeView opcode { opcodeLocation.getByte() };
   if (opcode.value() == 0x08) {
-    result = std::make_unique<WordLoad>(WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register);
-    result->setSource(WordRegister::SP);
+    auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register);
+    resultWL->setSource(WordRegister::SP);
+    result = std::move(resultWL);
   } else if (opcode.value() == 0xE8) {
-    result = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate);
-    result->setDestination(WordRegister::SP);
-    result->setSource(WordRegister::SP);
+    auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate);
+    resultWL->setDestination(WordRegister::SP);
+    resultWL->setSource(WordRegister::SP);
+    result = std::move(resultWL);
   } else if (opcode.value() == 0xF8) {
-    result = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate);
-    result->setDestination(WordRegister::HL);
-    result->setSource(WordRegister::SP);
+    auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::RegisterImmediate);
+    resultWL->setDestination(WordRegister::HL);
+    resultWL->setSource(WordRegister::SP);
+    result = std::move(resultWL);
   } else if (opcode.value() == 0xF9) {
-    result = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Register);
-    result->setDestination(WordRegister::SP);
-    result->setSource(WordRegister::HL);
+    auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Register);
+    resultWL->setDestination(WordRegister::SP);
+    resultWL->setSource(WordRegister::HL);
+    result = std::move(resultWL);
   } else if (opcode.upperNibble() >= 0xC) {
-    if (opcode.lowerNibble() == 0x1) {
-      result = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Stack);
-      result->setDestination(selectRegister(opcode));
-    } else {
-      result = std::make_unique<WordLoad>(WordLoad::Destination::Stack, WordLoad::Source::Register);
-      result->setSource(selectRegister(opcode));
-    }
+    result = std::make_unique<PushPop>(
+        opcode.lowerNibble() == 0x1 ? PushPop::Direction::Pop : PushPop::Direction::Push, selectRegister(opcode));
   } else {
-    result = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
-    result->setDestination(selectRegister(opcode));
+    auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::Register, WordLoad::Source::Immediate);
+    resultWL->setDestination(selectRegister(opcode));
+    result = std::move(resultWL);
   }
   return result;
 }

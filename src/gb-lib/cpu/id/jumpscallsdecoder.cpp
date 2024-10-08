@@ -3,12 +3,12 @@
 #include <stdexcept>
 
 #include "cpu/operation/jump.h"
-#include "location/variablebyte.h"
-#include "location/zerobyte.h"
+#include "location/variablelocation.h"
+#include "location/zerolocation.h"
 
-auto JumpsCallsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto JumpsCallsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.getByte() };
   if (opcode.upperNibble() <= 0x3) {
     return std::make_unique<Jump>(JumpType::Regular, TargetType::Relative, condition(opcode));
   } else {
@@ -22,7 +22,7 @@ auto JumpsCallsDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Opera
       return result;
     }
   }
-  throw std::logic_error("Unhandled opcode: " + std::to_string(opcodeLocation.get()));
+  throw std::logic_error("Unhandled opcode: " + std::to_string(opcodeLocation.getByte()));
 }
 
 auto JumpsCallsDecoder::decodedOpcodes() const -> std::vector<uint8_t>
@@ -134,6 +134,5 @@ void JumpsCallsDecoder::feedResetOpcode(Operation& op, OpcodeView opcode)
   default:
     break;
   }
-  op.nextOpcode(Location<uint8_t>::generate(std::make_unique<VariableByte>(lower)));
-  op.nextOpcode(Location<uint8_t>::generate(std::make_unique<ZeroByte>()));
+  op.nextOpcode(variableLocation(lower));
 }

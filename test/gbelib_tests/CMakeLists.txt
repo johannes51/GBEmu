@@ -41,12 +41,12 @@ set(TEST_SOURCES
     cpu/operation/byteload_tests.cpp
     cpu/operation/control_tests.cpp
     cpu/operation/jump_tests.cpp
+    cpu/operation/pushpop_tests.cpp
     cpu/operation/wordaluoperation_tests.cpp
     cpu/operation/wordload_tests.cpp
     gb/gbmemoryfactory_tests.cpp
     gb/cartloader_tests.cpp
     location/location_tests.cpp
-    location/locationimpl_tests.cpp
     location/nullbyte_tests.cpp
     location/rambyte_tests.cpp
     location/rombyte_tests.cpp
@@ -62,6 +62,8 @@ set(TEST_SOURCES
     mock/mockoam.h
     mock/mocktilemap.h
     mock/mockregisteradapter.h
+    mock/testbank.h
+    mock/testbank.cpp
     ops/arithmetic_tests.cpp
     ops/logic_tests.cpp
     ops/memory_tests.cpp

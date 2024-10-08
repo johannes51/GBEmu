@@ -1,24 +1,17 @@
 #include "rombank.h"
 
 #include "location/location.h"
-#include "location/rombyte.h"
+#include "location/romlocation.h"
 #include "mem_tools.h"
 
-RomBank::RomBank(const MemoryArea& area, std::vector<uint8_t>&& buffer)
-    : SingleAreaManager(area)
-    , buffer_(std::move(buffer))
+RomBank::RomBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer)
+    : BufferBank(area, std::move(buffer))
 {
 }
 
-auto RomBank::getByte(address_type address) -> Location<uint8_t>
+LocationUP RomBank::getLocation(const address_type address, bool tryWord)
 {
-  return Location<uint8_t>::generate(
-      std::make_unique<RomByte>(buffer_.at(mem_tools::translateAddressSafe(address, singleArea()))));
+  return std::make_unique<RomLocation>(tryWord && mem_tools::isSafe(address + 1, singleArea()) ? Location::Type::Both : Location::Type::Single,
+      *this, address);
 }
 
-auto RomBank::getWord(address_type address) -> Location<uint16_t>
-{
-  return Location<uint16_t>::generate(
-      std::make_unique<RomByte>(buffer_[mem_tools::translateAddressSafe(address, singleArea())]),
-      std::make_unique<RomByte>(buffer_[mem_tools::translateAddressSafe(address + 1, singleArea())]));
-}

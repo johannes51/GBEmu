@@ -1,42 +1,39 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include "locationimpl.h"
+#include <span>
+
+#include "defines.h"
 #include "mem/mem_defines.h"
-#include "nullbyte.h"
 
-template <typename T> class Location final : LocationImpl {
+class Location {
 public:
-  static Location<T> generate(LocationByteUP lower, LocationByteUP upper = std::make_unique<NullByte>());
-  static Location<uint16_t> fuse(Location<uint8_t> lower, Location<uint8_t> upper);
+  virtual ~Location() = default;
+  DISABLE_COPY_AND_MOVE(Location)
 
-  Location();
-  DISABLE_COPY(Location)
-  Location(Location&& rhs) = default;
-  Location& operator=(Location&&) = default;
+  enum class Type { Single, Both, None };
 
-  T get() const;
-  void set(const T& value);
+  bool isWord() const;
+  void fuse(const Location& other);
+
+  template <typename T> const T& get() const;
+
+  virtual const uint8_t& getByte() const = 0;
+  virtual const uint16_t& getWord() const = 0;
+
+  virtual Location& operator=(const uint8_t& rhs) = 0;
+  virtual Location& operator=(const uint16_t& rhs) = 0;
+
+protected:
+  explicit Location(Type type)
+      : type_(type)
+  {
+  }
 
 private:
-  Location(LocationByteUP lower, LocationByteUP upper);
+  Type type_;
 };
 
-template <typename T>
-Location<T>::Location()
-    : LocationImpl(nullptr, nullptr)
-{
-}
-
-template <typename T>
-Location<T>::Location(LocationByteUP lower, LocationByteUP upper)
-    : LocationImpl(std::move(lower), std::move(upper))
-{
-}
-
-template <typename T> Location<T> Location<T>::generate(LocationByteUP lower, LocationByteUP upper)
-{
-  return Location<T>(std::move(lower), std::move(upper));
-}
+using LocationUP = std::unique_ptr<Location>;
 
 #endif // LOCATION_H

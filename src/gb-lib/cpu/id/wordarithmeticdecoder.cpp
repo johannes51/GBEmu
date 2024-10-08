@@ -4,9 +4,9 @@
 
 #include "location/location.h"
 
-auto WordArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto WordArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.getByte() };
   return std::make_unique<WordAluOperation>(determineFunction(opcode), determineRegister(opcode));
 }
 

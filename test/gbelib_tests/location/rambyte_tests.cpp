@@ -1,19 +1,15 @@
 #include "gtest/gtest.h"
 
-#include "location/rambyte.h"
+#include "mock/testbank.h"
 
-TEST(RamByteTest, Write)
+#include "location/ramlocation.h"
+
+TEST(RamLocationTest, ReadWrite)
 {
-  uint8_t buffer = 0;
-  RamByte a(buffer);
+  TestBank b{ {0, 2} };
+  RamLocation a{Location::Type::Single, b, 0};
   uint8_t value = 0x17;
-  a.set(value);
-  EXPECT_EQ(value, a.get());
+  a = value;
+  EXPECT_EQ(value, a.getByte());
 }
 
-TEST(RamByteTest, Read)
-{
-  uint8_t buffer = 0x2F;
-  RamByte a(buffer);
-  EXPECT_EQ(0x2F, a.get());
-}

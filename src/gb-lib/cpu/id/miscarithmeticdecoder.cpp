@@ -9,11 +9,11 @@
 
 const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27, 0x37, 0x2F, 0x3F };
 
-auto MiscArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto MiscArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.getByte() };
   if (std::find(std::begin(decodedOpcodes_), std::end(decodedOpcodes_), opcode.value()) == std::end(decodedOpcodes_)) {
-    throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
+    throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()) };
   }
   return std::make_unique<MiscArithmetic>(decodeFunction(opcode.value()));
 }

@@ -11,7 +11,7 @@ CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
 {
 }
 
-void CbPrefix::nextOpcode(Location<uint8_t> opcode) { realOp_ = decoder_->decode(opcode); }
+void CbPrefix::nextOpcode(LocationUP opcode) { realOp_ = decoder_->decode(*opcode); }
 
 auto CbPrefix::isComplete() -> bool { return static_cast<bool>(realOp_); }
 

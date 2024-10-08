@@ -2,11 +2,13 @@
 
 #include <stdexcept>
 
-#include "cpu/operation/bytealuoperation.h"
+#include "../operation/bytealuoperation.h"
+#include "cpu/registersinterface.h"
+#include "location/location.h"
 
-auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ByteArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.getByte() };
   if (opcode.upperNibble() >= 0x8 && opcode.upperNibble() <= 0xB) {
     return bulkArithmetic(opcode);
   } else if (opcode.upperNibble() <= 0x3
@@ -16,7 +18,7 @@ auto ByteArithmeticDecoder::decode(const Location<uint8_t>& opcodeLocation) -> O
   } else if (opcode.upperNibble() >= 0xC) {
     return immediate(opcode);
   }
-  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
+  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()) };
 }
 
 auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>

@@ -40,7 +40,7 @@ void mem_tools::assertSafe(const address_type& inputAddress, const address_type&
 
 auto mem_tools::isSafe(const address_type& address, const MemoryArea& area) -> bool
 {
-  return (address >= area.from && address <= area.to);
+  return ((address >= area.from) && (address <= area.to));
 }
 
 auto mem_tools::isSafe(const address_type& inputAddress, const address_type& startAddress, const address_type& size)

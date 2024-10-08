@@ -1,17 +1,14 @@
 #include "location.h"
 
-// NOLINTNEXTLINE(modernize-use-trailing-return-type) already is, doesn't recognize
-template <> auto Location<uint8_t>::get() const -> uint8_t { return getByte(); }
+bool Location::isWord() const { return (type_ == Type::Both); }
 
-// NOLINTNEXTLINE(modernize-use-trailing-return-type) already is, doesn't recognize
-template <> auto Location<uint16_t>::get() const -> uint16_t { return getWord(); }
-
-template <> void Location<uint8_t>::set(const uint8_t& value) { setByte(value); }
-
-template <> void Location<uint16_t>::set(const uint16_t& value) { setWord(value); }
-
-// NOLINTNEXTLINE(modernize-use-trailing-return-type) already is, doesn't recognize
-template <> auto Location<uint8_t>::fuse(Location<uint8_t> lower, Location<uint8_t> upper) -> Location<uint16_t>
+void Location::fuse(const Location& other)
 {
-  return Location<uint16_t>::generate(std::move(lower.lower_), std::move(upper.lower_));
+  if ((type_ != Type::Both) && (&other.getByte() == (&getByte()) + 1)) {
+    type_ = Type::Both;
+  }
 }
+
+template <> auto Location::get<uint8_t>() const -> const uint8_t& { return getByte(); }
+
+template <> auto Location::get<uint16_t>() const -> const uint16_t& { return getWord(); }

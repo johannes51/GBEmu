@@ -1,20 +1,18 @@
 #ifndef RAMBANK_H
 #define RAMBANK_H
 
-#include "singleareamanager.h"
+#include "bufferbank.h"
 
-class RamBank : public SingleAreaManager {
+class RamBank : public BufferBank {
 public:
-  RamBank(const MemoryArea& area);
+  RamBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer);
   DISABLE_COPY_AND_MOVE(RamBank)
 
-  Location<uint8_t> getByte(address_type address);
-  Location<uint16_t> getWord(address_type address);
+  LocationUP getLocation(const address_type address, bool tryWord = false) override;
 
 private:
   address_type start_;
   address_type size_;
-  std::vector<uint8_t> buffer_;
 };
 
 #endif // RAMBANK_H

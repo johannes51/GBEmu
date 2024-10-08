@@ -7,26 +7,29 @@ using namespace std;
 
 TEST(RamBankTest, Write8)
 {
-  RamBank b({ 0, 16 });
-  auto writeByte = b.getByte(4);
+  std::vector<uint8_t> v{16U};
+  RamBank b({ 0, 16 }, v);
+  auto writeByte = b.getLocation(4);
   uint8_t value = 0xA2;
-  writeByte.set(value);
-  auto readByte = b.getByte(4);
-  EXPECT_EQ(value, readByte.get());
+  *writeByte = value;
+  auto readByte = b.getLocation(4)->getByte();
+  EXPECT_EQ(value, readByte);
 }
 
 TEST(RamBankTest, Write16)
 {
-  RamBank b({ 0, 1 });
-  auto writeByte = b.getWord(0);
+  std::vector<uint8_t> v(16U);
+  RamBank b({ 0, 16 }, v);
+  auto writeWord = b.getLocation(4, true);
   uint16_t value = 0xA27E;
-  writeByte.set(value);
-  auto readByte = b.getWord(0);
-  EXPECT_EQ(value, readByte.get());
+  *writeWord = value;
+  auto readWord = b.getLocation(4)->getWord();
+  EXPECT_EQ(value, readWord);
 }
 
 TEST(RamBankTest, Oob)
 {
-  RamBank b({ 0, 1 });
-  EXPECT_THROW(b.getByte(4), std::invalid_argument);
+  std::vector<uint8_t> v;
+  RamBank b({ 0, 1 }, v);
+  EXPECT_THROW(b.getLocation(4), std::invalid_argument);
 }

@@ -2,14 +2,13 @@
 
 #include <stdexcept>
 
-#include "cpu/id/cbopdecoder.h"
 #include "cpu/operation/cbprefix.h"
 #include "location/location.h"
 #include "opcodeview.h"
 
-auto CbDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto CbDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.get() };
+  const OpcodeView opcode { opcodeLocation.getByte() };
   if (opcode.value() == 0xCB) {
     return std::make_unique<CbPrefix>(std::make_unique<CbOpDecoder>());
   } else {

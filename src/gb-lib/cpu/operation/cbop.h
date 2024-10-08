@@ -5,25 +5,26 @@
 
 #include "cpu/registersinterface.h"
 
-enum class CbFunction {
-  RotateRight,
-  RotateRightCarry,
-  RotateLeft,
-  RotateLeftCarry,
-  ShiftRightArit,
-  ShiftLeftArit,
-  ShiftRightLogic,
-  Swap,
-  Bit,
-  Set,
-  Reset
-};
-
 class CbOp : public SingleOp<0> {
 public:
-  CbOp(CbFunction function, bool indirect, ByteRegister operand = ByteRegister::None);
+  enum class CbFunction {
+    RotateRight,
+    RotateRightCarry,
+    RotateLeft,
+    RotateLeftCarry,
+    ShiftRightArithmetic,
+    ShiftLeftArithmetic,
+    ShiftRightLogic,
+    Swap,
+    Bit,
+    Set,
+    Reset
+  };
 
-  bool isComplete() override { return true; }
+  explicit CbOp(CbFunction function, ByteRegister operand, bool indirect = false);
+
+  bool isComplete() override;
+
   unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
@@ -31,11 +32,9 @@ public:
   static constexpr uint8_t MaxBit = 7;
 
 private:
-  Location<uint8_t> selectOperand(RegistersInterface& registers, IMemoryView& memory);
-
   CbFunction function_;
-  bool indirect_;
   ByteRegister operand_;
+  bool indirect_;
   unsigned affectedBit_;
 };
 

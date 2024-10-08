@@ -10,8 +10,8 @@
 
 class WordLoad final : public Operation {
 public:
-  enum class Destination { Register, ImmediateIndirect, RegisterIndirect, Stack };
-  enum class Source { Immediate, Register, RegisterImmediate, Stack };
+  enum class Destination { Register, ImmediateIndirect, RegisterIndirect };
+  enum class Source { Immediate, Register, RegisterImmediate };
   static constexpr auto BaseDuration = 3U;
   static constexpr auto ImmediateIndirectDuration = 5U;
   static constexpr auto RegisterImmediateDuration = 3U;
@@ -19,7 +19,7 @@ public:
   WordLoad(Destination destination, Source source);
   ~WordLoad();
 
-  void nextOpcode(Location<uint8_t> opcode) override;
+  void nextOpcode(LocationUP opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -33,8 +33,7 @@ private:
   const Source source_;
   WordRegister destRegister_ = WordRegister::None;
   WordRegister srcRegister_ = WordRegister::None;
-  std::optional<Location<uint8_t>> immediate8_ = std::nullopt;
-  std::optional<Location<uint16_t>> immediate16_ = std::nullopt;
+  LocationUP immediate_ = nullptr;
 };
 
 #endif // WORD_LOAD_H

@@ -4,7 +4,7 @@
 #include "cpu/flagsview.h"
 #include "cpu/operation/control.h"
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/nulllocation.h"
 
 TEST(ControlTest, Nop)
 {
@@ -20,7 +20,7 @@ TEST(ControlTest, Nop)
 TEST(NopTest, NextOpcode)
 {
   Control nop { ControlOp::Nop };
-  EXPECT_ANY_THROW(nop.nextOpcode(Location<uint8_t>::generate(std::make_unique<NullByte>())));
+  EXPECT_ANY_THROW(nop.nextOpcode(std::make_unique<NullLocation>()));
 }
 
 TEST(ControlTest, Ei)

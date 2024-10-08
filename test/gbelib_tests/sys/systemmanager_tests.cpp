@@ -17,7 +17,8 @@
 
 TEST(SystemManagerTest, Clock)
 {
-  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
+  std::vector<uint8_t> v;
+  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto ml = m.constructMemoryLayout();
   std::vector<PeripheralSP> ps {};
   ApuFactory c { ml };

@@ -12,7 +12,7 @@ class ByteArithmeticDecoder : public InstructionDecoder {
 public:
   ByteArithmeticDecoder() = default;
 
-  OperationUP decode(const Location<uint8_t>& opcodeLocation) override;
+  OperationUP decode(const Location& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:

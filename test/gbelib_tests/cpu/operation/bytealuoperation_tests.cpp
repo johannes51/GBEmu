@@ -3,9 +3,9 @@
 #include "cpu/cpuregisters.h"
 #include "cpu/operation/bytealuoperation.h"
 #include "location/location.h"
-#include "mem/rambank.h"
+#include "mock/testbank.h"
 
-#include "location/variablebyte.h"
+#include "location/variablelocation.h"
 
 TEST(ByteAluOperationTest, Xor)
 {
@@ -17,33 +17,33 @@ TEST(ByteAluOperationTest, Xor)
   EXPECT_EQ(1, xorOp.cycles());
 
   auto a = r.get(ByteRegister::A);
-  a.set(0x9); // 1001
-  ASSERT_EQ(0x9, a.get());
+  *a = uint8_t(0x9); // 1001
+  ASSERT_EQ(0x9, a->getByte());
   auto b = r.get(ByteRegister::B);
-  b.set(0x5); // 0101
-  ASSERT_EQ(0x5, b.get());
+  *b = uint8_t(0x5); // 0101
+  ASSERT_EQ(0x5, b->getByte());
 
   IMemoryViewSP m;
   xorOp.execute(r, *m);
-  EXPECT_EQ(0xC, r.get(ByteRegister::A).get()); // 1100
+  EXPECT_EQ(0xC, r.get(ByteRegister::A)->getByte()); // 1100
 }
 
 TEST(ByteAluOperationTest, AddImmediate)
 {
   ByteAluOperation addOp { ByteAluFunction::Add, Source::Immediate };
   ASSERT_FALSE(addOp.isComplete());
-  ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(0x4D)));
+  ASSERT_NO_THROW(addOp.nextOpcode(variableLocation(uint8_t(0x4D))));
   ASSERT_TRUE(addOp.isComplete());
-  ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(0x4D)));
+  ASSERT_ANY_THROW(addOp.nextOpcode(variableLocation(uint8_t(0x4D))));
 
   CpuRegisters r;
   EXPECT_EQ(2, addOp.cycles());
 
-  r.get(ByteRegister::A).set(0x05);
+  *r.get(ByteRegister::A) = uint8_t(0x05);
 
   IMemoryViewSP m;
   addOp.execute(r, *m);
-  EXPECT_EQ(0x52, r.get(ByteRegister::A).get());
+  EXPECT_EQ(0x52, r.get(ByteRegister::A)->getByte());
 }
 
 TEST(ByteAluOperationTest, Inc)
@@ -56,12 +56,12 @@ TEST(ByteAluOperationTest, Inc)
   EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
-  b.set(0x1); // 0001
-  ASSERT_EQ(0x1, b.get());
+  *b = uint8_t(0x1); // 0001
+  ASSERT_EQ(0x1, b->getByte());
 
   IMemoryViewSP m;
   decOp.execute(r, *m);
-  EXPECT_EQ(0x2, r.get(ByteRegister::B).get()); // 0010
+  EXPECT_EQ(0x2, r.get(ByteRegister::B)->getByte()); // 0010
 }
 
 TEST(ByteAluOperationTest, IncIndirect)
@@ -72,12 +72,12 @@ TEST(ByteAluOperationTest, IncIndirect)
   CpuRegisters r;
   EXPECT_EQ(3, decOp.cycles());
 
-  r.get(WordRegister::HL).set(0x0100);
+  *r.get(WordRegister::HL) = uint16_t(0x0100);
 
-  RamBank m { { 0x0100, 0x0101 } };
-  m.getByte(0x0100).set(0x13);
+  TestBank m { { 0x0100, 0x0101 } };
+  *m.getLocation(0x0100) = uint8_t(0x13);
   decOp.execute(r, m);
-  EXPECT_EQ(0x14, m.getByte(0x0100).get());
+  EXPECT_EQ(0x14, m.getLocation(0x0100)->getByte());
 }
 
 TEST(ByteAluOperationTest, Dec)
@@ -90,12 +90,12 @@ TEST(ByteAluOperationTest, Dec)
   EXPECT_EQ(1, decOp.cycles());
 
   auto b = r.get(ByteRegister::B);
-  b.set(0x1); // 0001
-  ASSERT_EQ(0x1, b.get());
+  *b = uint8_t(0x1); // 0001
+  ASSERT_EQ(0x1, b->getByte());
 
   IMemoryViewSP m;
   decOp.execute(r, *m);
-  EXPECT_EQ(0x0, r.get(ByteRegister::B).get()); // 0000
+  EXPECT_EQ(0x0, r.get(ByteRegister::B)->getByte()); // 0000
 }
 
 TEST(ByteAluOperationTest, DecIndirect)
@@ -106,12 +106,12 @@ TEST(ByteAluOperationTest, DecIndirect)
   CpuRegisters r;
   EXPECT_EQ(3, decOp.cycles());
 
-  r.get(WordRegister::HL).set(0x0100);
+  *r.get(WordRegister::HL) = uint16_t(0x0100);
 
-  RamBank m { { 0x0100, 0x0101 } };
-  m.getByte(0x0100).set(0x13);
+  TestBank m { { 0x0100, 0x0101 } };
+  *m.getLocation(0x0100) = uint8_t(0x13);
   decOp.execute(r, m);
-  EXPECT_EQ(0x12, m.getByte(0x0100).get());
+  EXPECT_EQ(0x12, m.getLocation(0x0100)->getByte());
 }
 
 TEST(ByteAluOperationTest, Throws)

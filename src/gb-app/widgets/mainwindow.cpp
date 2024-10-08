@@ -14,13 +14,14 @@ MainWindow::MainWindow(QWidget *parent)
   : QMainWindow(parent)
   , ui_(std::make_unique<Ui::MainWindow>())
   , sm_()
+  , v_()
   , timer_(this)
   , buffer_(nullptr)
   , img_(160, 144, QImage::Format_Indexed8) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 {
   ui_->setupUi(this);
 
-  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"));
+  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v_);
   auto ml = m.constructMemoryLayout();
   std::vector<PeripheralSP> ps {};
   ApuFactory c { ml };

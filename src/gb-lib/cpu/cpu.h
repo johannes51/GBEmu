@@ -3,7 +3,7 @@
 
 #include "cpu_defines.h"
 #include "id/instructiondecoder.h"
-#include "location/location_defines.h"
+#include "location/location.h"
 #include "mem/mem_defines.h"
 
 class Cpu {
@@ -15,11 +15,11 @@ public:
   void clock();
 
 private:
-  Location<uint8_t> nextOpcode();
+  LocationUP nextOpcode();
 
   const IMemoryViewSP mem_;
-  const RegistersInterfaceUP registers_;
-  InstructionDecoderUP instructionDecoder_;
+  RegistersInterfaceUP registers_;
+  const InstructionDecoderUP instructionDecoder_;
   OperationUP nextOperation_;
   unsigned ticksTillExecution_ = 0;
 };

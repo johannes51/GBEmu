@@ -4,6 +4,8 @@
 #include "mem_defines.h"
 
 struct MemoryArea {
+  size_t size() const;
+
   address_type from;
   address_type to;
 };

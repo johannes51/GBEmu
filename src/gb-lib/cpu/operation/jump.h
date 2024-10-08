@@ -24,15 +24,14 @@ public:
   ~Jump();
 
   void showFlags(const FlagsView& flags);
-  void nextOpcode(Location<uint8_t> opcode) override;
+  void nextOpcode(LocationUP opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
 
 private:
-  std::optional<Location<uint8_t>> lower_;
-  std::optional<Location<uint8_t>> upper_;
+  LocationUP param_;
   const JumpType type_;
   const TargetType target_;
   const Condition condition_;

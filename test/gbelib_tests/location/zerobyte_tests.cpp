@@ -1,11 +1,11 @@
 #include "gtest/gtest.h"
 
-#include "location/zerobyte.h"
+#include "location/zerolocation.h"
 
-TEST(ZeroTest, Byte)
+TEST(ZeroTest, Location)
 {
-  ZeroByte byte {};
-  EXPECT_EQ(0x0, byte.get());
-  EXPECT_NO_THROW(byte.set(0x42));
-  EXPECT_EQ(0x0, byte.get());
+  ZeroLocation zero {};
+  EXPECT_EQ(0x0, zero.getByte());
+  EXPECT_NO_THROW(zero = uint8_t(0x42));
+  EXPECT_EQ(0x0, zero.getByte());
 }

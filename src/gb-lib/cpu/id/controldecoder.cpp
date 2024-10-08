@@ -6,9 +6,9 @@
 #include "cpu/operation/operation.h"
 #include "location/location.h"
 
-auto ControlDecoder::decode(const Location<uint8_t>& opcodeLocation) -> OperationUP
+auto ControlDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
-  switch (opcodeLocation.get()) {
+  switch (opcodeLocation.getByte()) {
   case 0x00:
     return std::make_unique<Control>(ControlOp::Nop);
     break;
@@ -25,7 +25,7 @@ auto ControlDecoder::decode(const Location<uint8_t>& opcodeLocation) -> Operatio
     return std::make_unique<Control>(ControlOp::DI);
     break;
   default:
-    throw std::logic_error { "Cannot decode instruction: " + std::to_string(opcodeLocation.get()) };
+    throw std::logic_error { "Cannot decode instruction: " + std::to_string(opcodeLocation.getByte()) };
     break;
   }
 }

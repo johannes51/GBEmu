@@ -21,14 +21,9 @@ void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
       [newSubManager](const auto& newArea) { return std::make_pair(newArea, newSubManager); });
 }
 
-auto MemoryManifold::getByte(const address_type address) -> Location<uint8_t>
+auto MemoryManifold::getLocation(const address_type address, bool tryWord) -> LocationUP
 {
-  return selectManager(address)->getByte(address);
-}
-
-auto MemoryManifold::getWord(const address_type address) -> Location<uint16_t>
-{
-  return selectManager(address)->getWord(address);
+  return selectManager(address)->getLocation(address, tryWord);
 }
 
 auto MemoryManifold::availableAreas() -> std::vector<MemoryArea>
