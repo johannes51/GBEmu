@@ -65,8 +65,11 @@ set(TEST_SOURCES
     mock/testbank.h
     mock/testbank.cpp
     ops/arithmetic_tests.cpp
+    ops/bitmanip_tests.cpp
     ops/logic_tests.cpp
     ops/memory_tests.cpp
+    ops/ops_tests.cpp
+    ops/shiftrotate_tests.cpp
     ppu/gbrenderer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp

@@ -9,7 +9,8 @@ enum class FlagResult {
   NoChange,
 };
 
-struct OpResult {
+class OpResult {
+public:
   OpResult()
       : OpResult(FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange)
   {
@@ -21,6 +22,12 @@ struct OpResult {
       , c(c)
   {
   }
+
+  bool operator==(const OpResult& other) const
+  {
+    return (z == other.z) && (n == other.n) && (h == other.h) && (c == other.c);
+  }
+
   FlagResult z;
   FlagResult n;
   FlagResult h;

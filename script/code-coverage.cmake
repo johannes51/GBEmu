@@ -393,6 +393,7 @@ function(target_code_coverage TARGET_NAME)
                   ${EXTERNAL_OPTION}
                   --output-file
                   ${COVERAGE_INFO}
+                  --ignore-errors mismatch
           COMMAND ${EXCLUDE_COMMAND}
           COMMAND ${GENHTML_PATH}
                   -o
