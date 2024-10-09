@@ -4,7 +4,6 @@
 
 #include "cpu/operation/jump.h"
 #include "location/variablelocation.h"
-#include "location/zerolocation.h"
 
 auto JumpsCallsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
@@ -107,6 +106,7 @@ void JumpsCallsDecoder::feedResetOpcode(Operation& op, OpcodeView opcode)
 {
   uint8_t lower = 0x00U;
   switch (opcode.value()) {
+  default:
   case 0xC7U:
     lower = 0x00U;
     break;
@@ -130,8 +130,6 @@ void JumpsCallsDecoder::feedResetOpcode(Operation& op, OpcodeView opcode)
     break;
   case 0xFFU:
     lower = 0x38U;
-    break;
-  default:
     break;
   }
   op.nextOpcode(variableLocation(lower));

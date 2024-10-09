@@ -3,9 +3,9 @@
 
 #include "instructiondecoder.h"
 
-class UnimplmentedDecoder : public InstructionDecoder {
+class UnimplementedDecoder : public InstructionDecoder {
 public:
-  UnimplmentedDecoder() = default;
+  UnimplementedDecoder() = default;
 
   OperationUP decode(const Location& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;

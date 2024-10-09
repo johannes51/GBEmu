@@ -32,11 +32,17 @@ set(TEST_SOURCES
     cpu/cpuflags_tests.cpp
     cpu/cpuregisters_tests.cpp
     cpu/id/baseinstructiondecoder_tests.cpp
-    cpu/id/bytearithmetic_tests.cpp
-    cpu/id/control_tests.cpp
-    cpu/id/jumps_calls_tests.cpp
-    cpu/id/byteloads_tests.cpp
+    cpu/id/basicrotatedecoder_tests.cpp
+    cpu/id/bytearithmeticdecoder_tests.cpp
+    cpu/id/byteloadsdecoder_tests.cpp
+    cpu/id/cbopdecoder_tests.cpp
+    cpu/id/controldecoder_tests.cpp
+    cpu/id/jumpscallsdecoder_tests.cpp
+    cpu/id/miscarithmeticdecoder_tests.cpp
     cpu/id/opcodeview_tests.cpp
+    cpu/id/unimplementeddecoder_tests.cpp
+    cpu/id/wordarithmeticdecoder_tests.cpp
+    cpu/id/wordloadsdecoder_tests.cpp
     cpu/operation/bytealuoperation_tests.cpp
     cpu/operation/byteload_tests.cpp
     cpu/operation/control_tests.cpp
