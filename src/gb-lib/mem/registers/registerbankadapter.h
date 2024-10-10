@@ -7,8 +7,9 @@
 
 class RegisterBankAdapter : public IRegisterAdapter {
 public:
-  RegisterBankAdapter(RegisterBank& bank);
+  explicit RegisterBankAdapter(RegisterBank& bank);
 
+  // TODO: machen!
 private:
   RegisterBank& bank_;
 };

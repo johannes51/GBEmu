@@ -30,7 +30,13 @@ template <typename T> auto VariableLocation<T>::getByte() const -> const uint8_t
   return *reinterpret_cast<const uint8_t*>(&variable_);
 }
 
-template <typename T> auto VariableLocation<T>::getWord() const -> const uint16_t& { return variable_; }
+template <typename T> auto VariableLocation<T>::getWord() const -> const uint16_t&
+{
+  if (!isWord()) {
+    throw std::logic_error("Read word on single location");
+  }
+  return variable_;
+}
 
 template <typename T> auto VariableLocation<T>::operator=(const uint8_t& rhs) -> Location&
 {
@@ -40,6 +46,9 @@ template <typename T> auto VariableLocation<T>::operator=(const uint8_t& rhs) ->
 
 template <typename T> auto VariableLocation<T>::operator=(const uint16_t& rhs) -> Location&
 {
+  if (!isWord()) {
+    throw std::logic_error("Read word on single location");
+  }
   variable_ = rhs;
   return *this;
 }

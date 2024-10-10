@@ -20,4 +20,5 @@ TEST(RomLocationTest, Write)
   RomLocation a { Location::Type::Single, b, 0 };
 
   EXPECT_ANY_THROW(a = uint8_t(0));
+  EXPECT_ANY_THROW(a = uint16_t(0));
 }

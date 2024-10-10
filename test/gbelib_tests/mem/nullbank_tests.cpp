@@ -13,5 +13,9 @@ TEST(NullBankTest, Write)
 
   *b.getLocation(loc) = value;
 
-  EXPECT_EQ(0, b.getLocation(3)->getByte());
+  EXPECT_EQ(0U, b.getLocation(loc)->getByte());
+
+  *b.getLocation(loc + 1U) = value;
+
+  EXPECT_EQ(0U, b.getLocation(loc, true)->getWord());
 }

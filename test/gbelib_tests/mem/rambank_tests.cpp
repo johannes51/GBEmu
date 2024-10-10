@@ -33,3 +33,10 @@ TEST(RamBankTest, Oob)
   RamBank b({ 0, 1 }, v);
   EXPECT_THROW(b.getLocation(4), std::invalid_argument);
 }
+
+TEST(RamBankTest, WordOob)
+{
+  std::vector<uint8_t> v;
+  RamBank b({ 0, 1 }, v);
+  EXPECT_THROW(b.getLocation(1, true), std::invalid_argument);
+}

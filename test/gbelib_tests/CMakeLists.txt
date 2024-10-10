@@ -53,18 +53,22 @@ set(TEST_SOURCES
     gb/gbmemoryfactory_tests.cpp
     gb/cartloader_tests.cpp
     location/location_tests.cpp
-    location/nullbyte_tests.cpp
-    location/rambyte_tests.cpp
-    location/rombyte_tests.cpp
-    location/zerobyte_tests.cpp
+    location/nulllocation_tests.cpp
+    location/ramlocation_tests.cpp
+    location/register_tests.cpp
+    location/romlocation_tests.cpp
+    location/variablelocation_tests.cpp
+    location/zerolocation_tests.cpp
     mem/nullbank_tests.cpp
     mem/memorymanifold_tests.cpp
     mem/memoryarea_tests.cpp
     mem/memtools_tests.cpp
     mem/mirrorbank_tests.cpp
     mem/rambank_tests.cpp
-    mem/registerbank_tests.cpp
     mem/rombank_tests.cpp
+    mem/registerbank_tests.cpp
+    mem/registers/memoryregisteradapter_tests.cpp
+    mem/registers/registerbankadapter_tests.cpp
     mock/mockoam.h
     mock/mocktilemap.h
     mock/mockregisteradapter.h

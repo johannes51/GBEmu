@@ -8,15 +8,18 @@ using namespace std;
 
 TEST(MirrorBankTest, Indirect)
 {
-  auto b = std::make_shared<TestBank>(MemoryArea { 0, 15 });
-  auto writeByte = b->getLocation(4);
-  uint8_t value = 0xA2;
+  auto b = std::make_shared<TestBank>(MemoryArea { 0x0U, 0xFU });
+  auto writeByte = b->getLocation(0x4U);
+  uint8_t value = 0xA2U;
   *writeByte = value;
 
-  MirrorBank m { { 16, 31 }, { 0, 15 }, b };
+  MirrorBank m { { 0x10U, 0x1FU }, { 0x0U, 0xFU }, b };
 
-  auto readByte = m.getLocation(16 + 4)->getByte();
+  auto readByte = m.getLocation(0x10U + 0x4U)->getByte();
   EXPECT_EQ(value, readByte);
+
+  *b->getLocation(0x5U) = value;
+  EXPECT_EQ(0xA2A2U, m.getLocation(0x10U + 0x4U, true)->getWord());
 }
 
 TEST(MirrorBankTest, TooBig)

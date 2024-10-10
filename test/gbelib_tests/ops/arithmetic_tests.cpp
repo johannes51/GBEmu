@@ -147,7 +147,7 @@ TEST(ArithmeticTest, Sub)
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11111111U, lA->getWord());
+  EXPECT_EQ(0b11111111U, lA->getByte());
 }
 
 TEST(ArithmeticTest, Complement)

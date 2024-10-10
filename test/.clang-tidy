@@ -1,8 +1,10 @@
 ---
 Checks: '*,-llvmlibc-*,-fuchsia-*,-altera-*,-cert-*,
--google-readability-todo,-google-runtime-references,-cppcoreguidelines-pro-bounds-constant-array-index,
+
+-cert-err58-cpp,-google-readability-todo,-google-runtime-references,-cppcoreguidelines-pro-bounds-constant-array-index,
 -llvm-else-after-return,-readability-else-after-return,-readability-identifier-length,
--bugprone-easily-swappable-parameters,-readability-redundant-member-init,
+-bugprone-easily-swappable-parameters,-readability-redundant-member-init,-misc-include-cleaner,-google-default-arguments,
+-cppcoreguidelines-pro-type-reinterpret-cast,-cppcoreguidelines-pro-bounds-pointer-arithmetic,
 -cppcoreguidelines-avoid-non-const-global-variables,-cppcoreguidelines-owning-memory,-cppcoreguidelines-special-member-functions,
 -hicpp-special-member-functions,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-avoid-goto,
 -hicpp-avoid-goto,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,-google-readability-function-size,-hicpp-function-size,
