@@ -9,7 +9,7 @@ class Location;
 
 namespace ops {
 
-OpResult bit(Location& location, uint8_t bitPos);
+OpResult bit(const Location& location, uint8_t bitPos);
 
 OpResult set(Location& location, uint8_t bitPos);
 

@@ -26,7 +26,7 @@ void PushPop::execute(RegistersInterface& registers, IMemoryView& memory)
     ops::decrement<uint16_t>(*sp);
     ops::decrement<uint16_t>(*sp);
   }
-  auto stackLoc = memory.getLocation(hlp::indirect(*sp));
+  auto stackLoc = memory.getLocation(hlp::indirect(*sp), true);
   if (direction_ == Direction::Pop) {
     ops::increment<uint16_t>(*sp);
     ops::increment<uint16_t>(*sp);

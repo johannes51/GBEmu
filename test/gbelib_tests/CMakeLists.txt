@@ -32,41 +32,59 @@ set(TEST_SOURCES
     cpu/cpuflags_tests.cpp
     cpu/cpuregisters_tests.cpp
     cpu/id/baseinstructiondecoder_tests.cpp
-    cpu/id/bytearithmetic_tests.cpp
-    cpu/id/control_tests.cpp
-    cpu/id/jumps_calls_tests.cpp
-    cpu/id/byteloads_tests.cpp
+    cpu/id/basicrotatedecoder_tests.cpp
+    cpu/id/bytearithmeticdecoder_tests.cpp
+    cpu/id/byteloadsdecoder_tests.cpp
+    cpu/id/cbopdecoder_tests.cpp
+    cpu/id/controldecoder_tests.cpp
+    cpu/id/jumpscallsdecoder_tests.cpp
+    cpu/id/miscarithmeticdecoder_tests.cpp
     cpu/id/opcodeview_tests.cpp
+    cpu/id/unimplementeddecoder_tests.cpp
+    cpu/id/wordarithmeticdecoder_tests.cpp
+    cpu/id/wordloadsdecoder_tests.cpp
+    cpu/operation/basicrotate_tests.cpp
     cpu/operation/bytealuoperation_tests.cpp
-    cpu/operation/byteload_tests.cpp
-    cpu/operation/control_tests.cpp
+    cpu/operation/byteloadoperation_tests.cpp
+    cpu/operation/cbop_tests.cpp
+    cpu/operation/cbprefix_tests.cpp
+    cpu/operation/controloperation_tests.cpp
+    cpu/operation/operation_tests.cpp
     cpu/operation/jump_tests.cpp
+    cpu/operation/miscarithmetic_tests.cpp
     cpu/operation/pushpop_tests.cpp
     cpu/operation/wordaluoperation_tests.cpp
     cpu/operation/wordload_tests.cpp
     gb/gbmemoryfactory_tests.cpp
     gb/cartloader_tests.cpp
     location/location_tests.cpp
-    location/nullbyte_tests.cpp
-    location/rambyte_tests.cpp
-    location/rombyte_tests.cpp
-    location/zerobyte_tests.cpp
+    location/nulllocation_tests.cpp
+    location/ramlocation_tests.cpp
+    location/register_tests.cpp
+    location/romlocation_tests.cpp
+    location/variablelocation_tests.cpp
+    location/zerolocation_tests.cpp
     mem/nullbank_tests.cpp
     mem/memorymanifold_tests.cpp
     mem/memoryarea_tests.cpp
     mem/memtools_tests.cpp
     mem/mirrorbank_tests.cpp
     mem/rambank_tests.cpp
-    mem/registerbank_tests.cpp
     mem/rombank_tests.cpp
+    mem/registerbank_tests.cpp
+    mem/registers/memoryregisteradapter_tests.cpp
+    mem/registers/registerbankadapter_tests.cpp
     mock/mockoam.h
     mock/mocktilemap.h
     mock/mockregisteradapter.h
     mock/testbank.h
     mock/testbank.cpp
     ops/arithmetic_tests.cpp
+    ops/bitmanip_tests.cpp
     ops/logic_tests.cpp
     ops/memory_tests.cpp
+    ops/ops_tests.cpp
+    ops/shiftrotate_tests.cpp
     ppu/gbrenderer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp

@@ -24,7 +24,7 @@ auto InstructionSetBuilder::construct() -> InstructionDecoderUP
   result->registerDecoder(std::make_shared<WordArithmeticDecoder>());
   result->registerDecoder(std::make_shared<JumpsCallsDecoder>());
   result->registerDecoder(std::make_shared<CbDecoder>());
-  result->registerDecoder(std::make_shared<UnimplmentedDecoder>());
+  result->registerDecoder(std::make_shared<UnimplementedDecoder>());
   result->registerDecoder(std::make_shared<MiscArithmeticDecoder>());
 
   return result;

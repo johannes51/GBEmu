@@ -6,8 +6,6 @@
 
 namespace hlp {
 
-constexpr address_type ZeroPageBase = 0xFF00;
-
 template <typename T> address_type indirect(const T& location) { return location.getWord(); }
 
 address_type indirectZeroPage(const Location& location);

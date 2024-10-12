@@ -3,9 +3,12 @@
 
 #include <memory>
 
+#include "defines.h"
+
 class IRegisterAdapter {
 public:
   virtual ~IRegisterAdapter() = default;
+  DISABLE_COPY_AND_MOVE(IRegisterAdapter)
 
   virtual uint8_t get() const = 0;
 

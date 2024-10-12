@@ -46,6 +46,9 @@ void Jump::showFlags(const FlagsView& flags)
 
 void Jump::nextOpcode(LocationUP opcode)
 {
+  if (type_ != JumpType::Regular && type_ != JumpType::Call && type_ != JumpType::Reset) {
+    throw std::logic_error("Needs no immediate data.");
+  }
   if (!param_) {
     param_ = std::move(opcode);
   } else if (!param_->isWord()) {
@@ -122,6 +125,8 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
       case JumpType::Regular:
         if (!param_) {
           throw std::invalid_argument("Adress location bytes not configured");
+        } else if (!param_->isWord()) {
+          throw std::invalid_argument("Only single byte provided, two are needed.");
         }
         ops::load<uint16_t>(*pc, *param_);
         break;
@@ -132,7 +137,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         registers.getFlags().enableInterrupt();
         [[fallthrough]];
       case JumpType::Return:
-        ops::load<uint16_t>(*pc, *memory.getLocation(hlp::indirect(*sp)));
+        ops::load<uint16_t>(*pc, *memory.getLocation(hlp::indirect(*sp), true));
         ops::increment<uint16_t>(*sp);
         ops::increment<uint16_t>(*sp);
       }

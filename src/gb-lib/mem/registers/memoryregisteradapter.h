@@ -8,6 +8,7 @@
 class MemoryRegisterAdapter : public IRegisterAdapter {
 public:
   MemoryRegisterAdapter(IMemoryViewSP mem, address_type address);
+  DISABLE_COPY_AND_MOVE(MemoryRegisterAdapter)
 
   uint8_t get() const override;
 

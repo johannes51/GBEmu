@@ -2,7 +2,7 @@
 
 #include "location/location.h"
 
-auto ops::bit(Location& location, uint8_t bitPos) -> ops::OpResult
+auto ops::bit(const Location& location, uint8_t bitPos) -> ops::OpResult
 {
   const auto result = (static_cast<unsigned int>(location.getByte() >> bitPos) & 0b1U) == 0;
   return { result ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::NoChange };

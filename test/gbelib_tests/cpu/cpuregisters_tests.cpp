@@ -87,3 +87,10 @@ TEST(CpuRegistersTest, NoneWord)
   CpuRegisters regs;
   EXPECT_ANY_THROW(regs.get(WordRegister::None));
 }
+
+TEST(CpuRegistersTest, Flags)
+{
+  CpuRegisters regs;
+  EXPECT_NO_THROW(regs.getFlags());
+  EXPECT_NO_THROW(const_cast<const CpuRegisters&>(regs).getFlags());
+}

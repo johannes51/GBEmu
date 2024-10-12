@@ -2,10 +2,7 @@
 
 // #include <stdexcept>
 
-// #include "cpu/registersinterface.h"
-// #include "location/location.h"
 #include "mem/imemoryview.h"
-// #include "ops/arithmetic.h"
 #include "ops/memory.h"
 #include "util/helpers.h"
 
@@ -72,7 +69,7 @@ void ByteLoadOddball::execute(RegistersInterface& registers, IMemoryView& memory
   address_type indirAdress = 0U;
   switch (indirection_) {
   case Indirection::RegisterC:
-    indirAdress = hlp::indirect(*registers.get(ByteRegister::C));
+    indirAdress = hlp::indirectZeroPage(*registers.get(ByteRegister::C));
     break;
   case Indirection::ImmediateStandard:
     indirAdress = hlp::indirect(*immediate_);

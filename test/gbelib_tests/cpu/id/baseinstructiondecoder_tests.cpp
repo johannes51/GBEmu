@@ -3,7 +3,6 @@
 #include "cpu/id/baseinstructiondecoder.h"
 #include "cpu/id/controldecoder.h"
 #include "cpu/operation/operation.h"
-#include "location/location.h"
 
 #include "location/variablelocation.h"
 
@@ -28,21 +27,18 @@ TEST_F(BaseInstructionDecoderTest, Register)
 
 TEST_F(BaseInstructionDecoderTest, Decode)
 {
-  BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_NO_THROW(d.decode(*variableLocation(uint8_t(0x00))));
+  EXPECT_NO_THROW(d.decode(*variableLocation(uint8_t { 0x00U })));
 }
 
 TEST_F(BaseInstructionDecoderTest, UndecodedOpcode)
 {
-  BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_ANY_THROW(d.decode(*variableLocation(uint8_t(0x80))));
+  EXPECT_ANY_THROW(d.decode(*variableLocation(uint8_t { 0x80U })));
 }
 
 TEST_F(BaseInstructionDecoderTest, AlreadyDecodedOpcode)
 {
-  BaseInstructionDecoder d;
   d.registerDecoder(std::make_shared<ControlDecoder>());
   EXPECT_ANY_THROW(d.registerDecoder(std::make_shared<ControlDecoder>()));
 }

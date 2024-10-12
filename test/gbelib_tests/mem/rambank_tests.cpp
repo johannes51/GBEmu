@@ -23,7 +23,7 @@ TEST(RamBankTest, Write16)
   auto writeWord = b.getLocation(4, true);
   uint16_t value = 0xA27E;
   *writeWord = value;
-  auto readWord = b.getLocation(4)->getWord();
+  auto readWord = b.getLocation(4, true)->getWord();
   EXPECT_EQ(value, readWord);
 }
 
@@ -32,4 +32,11 @@ TEST(RamBankTest, Oob)
   std::vector<uint8_t> v;
   RamBank b({ 0, 1 }, v);
   EXPECT_THROW(b.getLocation(4), std::invalid_argument);
+}
+
+TEST(RamBankTest, WordOob)
+{
+  std::vector<uint8_t> v;
+  RamBank b({ 0, 1 }, v);
+  EXPECT_THROW(b.getLocation(1, true), std::invalid_argument);
 }

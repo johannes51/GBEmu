@@ -1,6 +1,5 @@
 #include "miscarithmeticdecoder.h"
 
-#include <algorithm>
 #include <stdexcept>
 
 #include "../operation/miscarithmetic.h"
@@ -12,9 +11,6 @@ const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27U, 0x3
 auto MiscArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.getByte() };
-  if (std::find(std::begin(decodedOpcodes_), std::end(decodedOpcodes_), opcode.value()) == std::end(decodedOpcodes_)) {
-    throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()) };
-  }
   return std::make_unique<MiscArithmetic>(decodeFunction(opcode.value()));
 }
 

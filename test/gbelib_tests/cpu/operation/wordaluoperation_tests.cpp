@@ -7,7 +7,7 @@
 TEST(WordAluOperationTest, Inc)
 {
   CpuRegisters r;
-  *r.get(WordRegister::DE) = uint16_t { 0xC3A1 };
+  *r.get(WordRegister::DE) = uint16_t { 0xC3A1U };
   IMemoryViewSP m;
 
   WordAluOperation op { WordAluFunction::Inc, WordRegister::DE };
@@ -15,13 +15,13 @@ TEST(WordAluOperationTest, Inc)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0xC3A2, r.get(WordRegister::DE)->getWord());
+  EXPECT_EQ(0xC3A2U, r.get(WordRegister::DE)->getWord());
 }
 
 TEST(WordAluOperationTest, Dec)
 {
   CpuRegisters r;
-  *r.get(WordRegister::HL) = uint16_t { 0xC3A1 };
+  *r.get(WordRegister::HL) = uint16_t { 0xC3A1U };
   IMemoryViewSP m;
 
   WordAluOperation op { WordAluFunction::Dec, WordRegister::HL };
@@ -29,14 +29,14 @@ TEST(WordAluOperationTest, Dec)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0xC3A0, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xC3A0U, r.get(WordRegister::HL)->getWord());
 }
 
 TEST(WordAluOperationTest, Add)
 {
   CpuRegisters r;
-  *r.get(WordRegister::HL) = uint16_t { 0x0A09 };
-  *r.get(WordRegister::BC) = uint16_t { 0x700A };
+  *r.get(WordRegister::HL) = uint16_t { 0x0A09U };
+  *r.get(WordRegister::BC) = uint16_t { 0x700AU };
   IMemoryViewSP m;
 
   WordAluOperation op { WordAluFunction::Add, WordRegister::BC };
@@ -44,5 +44,5 @@ TEST(WordAluOperationTest, Add)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0x7A13, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0x7A13U, r.get(WordRegister::HL)->getWord());
 }

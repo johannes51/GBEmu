@@ -4,9 +4,9 @@
 
 TEST(MemoryAreaTest, LessThan)
 {
-  MemoryArea a { 0, 16 };
-  MemoryArea b { 0, 16 };
-  MemoryArea c { 8, 16 };
+  MemoryArea a { 0x0U, 0xFU };
+  MemoryArea b { 0x0U, 0xFU };
+  MemoryArea c { 0x8U, 0xFU };
   MemoryArea d { 8, 31 };
 
   EXPECT_FALSE(a < b);
@@ -21,13 +21,24 @@ TEST(MemoryAreaTest, LessThan)
 
 TEST(MemoryAreaTest, Equals)
 {
-  MemoryArea a { 0, 16 };
-  MemoryArea b { 0, 16 };
-  MemoryArea c { 8, 16 };
+  MemoryArea a { 0x0U, 0xFU };
+  MemoryArea b { 0x0U, 0xFU };
+  MemoryArea c { 0x8U, 0xFU };
 
   EXPECT_TRUE(a == b);
   EXPECT_TRUE(b == a);
 
   EXPECT_FALSE(a == c);
   EXPECT_FALSE(c == a);
+}
+
+TEST(MemoryAreaTest, Size)
+{
+  MemoryArea a { 0x0U, 0xFU };
+  MemoryArea b { 0x0U, 0xFU };
+  MemoryArea c { 0x8U, 0xFU };
+
+  EXPECT_EQ(16U, a.size());
+  EXPECT_EQ(16U, b.size());
+  EXPECT_EQ(8U, c.size());
 }
