@@ -43,10 +43,15 @@ set(TEST_SOURCES
     cpu/id/unimplementeddecoder_tests.cpp
     cpu/id/wordarithmeticdecoder_tests.cpp
     cpu/id/wordloadsdecoder_tests.cpp
+    cpu/operation/basicrotate_tests.cpp
     cpu/operation/bytealuoperation_tests.cpp
-    cpu/operation/byteload_tests.cpp
-    cpu/operation/control_tests.cpp
+    cpu/operation/byteloadoperation_tests.cpp
+    cpu/operation/cbop_tests.cpp
+    cpu/operation/cbprefix_tests.cpp
+    cpu/operation/controloperation_tests.cpp
+    cpu/operation/operation_tests.cpp
     cpu/operation/jump_tests.cpp
+    cpu/operation/miscarithmetic_tests.cpp
     cpu/operation/pushpop_tests.cpp
     cpu/operation/wordaluoperation_tests.cpp
     cpu/operation/wordload_tests.cpp

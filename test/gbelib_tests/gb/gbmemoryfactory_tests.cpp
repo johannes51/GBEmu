@@ -26,9 +26,9 @@ address_type startPC = 0x0100;
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint16_t value)
 {
-  auto writeLocation = memory.getLocation(writeAddress);
+  auto writeLocation = memory.getLocation(writeAddress, true);
   *writeLocation = value;
-  EXPECT_EQ(value, memory.getLocation(readAddress)->getWord());
+  EXPECT_EQ(value, memory.getLocation(readAddress, true)->getWord());
 }
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type rwAddress, uint16_t value)
@@ -85,7 +85,7 @@ TEST(GBMemoryFactoryTest, ROM0t3)
   auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.constructMemoryLayout();
-  unsigned val = mem->getLocation(endROM0 - 1)->getWord();
+  unsigned val = mem->getLocation(endROM0 - 1, true)->getWord();
   EXPECT_EQ(0x066E, val);
   EXPECT_ANY_THROW(*mem->getLocation(endROM0) = uint8_t(0x00));
 }

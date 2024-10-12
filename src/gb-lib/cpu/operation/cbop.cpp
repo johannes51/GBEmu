@@ -27,6 +27,9 @@ auto CbOp::cycles() -> unsigned { return indirect_ ? 4 : 2; }
 
 void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
 {
+  if (!isComplete()) {
+    throw std::logic_error("No bit set on bit op.");
+  }
   auto op = indirect_ ? memory.getLocation(hlp::indirect(*registers.get(WordRegister::HL))) : registers.get(operand_);
   switch (function_) {
   case CbFunction::RotateRight:

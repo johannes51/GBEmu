@@ -2,7 +2,13 @@
 
 auto BufferLocation::getByte() const -> const uint8_t& { return area_.getByteReference(start_); }
 
-auto BufferLocation::getWord() const -> const uint16_t& { return area_.getWordReference(start_); }
+auto BufferLocation::getWord() const -> const uint16_t&
+{
+  if (!isWord()) {
+    throw std::logic_error("Tried for word value from non-word location");
+  }
+  return area_.getWordReference(start_);
+}
 
 auto BufferLocation::operator=(const uint8_t& rhs) -> BufferLocation&
 {

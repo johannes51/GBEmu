@@ -23,7 +23,7 @@ TEST(RamBankTest, Write16)
   auto writeWord = b.getLocation(4, true);
   uint16_t value = 0xA27E;
   *writeWord = value;
-  auto readWord = b.getLocation(4)->getWord();
+  auto readWord = b.getLocation(4, true)->getWord();
   EXPECT_EQ(value, readWord);
 }
 
