@@ -24,6 +24,28 @@ TEST(CpuFlagsTest, Carry)
   EXPECT_EQ(false, flags.carry());
 }
 
+TEST(CpuFlagsTest, HalfCarry)
+{
+  uint8_t buf = 0;
+  CpuFlags flags(buf);
+  EXPECT_EQ(false, flags.halfCarry());
+  flags.setHalfCarry();
+  EXPECT_EQ(true, flags.halfCarry());
+  flags.clearHalfCarry();
+  EXPECT_EQ(false, flags.halfCarry());
+}
+
+TEST(CpuFlagsTest, Subtract)
+{
+  uint8_t buf = 0;
+  CpuFlags flags(buf);
+  EXPECT_EQ(false, flags.subtract());
+  flags.setSubtract();
+  EXPECT_EQ(true, flags.subtract());
+  flags.clearSubtract();
+  EXPECT_EQ(false, flags.subtract());
+}
+
 TEST(CpuFlagsTest, Interrupt)
 {
   uint8_t buf = 0;
