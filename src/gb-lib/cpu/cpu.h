@@ -4,7 +4,7 @@
 #include "cpu_defines.h"
 #include "id/instructiondecoder.h"
 #include "location/location.h"
-#include "mem/mem_defines.h"
+#include "mem/imemoryview.h"
 
 class Cpu {
 public:
@@ -18,8 +18,9 @@ private:
   LocationUP nextOpcode();
 
   const IMemoryViewSP mem_;
-  RegistersInterfaceUP registers_;
+  const RegistersInterfaceUP registers_;
   const InstructionDecoderUP instructionDecoder_;
+
   OperationUP nextOperation_;
   unsigned ticksTillExecution_ = 0;
 };

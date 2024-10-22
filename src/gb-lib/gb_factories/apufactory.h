@@ -1,7 +1,7 @@
 #ifndef APUFACTORY_H
 #define APUFACTORY_H
 
-#include "mem/mem_defines.h"
+#include "mem/imemoryview.h"
 #include "peripherals/peri_defines.h"
 
 class ApuFactory {

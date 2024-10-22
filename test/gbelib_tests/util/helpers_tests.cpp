@@ -13,7 +13,7 @@ TEST(HelperTest, IndirectZeroPage)
 
 TEST(HelperTest, Bits)
 {
-  auto v = uint8_t{0b01010101U};
+  auto v = uint8_t { 0b01010101U };
 
   EXPECT_FALSE(hlp::checkBit(v, 7U));
   hlp::setBit(v, 7U);

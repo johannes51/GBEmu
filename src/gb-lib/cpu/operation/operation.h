@@ -1,13 +1,10 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 
-#include <stdint.h>
-#include <vector>
-
 #include "cpu/cpu_defines.h"
 #include "cpu/flagsview.h"
 #include "location/location.h"
-#include "mem/mem_defines.h"
+#include "mem/imemoryview.h"
 #include "ops/ops.h"
 
 class Operation {

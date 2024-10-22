@@ -1,9 +1,7 @@
 #ifndef PPUFACTORY_H
 #define PPUFACTORY_H
 
-#include <memory>
-
-#include "mem/mem_defines.h"
+#include "mem/imemoryview.h"
 #include "peripherals/peri_defines.h"
 
 class PpuFactory {

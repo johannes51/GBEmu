@@ -3,8 +3,8 @@
 
 #include <fstream>
 #include <span>
-#include <vector>
 
+#include "mem/imemorymanager.h"
 #include "mem/mem_defines.h"
 
 namespace gb {

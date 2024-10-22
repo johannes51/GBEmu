@@ -4,7 +4,8 @@
 #include <vector>
 
 #include "gb_defines.h"
-#include "mem/mem_defines.h"
+#include "mem/imemorymanager.h"
+#include "mem/imemoryview.h"
 #include "mem/memoryarea.h"
 
 namespace gb {

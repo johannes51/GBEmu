@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "cpu/cpu_defines.h"
-#include "mem/mem_defines.h"
+#include "mem/imemoryview.h"
 #include "peripherals/peri_defines.h"
 
 class SystemManager {

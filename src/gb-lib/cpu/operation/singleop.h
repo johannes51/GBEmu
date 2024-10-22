@@ -7,7 +7,7 @@
 
 template <unsigned Cycles> class SingleOp : public Operation {
 public:
-  virtual ~SingleOp() = default;
+  ~SingleOp() override = default;
 
   virtual void nextOpcode(LocationUP opcode) override
   {
