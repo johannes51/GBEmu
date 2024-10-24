@@ -3,8 +3,6 @@
 
 #include <memory>
 
-#include "defines.h"
-
 class Cpu;
 using CpuUP = std::unique_ptr<Cpu>;
 

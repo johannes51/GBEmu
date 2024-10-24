@@ -17,6 +17,7 @@ target_sources(gbelib PRIVATE
   apu/gbchannel4.cpp
   apu/gbmixer.h
   apu/gbmixer.cpp
+  apu/iapu.h
   apu/ichannel.h
   apu/imixer.h
   cpu/cpu.h
@@ -155,10 +156,9 @@ target_sources(gbelib PRIVATE
   ops/ops.h
   ops/shiftrotate.h
   ops/shiftrotate.cpp
-  peripherals/joypad.h
-  peripherals/joypad.cpp
-  peripherals/peri_defines.h
-  peripherals/peripheral.h
+  input/joypad.h
+  input/joypad.cpp
+  ppu/ippu.h
   ppu/irenderer.h
   ppu/gbrenderer.h
   ppu/gbrenderer.cpp

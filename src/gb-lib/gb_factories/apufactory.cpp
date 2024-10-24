@@ -9,7 +9,7 @@
 #include "apuregisterfactory.h"
 #include "mem/registers/memoryregisteradapter.h"
 
-auto ApuFactory::constructApu() -> PeripheralSP
+auto ApuFactory::constructApu() -> IApuUP
 {
   ApuRegisterFactory a { ioBank_ };
   auto ch1 = std::make_shared<GbChannel1>(a.get(ApuRegisters::NR10), a.get(ApuRegisters::NR11),
@@ -22,7 +22,7 @@ auto ApuFactory::constructApu() -> PeripheralSP
   auto ch4 = std::make_shared<GbChannel4>(a.get(ApuRegisters::NR41), a.get(ApuRegisters::NR42),
       a.get(ApuRegisters::NR43), a.get(ApuRegisters::NR44), a.get(ApuRegisters::NR52));
 
-  return std::make_shared<Apu>(std::make_shared<GbMixer>(a.get(ApuRegisters::NR12), a.get(ApuRegisters::NR22),
+  return std::make_unique<Apu>(std::make_shared<GbMixer>(a.get(ApuRegisters::NR12), a.get(ApuRegisters::NR22),
       a.get(ApuRegisters::NR32), a.get(ApuRegisters::NR42), a.get(ApuRegisters::NR50), a.get(ApuRegisters::NR51),
       a.get(ApuRegisters::NR52), std::array<IChannelSP, 4>({ ch1, ch2, ch3, ch4 })));
 }

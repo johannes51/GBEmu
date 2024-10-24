@@ -2,7 +2,7 @@
 #define PPUFACTORY_H
 
 #include "mem/imemoryview.h"
-#include "peripherals/peri_defines.h"
+#include "ppu/ippu.h"
 
 class PpuFactory {
 public:
@@ -11,7 +11,7 @@ public:
   {
   }
 
-  PeripheralSP constructPpu();
+  IPpuUP constructPpu();
 
 private:
   IMemoryViewSP mem_;

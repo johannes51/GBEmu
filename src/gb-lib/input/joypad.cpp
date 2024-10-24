@@ -2,7 +2,7 @@
 
 #include "util/helpers.h"
 
-Joypad::Joypad(IMemoryViewSP controllerRegister)
+Joypad::Joypad(IRegisterAdapterSP controllerRegister)
     : controllerRegister_(std::move(controllerRegister))
     , buttonState_({ { Button::Up, false }, { Button::Down, false }, { Button::Left, false }, { Button::Right, false },
           { Button::A, false }, { Button::B, false }, { Button::Start, false }, { Button::Select, false } })
@@ -11,8 +11,8 @@ Joypad::Joypad(IMemoryViewSP controllerRegister)
 
 void Joypad::clock()
 {
-  auto ctrReg = controllerRegister_->getLocation(ControllerRegisterAddress)->getByte();
-  if (hlp::checkBit(ctrReg, SelectAction)) {
+  auto ctrReg = controllerRegister_->get();
+  if (controllerRegister_->testBit(SelectAction)) {
     affectInputBit(ctrReg, Button::A, RightOrA);
     affectInputBit(ctrReg, Button::B, LeftOrB);
     affectInputBit(ctrReg, Button::Select, UpOrSelect);
@@ -24,7 +24,7 @@ void Joypad::clock()
     affectInputBit(ctrReg, Button::Up, UpOrSelect);
     affectInputBit(ctrReg, Button::Down, DownOrStart);
   }
-  *controllerRegister_->getLocation(ControllerRegisterAddress) = ctrReg;
+  // *controllerRegister_ = ctrReg; FIXME: reimplement
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }

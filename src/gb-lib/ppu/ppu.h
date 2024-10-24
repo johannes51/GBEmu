@@ -1,12 +1,15 @@
 #ifndef PPU_H
 #define PPU_H
 
+#include "defines.h"
+#include "ippu.h"
 #include "irenderer.h"
-#include "peripherals/peripheral.h"
 
-class Ppu : public Peripheral {
+class Ppu : public IPpu {
 public:
   explicit Ppu(IRendererSP renderer);
+  DISABLE_COPY_AND_MOVE(Ppu)
+  ~Ppu() override = default;
 
   void clock() override;
 

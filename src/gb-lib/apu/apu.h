@@ -1,16 +1,14 @@
 #ifndef APU_H
 #define APU_H
 
-#include <memory>
-#include <vector>
-
-#include "ichannel.h"
+#include "defines.h"
+#include "iapu.h"
 #include "imixer.h"
-#include "peripherals/peripheral.h"
 
-class Apu : public Peripheral {
+class Apu : public IApu {
 public:
   Apu(IMixerSP&& mixer);
+  DISABLE_COPY_AND_MOVE(Apu)
   ~Apu() override = default;
 
   void clock() override;

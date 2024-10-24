@@ -1,8 +1,8 @@
 #ifndef APUFACTORY_H
 #define APUFACTORY_H
 
+#include "apu/iapu.h"
 #include "mem/imemoryview.h"
-#include "peripherals/peri_defines.h"
 
 class ApuFactory {
 public:
@@ -11,7 +11,7 @@ public:
   {
   }
 
-  PeripheralSP constructApu();
+  IApuUP constructApu();
 
 private:
   IMemoryViewSP ioBank_;
