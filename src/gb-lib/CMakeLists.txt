@@ -156,8 +156,9 @@ target_sources(gbelib PRIVATE
   ops/ops.h
   ops/shiftrotate.h
   ops/shiftrotate.cpp
-  input/joypad.h
-  input/joypad.cpp
+  peripherals/joypad.h
+  peripherals/joypad.cpp
+  peripherals/tickable.h
   ppu/ippu.h
   ppu/irenderer.h
   ppu/gbrenderer.h

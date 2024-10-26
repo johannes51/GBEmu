@@ -5,6 +5,7 @@
 #include "id/instructiondecoder.h"
 #include "location/location.h"
 #include "mem/imemoryview.h"
+#include "operation/operation.h"
 
 class Cpu {
 public:
@@ -21,7 +22,7 @@ private:
   const RegistersInterfaceUP registers_;
   const InstructionDecoderUP instructionDecoder_;
 
-  OperationUP nextOperation_;
+  OperationUP nextOperation_ = nullptr;
   unsigned ticksTillExecution_ = 0;
 };
 
