@@ -1,10 +1,10 @@
 #ifndef LOCATION_H
 #define LOCATION_H
 
-#include <span>
+#include <cstdint>
+#include <memory>
 
 #include "defines.h"
-#include "mem/mem_defines.h"
 
 class Location {
 public:

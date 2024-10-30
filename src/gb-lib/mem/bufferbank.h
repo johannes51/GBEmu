@@ -1,6 +1,8 @@
 #ifndef BUFFER_BANK_H
 #define BUFFER_BANK_H
 
+#include <span>
+
 #include "singleareamanager.h"
 
 class BufferBank : public SingleAreaManager {

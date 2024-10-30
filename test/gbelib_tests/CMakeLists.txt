@@ -74,9 +74,12 @@ set(TEST_SOURCES
     mem/registerbank_tests.cpp
     mem/registers/memoryregisteradapter_tests.cpp
     mem/registers/registerbankadapter_tests.cpp
+    mock/mockinterrupthandler.h
     mock/mockoam.h
     mock/mocktilemap.h
     mock/mockregisteradapter.h
+    mock/mockregisters.h
+    mock/mockregisters.cpp
     mock/testbank.h
     mock/testbank.cpp
     ops/arithmetic_tests.cpp
@@ -85,6 +88,7 @@ set(TEST_SOURCES
     ops/memory_tests.cpp
     ops/ops_tests.cpp
     ops/shiftrotate_tests.cpp
+    peripherals/gbinterrupthandler_tests.cpp
     ppu/gbrenderer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp

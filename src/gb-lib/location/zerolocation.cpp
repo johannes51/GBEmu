@@ -1,5 +1,7 @@
 #include "zerolocation.h"
 
+#include <array>
+
 std::array<uint8_t, 2> ZeroLocation::zero_ = { 0 };
 
 auto ZeroLocation::getByte() const -> const uint8_t& { return zero_.front(); }

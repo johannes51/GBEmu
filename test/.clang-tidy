@@ -9,6 +9,6 @@ Checks: '*,-llvmlibc-*,-fuchsia-*,-altera-*,-cert-*,
 -hicpp-special-member-functions,-cppcoreguidelines-avoid-magic-numbers,-readability-magic-numbers,-cppcoreguidelines-avoid-goto,
 -hicpp-avoid-goto,-cppcoreguidelines-pro-type-vararg,-hicpp-vararg,-google-readability-function-size,-hicpp-function-size,
 -readability-function-size,-cppcoreguidelines-non-private-member-variables-in-classes,-google-build-using-namespace,
--misc-non-private-member-variables-in-classes,-misc-const-correctness,-misc-include-cleaner
+-misc-non-private-member-variables-in-classes,-misc-const-correctness,-misc-include-cleaner,-google-readability-casting
 ,-readability-function-cognitive-complexity'
 ...

@@ -1,23 +1,17 @@
 #include "gtest/gtest.h"
 
-#include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
-#include "gb_factories/cartloader.h"
-#include "gb_factories/instructionsetbuilder.h"
-#include "gb_factories/memoryfactory.h"
+#include "gb_factories/gbfactory.h"
 
 using namespace std;
 using namespace gb;
 
 TEST(RomTest, InteruptTime)
 {
-  std::vector<uint8_t> v;
-  Cpu cpu(make_unique<CpuRegisters>(),
-      MemoryFactory { make_unique<CartLoader>("interrupt_time.gb"), v }.constructMemoryLayout(),
-      InstructionSetBuilder::construct());
+  GbFactory g("interrupt_time.gb", "interrupt_time.sav");
+  auto sm = g.constructSystem();
 
   for (int var = 0; var < 66693; ++var) {
-    EXPECT_NO_THROW(cpu.clock()) << var; // TODO: wartet auf irgendwas
+    EXPECT_NO_THROW(sm->clock()) << var; // TODO: wartet auf irgendwas
   }
 
   //-----------------------------------------------DONE-----------------------------------------------------------------

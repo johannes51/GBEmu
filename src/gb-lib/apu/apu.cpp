@@ -1,6 +1,6 @@
 #include "apu.h"
 
-Apu::Apu(IMixerSP&& mixer)
+Apu::Apu(IMixerUP&& mixer)
     : mixer_(std::move(mixer))
 {
 }

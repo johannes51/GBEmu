@@ -75,7 +75,7 @@ TEST(ByteLoadOperationTest, ImmediateRegisterIndirect)
   TestBank b({ 0xFF00U, 0xFF02U });
   CpuRegisters r;
 
-  EXPECT_ANY_THROW(( ByteLoadImmediate(WordRegister::AF) ));
+  EXPECT_ANY_THROW((ByteLoadImmediate(WordRegister::AF)));
 
   ByteLoadImmediate loadImmediateRegisterIndirect { WordRegister::HL };
   EXPECT_FALSE(loadImmediateRegisterIndirect.isComplete());

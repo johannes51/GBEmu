@@ -2,16 +2,16 @@
 #define CARTLOADER_H
 
 #include <fstream>
+#include <memory>
 #include <span>
-#include <vector>
 
+#include "mem/imemorymanager.h"
 #include "mem/mem_defines.h"
 
 namespace gb {
 
 class CartLoader {
 public:
-  CartLoader(const std::string& romFile);
   CartLoader(const std::string& romFile, const std::string& ramFile);
 
   static size_t calculateNeccessarySize();
@@ -32,6 +32,8 @@ private:
   std::ifstream romFile_;
   std::fstream ramFile_;
 };
+
+using CartLoaderUP = std::unique_ptr<CartLoader>;
 
 } // namespace gb
 

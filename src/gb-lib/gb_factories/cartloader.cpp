@@ -8,12 +8,6 @@
 
 #include <array>
 
-gb::CartLoader::CartLoader(const std::string& romFile)
-    : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
-    , ramFile_()
-{
-}
-
 gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFile)
     : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
     , ramFile_(ramFile, std::ios_base::in | std::ios_base::out | std::ios_base::binary)
@@ -38,7 +32,7 @@ auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buff
   auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
 
   auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
-  read16K(ram0Span, romFile_);
+  read16K(ram0Span, romFile_); // FIXME: this is a major bug
   auto ram0 = std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
 
   result.push_back(rom0);

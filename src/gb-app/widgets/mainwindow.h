@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include "defines.h"
-#include "ppu/ppu.h"
+#include "ppu/irenderer.h"
 #include "sys/systemmanager.h"
 
 namespace Ui {
@@ -27,12 +27,11 @@ public slots:
 private:
   std::unique_ptr<Ui::MainWindow> ui_;
 
-  std::unique_ptr<SystemManager> sm_;
-  std::vector<uint8_t> v_;
+  SystemManagerUP sm_ = nullptr;
 
   QTimer timer_;
 
-  const IPixelBuffer* buffer_;
+  const IPixelBuffer* buffer_ = nullptr;
 
   QImage img_;
 };

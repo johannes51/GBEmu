@@ -17,6 +17,7 @@ target_sources(gbelib PRIVATE
   apu/gbchannel4.cpp
   apu/gbmixer.h
   apu/gbmixer.cpp
+  apu/iapu.h
   apu/ichannel.h
   apu/imixer.h
   cpu/cpu.h
@@ -85,17 +86,20 @@ target_sources(gbelib PRIVATE
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
+  gb_factories/apufactory.h
+  gb_factories/apufactory.cpp
   gb_factories/apuregisterfactory.h
   gb_factories/apuregisterfactory.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
-  gb_factories/apufactory.h
-  gb_factories/apufactory.cpp
-  gb_factories/gb_defines.h
+  gb_factories/gbfactory.h
+  gb_factories/gbfactory.cpp
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
+  gb_factories/peripheralregisterfactory.h
+  gb_factories/peripheralregisterfactory.cpp
   gb_factories/ppufactory.h
   gb_factories/ppufactory.cpp
   gb_factories/ppuregisterfactory.h
@@ -155,10 +159,13 @@ target_sources(gbelib PRIVATE
   ops/ops.h
   ops/shiftrotate.h
   ops/shiftrotate.cpp
+  peripherals/gbinterrupthandler.h
+  peripherals/gbinterrupthandler.cpp
+  peripherals/interrupthandler.h
   peripherals/joypad.h
   peripherals/joypad.cpp
-  peripherals/peri_defines.h
-  peripherals/peripheral.h
+  peripherals/tickable.h
+  ppu/ippu.h
   ppu/irenderer.h
   ppu/gbrenderer.h
   ppu/gbrenderer.cpp

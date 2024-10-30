@@ -1,13 +1,11 @@
 #include "systemmanager.h"
 
 #include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
-#include "peripherals/peripheral.h"
 
-SystemManager::SystemManager(IMemoryViewSP memory, std::unique_ptr<Cpu> cpu, std::vector<PeripheralSP> peripherals)
-    : memory_(std::move(memory))
-    , cpu_(std::move(cpu))
+SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const IPixelBuffer* buffer)
+    : cpu_(std::move(cpu))
     , peripherals_(std::move(peripherals))
+    , buffer_(buffer)
 {
 }
 
@@ -20,3 +18,5 @@ void SystemManager::clock() const
     peri->clock();
   }
 }
+
+auto SystemManager::getBuffer() const -> const IPixelBuffer* { return buffer_; }
