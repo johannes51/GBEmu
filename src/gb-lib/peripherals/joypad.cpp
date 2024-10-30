@@ -24,7 +24,7 @@ void Joypad::clock()
     affectInputBit(ctrReg, Button::Up, UpOrSelect);
     affectInputBit(ctrReg, Button::Down, DownOrStart);
   }
-  // *controllerRegister_ = ctrReg; FIXME: reimplement
+  controllerRegister_->set(ctrReg);
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }

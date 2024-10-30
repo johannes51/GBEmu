@@ -1,36 +1,19 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 
-#include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
-#include "gb_factories/apufactory.h"
-#include "gb_factories/cartloader.h"
-#include "gb_factories/instructionsetbuilder.h"
-#include "gb_factories/memoryfactory.h"
-#include "gb_factories/ppufactory.h"
-#include "gb_factories/registerfactory.h"
+#include "gb_factories/gbfactory.h"
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent)
     , ui_(std::make_unique<Ui::MainWindow>())
-    , sm_()
-    , v_()
     , timer_(this)
-    , buffer_(nullptr)
     , img_(160, 144, QImage::Format_Indexed8) // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 {
   ui_->setupUi(this);
 
-  gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v_);
-  auto ml = m.constructMemoryLayout();
-  std::vector<PeripheralSP> ps {};
-  ApuFactory c { ml };
-  ps.emplace_back(c.constructApu());
-  PpuFactory p { ml };
-  ps.emplace_back(p.constructPpu());
-  buffer_ = &std::dynamic_pointer_cast<Ppu>(ps.back())->getBuffer();
-  sm_ = std::make_unique<SystemManager>(
-      ml, std::make_unique<Cpu>(std::make_unique<CpuRegisters>(), ml, InstructionSetBuilder::construct()), ps);
+  GbFactory f { "cpu_instrs.gb", "cpu_instrs.sav" };
+  sm_ = f.constructSystem();
+  buffer_ = sm_->getBuffer(); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
   timer_.start(
       static_cast<int>(1000. / 60.)); // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)

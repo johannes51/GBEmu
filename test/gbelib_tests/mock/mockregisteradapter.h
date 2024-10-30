@@ -5,13 +5,32 @@
 
 class MockRegisterAdapter : public IRegisterAdapter {
 public:
-  uint8_t get() const override { return 0; }
-  bool testBit(uint8_t pos) const override
+  explicit MockRegisterAdapter(uint8_t initial)
+      : value_(initial)
   {
-    (void)pos;
-    return false;
   }
-  static std::shared_ptr<IRegisterAdapter> make() { return std::make_shared<MockRegisterAdapter>(); }
+
+  auto get() const -> uint8_t override { return value_; }
+  void set(uint8_t value) override { value_ = value; }
+  auto testBit(uint8_t pos) const -> bool override { return (value_ & (1U << pos)) > 0; }
+  void setBit(uint8_t pos, bool value) override
+  {
+    auto temp = get();
+    if (value) {
+      temp |= (1U << pos);
+    } else {
+      temp ^= (1U << pos);
+    }
+    set(temp);
+  }
+
+  static std::shared_ptr<IRegisterAdapter> make(uint8_t initial = 0U)
+  {
+    return std::make_shared<MockRegisterAdapter>(initial);
+  }
+
+private:
+  uint8_t value_;
 };
 
 #endif // MOCKREGISTERADAPTER_H

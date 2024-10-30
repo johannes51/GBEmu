@@ -9,9 +9,8 @@
 #include "mem/rambank.h"
 #include "mem/registerbank.h"
 
-gb::MemoryFactory::MemoryFactory(RomLoaderUP&& romLoader, std::vector<uint8_t>& buffer)
+gb::MemoryFactory::MemoryFactory(CartLoaderUP&& romLoader, std::vector<uint8_t>& buffer)
     : loader_(std::move(romLoader))
-    , ioBank_()
     , buffer_(buffer)
     , ptr_(buffer_.begin())
 {
@@ -34,13 +33,9 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   manifold->addSubManager(buildMirrorBank(MIRROR_U, WRAM1, wram1));
   manifold->addSubManager(buildRamBank(OAM));
   manifold->addSubManager(buildNullBank(NOT_USED));
+  manifold->addSubManager(buildNullBank(IO));
   manifold->addSubManager(buildRamBank(HRAM));
   manifold->addSubManager(buildIe());
-
-  auto ioManager = std::make_shared<RamBank>(IO, std::span(ptr_, IO.size()));
-  std::advance(ptr_, IO.size());
-  manifold->addSubManager(ioManager); // TODO: This is just a fake-out, actually implement!
-  ioBank_ = ioManager;
 
   return manifold;
 }

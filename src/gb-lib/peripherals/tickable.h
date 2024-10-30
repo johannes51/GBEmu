@@ -16,6 +16,6 @@ protected:
   Tickable() = default;
 };
 
-using TickableUP = std::unique_ptr<Tickable>;
+using TickableSP = std::shared_ptr<Tickable>;
 
 #endif // TICKABLE_H

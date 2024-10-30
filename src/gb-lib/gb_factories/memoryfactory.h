@@ -3,7 +3,7 @@
 
 #include <vector>
 
-#include "gb_defines.h"
+#include "cartloader.h"
 #include "mem/imemorymanager.h"
 #include "mem/imemoryview.h"
 #include "mem/memoryarea.h"
@@ -12,11 +12,9 @@ namespace gb {
 
 class MemoryFactory {
 public:
-  MemoryFactory(RomLoaderUP&& romLoader, std::vector<uint8_t>& buffer);
+  MemoryFactory(CartLoaderUP&& romLoader, std::vector<uint8_t>& buffer);
 
   IMemoryViewSP constructMemoryLayout();
-
-  IMemoryViewSP getIoBank() { return ioBank_; }
 
 private:
   static constexpr MemoryArea VRAM = { 0x8000, 0x9FFF };
@@ -36,8 +34,7 @@ private:
   std::vector<IMemoryManagerSP> buildCartBanks();
   static IMemoryManagerSP buildIe();
 
-  RomLoaderUP loader_;
-  IMemoryViewSP ioBank_;
+  CartLoaderUP loader_;
   std::vector<uint8_t>& buffer_;
   std::vector<uint8_t>::iterator ptr_;
 };

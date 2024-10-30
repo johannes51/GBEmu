@@ -1,18 +1,14 @@
 #include "gtest/gtest.h"
 
-#include <fstream>
+#include "mock/mockinterrupthandler.h"
 
-#include "apu/apu.h"
-#include "apu/gbmixer.h"
 #include "cpu/cpu.h"
 #include "cpu/cpuregisters.h"
 #include "gb_factories/apufactory.h"
-#include "gb_factories/apuregisterfactory.h"
 #include "gb_factories/cartloader.h"
 #include "gb_factories/instructionsetbuilder.h"
 #include "gb_factories/memoryfactory.h"
 #include "gb_factories/ppufactory.h"
-#include "ppu/ppu.h"
 #include "sys/systemmanager.h"
 
 TEST(SystemManagerTest, Clock)
@@ -20,12 +16,13 @@ TEST(SystemManagerTest, Clock)
   std::vector<uint8_t> v;
   gb::MemoryFactory m(std::make_unique<gb::CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto ml = m.constructMemoryLayout();
-  std::vector<PeripheralSP> ps {};
+  std::vector<TickableSP> ps {};
   ApuFactory c { ml };
   ps.emplace_back(c.constructApu());
   PpuFactory p { ml };
   ps.emplace_back(p.constructPpu());
-  SystemManager s(
-      ml, std::make_unique<Cpu>(std::make_unique<CpuRegisters>(), ml, InstructionSetBuilder::construct()), ps);
+  SystemManager s(std::make_unique<Cpu>(std::make_unique<CpuRegisters>(), ml, InstructionSetBuilder::construct(),
+                      MockInterruptHandler::make()),
+      ps, (IPixelBuffer*)nullptr);
   EXPECT_NO_THROW(s.clock());
 }

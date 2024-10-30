@@ -3,7 +3,6 @@
 
 #include "defines.h"
 #include "ippu.h"
-#include "irenderer.h"
 
 class Ppu : public IPpu {
 public:
@@ -13,7 +12,7 @@ public:
 
   void clock() override;
 
-  const IPixelBuffer& getBuffer() const;
+  const IPixelBuffer& getBuffer() const override;
 
 private:
   IRendererSP renderer_;

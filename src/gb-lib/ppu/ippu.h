@@ -4,13 +4,15 @@
 #include <memory>
 
 #include "defines.h"
+#include "irenderer.h"
+#include "peripherals/tickable.h"
 
-class IPpu {
+class IPpu : public Tickable {
 public:
-  virtual ~IPpu() = default;
+  ~IPpu() override = default;
   DISABLE_COPY_AND_MOVE(IPpu)
 
-  virtual void clock() = 0;
+  virtual const IPixelBuffer& getBuffer() const = 0;
 
 protected:
   IPpu() = default;

@@ -4,13 +4,12 @@
 #include <memory>
 
 #include "defines.h"
+#include "peripherals/tickable.h"
 
-class IApu {
+class IApu : public Tickable {
 public:
-  virtual ~IApu() = default;
+  ~IApu() override = default;
   DISABLE_COPY_AND_MOVE(IApu)
-
-  virtual void clock() = 0;
 
 protected:
   IApu() = default;

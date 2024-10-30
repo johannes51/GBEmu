@@ -7,14 +7,14 @@
 
 class Apu : public IApu {
 public:
-  Apu(IMixerSP&& mixer);
+  Apu(IMixerUP&& mixer);
   DISABLE_COPY_AND_MOVE(Apu)
   ~Apu() override = default;
 
   void clock() override;
 
 private:
-  IMixerSP mixer_;
+  IMixerUP mixer_;
 };
 
 #endif // APU_H
