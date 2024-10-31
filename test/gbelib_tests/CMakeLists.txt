@@ -72,14 +72,16 @@ set(TEST_SOURCES
     mem/rambank_tests.cpp
     mem/rombank_tests.cpp
     mem/registerbank_tests.cpp
+    mem/registers/divregister_tests.cpp
     mem/registers/memoryregisteradapter_tests.cpp
     mem/registers/registerbankadapter_tests.cpp
+    mock/mockdivregister.h
     mock/mockinterrupthandler.h
     mock/mockoam.h
-    mock/mocktilemap.h
     mock/mockregisteradapter.h
     mock/mockregisters.h
     mock/mockregisters.cpp
+    mock/mocktilemap.h
     mock/testbank.h
     mock/testbank.cpp
     ops/arithmetic_tests.cpp
@@ -89,6 +91,7 @@ set(TEST_SOURCES
     ops/ops_tests.cpp
     ops/shiftrotate_tests.cpp
     peripherals/gbinterrupthandler_tests.cpp
+    peripherals/gbtimer_tests.cpp
     ppu/gbrenderer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp
@@ -109,7 +112,7 @@ set(TEST_SOURCES
     )
 
 add_executable(gbelib_tests ${TEST_SOURCES})
-target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main)
+target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main GTest::gmock)
 target_include_directories(gbelib_tests PRIVATE $<TARGET_PROPERTY:gbelib,INCLUDE_DIRECTORIES>)
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 get_target_property(gtest_include_dirs GTest::GTest INTERFACE_INCLUDE_DIRECTORIES)

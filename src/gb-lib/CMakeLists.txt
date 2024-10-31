@@ -149,6 +149,8 @@ target_sources(gbelib PRIVATE
   mem/registers/memoryregisteradapter.cpp
   mem/registers/registerbankadapter.h
   mem/registers/registerbankadapter.cpp
+  mem/registers/divregister.h
+  mem/registers/divregister.cpp
   ops/arithmetic.h
   ops/arithmetic.cpp
   ops/bitmanip.h
@@ -161,6 +163,8 @@ target_sources(gbelib PRIVATE
   ops/shiftrotate.cpp
   peripherals/gbinterrupthandler.h
   peripherals/gbinterrupthandler.cpp
+  peripherals/gbtimer.h
+  peripherals/gbtimer.cpp
   peripherals/interrupthandler.h
   peripherals/joypad.h
   peripherals/joypad.cpp
@@ -198,6 +202,7 @@ target_sources(gbelib PRIVATE
   ppu/layer/palette.cpp
   sys/systemmanager.cpp
   sys/systemmanager.h
+  util/fallingedgedetector.h
   util/helpers.h
   util/helpers.cpp
   )
