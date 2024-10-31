@@ -7,6 +7,7 @@
 #include "instructionsetbuilder.h"
 #include "memoryfactory.h"
 #include "peripherals/gbinterrupthandler.h"
+#include "peripherals/gbtimer.h"
 #include "ppufactory.h"
 
 GbFactory::GbFactory(const std::string& romFile, const std::string& ramFile)
@@ -41,5 +42,12 @@ auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
   auto p = PpuFactory(mem_);
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
-  return { a.constructApu(), std::move(ppu) };
+  return { a.constructApu(), std::move(ppu), constructTimer() };
+}
+
+auto GbFactory::constructTimer() -> TickableSP
+{
+  return std::make_shared<GbTimer>(peripheralRF_->getDiv(), peripheralRF_->getDivApu(),
+      peripheralRF_->get(PeripheralRegisters::TIMA), peripheralRF_->get(PeripheralRegisters::TMA),
+      peripheralRF_->get(PeripheralRegisters::TAC), peripheralRF_->get(PeripheralRegisters::IF));
 }

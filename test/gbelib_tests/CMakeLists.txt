@@ -75,6 +75,7 @@ set(TEST_SOURCES
     mem/registers/divregister_tests.cpp
     mem/registers/memoryregisteradapter_tests.cpp
     mem/registers/registerbankadapter_tests.cpp
+    mem/registers/registerbuffer_tests.cpp
     mock/mockdivregister.h
     mock/mockinterrupthandler.h
     mock/mockoam.h

@@ -149,6 +149,8 @@ target_sources(gbelib PRIVATE
   mem/registers/memoryregisteradapter.cpp
   mem/registers/registerbankadapter.h
   mem/registers/registerbankadapter.cpp
+  mem/registers/registerbuffer.h
+  mem/registers/registerbuffer.cpp
   mem/registers/divregister.h
   mem/registers/divregister.cpp
   ops/arithmetic.h

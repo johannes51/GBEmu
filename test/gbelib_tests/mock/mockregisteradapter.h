@@ -12,14 +12,15 @@ public:
 
   auto get() const -> uint8_t override { return value_; }
   void set(uint8_t value) override { value_ = value; }
-  auto testBit(uint8_t pos) const -> bool override { return (value_ & (1U << pos)) > 0; }
+  auto testBit(uint8_t pos) const -> bool override { return test_bit(value_, pos); }
   void setBit(uint8_t pos, bool value) override
   {
     auto temp = get();
     if (value) {
-      temp |= (1U << pos);
+      set_bit(temp, pos);
     } else {
-      temp ^= (1U << pos);
+      reset_bit(temp, pos);
+      ;
     }
     set(temp);
   }
