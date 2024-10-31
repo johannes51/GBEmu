@@ -28,6 +28,7 @@ private:
   void constructMemory();
   CpuUP constructCpu();
   std::vector<TickableSP> constructPeripherals();
+  TickableSP constructTimer();
 };
 
 #endif // GBFACTORY_H

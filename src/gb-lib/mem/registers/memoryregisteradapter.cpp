@@ -14,16 +14,16 @@ void MemoryRegisterAdapter::set(uint8_t value) { *mem_->getLocation(address_) = 
 
 auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool
 {
-  return (mem_->getLocation(address_)->getByte() & (1U << pos)) > 0;
+  return test_bit(mem_->getLocation(address_)->getByte(), pos);
 }
 
 void MemoryRegisterAdapter::setBit(uint8_t pos, bool value)
 {
   auto temp = get();
   if (value) {
-    temp |= (1U << pos);
+    set_bit(temp, pos);
   } else {
-    temp &= ~(1U << pos);
+    reset_bit(temp, pos);
   }
   set(temp);
 }
