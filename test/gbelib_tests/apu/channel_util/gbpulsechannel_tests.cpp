@@ -1,14 +1,14 @@
 #include "gtest/gtest.h"
 
-#include "apu/gbchannel2.h"
+#include "apu/channel_util/gbpulsechannel.h"
 
-#include "AudioFile.h"
+#include "../AudioFile.h"
 
 #include "mock/mockregisteradapter.h"
 
-class GbChannel2Tests : public ::testing::Test {
+class GbPulseChannelTests : public ::testing::Test {
 public:
-  GbChannel2Tests()
+  GbPulseChannelTests()
       : nr21(MockRegisterAdapter::make())
       , nr22(MockRegisterAdapter::make())
       , nr23(MockRegisterAdapter::make())
@@ -25,21 +25,22 @@ protected:
   IRegisterAdapterSP nr52;
 };
 
-TEST(GbChannel2TestsNF, Construction)
+TEST(GbPulseChannelTestsNF, Construction)
 {
-  EXPECT_ANY_THROW(GbChannel2 c(nullptr, nullptr, nullptr, nullptr, nullptr));
-  EXPECT_NO_THROW(GbChannel2 c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
-      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
+  EXPECT_ANY_THROW(GbPulseChannel c(nullptr, nullptr, nullptr, nullptr, nullptr));
+  EXPECT_NO_THROW(GbPulseChannel c(MockRegisterAdapter::make(), MockRegisterAdapter::make(),
+      MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make()));
 }
 
-TEST_F(GbChannel2Tests, Wav)
+TEST_F(GbPulseChannelTests, Wav)
 {
   nr52->set(0b10000010U);
   nr23->set(0b11010000U);
   nr24->set(0b11000111U);
   nr22->set(0b11110001U);
   nr21->set(0b10000011U);
-  GbChannel2 c(nr21, nr22, nr23, nr24, nr52);
+
+  GbPulseChannel c(nr21, nr22, nr23, nr24, nr52);
 
   AudioFile<double> a {};
   a.setBitDepth(16);
@@ -64,10 +65,4 @@ TEST_F(GbChannel2Tests, Wav)
     }
   }
   a.save("bla.wav");
-
-  AudioFile<short> a2 {};
-  a2.setBitDepth(16);
-  a2.setNumChannels(2);
-  a2.setSampleRate(44100);
-  a2.setNumSamplesPerChannel(2 * 1048576);
 }

@@ -18,10 +18,6 @@ public:
 
 protected:
   IRegisterAdapter() = default;
-
-  static void set_bit(uint8_t& field, uint8_t pos) { field |= (1U << pos); }
-  static void reset_bit(uint8_t& field, uint8_t pos) { field &= ~(1U << pos); }
-  static bool test_bit(const uint8_t& field, uint8_t pos) { return (field & static_cast<uint8_t>(1U << pos)) != 0U; }
 };
 
 using IRegisterAdapterSP = std::shared_ptr<IRegisterAdapter>;

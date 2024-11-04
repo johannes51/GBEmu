@@ -15,6 +15,7 @@ public:
 
 private:
   IMixerUP mixer_;
+  // FIXME: apu braucht kanäle
 };
 
 #endif // APU_H

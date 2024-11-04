@@ -3,6 +3,8 @@
 
 #include "mem/registers/iregisteradapter.h"
 
+#include "util/helpers.h"
+
 class MockRegisterAdapter : public IRegisterAdapter {
 public:
   explicit MockRegisterAdapter(uint8_t initial)
@@ -12,14 +14,14 @@ public:
 
   auto get() const -> uint8_t override { return value_; }
   void set(uint8_t value) override { value_ = value; }
-  auto testBit(uint8_t pos) const -> bool override { return test_bit(value_, pos); }
+  auto testBit(uint8_t pos) const -> bool override { return hlp::checkBit(value_, pos); }
   void setBit(uint8_t pos, bool value) override
   {
     auto temp = get();
     if (value) {
-      set_bit(temp, pos);
+      hlp::setBit(temp, pos);
     } else {
-      reset_bit(temp, pos);
+      hlp::clearBit(temp, pos);
       ;
     }
     set(temp);
