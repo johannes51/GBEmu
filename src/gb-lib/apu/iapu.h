@@ -11,6 +11,8 @@ public:
   ~IApu() override = default;
   DISABLE_COPY_AND_MOVE(IApu)
 
+  virtual const std::pair<double, double>& currentSample() = 0;
+
 protected:
   IApu() = default;
 };

@@ -3,25 +3,30 @@
 
 #include "imixer.h"
 
-#include <array>
-
-#include "ichannel.h"
 #include "mem/registers/iregisteradapter.h"
 
 class GbMixer : public IMixer {
 public:
-  GbMixer(IRegisterAdapterSP nr12, IRegisterAdapterSP nr22, IRegisterAdapterSP nr32, IRegisterAdapterSP nr42,
-      IRegisterAdapterSP nr50, IRegisterAdapterSP nr51, IRegisterAdapterSP nr52, std::array<IChannelSP, 4> channels);
+  GbMixer(IRegisterAdapterSP nr50, IRegisterAdapterSP nr51);
+
+  std::pair<double, double> mix(
+      double channel1, double channel2, double channel3, double channel4, double vin) override;
 
 private:
-  IRegisterAdapterSP nr12_;
-  IRegisterAdapterSP nr22_;
-  IRegisterAdapterSP nr32_;
-  IRegisterAdapterSP nr42_;
+  static constexpr uint8_t channel1Right = 0U;
+  static constexpr uint8_t channel1Left = 4U;
+  static constexpr uint8_t channel2Right = 1U;
+  static constexpr uint8_t channel2Left = 5U;
+  static constexpr uint8_t channel3Right = 2U;
+  static constexpr uint8_t channel3Left = 6U;
+  static constexpr uint8_t channel4Right = 3U;
+  static constexpr uint8_t channel4Left = 7U;
+
+  static constexpr uint8_t vinRight = 3U;
+  static constexpr uint8_t vinLeft = 7U;
+
   IRegisterAdapterSP nr50_;
   IRegisterAdapterSP nr51_;
-  IRegisterAdapterSP nr52_;
-  std::array<IChannelSP, 4> channels_;
 };
 
 #endif // GBMIXER_H

@@ -1,6 +1,7 @@
 #include "memoryregisteradapter.h"
 
 #include "location/location.h"
+#include "util/helpers.h"
 
 MemoryRegisterAdapter::MemoryRegisterAdapter(IMemoryViewSP mem, address_type address)
     : mem_(std::move(mem))
@@ -14,16 +15,16 @@ void MemoryRegisterAdapter::set(uint8_t value) { *mem_->getLocation(address_) = 
 
 auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool
 {
-  return test_bit(mem_->getLocation(address_)->getByte(), pos);
+  return hlp::checkBit(mem_->getLocation(address_)->getByte(), pos);
 }
 
 void MemoryRegisterAdapter::setBit(uint8_t pos, bool value)
 {
   auto temp = get();
   if (value) {
-    set_bit(temp, pos);
+    hlp::setBit(temp, pos);
   } else {
-    reset_bit(temp, pos);
+    hlp::clearBit(temp, pos);
   }
   set(temp);
 }

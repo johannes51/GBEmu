@@ -7,6 +7,7 @@ target_sources(gbelib PRIVATE
   defines.h
   apu/apu.h
   apu/apu.cpp
+  apu/channel.h
   apu/gbchannel1.h
   apu/gbchannel1.cpp
   apu/gbchannel2.h
@@ -18,8 +19,23 @@ target_sources(gbelib PRIVATE
   apu/gbmixer.h
   apu/gbmixer.cpp
   apu/iapu.h
-  apu/ichannel.h
   apu/imixer.h
+  apu/channel_util/dac.h
+  apu/channel_util/dac.cpp
+  apu/channel_util/envelope.h
+  apu/channel_util/envelope.cpp
+  apu/channel_util/framesequencer.h
+  apu/channel_util/framesequencer.cpp
+  apu/channel_util/gbpulsechannel.h
+  apu/channel_util/gbpulsechannel.cpp
+  apu/channel_util/length.h
+  apu/channel_util/length.cpp
+  apu/channel_util/lengthch3.h
+  apu/channel_util/lengthch3.cpp
+  apu/channel_util/period.h
+  apu/channel_util/period.cpp
+  apu/channel_util/sweep.h
+  apu/channel_util/sweep.cpp
   cpu/cpu.h
   cpu/cpu.cpp
   cpu/cpu_defines.h

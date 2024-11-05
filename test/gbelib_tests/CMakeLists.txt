@@ -28,6 +28,13 @@ set(TEST_SOURCES
     apu/gbchannel3_tests.cpp
     apu/gbchannel4_tests.cpp
     apu/gbmixer_tests.cpp
+    apu/channel_util/dac_tests.cpp
+    apu/channel_util/envelope_tests.cpp
+    apu/channel_util/gbpulsechannel_tests.cpp
+    apu/channel_util/length_tests.cpp
+    apu/channel_util/lengthch3_tests.cpp
+    apu/channel_util/period_tests.cpp
+    apu/channel_util/sweep_tests.cpp
     cpu/cpu_tests.cpp
     cpu/cpuflags_tests.cpp
     cpu/cpuregisters_tests.cpp
@@ -76,9 +83,11 @@ set(TEST_SOURCES
     mem/registers/memoryregisteradapter_tests.cpp
     mem/registers/registerbankadapter_tests.cpp
     mem/registers/registerbuffer_tests.cpp
+    mock/mockchannel.h
     mock/mockdivregister.h
     mock/mockinterrupthandler.h
     mock/mockoam.h
+    mock/mockmixer.h
     mock/mockregisteradapter.h
     mock/mockregisters.h
     mock/mockregisters.cpp
@@ -110,6 +119,7 @@ set(TEST_SOURCES
     roms/mem_timing2_tests.cpp
     sys/systemmanager_tests.cpp
     util/helpers_tests.cpp
+    util/fallingedgedetector_tests.cpp
     )
 
 add_executable(gbelib_tests ${TEST_SOURCES})
