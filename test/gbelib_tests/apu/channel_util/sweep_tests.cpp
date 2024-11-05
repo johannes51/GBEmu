@@ -28,23 +28,23 @@ TEST(SweepTestsNF, Construction)
 TEST_F(SweepTests, Direction)
 {
   nr10->set(0b00101100U);
-  nr13->set(0b11111111U);
+  nr13->set(0b10000000U);
   nr14->set(0b111U);
 
   Sweep s { nr10, nr13, nr14 };
 
   EXPECT_NO_THROW(s.clock());
-  EXPECT_EQ(0b11111111U, nr13->get());
+  EXPECT_EQ(0b10000000U, nr13->get());
   EXPECT_NO_THROW(s.clock());
-  EXPECT_LT(nr13->get(), 0b11111111U);
+  EXPECT_LT(nr13->get(), 0b10000000U);
 
   nr10->set(0b00100100U);
-  nr13->set(0b00000000U);
+  nr13->set(0b10000000U);
 
   EXPECT_NO_THROW(s.clock());
-  EXPECT_EQ(0b00000000U, nr13->get());
+  EXPECT_EQ(0b10000000U, nr13->get());
   EXPECT_NO_THROW(s.clock());
-  EXPECT_GT(nr13->get(), 0b00000000U);
+  EXPECT_GT(nr13->get(), 0b10000000U);
 }
 
 TEST_F(SweepTests, Pace)

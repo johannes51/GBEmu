@@ -13,7 +13,7 @@ public:
   }
 
   void clock() override { }
-  void tickApuDiv(const uint8_t frameSequencerStep) override { (void)frameSequencerStep; }
+  void tickApuDiv(const FrameSequence sequence) override { (void)sequence; }
   void disable() override { }
 
   static ChannelSP make() { return std::make_shared<MockChannel>(); }

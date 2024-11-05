@@ -19,6 +19,8 @@ private:
     LEN_INACTIVE = 0x11FFU,
   };
 
+  static constexpr uint8_t LenEnableBitPos = 6U;
+
   IRegisterAdapterSP nr31_;
   IRegisterAdapterSP nr34_;
 

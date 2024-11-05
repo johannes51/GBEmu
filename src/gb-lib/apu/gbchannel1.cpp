@@ -11,10 +11,10 @@ GbChannel1::GbChannel1(IRegisterAdapterSP nr10, IRegisterAdapterSP nr11, IRegist
   }
 }
 
-void GbChannel1::tickApuDiv(const uint8_t frameSequencerStep)
+void GbChannel1::tickApuDiv(const FrameSequence sequence)
 {
-  GbPulseChannel::tickApuDiv(frameSequencerStep);
-  if (frameSequencerStep == 2U || frameSequencerStep == 6U) {
+  GbPulseChannel::tickApuDiv(sequence);
+  if (sequence == FrameSequence::Phase2 || sequence == FrameSequence::Phase6) {
     sweep_.clock();
   }
 }

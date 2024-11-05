@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "channel_util/dac.h"
+#include "channel_util/framesequencer.h"
 #include "defines.h"
 #include "mem/registers/iregisteradapter.h"
 
@@ -15,7 +16,7 @@ public:
   const double& getSample() const { return dac_.getSample(); }
 
   virtual void clock() = 0;
-  virtual void tickApuDiv(const uint8_t frameSequencerStep) = 0;
+  virtual void tickApuDiv(const FrameSequence sequence) = 0;
 
   virtual void disable() { nr52_->setBit(1U, false); }
 

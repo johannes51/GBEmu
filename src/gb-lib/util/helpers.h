@@ -1,6 +1,7 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
+#include "constants.h"
 #include "location/location.h"
 #include "mem/mem_defines.h"
 
@@ -40,14 +41,14 @@ constexpr auto getBits(const uint8_t& value, uint8_t start, uint8_t len) -> uint
 {
   auto result = value;
   result >>= start;
-  result &= (0xFFU >> (8U - len));
+  result &= (BYTE_BIT_MASK >> (BYTE_BIT_COUNT - len));
   return result;
 }
 constexpr auto getBits(const uint16_t& value, uint8_t start, uint8_t len) -> uint16_t
 {
   auto result = value;
   result >>= start;
-  result &= (0xFFFFU >> (16U - len));
+  result &= (TWO_BYTE_BIT_MASK >> (TWO_BYTE_BIT_COUNT - len));
   return result;
 }
 

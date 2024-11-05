@@ -15,35 +15,35 @@ auto GbMixer::mix(
     double channel1, double channel2, double channel3, double channel4, double vin) -> std::pair<double, double>
 {
   auto result = std::pair<double, double> { 0., 0. };
-  if (nr51_->testBit(0U)) {
+  if (nr51_->testBit(channel1Right)) {
     result.first += channel1;
   }
-  if (nr51_->testBit(1U)) {
+  if (nr51_->testBit(channel2Right)) {
     result.first += channel2;
   }
-  if (nr51_->testBit(2U)) {
+  if (nr51_->testBit(channel3Right)) {
     result.first += channel3;
   }
-  if (nr51_->testBit(3U)) {
+  if (nr51_->testBit(channel4Right)) {
     result.first += channel4;
   }
-  if (nr51_->testBit(4U)) {
+  if (nr51_->testBit(channel1Left)) {
     result.second += channel1;
   }
-  if (nr51_->testBit(5U)) {
+  if (nr51_->testBit(channel2Left)) {
     result.second += channel2;
   }
-  if (nr51_->testBit(6U)) {
+  if (nr51_->testBit(channel3Left)) {
     result.second += channel3;
   }
-  if (nr51_->testBit(7U)) {
+  if (nr51_->testBit(channel4Left)) {
     result.second += channel4;
   }
 
-  if (nr50_->testBit(3U)) {
+  if (nr50_->testBit(vinRight)) {
     result.first += vin;
   }
-  if (nr50_->testBit(7U)) {
+  if (nr50_->testBit(vinLeft)) {
     result.second += vin;
   }
 

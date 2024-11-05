@@ -19,16 +19,15 @@ Apu::Apu(IMixerUP&& mixer, const std::array<ChannelSP, 4U>& channels, IRegisterA
       throw std::invalid_argument("Channel not set.");
     }
   };
-  oldDivApu_ = divApu_->get();
+  fs_.isTick(divApu_->get());
 }
 
 void Apu::clock()
 {
-  if (divApu_->get() != oldDivApu_) {
-    oldDivApu_ = divApu_->get();
-    const auto frameSequencer = hlp::getBits(oldDivApu_, 0U, 3U);
+  if (fs_.isTick(divApu_->get())) {
+    const auto seq = fs_.get();
     for (auto& ch : channels_) {
-      ch->tickApuDiv(frameSequencer);
+      ch->tickApuDiv(seq);
     };
   }
   for (auto& ch : channels_) {

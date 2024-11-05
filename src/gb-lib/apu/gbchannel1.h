@@ -11,7 +11,7 @@ public:
   GbChannel1(IRegisterAdapterSP nr10, IRegisterAdapterSP nr11, IRegisterAdapterSP nr12, IRegisterAdapterSP nr13,
       IRegisterAdapterSP nr14, IRegisterAdapterSP nr52);
 
-  void tickApuDiv(const uint8_t frameSequencerStep) override;
+  void tickApuDiv(const FrameSequence sequence) override;
 
 private:
   IRegisterAdapterSP nr10_;

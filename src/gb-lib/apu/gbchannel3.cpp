@@ -1,5 +1,7 @@
 #include "gbchannel3.h"
+
 #include "constants.h"
+#include "util/helpers.h"
 
 GbChannel3::GbChannel3(IRegisterAdapterSP nr30, IRegisterAdapterSP nr31, IRegisterAdapterSP nr32,
     IRegisterAdapterSP nr33, IRegisterAdapterSP nr34, IRegisterAdapterSP nr52, IMemoryViewSP waveRam)
@@ -8,7 +10,7 @@ GbChannel3::GbChannel3(IRegisterAdapterSP nr30, IRegisterAdapterSP nr31, IRegist
     , period_(std::move(nr33), nr34)
     , len_(std::move(nr31), std::move(nr34))
     , waveRam_(std::move(waveRam))
-    , waveRamPtr_({ 0xFF30U, false })
+    , waveRamPtr_({ WaveRamStart, false })
 {
   if (!nr32_ || !waveRam_) {
     throw std::invalid_argument("Audio registers not set.");
@@ -23,13 +25,20 @@ void GbChannel3::clock()
   }
 }
 
-void GbChannel3::tickApuDiv(const uint8_t frameSequencerStep)
+void GbChannel3::tickApuDiv(const FrameSequence sequence)
 {
-  if ((frameSequencerStep % 2U) == 0U) {
+  switch (sequence) {
+  case FrameSequence::Phase0:
+  case FrameSequence::Phase2:
+  case FrameSequence::Phase4:
+  case FrameSequence::Phase6:
     len_.clock();
     if (len_.isRunOut()) {
       disable();
     }
+    break;
+  default:
+    break;
   }
 }
 
@@ -37,29 +46,32 @@ void GbChannel3::advanceWaveRam()
 {
   auto ramSample = waveRam_->getLocation(waveRamPtr_.address)->getByte();
   if (waveRamPtr_.upper) {
-    ramSample >>= HALF_BYTE_SHIFT;
+    ramSample = hlp::getBits(ramSample, HALF_BYTE_SHIFT, HALF_BYTE_SHIFT);
   } else {
-    ramSample &= 0b1111U;
+    ramSample = hlp::getBits(ramSample, 0U, HALF_BYTE_SHIFT);
   }
-  switch ((nr32_->get() >> 5U) & 0b11U) {
-  case 0b00U:
+  switch (hlp::getBits(nr32_->get(), VolumePatternBitPos, 2U)) {
+  case VolumePattern0Pct:
     ramSample = 0U;
     break;
-  case 0b01U:
+  case VolumePattern100Pct:
     // ramSample >>= 0U;
     break;
-  case 0b10U:
+  case VolumePattern50Pct:
     ramSample >>= 1U;
     break;
-  case 0b11U:
+  case VolumePattern25Pct:
     ramSample >>= 2U;
+    break;
+  default:
+    // unreachable
     break;
   }
   dac_.set(ramSample);
   if (waveRamPtr_.upper) {
     waveRamPtr_.upper = false;
-  } else if (++waveRamPtr_.address > 0xFF3FU) {
-    waveRamPtr_.address = 0xFF30U;
+  } else if (++waveRamPtr_.address > WaveRamTop) {
+    waveRamPtr_.address = WaveRamStart;
     waveRamPtr_.upper = true;
   }
 }

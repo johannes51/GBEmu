@@ -15,13 +15,14 @@ public:
       IRegisterAdapterSP nr52);
 
   void clock() override;
-  void tickApuDiv(const uint8_t frameSequencerStep) override;
+  void tickApuDiv(const FrameSequence sequence) override;
 
 private:
   static constexpr uint8_t DutyWaveformLength = 8U;
   using waveformTable = std::array<uint8_t, DutyWaveformLength>;
   static constexpr uint8_t DutyWaveformCount = 4U;
   using dutyTable = std::array<waveformTable, DutyWaveformCount>;
+  static constexpr uint8_t WaveFormBitPos = 6U;
 
   static constexpr dutyTable PulseDutyWaveformTable = { { { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U },
       { 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U }, { 0U, 0U, 0U, 0U, 1U, 1U, 1U, 1U }, { 1U, 1U, 1U, 1U, 1U, 1U, 0U, 0U } } };

@@ -24,11 +24,11 @@ auto Length::isRunOut() const -> bool { return counter_ == LEN_STOPPED; }
 
 void Length::checkEnable()
 {
-  if (!nrX4_->testBit(6U)) {
+  if (!nrX4_->testBit(LenEnableBitPos)) {
     counter_ = LEN_INACTIVE;
   } else if (counter_ == LEN_INACTIVE) {
     setCounter();
   }
 }
 
-void Length::setCounter() { counter_ = nrX1_->get() & 0b111111U; }
+void Length::setCounter() { counter_ = nrX1_->get() & CounterMask; }

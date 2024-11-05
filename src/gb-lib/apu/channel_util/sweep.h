@@ -10,6 +10,12 @@ public:
   void clock();
 
 private:
+  static constexpr uint8_t StepBitCount = 3U;
+  static constexpr uint8_t DirectionBitPos = 3U;
+  static constexpr uint8_t CounterPeriodMask = 0b111U;
+  static constexpr uint8_t CounterBitPos = 4U;
+  static constexpr uint8_t CounterBitCount = 3U;
+
   IRegisterAdapterSP nr10_;
   IRegisterAdapterSP nr13_;
   IRegisterAdapterSP nr14_;

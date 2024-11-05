@@ -1,8 +1,8 @@
 #include "lengthch3.h"
 
 LengthCh3::LengthCh3(IRegisterAdapterSP nr31, IRegisterAdapterSP nr34)
-    : nr31_(nr31)
-    , nr34_(nr34)
+    : nr31_(std::move(nr31))
+    , nr34_(std::move(nr34))
 {
   if (!nr31_ || !nr34_) {
     throw std::invalid_argument("Audio registers not set.");
@@ -24,7 +24,7 @@ auto LengthCh3::isRunOut() const -> bool { return counter_ == LEN_STOPPED; }
 
 void LengthCh3::checkEnable()
 {
-  if (!nr34_->testBit(6U)) {
+  if (!nr34_->testBit(LenEnableBitPos)) {
     counter_ = LEN_INACTIVE;
   } else if (counter_ == LEN_INACTIVE) {
     setCounter();

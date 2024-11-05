@@ -5,13 +5,15 @@
 
 class DAC {
 public:
-  DAC();
+  DAC() = default;
 
   const double& getSample() const;
 
   void set(uint8_t digValue);
 
 private:
+  static constexpr double DigitalHalfScale = 7.5;
+
   double sample_ = 0.;
 };
 

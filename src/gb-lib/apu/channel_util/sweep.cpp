@@ -1,6 +1,7 @@
 #include "sweep.h"
 
 #include "constants.h"
+#include "util/helpers.h"
 
 Sweep::Sweep(IRegisterAdapterSP nr10, IRegisterAdapterSP nr13, IRegisterAdapterSP nr14)
     : nr10_(std::move(nr10))
@@ -24,25 +25,22 @@ void Sweep::clock()
   }
 }
 
-void Sweep::loadCounter() { counter_ = (nr10_->get() >> 4U) & 0b111U; }
+void Sweep::loadCounter() { counter_ = hlp::getBits(nr10_->get(), CounterBitPos, CounterBitCount); }
 
 void Sweep::modifyPeriod()
 {
-  const auto step = nr10_->get() & 0b111U;
-  auto bla1 = nr13_->get();
-  auto bla2 = static_cast<uint16_t>(nr14_->get() & 0b111U) << BYTE_SHIFT;
-  const auto oldPeriod
-      = static_cast<uint16_t>(nr13_->get()) | (static_cast<uint16_t>(nr14_->get() & 0b111U) << BYTE_SHIFT);
-  const auto up = (nr10_->get() & 0b1000U) == 0U;
+  const auto step = hlp::getBits(nr10_->get(), 0U, StepBitCount);
+  const auto oldPeriod = static_cast<uint16_t>(nr13_->get())
+      | static_cast<uint16_t>(static_cast<uint16_t>(nr14_->get() & CounterPeriodMask) << BYTE_SHIFT);
 
   const auto divisor = (1U << step);
   const auto change = (oldPeriod / divisor);
   uint16_t newPeriod = oldPeriod;
-  if (up) {
-    newPeriod += change;
-  } else {
+  if (nr10_->testBit(DirectionBitPos)) {
     newPeriod -= change;
+  } else {
+    newPeriod += change;
   }
-  nr13_->set(newPeriod & 0xFFU);
+  nr13_->set(newPeriod & MASK_LOWER_BYTE);
   nr14_->set(nr14_->get() | static_cast<uint8_t>(newPeriod >> BYTE_SHIFT));
 }

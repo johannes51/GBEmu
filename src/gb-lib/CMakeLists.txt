@@ -24,6 +24,8 @@ target_sources(gbelib PRIVATE
   apu/channel_util/dac.cpp
   apu/channel_util/envelope.h
   apu/channel_util/envelope.cpp
+  apu/channel_util/framesequencer.h
+  apu/channel_util/framesequencer.cpp
   apu/channel_util/gbpulsechannel.h
   apu/channel_util/gbpulsechannel.cpp
   apu/channel_util/length.h

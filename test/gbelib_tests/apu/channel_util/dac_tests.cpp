@@ -2,21 +2,21 @@
 
 #include "apu/channel_util/dac.h"
 
-TEST(DACTests, Construction) { EXPECT_NO_THROW(DAC d {}); }
+TEST(DACTests, Construction) { EXPECT_NO_THROW(DAC {}); }
 
 TEST(DACTests, Wav)
 {
-  DAC c;
+  DAC d;
 
-  EXPECT_DOUBLE_EQ(0., c.getSample());
+  EXPECT_DOUBLE_EQ(0., d.getSample());
 
-  c.set(0x0U);
-  EXPECT_DOUBLE_EQ(1., c.getSample());
+  d.set(0x0U);
+  EXPECT_DOUBLE_EQ(1., d.getSample());
 
-  c.set(0xFU);
-  EXPECT_DOUBLE_EQ(-1., c.getSample());
+  d.set(0xFU);
+  EXPECT_DOUBLE_EQ(-1., d.getSample());
 
-  c.set(0xAU);
-  EXPECT_LT(c.getSample(), 1.);
-  EXPECT_GT(c.getSample(), -1.);
+  d.set(0xAU);
+  EXPECT_LT(d.getSample(), 1.);
+  EXPECT_GT(d.getSample(), -1.);
 }

@@ -53,24 +53,17 @@ TEST_F(GbChannel1Tests, Wav)
   auto frameSequencer = 0U;
   for (auto i = 0U; i < 1048576; ++i) {
     c.clock();
-    auto bla = (1048576 / 44100);
     auto bla2 = i % (1048576 / 44100);
     auto bla3 = i / (1048576 / 44100);
     if (bla2 == 0) {
       a.samples[0][bla3] = c.getSample();
     }
     if ((i & 0b111111111111U) == 0b100000000000U) {
-      c.tickApuDiv(frameSequencer++);
+      c.tickApuDiv(static_cast<FrameSequence>(frameSequencer++));
       if (frameSequencer > 7U) {
         frameSequencer = 0U;
       }
     }
   }
   a.save("bla3.wav");
-
-  AudioFile<short> a2 {};
-  a2.setBitDepth(16);
-  a2.setNumChannels(2);
-  a2.setSampleRate(44100);
-  a2.setNumSamplesPerChannel(2 * 1048576);
 }

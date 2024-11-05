@@ -27,19 +27,19 @@ void GbPulseChannel::clock()
   }
 }
 
-void GbPulseChannel::tickApuDiv(const uint8_t frameSequencerStep)
+void GbPulseChannel::tickApuDiv(const FrameSequence sequence)
 {
-  switch (frameSequencerStep) {
-  case 0:
-  case 2:
-  case 4:
-  case 6:
+  switch (sequence) {
+  case FrameSequence::Phase0:
+  case FrameSequence::Phase2:
+  case FrameSequence::Phase4:
+  case FrameSequence::Phase6:
     len_.clock();
     if (len_.isRunOut()) {
       disable();
     }
     break;
-  case 7:
+  case FrameSequence::Phase7:
     env_.clock();
     break;
   default:
@@ -55,9 +55,6 @@ void GbPulseChannel::tickDuty()
   updateSample();
 }
 
-void GbPulseChannel::updateSample()
-{
-  dac_.set(static_cast<double>(PulseDutyWaveformTable[selectedTable_][dutyPosition_] * env_.vol()));
-}
+void GbPulseChannel::updateSample() { dac_.set(PulseDutyWaveformTable[selectedTable_][dutyPosition_] * env_.vol()); }
 
-void GbPulseChannel::updateWaveform() { selectedTable_ = (nrX1_->get() >> 6U); }
+void GbPulseChannel::updateWaveform() { selectedTable_ = (nrX1_->get() >> WaveFormBitPos); }

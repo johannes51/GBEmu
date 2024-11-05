@@ -4,6 +4,7 @@
 #include <array>
 
 #include "channel.h"
+#include "channel_util/framesequencer.h"
 #include "defines.h"
 #include "iapu.h"
 #include "imixer.h"
@@ -22,7 +23,7 @@ private:
   IMixerUP mixer_;
   std::array<ChannelSP, 4U> channels_;
   IRegisterAdapterSP divApu_;
-  uint8_t oldDivApu_;
+  FrameSequencer fs_;
 
   std::pair<double, double> currentSample_;
 };

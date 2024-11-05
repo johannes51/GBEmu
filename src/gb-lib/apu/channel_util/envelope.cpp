@@ -1,5 +1,7 @@
 #include "envelope.h"
 
+#include "util/helpers.h"
+
 Envelope::Envelope(IRegisterAdapterSP nrX2)
     : nrX2_(std::move(nrX2))
 {
@@ -12,20 +14,22 @@ Envelope::Envelope(IRegisterAdapterSP nrX2)
 
 void Envelope::clock()
 {
-  if (counter_ != 0U && --counter_ == 0U) {
-    moveVol();
-    readCounter();
+  if (counter_ != 0U) {
+    if (--counter_ == 0U) {
+      moveVol();
+      readCounter();
+    }
   }
 }
 
-auto Envelope::vol() -> uint8_t { return volume_; }
+auto Envelope::vol() const -> uint8_t { return volume_; }
 
-void Envelope::readCounter() { counter_ = nrX2_->get() & 0b111U; }
+void Envelope::readCounter() { counter_ = hlp::getBits(nrX2_->get(), CounterBits.first, CounterBits.second); }
 
 void Envelope::moveVol()
 {
   if (nrX2_->testBit(3U)) {
-    if (volume_ < 0b1111) {
+    if (volume_ < MaxVolume) {
       ++volume_;
     }
   } else {

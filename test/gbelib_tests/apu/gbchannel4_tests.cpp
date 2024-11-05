@@ -54,7 +54,7 @@ TEST_F(GbChannel4Tests, Wav)
       a1.samples[0][i / (1048576 / 44100)] = c.getSample();
     }
     if ((i & 0b111111111111U) == 0b100000000000U) {
-      c.tickApuDiv(frameSequencer++);
+      c.tickApuDiv(static_cast<FrameSequence>(frameSequencer++));
       if (frameSequencer > 7U) {
         frameSequencer = 0U;
       }
@@ -81,7 +81,7 @@ TEST_F(GbChannel4Tests, Wav)
       a2.samples[0][i / (1048576 / 44100)] = c.getSample();
     }
     if ((i & 0b111111111111U) == 0b100000000000U) {
-      c.tickApuDiv(frameSequencer++);
+      c.tickApuDiv(static_cast<FrameSequence>(frameSequencer++));
       if (frameSequencer > 7U) {
         frameSequencer = 0U;
       }
