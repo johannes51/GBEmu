@@ -7,6 +7,9 @@ class IMixer {
 public:
   virtual ~IMixer() = default;
 
+  virtual std::pair<double, double> mix(double channel1, double channel2, double channel3, double channel4, double vin)
+      = 0;
+
 protected:
   IMixer() = default;
 };

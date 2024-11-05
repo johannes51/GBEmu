@@ -9,7 +9,8 @@ class GbMixer : public IMixer {
 public:
   GbMixer(IRegisterAdapterSP nr50, IRegisterAdapterSP nr51);
 
-  std::pair<double, double> mix(double channel1, double channel2, double channel3, double channel4, double vin);
+  std::pair<double, double> mix(
+      double channel1, double channel2, double channel3, double channel4, double vin) override;
 
 private:
   IRegisterAdapterSP nr50_;
