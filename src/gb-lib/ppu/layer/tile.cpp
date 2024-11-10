@@ -1,49 +1,21 @@
 #include "tile.h"
 
-#include <stdexcept>
+#include "util/helpers.h"
 
 Tile::Tile(std::array<uint8_t, TileDataSize> data)
     : data_()
 {
   for (uint8_t y = 0; y < TileSize; ++y) {
     for (uint8_t x = 0; x < TileSize; ++x) {
-      data_[y][x] = adjustData(data[toDataIndex(x, y)], toByteIndex(x));
+      data_[y][x] = extractPixel(data, x, y);
     }
   }
 }
 
-auto Tile::toDataIndex(uint8_t x, uint8_t y) -> uint8_t { return (y * TileSize + x) / 4; }
-
-auto Tile::toByteIndex(uint8_t x) -> uint8_t
+auto Tile::extractPixel(const std::array<uint8_t, TileDataSize>& data, uint8_t x, uint8_t y) -> uint8_t
 {
-  switch (x) {
-  case 0:
-  case 4:
-    return 0;
-    break;
-  case 1:
-    [[fallthrough]];
-  case 5: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    return 1;
-    break;
-  case 2:
-    [[fallthrough]];
-  case 6: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    return 2;
-    break;
-  case 3:
-    [[fallthrough]];
-  case 7: // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-    return 3;
-    break;
-  default:
-    throw std::invalid_argument("bad value");
-    break;
-  }
-}
-
-auto Tile::adjustData(uint32_t dataByte, uint8_t byteIndex) -> uint8_t
-{
-  const auto offset = (3U - byteIndex) * 2U;
-  return (dataByte >> offset) & 0b11U;
+  const auto dataIndex = y * 2U;
+  const auto lsb = hlp::checkBit(data[dataIndex], 7U - x) ? 0b1U : 0b0U; // DON'T
+  const auto msb = hlp::checkBit(data[dataIndex + 1U], 7U - x) ? 0b10U : 0b00U; // ASK (GB 2BPP)
+  return msb | lsb;
 }

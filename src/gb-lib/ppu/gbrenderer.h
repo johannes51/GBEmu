@@ -10,7 +10,7 @@ class GbRenderer : public IRenderer {
 public:
   explicit GbRenderer(IBackgroundSP bg, IWindowSP win, IObjectsSP obj);
 
-  void render(IPixelBuffer& buffer) override;
+  void render(GbPixelBuffer& buffer) override;
 
 private:
   IBackgroundSP bg_;

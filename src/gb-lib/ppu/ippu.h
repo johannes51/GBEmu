@@ -12,7 +12,7 @@ public:
   ~IPpu() override = default;
   DISABLE_COPY_AND_MOVE(IPpu)
 
-  virtual const IPixelBuffer& getBuffer() const = 0;
+  virtual const GbPixelBuffer& getBuffer() const = 0;
 
 protected:
   IPpu() = default;

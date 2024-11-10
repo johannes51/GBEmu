@@ -18,4 +18,4 @@ void Ppu::clock()
   }
 }
 
-auto Ppu::getBuffer() const -> const IPixelBuffer& { return buffer_; }
+auto Ppu::getBuffer() const -> const GbPixelBuffer& { return buffer_; }

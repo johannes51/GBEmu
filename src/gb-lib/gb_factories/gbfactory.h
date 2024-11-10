@@ -22,7 +22,7 @@ private:
   std::vector<uint8_t> buffer_;
   IMemoryViewSP mem_ = nullptr;
   std::unique_ptr<PeripheralRegisterFactory> peripheralRF_ = nullptr;
-  const IPixelBuffer* pixBuf_ = nullptr;
+  const GbPixelBuffer* pixBuf_ = nullptr;
 
   void constructMemory();
   CpuUP constructCpu();

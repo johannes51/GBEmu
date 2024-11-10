@@ -191,13 +191,17 @@ target_sources(gbelib PRIVATE
   ppu/irenderer.h
   ppu/gbrenderer.h
   ppu/gbrenderer.cpp
+  ppu/pixelbuffer.h
   ppu/ppu.h
   ppu/ppu.cpp
   ppu/ppu_constants.h
+  ppu/layer/colortransformation.h
   ppu/layer/gbbg.h
   ppu/layer/gbbg.cpp
   ppu/layer/gbobjects.h
   ppu/layer/gbobjects.cpp
+  ppu/layer/gbpalette.h
+  ppu/layer/gbpalette.cpp
   ppu/layer/gbwindow.h
   ppu/layer/gbwindow.cpp
   ppu/layer/helper.h
@@ -216,8 +220,6 @@ target_sources(gbelib PRIVATE
   ppu/layer/tiledata.cpp
   ppu/layer/tilemap.h
   ppu/layer/tilemap.cpp
-  ppu/layer/palette.h
-  ppu/layer/palette.cpp
   sys/systemmanager.cpp
   sys/systemmanager.h
   util/fallingedgedetector.h

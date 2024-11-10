@@ -12,11 +12,11 @@ public:
 
   void clock() override;
 
-  const IPixelBuffer& getBuffer() const override;
+  const GbPixelBuffer& getBuffer() const override;
 
 private:
   IRendererSP renderer_;
-  IPixelBuffer buffer_;
+  GbPixelBuffer buffer_;
 };
 
 #endif // PPU_H

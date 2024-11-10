@@ -3,6 +3,7 @@
 
 #include "iobjects.h"
 
+#include "colortransformation.h"
 #include "oam.h"
 #include "tiledata.h"
 
@@ -12,7 +13,7 @@ public:
       OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2, TileDataUP tileData);
   ~GbObjects() override;
 
-  void draw(IPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer) override;
 
 private:
   uint8_t toTileDataIndex(uint8_t objectTileIndex) const;
@@ -22,6 +23,7 @@ private:
   IRegisterAdapterSP obp1_;
   IRegisterAdapterSP obp2_;
   TileDataUP tileData_;
+  GbColorTransformationUP t_;
 };
 
 #endif // GBOBJECTS_H

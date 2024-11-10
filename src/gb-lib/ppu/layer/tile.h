@@ -18,11 +18,9 @@ public:
   uint8_t get(const TilePos& pos) const { return data_.at(pos.y).at(pos.x); }
 
 private:
-  static uint8_t toDataIndex(uint8_t x, uint8_t y);
-  static uint8_t toByteIndex(uint8_t x);
-  static uint8_t adjustData(uint32_t dataByte, uint8_t byteIndex);
-
   std::array<std::array<uint8_t, TileSize>, TileSize> data_;
+
+  static uint8_t extractPixel(const std::array<uint8_t, TileDataSize>& data, uint8_t x, uint8_t y);
 };
 
 #endif // TILE_H

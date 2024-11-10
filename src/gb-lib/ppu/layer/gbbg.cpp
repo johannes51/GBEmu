@@ -11,18 +11,19 @@ GbBg::GbBg(
     , scy_(std::move(scy))
     , map_(std::move(map))
     , pal_(std::move(bgp))
+    , t_(GbColorTransformation::makeGbStdRgb())
 {
 }
 
 GbBg::~GbBg() = default;
 
-void GbBg::draw(IPixelBuffer& buffer)
+void GbBg::draw(GbPixelBuffer& buffer)
 {
-  for (uint8_t y = 0; y < LcdWidth; ++y) {
-    for (uint8_t x = 0; x < LcdHeight; ++x) {
+  for (uint8_t x = 0; x < LcdWidth; ++x) {
+    for (uint8_t y = 0; y < LcdHeight; ++y) {
       auto [tileAddress, tilePos] = decomposePos(x, y, scx_->get(), scy_->get());
       auto tile = map_->getTile(tileAddress);
-      buffer[y][x] = static_cast<unsigned char>(pal_.getColor(tile.get(tilePos)));
+      buffer.at(x, y) = t_->convert(pal_.getColor(tile.get(tilePos)));
     }
   }
 }

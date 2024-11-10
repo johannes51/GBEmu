@@ -3,9 +3,9 @@
 
 #include "ibackground.h"
 
-#include "mem/imemoryview.h"
+#include "colortransformation.h"
+#include "gbpalette.h"
 #include "mem/registers/iregisteradapter.h"
-#include "palette.h"
 #include "tilemap.h"
 
 class GbBg : public IBackground {
@@ -14,14 +14,15 @@ public:
       IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp, TileMapUP map);
   ~GbBg() override;
 
-  void draw(IPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer) override;
 
 private:
   IRegisterAdapterSP lcdc_;
   IRegisterAdapterSP scx_;
   IRegisterAdapterSP scy_;
   TileMapUP map_;
-  Palette pal_;
+  GbPalette pal_;
+  GbColorTransformationUP t_;
 };
 
 #endif // GBBG_H
