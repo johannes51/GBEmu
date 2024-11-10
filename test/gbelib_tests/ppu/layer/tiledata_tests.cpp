@@ -19,6 +19,7 @@ TEST(TileDataTests, GetTile)
 TEST(TileDataTests, GetTileContent)
 {
   auto r = std::make_shared<TestBank>(MemoryArea { 0x8000, 0x800F });
+  *r->getLocation(0x8000) = uint8_t { 0xFF };
   *r->getLocation(0x8001) = uint8_t { 0xFF };
   TileData td(MockRegisterAdapter::make(), r);
   auto tile = td.getTile(0);

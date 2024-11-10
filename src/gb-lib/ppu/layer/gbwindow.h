@@ -3,9 +3,9 @@
 
 #include "iwindow.h"
 
-#include "mem/imemoryview.h"
+#include "colortransformation.h"
+#include "gbpalette.h"
 #include "mem/registers/iregisteradapter.h"
-#include "palette.h"
 #include "tilemap.h"
 
 class GbWindow : public IWindow {
@@ -14,7 +14,7 @@ public:
       IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp, TileMapUP map);
   ~GbWindow() override;
 
-  void draw(IPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer) override;
 
 private:
   IRegisterAdapterSP lcdc_;
@@ -22,7 +22,8 @@ private:
   IRegisterAdapterSP wy_;
   IRegisterAdapterSP bgp_;
   TileMapUP map_;
-  Palette pal_;
+  GbPalette pal_;
+  GbColorTransformationUP t_;
 };
 
 #endif // GBWINDOW_H

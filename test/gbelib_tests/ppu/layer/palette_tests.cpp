@@ -1,24 +1,32 @@
 #include "gtest/gtest.h"
 
-#include "ppu/layer/palette.h"
+#include "ppu/layer/gbpalette.h"
 
 #include "mock/mockregisteradapter.h"
 
-TEST(PaletteTests, Construction) { EXPECT_NO_THROW(Palette p(nullptr)); }
+TEST(GbPaletteTests, Construction) { EXPECT_NO_THROW(GbPalette p(nullptr)); }
 
-TEST(PaletteTests, Values)
+TEST(GbPaletteTests, Values)
 {
-  Palette p(MockRegisterAdapter::make());
+  auto bgp = MockRegisterAdapter::make();
+  GbPalette p(bgp);
 
-  EXPECT_EQ(p.getColor(0b00), Colors::White);
-  EXPECT_EQ(p.getColor(0b01), Colors::White);
-  EXPECT_EQ(p.getColor(0b10), Colors::White);
-  EXPECT_EQ(p.getColor(0b11), Colors::White);
+  EXPECT_EQ(p.getColor(0b00), GbColors::White);
+  EXPECT_EQ(p.getColor(0b01), GbColors::White);
+  EXPECT_EQ(p.getColor(0b10), GbColors::White);
+  EXPECT_EQ(p.getColor(0b11), GbColors::White);
+
+  bgp->set(0b10011100);
+
+  EXPECT_EQ(p.getColor(0b00), GbColors::White);
+  EXPECT_EQ(p.getColor(0b01), GbColors::Black);
+  EXPECT_EQ(p.getColor(0b10), GbColors::LightGray);
+  EXPECT_EQ(p.getColor(0b11), GbColors::DarkGray);
 }
 
-TEST(PaletteTests, Exception)
+TEST(GbPaletteTests, Exception)
 {
-  Palette p(MockRegisterAdapter::make());
+  GbPalette p(MockRegisterAdapter::make());
 
   EXPECT_ANY_THROW(p.getColor(0b100));
 }

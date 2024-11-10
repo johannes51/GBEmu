@@ -2,7 +2,7 @@
 
 #include "cpu/cpu.h"
 
-SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const IPixelBuffer* buffer)
+SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const GbPixelBuffer* buffer)
     : cpu_(std::move(cpu))
     , peripherals_(std::move(peripherals))
     , buffer_(buffer)
@@ -19,4 +19,4 @@ void SystemManager::clock() const
   }
 }
 
-auto SystemManager::getBuffer() const -> const IPixelBuffer* { return buffer_; }
+auto SystemManager::getBuffer() const -> const GbPixelBuffer* { return buffer_; }

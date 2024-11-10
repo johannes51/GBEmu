@@ -25,13 +25,17 @@ public slots:
   void drawGbFrame();
 
 private:
+  static constexpr unsigned int SecondByte = 8U;
+  static constexpr unsigned int ThirdByte = 16U;
+  static constexpr unsigned int Alpha = 0xFF000000U;
+
   std::unique_ptr<Ui::MainWindow> ui_;
 
   SystemManagerUP sm_ = nullptr;
 
   QTimer timer_;
 
-  const IPixelBuffer* buffer_ = nullptr;
+  const GbPixelBuffer* buffer_ = nullptr;
 
   QImage img_;
 };

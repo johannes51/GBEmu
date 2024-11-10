@@ -11,17 +11,17 @@
 
 class SystemManager {
 public:
-  SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const IPixelBuffer* buffer);
+  SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const GbPixelBuffer* buffer);
   DISABLE_COPY_AND_MOVE(SystemManager)
   ~SystemManager();
 
   void clock() const;
-  const IPixelBuffer* getBuffer() const;
+  const GbPixelBuffer* getBuffer() const;
 
 private:
   CpuUP cpu_;
   std::vector<TickableSP> peripherals_;
-  const IPixelBuffer* buffer_;
+  const GbPixelBuffer* buffer_;
 };
 
 using SystemManagerUP = std::unique_ptr<SystemManager>;

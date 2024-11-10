@@ -12,14 +12,15 @@ GbObjects::GbObjects(
 
 GbObjects::~GbObjects() = default;
 
-void GbObjects::draw(IPixelBuffer& buffer)
+void GbObjects::draw(GbPixelBuffer& buffer)
 {
+  (void)buffer;
   for (const auto& obj : oam_->getAll()) {
     if (obj.getX() > 0) {
-      const auto tile = tileData_->getTile(obj.getTileIndex());
+      // const auto tile = tileData_->getTile(obj.getTileIndex());
       for (uint8_t x = 0; x < TileSize; ++x) {
         for (uint8_t y = 0; y < TileSize; ++y) {
-          buffer[x + obj.getX()][y + obj.getY()] = tile.get(TilePos { x, y });
+          // buffer.at(x + obj.getX(), y + obj.getY()) = t_->convert(tile.get(TilePos { x, y })); TODO: obj paletten
         }
       }
     }
