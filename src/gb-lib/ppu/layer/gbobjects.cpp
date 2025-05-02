@@ -10,16 +10,16 @@ GbObjects::GbObjects(
 {
 }
 
-void GbObjects::draw(GbPixelBuffer& buffer)
+void GbObjects::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
   (void)buffer;
+  (void)currentLine;
   for (const auto& obj : oam_->getAll()) {
     if (obj.getX() > 0) {
       // const auto tile = tileData_->getTile(obj.getTileIndex());
       for (uint8_t x = 0; x < TileSize; ++x) {
-        for (uint8_t y = 0; y < TileSize; ++y) {
-          // buffer.at(x + obj.getX(), y + obj.getY()) = t_->convert(tile.get(TilePos { x, y })); TODO: obj paletten
-        }
+        // buffer.at(x + obj.getX(), currentLine + obj.getY()) = t_->convert(tile.get(TilePos { x, currentLine }));
+        // TODO: obj paletten
       }
     }
   }

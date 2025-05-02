@@ -8,14 +8,15 @@ Ppu::Ppu(IRendererSP renderer)
 
 void Ppu::clock()
 {
-  constexpr auto CYCLES_PER_FRAME = 1000000 / 60;
-  static uint32_t i = 0;
-  if (i >= CYCLES_PER_FRAME) {
-    i = 0;
-    renderer_->render(buffer_);
-  } else {
-    ++i;
+  currentColumn_ += DotsPerCycles;
+  if (currentColumn_ >= LcdWidth) {
+    currentColumn_ = 0U;
+    ++currentLine_;
+    if (currentLine_ >= LcdWithVBlankHeight) {
+      currentLine_ = 0U;
+    }
   }
+  renderer_->render(buffer_, currentLine_);
 }
 
 auto Ppu::getBuffer() const -> const GbPixelBuffer& { return buffer_; }

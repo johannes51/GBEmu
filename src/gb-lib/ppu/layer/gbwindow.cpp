@@ -18,13 +18,11 @@ GbWindow::GbWindow(
 
 GbWindow::~GbWindow() = default;
 
-void GbWindow::draw(GbPixelBuffer& buffer)
+void GbWindow::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
-  for (uint8_t y = wy_->get(); y < LcdHeight; ++y) {
-    for (uint8_t x = wx_->get(); x < LcdWidth; ++x) {
-      auto [tileAddress, tilePos] = decomposePos(x, y, -wx_->get(), -wy_->get());
-      auto tile = map_->getTile(tileAddress);
-      buffer.at(x, y) = t_->convert(pal_.getColor(tile.get(tilePos)));
-    }
+  for (uint8_t x = wx_->get(); x < LcdWidth; ++x) {
+    auto [tileAddress, tilePos] = decomposePos(x, currentLine, -wx_->get(), -wy_->get());
+    auto tile = map_->getTile(tileAddress);
+    buffer.at(x, currentLine) = t_->convert(pal_.getColor(tile.get(tilePos)));
   }
 }

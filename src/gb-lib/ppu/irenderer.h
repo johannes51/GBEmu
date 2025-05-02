@@ -9,7 +9,7 @@ class IRenderer {
 public:
   virtual ~IRenderer() = default;
 
-  virtual void render(GbPixelBuffer& buffer) = 0;
+  virtual void render(GbPixelBuffer& buffer, const uint8_t currentLine) = 0;
 
 protected:
   IRenderer() = default;

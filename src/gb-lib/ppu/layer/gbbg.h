@@ -14,7 +14,7 @@ public:
       IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp, TileMapUP map);
   ~GbBg() override = default;
 
-  void draw(GbPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer, const uint8_t currentLine) override;
 
 private:
   IRegisterAdapterSP lcdc_;

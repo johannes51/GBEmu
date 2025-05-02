@@ -14,7 +14,7 @@ public:
   ~GbObjects() override = default;
   DEFAULT_COPY_AND_MOVE(GbObjects)
 
-  void draw(GbPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer, const uint8_t currentLine) override;
 
 private:
   uint8_t toTileDataIndex(uint8_t objectTileIndex) const;

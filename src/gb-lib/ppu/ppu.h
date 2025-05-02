@@ -17,6 +17,9 @@ public:
 private:
   IRendererSP renderer_;
   GbPixelBuffer buffer_;
+
+  uint8_t currentLine_ = 0U;
+  uint8_t currentColumn_ = 0U;
 };
 
 #endif // PPU_H

@@ -11,6 +11,7 @@ TEST(GbWindowTest, Draw)
 {
   GbWindow win(nullptr, MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
       std::make_unique<MockTileMap>());
-  GbPixelBuffer i;
-  EXPECT_NO_THROW(win.draw(i));
+  GbPixelBuffer b;
+
+  EXPECT_NO_THROW(win.draw(b, 0U));
 }
