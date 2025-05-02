@@ -1,6 +1,7 @@
 #include "tilemap.h"
 
 #include "../ppu_constants.h"
+#include "helper.h"
 #include "location/location8.h"
 #include "tiledata.h"
 
@@ -13,8 +14,6 @@ TileMap::TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, TileDataUP tiles, u
 }
 
 auto TileMap::getTile(const TileAddress& address) -> Tile { return tiles_->getTile(getIndex(toFlatAddress(address))); }
-
-auto TileMap::toFlatAddress(const TileAddress& address) -> uint8_t { return address.x * TileMapSize + address.y; }
 
 auto TileMap::getIndex(uint8_t flatAddress) const -> int8_t
 {

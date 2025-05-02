@@ -19,7 +19,6 @@ public:
   virtual Tile getTile(const TileAddress& address);
 
 private:
-  static uint8_t toFlatAddress(const TileAddress& address);
   int8_t getIndex(uint8_t flatAddress) const;
   address_type baseAdress() const;
 
