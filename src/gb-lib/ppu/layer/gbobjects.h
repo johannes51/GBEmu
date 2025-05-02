@@ -9,8 +9,8 @@
 
 class GbObjects : public IObjects {
 public:
-  explicit GbObjects(
-      OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2, TileDataUP tileData);
+  explicit GbObjects(OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2,
+      IRegisterAdapterSP bgp, TileDataUP tileData);
   ~GbObjects() override = default;
   DEFAULT_COPY_AND_MOVE(GbObjects)
 
@@ -24,6 +24,7 @@ private:
   IRegisterAdapterSP obp1_;
   IRegisterAdapterSP obp2_;
   TileDataUP tileData_;
+  GbPalette pal_;
   GbColorTransformationUP t_;
 };
 

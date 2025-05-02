@@ -3,7 +3,6 @@
 
 #include <memory>
 
-#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "tile.h"
@@ -13,7 +12,7 @@ public:
   explicit TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit = -1);
   virtual ~TileData() = default;
 
-  Tile getTile(int16_t index);
+  virtual Tile getTile(int16_t index);
 
 private:
   address_type baseAdress() const;
