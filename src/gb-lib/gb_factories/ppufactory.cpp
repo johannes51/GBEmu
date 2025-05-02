@@ -28,5 +28,6 @@ auto PpuFactory::constructPpu() -> IPpuUP
   auto obj = std::make_shared<GbObjects>(std::make_unique<Oam>(mem_), lcdc, rf.get(PpuRegisters::OBP0),
       rf.get(PpuRegisters::OBP1), std::make_unique<TileData>(lcdc, mem_));
 
-  return std::make_unique<Ppu>(std::make_shared<GbRenderer>(std::move(bg), std::move(win), std::move(obj)));
+  return std::make_unique<Ppu>(
+      std::make_shared<GbRenderer>(std::move(bg), std::move(win), std::move(obj)), std::move(lcdc));
 }

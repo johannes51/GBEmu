@@ -1,8 +1,8 @@
 #include "ppu.h"
 
-Ppu::Ppu(IRendererSP renderer)
+Ppu::Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc)
     : renderer_(std::move(renderer))
-    , buffer_()
+    , lcdc_(std::move(lcdc))
 {
 }
 
@@ -16,7 +16,9 @@ void Ppu::clock()
       currentLine_ = 0U;
     }
   }
-  renderer_->render(buffer_, currentLine_);
+  if (lcdc_->testBit(LcdEnableBit) && currentLine_ < LcdHeight) {
+    renderer_->render(buffer_, currentLine_);
+  }
 }
 
 auto Ppu::getBuffer() const -> const GbPixelBuffer& { return buffer_; }

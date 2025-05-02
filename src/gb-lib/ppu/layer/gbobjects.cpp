@@ -14,6 +14,9 @@ void GbObjects::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
   (void)buffer;
   (void)currentLine;
+  if (!lcdc_->testBit(ObjEnableBit)) {
+    return;
+  }
   for (const auto& obj : oam_->getAll()) {
     if (obj.getX() > 0) {
       // const auto tile = tileData_->getTile(obj.getTileIndex());

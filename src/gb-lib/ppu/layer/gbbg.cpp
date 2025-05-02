@@ -17,6 +17,9 @@ GbBg::GbBg(
 
 void GbBg::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
+  if (!lcdc_->testBit(BgWindowEnablePrioBit)) {
+    return;
+  }
   for (uint8_t x = 0; x < LcdWidth; ++x) {
     auto [tileAddress, tilePos] = decomposePos(x, currentLine, scx_->get(), scy_->get());
     auto tile = map_->getTile(tileAddress);

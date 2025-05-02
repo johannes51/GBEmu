@@ -20,6 +20,9 @@ GbWindow::~GbWindow() = default;
 
 void GbWindow::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
+  if (!lcdc_->testBit(WindowEnableBit) || !lcdc_->testBit(BgWindowEnablePrioBit)) {
+    return;
+  }
   for (uint8_t x = wx_->get(); x < LcdWidth; ++x) {
     auto [tileAddress, tilePos] = decomposePos(x, currentLine, -wx_->get(), -wy_->get());
     auto tile = map_->getTile(tileAddress);
