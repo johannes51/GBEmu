@@ -1,8 +1,9 @@
 #include "ppu.h"
 
-Ppu::Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc)
+Ppu::Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc, IRegisterAdapterSP ly)
     : renderer_(std::move(renderer))
     , lcdc_(std::move(lcdc))
+    , ly_(ly)
 {
 }
 
@@ -15,6 +16,7 @@ void Ppu::clock()
     if (currentLine_ >= LcdWithVBlankHeight) {
       currentLine_ = 0U;
     }
+    ly_->set(currentLine_);
   }
   if (lcdc_->testBit(LcdEnableBit) && currentLine_ < LcdHeight) {
     renderer_->render(buffer_, currentLine_);
