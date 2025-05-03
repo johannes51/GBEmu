@@ -7,7 +7,8 @@
 
 class Ppu : public IPpu {
 public:
-  explicit Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc, IRegisterAdapterSP ly);
+  explicit Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc, IRegisterAdapterSP stat, IRegisterAdapterSP rIf,
+      IRegisterAdapterSP ly, IRegisterAdapterSP lyc);
   DISABLE_COPY_AND_MOVE(Ppu)
   ~Ppu() override = default;
 
@@ -19,10 +20,13 @@ private:
   IRendererSP renderer_;
   GbPixelBuffer buffer_ = GbPixelBuffer {};
   IRegisterAdapterSP lcdc_;
+  IRegisterAdapterSP stat_;
+  IRegisterAdapterSP if_;
   IRegisterAdapterSP ly_;
+  IRegisterAdapterSP lyc_;
 
-  uint8_t currentLine_ = 0U;
-  uint8_t currentColumn_ = 0U;
+  uint16_t currentLine_ = 0U;
+  uint16_t currentColumn_ = 0U;
 };
 
 #endif // PPU_H

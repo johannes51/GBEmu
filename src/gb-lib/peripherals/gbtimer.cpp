@@ -2,6 +2,8 @@
 
 #include <algorithm>
 
+#include "gbinterrupthandler.h"
+
 GbTimer::GbTimer(DivRegisterSP div, IRegisterAdapterSP div_apu, IRegisterAdapterSP tima, IRegisterAdapterSP tma,
     IRegisterAdapterSP tac, IRegisterAdapterSP ifl)
     : div_(std::move(div))

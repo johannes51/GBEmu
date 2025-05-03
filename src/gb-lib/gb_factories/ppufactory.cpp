@@ -29,5 +29,5 @@ auto PpuFactory::constructPpu() -> IPpuUP
       rf.get(PpuRegisters::OBP1), rf.get(PpuRegisters::BGP), std::make_unique<TileData>(lcdc, mem_));
 
   return std::make_unique<Ppu>(std::make_shared<GbRenderer>(std::move(bg), std::move(win), std::move(obj)),
-      std::move(lcdc), rf.get(PpuRegisters::LY));
+      std::move(lcdc), rf.get(PpuRegisters::STAT), if_, rf.get(PpuRegisters::LY), rf.get(PpuRegisters::LYC));
 }

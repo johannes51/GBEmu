@@ -7,11 +7,13 @@
 
 // General display constants
 constexpr uint16_t DotsPerCycles = 4U;
-constexpr uint8_t LcdWidth = 160U;
-constexpr uint8_t LcdHeight = 144U;
-constexpr uint8_t LcdWithVBlankHeight = 154U;
+constexpr uint16_t LcdWidth = 160U;
+constexpr uint16_t LcdHeight = 144U;
+constexpr uint16_t LcdWithVBlankHeight = 154U;
 constexpr uint16_t CyclesPerLine = LcdWidth / DotsPerCycles;
 constexpr uint16_t CyclesPerFrame = CyclesPerLine * LcdWithVBlankHeight;
+constexpr uint16_t Mode2Length = 80U;
+constexpr uint16_t Mode3MaxLength = 289U;
 
 // LCDC Bits
 constexpr uint8_t BgWindowEnablePrioBit = 0U;
@@ -22,6 +24,15 @@ constexpr uint8_t BgWindowTileDataBit = 4U;
 constexpr uint8_t WindowEnableBit = 5U;
 constexpr uint8_t WindowTileMapBit = 6U;
 constexpr uint8_t LcdEnableBit = 7U;
+
+// STAT Bits
+constexpr uint8_t PpuModeLowerBit = 0U;
+constexpr uint8_t PpuModeHigherBit = 1U;
+constexpr uint8_t LycLyCompareBit = 2U;
+constexpr uint8_t Mode0IntBit = 3U;
+constexpr uint8_t Mode1IntBit = 4U;
+constexpr uint8_t Mode2IntBit = 5U;
+constexpr uint8_t LycIntBit = 6U;
 
 // OAM Bits
 constexpr uint8_t PalleteBit = 4U;
