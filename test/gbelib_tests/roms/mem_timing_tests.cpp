@@ -10,20 +10,7 @@ TEST(RomTest, MemTiming)
   GbFactory g("mem_timing.gb", "mem_timing.sav");
   auto sm = g.constructSystem();
 
-  EXPECT_NO_THROW(sm->clock()); // 0x0100 NOP
-  EXPECT_NO_THROW(sm->clock()); // 0x0101 JP 0x0213
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  EXPECT_NO_THROW(sm->clock());
-  for (int var = 0; var < 17735; ++var) {
-    EXPECT_NO_THROW(sm->clock()) << var;
+  for (size_t c = 0U; c < /*89670U*/ 29670U; ++c) { // TODO: way too slow after a point
+    EXPECT_NO_THROW(sm->clock()) << "at count: " << c;
   }
-  EXPECT_ANY_THROW(sm->clock()); // TODO: unable to provide register wieso?
-
-  //-----------------------------------------------DONE-----------------------------------------------------------------
 }
