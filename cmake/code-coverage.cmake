@@ -77,7 +77,7 @@
 option(
   CODE_COVERAGE
   "Builds targets with code coverage instrumentation. (Requires GCC or Clang)"
-  OFF)
+  ON)
 
 # Programs
 find_program(LLVM_COV_PATH llvm-cov)
@@ -89,7 +89,8 @@ find_program(GENHTML_PATH genhtml)
 set(CMAKE_COVERAGE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/ccov)
 
 # Common initialization/checks
-if(CODE_COVERAGE AND NOT CODE_COVERAGE_ADDED)
+string(TOUPPER ${CMAKE_BUILD_TYPE} upper_build_type)
+if(${upper_build_type} STREQUAL "DEBUG" AND CODE_COVERAGE AND NOT CODE_COVERAGE_ADDED)
   set(CODE_COVERAGE_ADDED ON)
 
   # Common Targets
@@ -140,20 +141,6 @@ if(CODE_COVERAGE AND NOT CODE_COVERAGE_ADDED)
     # Messages
     message(STATUS "Building with lcov Code Coverage Tools")
 
-    if(CMAKE_BUILD_TYPE)
-      string(TOUPPER ${CMAKE_BUILD_TYPE} upper_build_type)
-      if(NOT ${upper_build_type} STREQUAL "DEBUG")
-        message(
-          WARNING
-            "Code coverage results with an optimized (non-Debug) build may be misleading"
-          )
-      endif()
-    else()
-      message(
-        WARNING
-          "Code coverage results with an optimized (non-Debug) build may be misleading"
-        )
-    endif()
     if(NOT LCOV_PATH)
       message(FATAL_ERROR "lcov not found! Aborting...")
     endif()
@@ -197,12 +184,13 @@ endif()
 # AUTO - Adds the target to the 'ccov' target so that it can be run in a batch with others easily. Effective on executable targets.
 # ALL - Adds the target to the 'ccov-all' and 'ccov-all-report' targets, which merge several executable targets coverage data to a single report. Effective on executable targets.
 # EXTERNAL - For GCC's lcov, allows the profiling of 'external' files from the processing directory
+# NO_INSTRUMENTATION - For executables ONLY, do not instrument the code, just generate targets to run covered code in libraries
 # EXCLUDE <REGEX_PATTERNS> - Excludes files of the patterns provided from coverage. **These do not copy to the 'all' targets.**
 # OBJECTS <TARGETS> - For executables ONLY, if the provided targets are shared libraries, adds coverage information to the output
 # ~~~
 function(target_code_coverage TARGET_NAME)
   # Argument parsing
-  set(options AUTO ALL EXTERNAL)
+  set(options AUTO ALL EXTERNAL NO_INSTRUMENTATION)
   set(multi_value_keywords EXCLUDE OBJECTS)
   cmake_parse_arguments(target_code_coverage
                         "${options}"
@@ -210,24 +198,26 @@ function(target_code_coverage TARGET_NAME)
                         "${multi_value_keywords}"
                         ${ARGN})
 
-  if(CODE_COVERAGE)
+  if(CODE_COVERAGE_ADDED)
 
     # Add code coverage instrumentation to the target's linker command
-    if("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-       OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-      target_compile_options(
-        ${TARGET_NAME}
-        PRIVATE -fprofile-instr-generate -fcoverage-mapping)
-      set_property(TARGET ${TARGET_NAME}
-                   APPEND_STRING
-                   PROPERTY LINK_FLAGS "-fprofile-instr-generate ")
-      set_property(TARGET ${TARGET_NAME}
-                   APPEND_STRING
-                   PROPERTY LINK_FLAGS "-fcoverage-mapping ")
-    elseif(CMAKE_COMPILER_IS_GNUCXX)
-      target_compile_options(${TARGET_NAME}
-                             PRIVATE -fprofile-arcs -ftest-coverage --coverage)
-      target_link_libraries(${TARGET_NAME} PRIVATE gcov)
+    if(NOT target_code_coverage_NO_INSTRUMENTATION)
+      if("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
+         OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
+        target_compile_options(
+          ${TARGET_NAME}
+          PRIVATE -fprofile-instr-generate -fcoverage-mapping)
+        set_property(TARGET ${TARGET_NAME}
+                     APPEND_STRING
+                     PROPERTY LINK_FLAGS "-fprofile-instr-generate ")
+        set_property(TARGET ${TARGET_NAME}
+                     APPEND_STRING
+                     PROPERTY LINK_FLAGS "-fcoverage-mapping ")
+      elseif(CMAKE_COMPILER_IS_GNUCXX)
+        target_compile_options(${TARGET_NAME}
+                               PRIVATE -fprofile-arcs -ftest-coverage --coverage)
+        target_link_libraries(${TARGET_NAME} PRIVATE gcov)
+      endif()
     endif()
 
     # Targets
@@ -362,6 +352,7 @@ function(target_code_coverage TARGET_NAME)
           set(EXCLUDE_COMMAND
               ${LCOV_PATH}
               ${EXCLUDE_REGEX}
+              --ignore-errors unused
               --output-file
               ${COVERAGE_INFO})
         else()
@@ -436,154 +427,7 @@ function(target_code_coverage TARGET_NAME)
         add_dependencies(ccov-all-processing ccov-run-${TARGET_NAME})
       endif()
     endif()
-  endif()
-endfunction()
-
-# Adds code coverage instrumentation to all targets in the current directory and
-# any subdirectories. To add coverage instrumentation to only specific targets,
-# use `target_code_coverage`.
-function(add_code_coverage)
-  if("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-     OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-    add_compile_options(-fprofile-instr-generate -fcoverage-mapping)
-    add_link_options(-fprofile-instr-generate -fcoverage-mapping)
-  elseif(CMAKE_COMPILER_IS_GNUCXX)
-    add_compile_options(-fprofile-arcs -ftest-coverage --coverage)
-    link_libraries(gcov)
-  endif()
-endfunction()
-
-# Adds the 'ccov-all' type targets that calls all targets added via
-# `target_code_coverage` with the `ALL` parameter, but merges all the coverage
-# data from them into a single large report  instead of the numerous smaller
-# reports.
-# ~~~
-# Optional:
-# EXCLUDE <REGEX_PATTERNS> - Excludes files of the regex patterns provided from coverage.
-# ~~~
-function(add_code_coverage_all_targets)
-  # Argument parsing
-  set(multi_value_keywords EXCLUDE)
-  cmake_parse_arguments(add_code_coverage_all_targets
-                        ""
-                        ""
-                        "${multi_value_keywords}"
-                        ${ARGN})
-
-  if(CODE_COVERAGE)
-    if("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-       OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
-
-      # Merge the profile data for all of the run executables
-      add_custom_target(
-        ccov-all-processing
-        COMMAND ${LLVM_PROFDATA_PATH}
-                merge
-                -o
-                ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged.profdata
-                -sparse
-                `cat
-                ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/profraw.list`)
-
-                # Regex exclude only available for LLVM >= 7
-      if(LLVM_COV_VERSION VERSION_GREATER_EQUAL "7.0.0")
-        foreach(EXCLUDE_ITEM ${add_code_coverage_all_targets_EXCLUDE})
-          set(EXCLUDE_REGEX ${EXCLUDE_REGEX}
-                            -ignore-filename-regex='${EXCLUDE_ITEM}')
-        endforeach()
-      endif()
-
-      # Print summary of the code coverage information to the command line
-      add_custom_target(
-        ccov-all-report
-        COMMAND
-          ${LLVM_COV_PATH}
-          report
-          `cat
-          ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/binaries.list`
-          -instr-profile=${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged.profdata
-          ${EXCLUDE_REGEX}
-        DEPENDS ccov-all-processing)
-
-      # Export coverage information so continuous integration tools (e.g. Jenkins) can consume it
-      add_custom_target(
-        ccov-all-export
-        COMMAND
-          ${LLVM_COV_PATH}
-          export
-          `cat
-          ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/binaries.list`
-          -instr-profile=${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged.profdata
-          -format="text"
-          ${EXCLUDE_REGEX} > ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/coverage.json
-        DEPENDS ccov-all-processing)
-
-        # Generate HTML output of all added targets for perusal
-      add_custom_target(
-        ccov-all
-        COMMAND
-          ${LLVM_COV_PATH}
-          show
-          `cat
-          ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/binaries.list`
-          -instr-profile=${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged.profdata
-          -show-line-counts-or-regions
-          -output-dir=${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged
-          -format="html"
-          ${EXCLUDE_REGEX}
-        DEPENDS ccov-all-processing)
-
-    elseif(CMAKE_COMPILER_IS_GNUCXX)
-      set(COVERAGE_INFO "${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged.info")
-
-      # Nothing required for gcov
-      add_custom_target(ccov-all-processing COMMAND ;)
-
-      # Exclusion regex string creation
-      foreach(EXCLUDE_ITEM ${add_code_coverage_all_targets_EXCLUDE})
-        set(EXCLUDE_REGEX
-            ${EXCLUDE_REGEX}
-            --remove
-            ${COVERAGE_INFO}
-            '${EXCLUDE_ITEM}')
-      endforeach()
-
-      if(EXCLUDE_REGEX)
-        set(EXCLUDE_COMMAND
-            ${LCOV_PATH}
-            ${EXCLUDE_REGEX}
-            --output-file
-            ${COVERAGE_INFO})
-      else()
-        set(EXCLUDE_COMMAND ;)
-      endif()
-
-      # Generates HTML output of all targets for perusal
-      add_custom_target(ccov-all
-                        COMMAND ${LCOV_PATH}
-                                --directory
-                                ${CMAKE_BINARY_DIR}
-                                --capture
-                                --output-file
-                                ${COVERAGE_INFO}
-                        COMMAND ${EXCLUDE_COMMAND}
-                        COMMAND ${GENHTML_PATH}
-                                -o
-                                ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged
-                                ${COVERAGE_INFO}
-                        COMMAND ${CMAKE_COMMAND}
-                                -E
-                                remove
-                                ${COVERAGE_INFO}
-                        DEPENDS ccov-all-processing)
-
-    endif()
-
-    add_custom_command(
-      TARGET ccov-all POST_BUILD
-      COMMAND ;
-      COMMENT
-        "Open ${CMAKE_COVERAGE_OUTPUT_DIRECTORY}/all-merged/index.html in your browser to view the coverage report."
-      )
+  else()
+    message(FATAL_ERROR "Can't add coverage to targets because initialization wasn't successful. Make sure to only use it on Debug builds")
   endif()
 endfunction()

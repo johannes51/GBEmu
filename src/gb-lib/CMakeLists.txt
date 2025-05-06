@@ -233,9 +233,13 @@ target_sources(gbelib PRIVATE
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "sys/systemmanager.h")
 target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_code_coverage(gbelib)
-enable_wall(gbelib)
+if(${CMAKE_BUILD_TYPE} MATCHES "[Dd][Ee][Bb][Uu][Gg]" AND CODE_COVERAGE)
+  target_code_coverage(gbelib)
+endif()
+
 cxx_20(gbelib)
+enable_wall(gbelib)
+
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib)
 cppcheck(gbelib)

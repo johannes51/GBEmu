@@ -137,6 +137,8 @@ cxx_20(gbelib_tests)
 clang_format(format_gbelib_tests gbelib_tests)
 clang_tidy(gbelib_tests)
 
-target_code_coverage(gbelib_tests)
+if(${CMAKE_BUILD_TYPE} MATCHES "[Dd][Ee][Bb][Uu][Gg]" AND CODE_COVERAGE)
+    target_code_coverage(gbelib_tests EXCLUDE ${TEST_SOURCES} ${TEST_SOURCES_EXTERNAL} ${MOCK_SOURCES})
+endif()
 
 install(TARGETS gbelib_tests DESTINATION bin)
