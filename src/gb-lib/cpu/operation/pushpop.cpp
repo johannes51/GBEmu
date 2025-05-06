@@ -15,8 +15,6 @@ PushPop::PushPop(Direction direction, WordRegister targetRegister)
 {
 }
 
-PushPop::~PushPop() = default;
-
 auto PushPop::cycles() -> unsigned { return direction_ == Direction::Pop ? 3 : 4; }
 
 void PushPop::execute(RegistersInterface& registers, IMemoryView& memory)

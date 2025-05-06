@@ -13,4 +13,10 @@
   ClassName(ClassName&&) = delete;                                                                                     \
   ClassName& operator=(ClassName&&) = delete;
 
+#define DEFAULT_COPY_AND_MOVE(ClassName)                                                                               \
+  ClassName(const ClassName&) = default;                                                                               \
+  ClassName& operator=(const ClassName&) = default;                                                                    \
+  ClassName(ClassName&&) = default;                                                                                    \
+  ClassName& operator=(ClassName&&) = default;
+
 #endif // DEFINES_H

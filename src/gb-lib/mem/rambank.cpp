@@ -8,8 +8,6 @@
 
 RamBank::RamBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer)
     : BufferBank(area, buffer)
-    , start_(area.from)
-    , size_(area.to - area.from + 1)
 {
 }
 
