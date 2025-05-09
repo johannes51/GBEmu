@@ -9,8 +9,11 @@ TEST(GbWindowTest, Construction) { EXPECT_NO_THROW(GbWindow win(nullptr, nullptr
 
 TEST(GbWindowTest, Draw)
 {
-  GbWindow win(nullptr, MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
-      std::make_unique<MockTileMap>());
-  GbPixelBuffer i;
-  EXPECT_NO_THROW(win.draw(i));
+  auto wx = MockRegisterAdapter::make(100);
+  auto wy = MockRegisterAdapter::make(100);
+  GbWindow win(
+      MockRegisterAdapter::make(), wx, wy, MockRegisterAdapter::make(0b01101100U), std::make_unique<MockTileMap>());
+  GbPixelBuffer b;
+
+  EXPECT_NO_THROW(win.draw(b, 0U));
 }

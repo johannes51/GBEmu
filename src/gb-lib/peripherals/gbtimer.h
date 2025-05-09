@@ -9,7 +9,6 @@
 #include "mem/registers/iregisteradapter.h"
 #include "util/fallingedgedetector.h"
 
-constexpr uint8_t TimerInterruptBit = 2U;
 constexpr uint8_t TimerEnableBit = 2U;
 constexpr uint8_t TimerDivApuBit = 10U;
 constexpr uint8_t TimaMax = 0xFFU;

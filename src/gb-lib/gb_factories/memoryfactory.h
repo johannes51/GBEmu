@@ -29,10 +29,7 @@ private:
   static constexpr address_type IE = 0xFFFF;
 
   IMemoryManagerSP buildRamBank(MemoryArea area);
-  static IMemoryManagerSP buildMirrorBank(MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin);
-  static IMemoryManagerSP buildNullBank(MemoryArea area);
   std::vector<IMemoryManagerSP> buildCartBanks();
-  static IMemoryManagerSP buildIe();
 
   CartLoaderUP loader_;
   std::vector<uint8_t>& buffer_;

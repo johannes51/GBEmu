@@ -28,9 +28,9 @@ auto GbInterruptHandler::isInterrupt() const -> bool
 auto GbInterruptHandler::unmapInterrupt() -> std::pair<uint8_t, address_type>
 {
   const auto activeInterrupts = ie_->get() & static_cast<uint8_t>(if_->get() & InterruptRegisterMask);
-  for (auto i = 0U; i < NumInterrupts; ++i) {
-    if (checkInterruptBit(activeInterrupts, i)) {
-      return { i, HandlerAdresses[i] };
+  for (const auto& bitAddressPair : HandlerAdresses) {
+    if (checkInterruptBit(activeInterrupts, bitAddressPair.first)) {
+      return bitAddressPair;
     }
   }
   throw std::invalid_argument("Invalid interrupt.");

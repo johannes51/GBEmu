@@ -29,13 +29,13 @@ auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewSP
   auto wram1 = buildRamBank(WRAM1);
   manifold->addSubManager(wram0);
   manifold->addSubManager(wram1);
-  manifold->addSubManager(buildMirrorBank(MIRROR_L, WRAM0, wram0));
-  manifold->addSubManager(buildMirrorBank(MIRROR_U, WRAM1, wram1));
+  manifold->addSubManager(std::make_shared<MirrorBank>(MIRROR_L, WRAM0, std::move(wram0)));
+  manifold->addSubManager(std::make_shared<MirrorBank>(MIRROR_U, WRAM1, std::move(wram1)));
   manifold->addSubManager(buildRamBank(OAM));
-  manifold->addSubManager(buildNullBank(NOT_USED));
-  manifold->addSubManager(buildNullBank(IO));
+  manifold->addSubManager(std::make_shared<NullBank>(NOT_USED));
+  manifold->addSubManager(buildRamBank(IO));
   manifold->addSubManager(buildRamBank(HRAM));
-  manifold->addSubManager(buildIe());
+  manifold->addSubManager(std::make_shared<RegisterBank>(IE));
 
   return manifold;
 }
@@ -46,14 +46,6 @@ auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerSP
   std::advance(ptr_, area.size());
   return result;
 }
-
-auto gb::MemoryFactory::buildMirrorBank(
-    MemoryArea mirrorArea, MemoryArea originArea, IMemoryManagerSP origin) -> IMemoryManagerSP
-{
-  return std::make_shared<MirrorBank>(mirrorArea, originArea, std::move(origin));
-}
-
-auto gb::MemoryFactory::buildNullBank(MemoryArea area) -> IMemoryManagerSP { return std::make_shared<NullBank>(area); }
 
 auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerSP>
 {
@@ -68,5 +60,3 @@ auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerSP>
   }
   return result;
 }
-
-auto gb::MemoryFactory::buildIe() -> IMemoryManagerSP { return std::make_shared<RegisterBank>(IE); }

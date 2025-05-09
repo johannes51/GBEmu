@@ -5,6 +5,8 @@
 #include "mock/mockdivregister.h"
 #include "mock/mockregisteradapter.h"
 
+#include "peripherals/gbinterrupthandler.h"
+
 using ::testing::Return;
 using ::testing::StrictMock;
 

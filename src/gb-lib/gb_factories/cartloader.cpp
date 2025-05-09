@@ -8,6 +8,13 @@
 
 #include <array>
 
+constexpr address_type StartROM0 = 0x0000;
+constexpr address_type EndROM0 = 0x3FFF;
+constexpr address_type StartROM1 = 0x4000;
+constexpr address_type EndROM1 = 0x7FFF;
+constexpr address_type StartExtRAM = 0xA000;
+constexpr address_type EndExtRAM = 0xBFFF;
+
 gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFile)
     : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
     , ramFile_(ramFile, std::ios_base::in | std::ios_base::out | std::ios_base::binary)

@@ -13,3 +13,5 @@ auto decomposePos(
   auto po = TilePos { static_cast<uint8_t>(x % TileSize), static_cast<uint8_t>(y % TileSize) };
   return { ta, po };
 }
+
+auto toFlatAddress(const TileAddress& address) -> uint8_t { return (address.x * TileMapSize) + address.y; }

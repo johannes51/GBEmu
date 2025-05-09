@@ -9,8 +9,11 @@ TEST(GbBgTest, Construction) { EXPECT_NO_THROW(GbBg bg(nullptr, nullptr, nullptr
 
 TEST(GbBgTest, Draw)
 {
-  GbBg bg(nullptr, MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
-      std::make_unique<MockTileMap>());
-  GbPixelBuffer i;
-  EXPECT_NO_THROW(bg.draw(i));
+  auto scx = MockRegisterAdapter::make();
+  auto scy = MockRegisterAdapter::make();
+  GbBg bg(
+      MockRegisterAdapter::make(), scx, scy, MockRegisterAdapter::make(0b00011011U), std::make_unique<MockTileMap>());
+  GbPixelBuffer b;
+
+  EXPECT_NO_THROW(bg.draw(b, 0U));
 }

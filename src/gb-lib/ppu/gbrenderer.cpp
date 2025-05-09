@@ -7,9 +7,9 @@ GbRenderer::GbRenderer(IBackgroundSP bg, IWindowSP win, IObjectsSP obj)
 {
 }
 
-void GbRenderer::render(GbPixelBuffer& buffer)
+void GbRenderer::render(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
-  bg_->draw(buffer);
-  win_->draw(buffer);
-  obj_->draw(buffer);
+  bg_->draw(buffer, currentLine);
+  win_->draw(buffer, currentLine);
+  obj_->draw(buffer, currentLine);
 }

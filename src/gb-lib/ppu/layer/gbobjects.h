@@ -9,12 +9,12 @@
 
 class GbObjects : public IObjects {
 public:
-  explicit GbObjects(
-      OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2, TileDataUP tileData);
+  explicit GbObjects(OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2,
+      IRegisterAdapterSP bgp, TileDataUP tileData);
   ~GbObjects() override = default;
   DEFAULT_COPY_AND_MOVE(GbObjects)
 
-  void draw(GbPixelBuffer& buffer) override;
+  void draw(GbPixelBuffer& buffer, const uint8_t currentLine) override;
 
 private:
   uint8_t toTileDataIndex(uint8_t objectTileIndex) const;
@@ -24,6 +24,7 @@ private:
   IRegisterAdapterSP obp1_;
   IRegisterAdapterSP obp2_;
   TileDataUP tileData_;
+  GbPalette pal_;
   GbColorTransformationUP t_;
 };
 

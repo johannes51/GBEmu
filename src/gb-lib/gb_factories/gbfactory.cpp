@@ -39,7 +39,7 @@ auto GbFactory::constructCpu() -> CpuUP
 auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
 {
   auto a = ApuFactory(mem_, peripheralRF_->getDivApu());
-  auto p = PpuFactory(mem_);
+  auto p = PpuFactory(mem_, peripheralRF_->get(PeripheralRegisters::IF));
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
   return { a.constructApu(), std::move(ppu), constructTimer() };

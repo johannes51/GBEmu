@@ -5,13 +5,17 @@
 
 class MockOam : public Oam {
 public:
-  MockOam()
+  explicit MockOam(std::vector<Object> objects = {})
       : Oam(nullptr)
+      , objects_(std::move(objects))
   {
   }
   ~MockOam() override = default;
 
-  std::vector<Object> getAll() override { return {}; }
+  std::vector<Object> getAll() override { return objects_; }
+
+private:
+  std::vector<Object> objects_;
 };
 
 #endif // MOCKTILEMAP_H
