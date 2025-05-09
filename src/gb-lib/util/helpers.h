@@ -40,6 +40,9 @@ constexpr auto checkBit(const uint16_t& value, uint8_t pos) -> bool { return (va
 
 constexpr auto getBits(const uint8_t& value, uint8_t start, uint8_t len) -> uint8_t
 {
+  if (len > BYTE_BIT_COUNT) {
+    throw std::invalid_argument("cannot shift by more bits than are available");
+  }
   auto result = value;
   result >>= start;
   result &= (BYTE_MASK >> (BYTE_BIT_COUNT - len));
@@ -47,6 +50,9 @@ constexpr auto getBits(const uint8_t& value, uint8_t start, uint8_t len) -> uint
 }
 constexpr auto getBits(const uint16_t& value, uint8_t start, uint8_t len) -> uint16_t
 {
+  if (len > TWO_BYTE_BIT_COUNT) {
+    throw std::invalid_argument("cannot shift by more bits than are available");
+  }
   auto result = value;
   result >>= start;
   result &= (TWO_BYTE_MASK >> (TWO_BYTE_BIT_COUNT - len));

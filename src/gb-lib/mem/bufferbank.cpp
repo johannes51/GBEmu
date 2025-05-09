@@ -6,6 +6,9 @@ BufferBank::BufferBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_e
     : SingleAreaManager(area)
     , buffer_(buffer)
 {
+  if (buffer_.size() < area.size()) {
+    throw std::invalid_argument("Buffer must be larger or equal in size as memory area.");
+  }
 }
 
 auto BufferBank::getByteReference(address_type address) -> uint8_t&

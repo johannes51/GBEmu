@@ -10,8 +10,6 @@ GbObjects::GbObjects(
 {
 }
 
-GbObjects::~GbObjects() = default;
-
 void GbObjects::draw(GbPixelBuffer& buffer)
 {
   (void)buffer;

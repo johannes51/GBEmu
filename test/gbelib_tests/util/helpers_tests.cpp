@@ -72,7 +72,7 @@ TEST(HelperTest, BitFields8)
   EXPECT_EQ(0b0U, hlp::getBits(v, 7U, 1U));
 
   EXPECT_NO_THROW(hlp::getBits(v, 7U, 3U));
-  EXPECT_NO_THROW(hlp::getBits(v, 0U, 10U));
+  EXPECT_ANY_THROW(hlp::getBits(v, 0U, 10U));
 
   EXPECT_EQ(0b0101U, hlp::getBits(v, 0U, 4U));
   EXPECT_EQ(0b1010U, hlp::getBits(v, 1U, 4U));
@@ -91,7 +91,7 @@ TEST(HelperTest, BitFields16)
   EXPECT_EQ(0b0U, hlp::getBits(v, 15U, 1U));
 
   EXPECT_NO_THROW(hlp::getBits(v, 15U, 3U));
-  EXPECT_NO_THROW(hlp::getBits(v, 0U, 18U));
+  EXPECT_ANY_THROW(hlp::getBits(v, 0U, 18U));
 
   EXPECT_EQ(0b0101U, hlp::getBits(v, 0U, 4U));
   EXPECT_EQ(0b1010U, hlp::getBits(v, 1U, 4U));

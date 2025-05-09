@@ -13,7 +13,7 @@ GbPulseChannel::GbPulseChannel(IRegisterAdapterSP nrX1, IRegisterAdapterSP nrX2,
     , period_(std::move(nrX3), std::move(nrX4))
 {
   if (!nrX1_ || !nrX3_ || !nrX4_) {
-    throw std::invalid_argument("Audio registers not set."); // NOTE: unreachable
+    throw std::invalid_argument("Audio registers not set."); // NOTE: unreachable LCOV_EXCL_LINE
   }
 }
 

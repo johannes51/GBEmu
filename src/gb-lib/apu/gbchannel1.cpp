@@ -7,7 +7,7 @@ GbChannel1::GbChannel1(IRegisterAdapterSP nr10, IRegisterAdapterSP nr11, IRegist
     , sweep_(std::move(nr10), std::move(nr13), std::move(nr14))
 {
   if (!nr10_) {
-    throw std::invalid_argument("Audio registers not set.");
+    throw std::invalid_argument("Audio registers not set."); // NOTE: unreachable LCOV_EXCL_LINE
   }
 }
 

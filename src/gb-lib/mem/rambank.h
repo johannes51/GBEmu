@@ -10,10 +10,6 @@ public:
 
   Location8UP getLocation8(const address_type address) override;
   Location16UP getLocation16(const address_type address) override;
-
-private:
-  address_type start_;
-  address_type size_;
 };
 
 #endif // RAMBANK_H

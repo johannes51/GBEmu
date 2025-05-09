@@ -11,6 +11,7 @@ TEST(JumpTest, Direct)
 {
   CpuRegisters r;
   TestBank b { { 0x00U, 0x01U } };
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   *b.getLocation16(0x00U) = uint16_t { 0x195EU };
   Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
 
@@ -24,7 +25,7 @@ TEST(JumpTest, Direct)
   EXPECT_EQ(4, jump.cycles());
 
   ASSERT_NE(0x195EU, r.get(WordRegister::PC)->get());
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x195EU, r.get(WordRegister::PC)->get());
 }
 
@@ -32,6 +33,7 @@ TEST(JumpTest, Relative)
 {
   CpuRegisters r;
   Jump jump { JumpType::Regular, TargetType::Relative, Condition::None };
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   EXPECT_FALSE(jump.isComplete());
   EXPECT_NO_THROW(jump.nextOpcode(variableLocation(uint8_t { 0x1AU })));
@@ -40,13 +42,14 @@ TEST(JumpTest, Relative)
   EXPECT_EQ(3, jump.cycles());
 
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
 }
 
 TEST(JumpTest, Z)
 {
   Jump jump { JumpType::Regular, TargetType::Relative, Condition::Z };
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   CpuRegisters r;
 
@@ -55,21 +58,21 @@ TEST(JumpTest, Z)
 
   EXPECT_FALSE(jump.isComplete());
 
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
   EXPECT_ANY_THROW(jump.cycles());
   EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
   EXPECT_FALSE(jump.isComplete());
 
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
   jump.nextOpcode(variableLocation(uint8_t { 0x1AU }));
   EXPECT_TRUE(jump.isComplete());
 
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearZero();
   jump.showFlags(r.getFlags());
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
 }
 
@@ -79,6 +82,7 @@ TEST(JumpTest, NZ)
   jump.nextOpcode(variableLocation(uint8_t { 0x1AU }));
 
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearZero();
@@ -87,12 +91,12 @@ TEST(JumpTest, NZ)
   EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
   EXPECT_TRUE(jump.isComplete());
 
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setZero();
   jump.showFlags(r.getFlags());
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
 }
 
@@ -102,22 +106,23 @@ TEST(JumpTest, C)
   jump.nextOpcode(variableLocation(uint8_t { 0x1AU }));
 
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setCarry();
 
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
   EXPECT_ANY_THROW(jump.cycles());
   EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
   EXPECT_TRUE(jump.isComplete());
 
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
   jump.showFlags(r.getFlags());
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
 }
 
@@ -127,22 +132,23 @@ TEST(JumpTest, NC)
   jump.nextOpcode(variableLocation(uint8_t { 0x1AU }));
 
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
 
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
   EXPECT_ANY_THROW(jump.cycles());
   EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
   EXPECT_TRUE(jump.isComplete());
 
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setCarry();
   jump.showFlags(r.getFlags());
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
 }
 
@@ -154,31 +160,33 @@ TEST(JumpTest, AbsoluteZ)
   *b.getLocation16(0) = uint16_t { 0x1A1AU };
 
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   *r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
 
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
   EXPECT_NO_THROW(jump.showFlags(r.getFlags()));
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
 
   jump.nextOpcode(b.getLocation8((0U)));
   EXPECT_FALSE(jump.isComplete());
-  EXPECT_ANY_THROW(jump.execute(r, *IMemoryViewSP()));
+  EXPECT_ANY_THROW(jump.execute(r, mem));
 
   jump.nextOpcode(b.getLocation8(1U));
   EXPECT_TRUE(jump.isComplete());
 
   EXPECT_EQ(4U, jump.cycles());
 
-  jump.execute(r, *IMemoryViewSP());
+  jump.execute(r, mem);
   EXPECT_EQ(0x1A1AU, r.get(WordRegister::PC)->get());
 }
 
 TEST(JumpTest, Indirect)
 {
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   Jump jump { JumpType::Indirect, TargetType::Absolute, Condition::None };
 
   EXPECT_TRUE(jump.isComplete());
@@ -190,7 +198,7 @@ TEST(JumpTest, Indirect)
   EXPECT_THROW(jump.nextOpcode(variableLocation(uint8_t { 0x19U })), std::logic_error);
 
   *r.get(WordRegister::HL) = uint16_t { 0x1234U };
-  EXPECT_NO_THROW(jump.execute(r, *IMemoryViewSP {}));
+  EXPECT_NO_THROW(jump.execute(r, mem));
   EXPECT_EQ(0x1234U, r.get(WordRegister::PC)->get());
 }
 

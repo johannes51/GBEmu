@@ -6,6 +6,9 @@
 #include "ilayer.h"
 
 class IObjects : public ILayer {
+public:
+  ~IObjects() override = default;
+  DEFAULT_COPY_AND_MOVE(IObjects)
 protected:
   IObjects() = default;
 };

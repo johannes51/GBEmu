@@ -27,7 +27,8 @@ protected:
 
 TEST(GbChannel4TestsNF, Construction)
 {
-  EXPECT_ANY_THROW(GbChannel4 c(nullptr, nullptr, nullptr, nullptr, nullptr));
+  EXPECT_ANY_THROW(GbChannel4 c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), nullptr,
+      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
   EXPECT_NO_THROW(GbChannel4 c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
       MockRegisterAdapter::make(), MockRegisterAdapter::make()));
 }

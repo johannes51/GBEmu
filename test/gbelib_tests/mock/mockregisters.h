@@ -1,6 +1,8 @@
 #ifndef MOCKREGISTERS_H
 #define MOCKREGISTERS_H
 
+#include "mockflags.h"
+
 #include "cpu/registersinterface.h"
 
 #include <unordered_map>
@@ -17,6 +19,7 @@ public:
 
 private:
   std::unordered_map<WordRegister, uint16_t> regs_;
+  MockFlags flags_;
 };
 
 #endif // MOCKREGISTERS_H

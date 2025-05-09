@@ -91,7 +91,7 @@ auto loadImmediate(const OpcodeView opcode) -> OperationUP
   }
 }
 
-auto loadOddbal(const OpcodeView opcode) -> OperationUP
+auto loadOddball(const OpcodeView opcode) -> OperationUP
 {
   const auto direction
       = (opcode.upperNibble() == 0xEU) ? ByteLoadOddball::Direction::Indirect : ByteLoadOddball::Direction::Register;
@@ -118,24 +118,31 @@ auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
       ? ByteLoadIndirect::Direction::Indirect
       : ByteLoadIndirect::Direction::Register;
 
-  const auto dirReg = (opcode.lowerNibble() <= 0x3U) ? ByteRegister::A : destination(opcode);
-
+  auto dest = ByteRegister::A;
   auto indirReg = WordRegister::None;
-  if (opcode.upperNibble() >= 0x2U) {
+  auto postAction = ByteLoadIndirect::Post::None;
+  if (opcode.upperNibble() == 0x7U) {
+    dest = bulkSource(opcode);
+    indirReg = WordRegister::HL;
+  } else if (((opcode.lowerNibble() == 0x6U) || (opcode.lowerNibble() == 0xEU)) && (opcode.upperNibble() <= 0x6U)
+      && (opcode.upperNibble() >= 0x4U)) {
+    dest = destination(opcode);
     indirReg = WordRegister::HL;
   } else if (opcode.upperNibble() == 0x0U) {
     indirReg = WordRegister::BC;
-  } else {
-    indirReg = WordRegister::DE;
-  }
-  auto postAction = ByteLoadIndirect::Post::None;
-  if (opcode.upperNibble() == 0x2U) {
-    postAction = ByteLoadIndirect::Post::Increment;
   } else if (opcode.upperNibble() == 0x1U) {
+    indirReg = WordRegister::DE;
+  } else if (opcode.upperNibble() == 0x2U) {
+    indirReg = WordRegister::HL;
+    postAction = ByteLoadIndirect::Post::Increment;
+  } else if (opcode.upperNibble() == 0x3U) {
+    indirReg = WordRegister::HL;
     postAction = ByteLoadIndirect::Post::Decrement;
+  } else {
+    throw std::logic_error("Invalid opcode for register indirect load");
   }
 
-  return std::make_unique<ByteLoadIndirect>(direction, dirReg, indirReg, postAction);
+  return std::make_unique<ByteLoadIndirect>(direction, dest, indirReg, postAction);
 }
 
 auto ByteLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
@@ -156,7 +163,7 @@ auto ByteLoadsDecoder::decode(const Location8& opcodeLocation) const -> Operatio
       return loadRegisterIndirect(opc);
     }
   } else if (opc.upperNibble() >= 0xEU) {
-    return loadOddbal(opc);
+    return loadOddball(opc);
   }
   throw std::logic_error("Unimplmented opcode: " + std::to_string(opc.value()));
 }

@@ -84,17 +84,6 @@ set(TEST_SOURCES
     mem/registers/memoryregisteradapter_tests.cpp
     mem/registers/registerbankadapter_tests.cpp
     mem/registers/registerbuffer_tests.cpp
-    mock/mockchannel.h
-    mock/mockdivregister.h
-    mock/mockinterrupthandler.h
-    mock/mockoam.h
-    mock/mockmixer.h
-    mock/mockregisteradapter.h
-    mock/mockregisters.h
-    mock/mockregisters.cpp
-    mock/mocktilemap.h
-    mock/testbank.h
-    mock/testbank.cpp
     ops/arithmetic_tests.cpp
     ops/bitmanip_tests.cpp
     ops/logic_tests.cpp
@@ -103,6 +92,7 @@ set(TEST_SOURCES
     peripherals/gbinterrupthandler_tests.cpp
     peripherals/gbtimer_tests.cpp
     ppu/gbrenderer_tests.cpp
+    ppu/pixelbuffer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp
     ppu/layer/gbobjects_tests.cpp
@@ -122,7 +112,22 @@ set(TEST_SOURCES
     util/fallingedgedetector_tests.cpp
     )
 
-add_executable(gbelib_tests ${TEST_SOURCES})
+set(MOCK_SOURCES
+    mock/mockchannel.h
+    mock/mockdivregister.h
+    mock/mockflags.h
+    mock/mockinterrupthandler.h
+    mock/mockmixer.h
+    mock/mockoam.h
+    mock/mockregisteradapter.h
+    mock/mockregisters.h
+    mock/mockregisters.cpp
+    mock/mocktilemap.h
+    mock/testbank.h
+    mock/testbank.cpp
+)
+
+add_executable(gbelib_tests ${TEST_SOURCES} ${MOCK_SOURCES})
 target_link_libraries(gbelib_tests PRIVATE gbelib GTest::GTest GTest::Main GTest::gmock)
 target_include_directories(gbelib_tests PRIVATE $<TARGET_PROPERTY:gbelib,INCLUDE_DIRECTORIES>)
 target_include_directories(gbelib PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
@@ -137,6 +142,8 @@ cxx_20(gbelib_tests)
 clang_format(format_gbelib_tests gbelib_tests)
 clang_tidy(gbelib_tests)
 
-target_code_coverage(gbelib_tests)
+if(${CMAKE_BUILD_TYPE} MATCHES "[Dd][Ee][Bb][Uu][Gg]" AND CODE_COVERAGE)
+    target_code_coverage(gbelib_tests EXCLUDE ${TEST_SOURCES} ${TEST_SOURCES_EXTERNAL} ${MOCK_SOURCES})
+endif()
 
 install(TARGETS gbelib_tests DESTINATION bin)

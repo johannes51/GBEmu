@@ -12,7 +12,7 @@ class GbBg : public IBackground {
 public:
   explicit GbBg(
       IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp, TileMapUP map);
-  ~GbBg() override;
+  ~GbBg() override = default;
 
   void draw(GbPixelBuffer& buffer) override;
 

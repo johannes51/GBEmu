@@ -11,7 +11,8 @@ class GbObjects : public IObjects {
 public:
   explicit GbObjects(
       OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2, TileDataUP tileData);
-  ~GbObjects() override;
+  ~GbObjects() override = default;
+  DEFAULT_COPY_AND_MOVE(GbObjects)
 
   void draw(GbPixelBuffer& buffer) override;
 

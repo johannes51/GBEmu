@@ -1,6 +1,8 @@
 cmake_minimum_required(VERSION 3.11)
 project(gb-lib C CXX)
 
+include(CheckCXXCompilerFlag)
+
 add_library(gbelib SHARED STATIC)
 target_sources(gbelib PRIVATE
   constants.h
@@ -233,9 +235,18 @@ target_sources(gbelib PRIVATE
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "sys/systemmanager.h")
 target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 
-target_code_coverage(gbelib)
-enable_wall(gbelib)
+if(${CMAKE_BUILD_TYPE} MATCHES "[Dd][Ee][Bb][Uu][Gg]" AND CODE_COVERAGE)
+  target_code_coverage(gbelib)
+endif()
+
 cxx_20(gbelib)
+enable_wall(gbelib)
+
+check_cxx_compiler_flag(-Wstringop-overflow HAVE_STRINGOP_OVERFLOW)
+if (HAVE_STRINGOP_OVERFLOW)
+    target_compile_options(gbelib PUBLIC -Wno-stringop-overflow)
+endif()
+
 clang_format(format_gbelib gbelib)
 clang_tidy(gbelib)
 cppcheck(gbelib)

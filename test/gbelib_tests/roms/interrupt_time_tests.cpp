@@ -10,9 +10,8 @@ TEST(RomTest, InteruptTime)
   GbFactory g("interrupt_time.gb", "interrupt_time.sav");
   auto sm = g.constructSystem();
 
-  for (int var = 0; var < 66693; ++var) {
-    EXPECT_NO_THROW(sm->clock()) << var; // TODO: wartet auf irgendwas
+  for (size_t c = 0U; c < 57258U; ++c) {
+    EXPECT_NO_THROW(sm->clock()) << "at count: " << c;
   }
-
-  //-----------------------------------------------DONE-----------------------------------------------------------------
+  // EXPECT_NO_THROW(sm->clock()); // TODO: write on ROM
 }

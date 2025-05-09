@@ -11,6 +11,7 @@
 class TileData {
 public:
   explicit TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit = -1);
+  virtual ~TileData() = default;
 
   Tile getTile(int16_t index);
 

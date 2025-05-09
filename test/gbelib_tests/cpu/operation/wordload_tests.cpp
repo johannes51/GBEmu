@@ -9,6 +9,7 @@
 TEST(WordLoadTest, Immediate)
 {
   CpuRegisters r;
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   TestBank b({ 0U, 1U });
   *b.getLocation16(0U) = uint16_t { 0x1C74U };
 
@@ -27,8 +28,7 @@ TEST(WordLoadTest, Immediate)
 
   EXPECT_EQ(3U, loadImmediate.cycles());
 
-  IMemoryViewSP m;
-  loadImmediate.execute(r, *m);
+  loadImmediate.execute(r, mem);
   auto value = r.get(WordRegister::DE)->get();
 
   EXPECT_EQ(0x1C74U, value);
@@ -36,6 +36,7 @@ TEST(WordLoadTest, Immediate)
 
 TEST(WordLoadTest, Immediate2)
 {
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   TestBank b({ 0U, 1U });
   *b.getLocation16(0U) = uint16_t { 0xDFFFU };
 
@@ -50,8 +51,7 @@ TEST(WordLoadTest, Immediate2)
   CpuRegisters r;
   EXPECT_EQ(3U, loadImmediate.cycles());
 
-  IMemoryViewSP m;
-  loadImmediate.execute(r, *m);
+  loadImmediate.execute(r, mem);
   auto value = r.get(WordRegister::HL)->get();
 
   EXPECT_EQ(0xDFFFU, value);
@@ -59,6 +59,7 @@ TEST(WordLoadTest, Immediate2)
 
 TEST(WordLoadTest, Register)
 {
+  auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   WordLoad loadRegister { WordLoad::Destination::Register, WordLoad::Source::Register };
   loadRegister.setDestination(WordRegister::SP);
   loadRegister.setSource(WordRegister::HL);
@@ -71,7 +72,7 @@ TEST(WordLoadTest, Register)
   *r.get(WordRegister::HL) = value;
 
   ASSERT_NE(r.get(WordRegister::SP)->get(), value);
-  loadRegister.execute(r, *IMemoryViewSP());
+  loadRegister.execute(r, mem);
   EXPECT_EQ(r.get(WordRegister::SP)->get(), value);
 }
 

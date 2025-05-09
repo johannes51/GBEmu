@@ -10,7 +10,7 @@ public:
   enum class Direction { Push, Pop, Invalid };
 
   PushPop(Direction direction, WordRegister targetRegister);
-  ~PushPop() override;
+  ~PushPop() override = default;
 
   unsigned cycles() override;
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
