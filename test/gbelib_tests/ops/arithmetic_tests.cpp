@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "ops/arithmetic.h"
 
 #include "location/variablelocation.h"
@@ -9,46 +9,46 @@ TEST(ArithmeticTest, Increment8)
 {
   auto l = variableLocation(uint8_t { 0b00001101U });
 
-  auto res = ops::increment<uint8_t>(*l);
+  auto res = ops::increment(*l);
 
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00001110U, l->getByte());
+  EXPECT_EQ(0b00001110U, l->get());
 
-  res = ops::increment<uint8_t>(*l);
-  res = ops::increment<uint8_t>(*l);
+  res = ops::increment(*l);
+  res = ops::increment(*l);
 
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00010000U, l->getByte());
+  EXPECT_EQ(0b00010000U, l->get());
 
   *l = uint8_t { 0b11111111U };
 
-  res = ops::increment<uint8_t>(*l);
+  res = ops::increment(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000, l->getByte());
+  EXPECT_EQ(0b00000000, l->get());
 }
 
 TEST(ArithmeticTest, Increment16)
 {
   auto l = variableLocation(uint16_t { 0xFFFEU });
 
-  auto res = ops::increment<uint16_t>(*l);
+  auto res = ops::increment(*l);
 
   auto expected = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::NoChange, ops::FlagResult::NoChange,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0xFFFFU, l->getWord());
+  EXPECT_EQ(0xFFFFU, l->get());
 
-  res = ops::increment<uint16_t>(*l);
+  res = ops::increment(*l);
 
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0x0000U, l->getWord());
+  EXPECT_EQ(0x0000U, l->get());
 }
 
 TEST(ArithmeticTest, Add8)
@@ -56,29 +56,29 @@ TEST(ArithmeticTest, Add8)
   auto lA = variableLocation(uint8_t { 0b00001100U });
   auto lB = variableLocation(uint8_t { 0b00001010U });
 
-  auto res = ops::add<uint8_t>(*lA, *lB);
+  auto res = ops::add(*lA, *lB);
 
   auto expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00010110U, lA->getByte());
+  EXPECT_EQ(0b00010110U, lA->get());
 
   *lB = uint8_t { 0b11110000U };
 
-  res = ops::add<uint8_t>(*lA, *lB);
+  res = ops::add(*lA, *lB);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000110U, lA->getByte());
+  EXPECT_EQ(0b00000110U, lA->get());
 
   *lB = uint8_t { 0b11111010U };
 
-  res = ops::add<uint8_t>(*lA, *lB);
+  res = ops::add(*lA, *lB);
 
   expected = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000U, lA->getByte());
+  EXPECT_EQ(0b00000000U, lA->get());
 }
 
 TEST(ArithmeticTest, Add16)
@@ -86,22 +86,22 @@ TEST(ArithmeticTest, Add16)
   auto lA = variableLocation(uint16_t { 0b0001010000110101U });
   auto lB = variableLocation(uint16_t { 0b1100011110100010U });
 
-  auto res = ops::add<uint16_t>(*lA, *lB);
+  auto res = ops::add(*lA, *lB);
 
   auto expected = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b1101101111010111U, lA->getWord());
+  EXPECT_EQ(0b1101101111010111U, lA->get());
 
   *lA = uint16_t { 0b1000100000000000U };
   *lB = uint16_t { 0b1000100000000000U };
 
-  res = ops::add<uint16_t>(*lA, *lB);
+  res = ops::add(*lA, *lB);
 
   expected
       = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b0001000000000000U, lA->getWord());
+  EXPECT_EQ(0b0001000000000000U, lA->get());
 }
 
 TEST(ArithmeticTest, AddSigned)
@@ -115,7 +115,7 @@ TEST(ArithmeticTest, AddSigned)
   auto expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0xFEFFU, lA->getWord());
+  EXPECT_EQ(0xFEFFU, lA->get());
 
   opSigned = int8_t { -1 };
   *lB = *reinterpret_cast<uint8_t*>(&opSigned); // NOLINT
@@ -125,7 +125,7 @@ TEST(ArithmeticTest, AddSigned)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0xFEFEU, lA->getWord());
+  EXPECT_EQ(0xFEFEU, lA->get());
 }
 
 TEST(ArithmeticTest, Sub)
@@ -138,7 +138,7 @@ TEST(ArithmeticTest, Sub)
   auto expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Set, ops::FlagResult::Set, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000U, lA->getByte());
+  EXPECT_EQ(0b00000000U, lA->get());
 
   *lB = uint8_t { 0b00000001U };
 
@@ -147,7 +147,7 @@ TEST(ArithmeticTest, Sub)
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11111111U, lA->getByte());
+  EXPECT_EQ(0b11111111U, lA->get());
 }
 
 TEST(ArithmeticTest, Complement)
@@ -159,7 +159,7 @@ TEST(ArithmeticTest, Complement)
   auto expected = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::Set, ops::FlagResult::Set,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10101010U, l->getByte());
+  EXPECT_EQ(0b10101010U, l->get());
 }
 
 TEST(ArithmeticTest, DecimalAdjust)
@@ -171,7 +171,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   auto expected = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000U, l->getByte());
+  EXPECT_EQ(0b00000000U, l->get());
 
   *l = uint8_t { 19U };
 
@@ -180,7 +180,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00011001U, l->getByte());
+  EXPECT_EQ(0b00011001U, l->get());
 
   *l = uint8_t { 28U };
 
@@ -189,7 +189,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00101000U, l->getByte());
+  EXPECT_EQ(0b00101000U, l->get());
 
   *l = uint8_t { 37U };
 
@@ -198,7 +198,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00110111U, l->getByte());
+  EXPECT_EQ(0b00110111U, l->get());
 
   *l = uint8_t { 46U };
 
@@ -207,7 +207,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01000110U, l->getByte());
+  EXPECT_EQ(0b01000110U, l->get());
 
   *l = uint8_t { 55U };
 
@@ -216,7 +216,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01010101U, l->getByte());
+  EXPECT_EQ(0b01010101U, l->get());
 
   *l = uint8_t { 64U };
 
@@ -225,7 +225,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01100100U, l->getByte());
+  EXPECT_EQ(0b01100100U, l->get());
 
   *l = uint8_t { 73U };
 
@@ -234,7 +234,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01110011U, l->getByte());
+  EXPECT_EQ(0b01110011U, l->get());
 
   *l = uint8_t { 82U };
 
@@ -243,7 +243,7 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000010U, l->getByte());
+  EXPECT_EQ(0b10000010U, l->get());
 
   *l = uint8_t { 91U };
 
@@ -252,5 +252,5 @@ TEST(ArithmeticTest, DecimalAdjust)
   expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::NoChange, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10010001U, l->getByte());
+  EXPECT_EQ(0b10010001U, l->get());
 }

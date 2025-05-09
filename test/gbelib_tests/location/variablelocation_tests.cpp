@@ -4,55 +4,36 @@
 
 TEST(VariableLocationTest, SingleByte)
 {
-  auto l = variableLocation(uint8_t { 0xAF });
+  Location8UP l = variableLocation(uint8_t { 0xAF });
 
-  EXPECT_FALSE(l->isWord());
-  EXPECT_ANY_THROW(l->getWord());
-  EXPECT_ANY_THROW(*l = uint16_t { 0xAFFEU });
-
-  EXPECT_EQ(0xAFU, l->getByte());
+  EXPECT_NO_THROW(l->get());
+  EXPECT_EQ(0xAFU, l->get());
 
   *l = uint8_t { 0x42U };
 
-  EXPECT_FALSE(l->isWord());
-  EXPECT_ANY_THROW(l->getWord());
-  EXPECT_EQ(0x42U, l->getByte());
+  EXPECT_EQ(0x42U, l->get());
 }
 
 TEST(VariableLocationTest, DoubleByte)
 {
-  auto l = variableLocation(uint8_t { 0xFEU }, uint8_t { 0xAFU });
+  Location16UP l = variableLocation(uint8_t { 0xFEU }, uint8_t { 0xAFU });
 
-  EXPECT_TRUE(l->isWord());
-  EXPECT_NO_THROW(l->getWord());
-
-  EXPECT_EQ(0xFEU, l->getByte());
-  EXPECT_EQ(0xAFFEU, l->getWord());
+  EXPECT_NO_THROW(l->get());
+  EXPECT_EQ(0xAFFEU, l->get());
 
   *l = uint16_t { 0x4342U };
 
-  EXPECT_TRUE(l->isWord());
-  EXPECT_NO_THROW(l->getWord());
-
-  EXPECT_EQ(0x42U, l->getByte());
-  EXPECT_EQ(0x4342U, l->getWord());
+  EXPECT_EQ(0x4342U, l->get());
 }
 
 TEST(VariableLocationTest, Word)
 {
-  auto l = variableLocation(uint16_t { 0xAFFEU });
+  Location16UP l = variableLocation(uint16_t { 0xAFFEU });
 
-  EXPECT_TRUE(l->isWord());
-  EXPECT_NO_THROW(l->getWord());
-
-  EXPECT_EQ(0xFEU, l->getByte());
-  EXPECT_EQ(0xAFFEU, l->getWord());
+  EXPECT_NO_THROW(l->get());
+  EXPECT_EQ(0xAFFEU, l->get());
 
   *l = uint16_t { 0x4342U };
 
-  EXPECT_TRUE(l->isWord());
-  EXPECT_NO_THROW(l->getWord());
-
-  EXPECT_EQ(0x42U, l->getByte());
-  EXPECT_EQ(0x4342U, l->getWord());
+  EXPECT_EQ(0x4342U, l->get());
 }

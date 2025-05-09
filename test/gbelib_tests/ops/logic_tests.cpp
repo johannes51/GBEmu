@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "ops/logic.h"
 
 #include "location/variablelocation.h"
@@ -15,7 +15,7 @@ TEST(LogicTest, And)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00001010U, d->getByte());
+  EXPECT_EQ(0b00001010U, d->get());
 
   *s = uint8_t { 0b11110101U };
 
@@ -24,7 +24,7 @@ TEST(LogicTest, And)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0x00U, d->getByte());
+  EXPECT_EQ(0x00U, d->get());
 }
 
 TEST(LogicTest, Or)
@@ -37,7 +37,7 @@ TEST(LogicTest, Or)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01111110U, d->getByte());
+  EXPECT_EQ(0b01111110U, d->get());
 
   *d = uint8_t { 0b00000000U };
   *s = uint8_t { 0b00000000U };
@@ -47,7 +47,7 @@ TEST(LogicTest, Or)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0x00U, d->getByte());
+  EXPECT_EQ(0x00U, d->get());
 }
 
 TEST(LogicTest, Xor)
@@ -60,14 +60,14 @@ TEST(LogicTest, Xor)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0xCDU, d->getByte());
+  EXPECT_EQ(0xCDU, d->get());
 
   res = ops::xorF(*d, *d);
 
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0x00U, d->getByte());
+  EXPECT_EQ(0x00U, d->get());
 }
 
 TEST(LogicTest, Cp)
@@ -80,7 +80,7 @@ TEST(LogicTest, Cp)
   auto expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Set, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10001000U, a->getByte());
+  EXPECT_EQ(0b10001000U, a->get());
 
   *n = uint8_t { 0b11001000U };
 
@@ -89,7 +89,7 @@ TEST(LogicTest, Cp)
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10001000U, a->getByte());
+  EXPECT_EQ(0b10001000U, a->get());
 
   *n = uint8_t { 0b10001000U };
 
@@ -98,5 +98,5 @@ TEST(LogicTest, Cp)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10001000U, a->getByte());
+  EXPECT_EQ(0b10001000U, a->get());
 }

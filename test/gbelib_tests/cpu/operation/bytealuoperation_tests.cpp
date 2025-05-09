@@ -2,7 +2,7 @@
 
 #include "cpu/cpuregisters.h"
 #include "cpu/operation/bytealuoperation.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "mock/testbank.h"
 
 #include "location/variablelocation.h"
@@ -22,7 +22,7 @@ TEST(ByteAluOperationTest, AddImmediate)
 
   IMemoryViewSP m;
   addOp.execute(r, *m);
-  EXPECT_EQ(0x53U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0x53U, r.get(ByteRegister::A)->get());
 }
 
 TEST(ByteAluOperationTest, AddIndirect)
@@ -38,9 +38,9 @@ TEST(ByteAluOperationTest, AddIndirect)
   *r.get(WordRegister::HL) = uint16_t { 0x0100U };
 
   TestBank m { { 0x0100U, 0x0101U } };
-  *m.getLocation(0x0100U) = uint8_t { 0x13U };
+  *m.getLocation8(0x0100U) = uint8_t { 0x13U };
   addOp.execute(r, m);
-  EXPECT_EQ(0x18U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0x18U, r.get(ByteRegister::A)->get());
 }
 
 TEST(ByteAluOperationTest, SubImmediate)
@@ -58,7 +58,7 @@ TEST(ByteAluOperationTest, SubImmediate)
 
   IMemoryViewSP m;
   addOp.execute(r, *m);
-  EXPECT_EQ(0x00U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0x00U, r.get(ByteRegister::A)->get());
 }
 
 TEST(ByteAluOperationTest, And)
@@ -72,14 +72,14 @@ TEST(ByteAluOperationTest, And)
 
   auto a = r.get(ByteRegister::A);
   *a = uint8_t { 0x9U }; // 1001
-  ASSERT_EQ(0x9U, a->getByte());
+  ASSERT_EQ(0x9U, a->get());
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0x5U }; // 0101
-  ASSERT_EQ(0x5U, b->getByte());
+  ASSERT_EQ(0x5U, b->get());
 
   IMemoryViewSP m;
   andOp.execute(r, *m);
-  EXPECT_EQ(0x1U, r.get(ByteRegister::A)->getByte()); // 0001
+  EXPECT_EQ(0x1U, r.get(ByteRegister::A)->get()); // 0001
 }
 
 TEST(ByteAluOperationTest, Or)
@@ -93,14 +93,14 @@ TEST(ByteAluOperationTest, Or)
 
   auto a = r.get(ByteRegister::A);
   *a = uint8_t { 0x9U }; // 1001
-  ASSERT_EQ(0x9U, a->getByte());
+  ASSERT_EQ(0x9U, a->get());
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0x5U }; // 0101
-  ASSERT_EQ(0x5U, b->getByte());
+  ASSERT_EQ(0x5U, b->get());
 
   IMemoryViewSP m;
   orOp.execute(r, *m);
-  EXPECT_EQ(0xDU, r.get(ByteRegister::A)->getByte()); // 1100
+  EXPECT_EQ(0xDU, r.get(ByteRegister::A)->get()); // 1100
 }
 
 TEST(ByteAluOperationTest, Xor)
@@ -114,14 +114,14 @@ TEST(ByteAluOperationTest, Xor)
 
   auto a = r.get(ByteRegister::A);
   *a = uint8_t { 0x9U }; // 1001
-  ASSERT_EQ(0x9U, a->getByte());
+  ASSERT_EQ(0x9U, a->get());
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0x5U }; // 0101
-  ASSERT_EQ(0x5U, b->getByte());
+  ASSERT_EQ(0x5U, b->get());
 
   IMemoryViewSP m;
   xorOp.execute(r, *m);
-  EXPECT_EQ(0xCU, r.get(ByteRegister::A)->getByte()); // 1100
+  EXPECT_EQ(0xCU, r.get(ByteRegister::A)->get()); // 1100
 }
 
 TEST(ByteAluOperationTest, Cp)
@@ -135,14 +135,14 @@ TEST(ByteAluOperationTest, Cp)
 
   auto a = r.get(ByteRegister::A);
   *a = uint8_t { 0x9U }; // 1001
-  ASSERT_EQ(0x9U, a->getByte());
+  ASSERT_EQ(0x9U, a->get());
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0xAU }; // 1010
-  ASSERT_EQ(0xAU, b->getByte());
+  ASSERT_EQ(0xAU, b->get());
 
   IMemoryViewSP m;
   cpOp.execute(r, *m);
-  EXPECT_EQ(0x9U, r.get(ByteRegister::A)->getByte()); // 1100
+  EXPECT_EQ(0x9U, r.get(ByteRegister::A)->get()); // 1100
   EXPECT_TRUE(r.getFlags().carry());
 }
 
@@ -157,11 +157,11 @@ TEST(ByteAluOperationTest, Inc)
 
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0x1U }; // 0001
-  ASSERT_EQ(0x1U, b->getByte());
+  ASSERT_EQ(0x1U, b->get());
 
   IMemoryViewSP m;
   decOp.execute(r, *m);
-  EXPECT_EQ(0x2U, r.get(ByteRegister::B)->getByte()); // 0010
+  EXPECT_EQ(0x2U, r.get(ByteRegister::B)->get()); // 0010
 }
 
 TEST(ByteAluOperationTest, IncIndirect)
@@ -175,9 +175,9 @@ TEST(ByteAluOperationTest, IncIndirect)
   *r.get(WordRegister::HL) = uint16_t { 0x0100U };
 
   TestBank m { { 0x0100U, 0x0101U } };
-  *m.getLocation(0x0100U) = uint8_t { 0x13U };
+  *m.getLocation8(0x0100U) = uint8_t { 0x13U };
   decOp.execute(r, m);
-  EXPECT_EQ(0x14U, m.getLocation(0x0100U)->getByte());
+  EXPECT_EQ(0x14U, m.getLocation8(0x0100U)->get());
 }
 
 TEST(ByteAluOperationTest, Dec)
@@ -191,11 +191,11 @@ TEST(ByteAluOperationTest, Dec)
 
   auto b = r.get(ByteRegister::B);
   *b = uint8_t { 0x1U }; // 0001
-  ASSERT_EQ(0x1U, b->getByte());
+  ASSERT_EQ(0x1U, b->get());
 
   IMemoryViewSP m;
   decOp.execute(r, *m);
-  EXPECT_EQ(0x0U, r.get(ByteRegister::B)->getByte()); // 0000
+  EXPECT_EQ(0x0U, r.get(ByteRegister::B)->get()); // 0000
 }
 
 TEST(ByteAluOperationTest, DecIndirect)
@@ -209,9 +209,9 @@ TEST(ByteAluOperationTest, DecIndirect)
   *r.get(WordRegister::HL) = uint16_t { 0x0100U };
 
   TestBank m { { 0x0100U, 0x0101U } };
-  *m.getLocation(0x0100U) = uint8_t { 0x13U };
+  *m.getLocation8(0x0100U) = uint8_t { 0x13U };
   decOp.execute(r, m);
-  EXPECT_EQ(0x12U, m.getLocation(0x0100U)->getByte());
+  EXPECT_EQ(0x12U, m.getLocation8(0x0100U)->get());
 }
 
 TEST(ByteAluOperationTest, Throws)

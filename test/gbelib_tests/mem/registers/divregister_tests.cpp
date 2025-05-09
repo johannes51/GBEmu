@@ -14,7 +14,7 @@ public:
 protected:
   std::shared_ptr<TestBank> mem_;
 
-  void SetUp() override { *mem_->getLocation(0xFF04U) = uint8_t { 0x00U }; }
+  void SetUp() override { *mem_->getLocation8(0xFF04U) = uint8_t { 0x00U }; }
 };
 
 TEST_F(DivRegisterTest, Construction) { EXPECT_NO_THROW(DivRegister { mem_ }); }
@@ -56,14 +56,14 @@ TEST_F(DivRegisterTest, CycleDivTimer)
 TEST_F(DivRegisterTest, SetReset)
 {
   DivRegister div { mem_ };
-  *mem_->getLocation(0xFF04U) = uint8_t { 0x0FU };
+  *mem_->getLocation8(0xFF04U) = uint8_t { 0x0FU };
 
   EXPECT_EQ(0x0FU, div.get());
 
   EXPECT_NO_THROW(div.set(0b10101010U));
   EXPECT_EQ(0x0U, div.get());
 
-  *mem_->getLocation(0xFF04U) = uint8_t { 0x0FU };
+  *mem_->getLocation8(0xFF04U) = uint8_t { 0x0FU };
 
   EXPECT_EQ(0x0FU, div.get());
 

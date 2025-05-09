@@ -10,7 +10,7 @@ TEST(WordLoadTest, Immediate)
 {
   CpuRegisters r;
   TestBank b({ 0U, 1U });
-  *b.getLocation(0U) = uint16_t { 0x1C74U };
+  *b.getLocation16(0U) = uint16_t { 0x1C74U };
 
   WordLoad loadImmediate { WordLoad::Destination::Register, WordLoad::Source::Immediate };
   loadImmediate.setDestination(WordRegister::DE);
@@ -18,18 +18,18 @@ TEST(WordLoadTest, Immediate)
 
   EXPECT_ANY_THROW(loadImmediate.execute(r, b));
 
-  loadImmediate.nextOpcode(b.getLocation(0U, false));
+  loadImmediate.nextOpcode(b.getLocation8(0U));
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(b.getLocation(1U));
+  loadImmediate.nextOpcode(b.getLocation8(1U));
   ASSERT_TRUE(loadImmediate.isComplete());
 
-  EXPECT_THROW(loadImmediate.nextOpcode(b.getLocation(1)), std::logic_error);
+  EXPECT_THROW(loadImmediate.nextOpcode(b.getLocation8(1)), std::logic_error);
 
   EXPECT_EQ(3U, loadImmediate.cycles());
 
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
-  auto value = r.get(WordRegister::DE)->getWord();
+  auto value = r.get(WordRegister::DE)->get();
 
   EXPECT_EQ(0x1C74U, value);
 }
@@ -37,14 +37,14 @@ TEST(WordLoadTest, Immediate)
 TEST(WordLoadTest, Immediate2)
 {
   TestBank b({ 0U, 1U });
-  *b.getLocation(0U) = uint16_t { 0xDFFFU };
+  *b.getLocation16(0U) = uint16_t { 0xDFFFU };
 
   WordLoad loadImmediate { WordLoad::Destination::Register, WordLoad::Source::Immediate };
   loadImmediate.setDestination(WordRegister::HL);
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(b.getLocation(0));
+  loadImmediate.nextOpcode(b.getLocation8(0));
   EXPECT_FALSE(loadImmediate.isComplete());
-  loadImmediate.nextOpcode(b.getLocation(1));
+  loadImmediate.nextOpcode(b.getLocation8(1));
   ASSERT_TRUE(loadImmediate.isComplete());
 
   CpuRegisters r;
@@ -52,7 +52,7 @@ TEST(WordLoadTest, Immediate2)
 
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
-  auto value = r.get(WordRegister::HL)->getWord();
+  auto value = r.get(WordRegister::HL)->get();
 
   EXPECT_EQ(0xDFFFU, value);
 }
@@ -70,16 +70,16 @@ TEST(WordLoadTest, Register)
   uint16_t value = 0xDFFFU;
   *r.get(WordRegister::HL) = value;
 
-  ASSERT_NE(r.get(WordRegister::SP)->getWord(), value);
+  ASSERT_NE(r.get(WordRegister::SP)->get(), value);
   loadRegister.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(r.get(WordRegister::SP)->getWord(), value);
+  EXPECT_EQ(r.get(WordRegister::SP)->get(), value);
 }
 
 TEST(WordLoadTest, ImmediateIndirect)
 {
   CpuRegisters r;
   TestBank b({ 0U, 3U });
-  *b.getLocation(0U) = uint16_t { 0x0002U };
+  *b.getLocation16(0U) = uint16_t { 0x0002U };
 
   WordLoad loadIndirect { WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register };
   loadIndirect.setSource(WordRegister::HL);
@@ -87,9 +87,9 @@ TEST(WordLoadTest, ImmediateIndirect)
   EXPECT_ANY_THROW(loadIndirect.execute(r, b));
 
   EXPECT_FALSE(loadIndirect.isComplete());
-  loadIndirect.nextOpcode(b.getLocation(0U));
+  loadIndirect.nextOpcode(b.getLocation8(0U));
   EXPECT_FALSE(loadIndirect.isComplete());
-  loadIndirect.nextOpcode(b.getLocation(1U));
+  loadIndirect.nextOpcode(b.getLocation8(1U));
   ASSERT_TRUE(loadIndirect.isComplete());
 
   EXPECT_EQ(5U, loadIndirect.cycles());
@@ -97,7 +97,7 @@ TEST(WordLoadTest, ImmediateIndirect)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   loadIndirect.execute(r, b);
 
-  EXPECT_EQ(0xDFFFU, b.getLocation(2U, true)->getWord());
+  EXPECT_EQ(0xDFFFU, b.getLocation16(2U)->get());
 }
 
 TEST(WordLoadTest, RegisterIndirect)
@@ -116,7 +116,7 @@ TEST(WordLoadTest, RegisterIndirect)
   *r.get(WordRegister::AF) = uint16_t { 0x0002U };
   loadIndirect.execute(r, b);
 
-  EXPECT_EQ(0xDFFFU, b.getLocation(2U, true)->getWord());
+  EXPECT_EQ(0xDFFFU, b.getLocation16(2U)->get());
 }
 
 TEST(WordLoadTest, RegisterImmediate)
@@ -140,7 +140,7 @@ TEST(WordLoadTest, RegisterImmediate)
 
   EXPECT_NO_THROW(load.execute(r, b));
 
-  EXPECT_EQ(0x0F11U, r.get(WordRegister::SP)->getWord());
+  EXPECT_EQ(0x0F11U, r.get(WordRegister::SP)->get());
 }
 
 TEST(WordLoadTest, RegisterImmediate2)
@@ -162,5 +162,5 @@ TEST(WordLoadTest, RegisterImmediate2)
 
   EXPECT_NO_THROW(load.execute(r, b));
 
-  EXPECT_EQ(0x0F11U, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0x0F11U, r.get(WordRegister::HL)->get());
 }
