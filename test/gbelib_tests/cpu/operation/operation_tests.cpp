@@ -1,9 +1,10 @@
 #include "gtest/gtest.h"
 
+#include "mock/mockflags.h"
+
 #include "cpu/operation/operation.h"
 
 #include "cpu/cpuregisters.h"
-#include "cpu/flagsview.h"
 #include "cpu/operation/control.h"
 
 TEST(OperationTest, Direct)
@@ -11,5 +12,7 @@ TEST(OperationTest, Direct)
   CpuRegisters r;
   Control o { ControlOp::Nop };
 
-  EXPECT_NO_THROW(o.showFlags(*FlagsViewUP {}));
+  auto fv = MockFlags {};
+
+  EXPECT_NO_THROW(o.showFlags(fv));
 }

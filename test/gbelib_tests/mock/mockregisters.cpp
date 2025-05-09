@@ -20,14 +20,6 @@ auto MockRegisters::get(WordRegister registerName) -> Register16UP
   return std::make_unique<Register16>(regs_[registerName]);
 }
 
-auto MockRegisters::getFlags() -> FlagsView&
-{
-  throw std::logic_error("Not implemented.");
-  return *(FlagsView*)(nullptr);
-}
+auto MockRegisters::getFlags() -> FlagsView& { return flags_; }
 
-auto MockRegisters::getFlags() const -> const FlagsView&
-{
-  throw std::logic_error("Not implemented.");
-  return *(FlagsView*)(nullptr);
-}
+auto MockRegisters::getFlags() const -> const FlagsView& { return flags_; }

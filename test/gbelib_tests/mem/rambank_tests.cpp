@@ -7,8 +7,8 @@ using namespace std;
 
 TEST(RamBankTest, Write8)
 {
-  std::vector<uint8_t> v { 16U };
-  RamBank b({ 0, 16 }, v);
+  std::vector<uint8_t> v(16U);
+  RamBank b({ 0U, 15U }, v);
   auto writeByte = b.getLocation8(4);
   uint8_t value = 0xA2;
   *writeByte = value;
@@ -19,7 +19,7 @@ TEST(RamBankTest, Write8)
 TEST(RamBankTest, Write16)
 {
   std::vector<uint8_t> v(16U);
-  RamBank b({ 0, 16 }, v);
+  RamBank b({ 0U, 15U }, v);
   auto writeWord = b.getLocation16(4);
   uint16_t value = 0xA27E;
   *writeWord = value;
@@ -29,14 +29,14 @@ TEST(RamBankTest, Write16)
 
 TEST(RamBankTest, Oob)
 {
-  std::vector<uint8_t> v;
+  std::vector<uint8_t> v(2U);
   RamBank b({ 0, 1 }, v);
   EXPECT_THROW(b.getLocation8(4), std::invalid_argument);
 }
 
 TEST(RamBankTest, WordOob)
 {
-  std::vector<uint8_t> v;
+  std::vector<uint8_t> v(2U);
   RamBank b({ 0, 1 }, v);
   EXPECT_THROW(b.getLocation16(1), std::invalid_argument);
 }

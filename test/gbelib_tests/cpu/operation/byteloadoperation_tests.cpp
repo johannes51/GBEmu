@@ -21,7 +21,7 @@ TEST(ByteLoadOperationTest, Immediate)
   CpuRegisters r;
   EXPECT_EQ(2, loadImmediate.cycles());
 
-  IMemoryViewSP m;
+  IMemoryViewSP m = std::make_shared<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   loadImmediate.execute(r, *m);
 
   EXPECT_EQ(0x42U, r.get(ByteRegister::L)->get());
@@ -230,7 +230,9 @@ TEST(ByteLoadOperationTest, Standard)
   *r.get(ByteRegister::C) = uint8_t { 0x42U };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
+  auto mem = TestBank { MemoryArea { .from = 0x0000, .to = 0xFFFF } };
+
   EXPECT_NE(0x3CU, r.get(ByteRegister::C)->get());
-  loadS.execute(r, *IMemoryViewSP());
+  loadS.execute(r, mem);
   EXPECT_EQ(0x3CU, r.get(ByteRegister::C)->get());
 }
