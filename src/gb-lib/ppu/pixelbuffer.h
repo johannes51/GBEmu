@@ -61,11 +61,7 @@ template <class T, size_t Width, size_t Height> inline size_t PixelBuffer<T, Wid
 template <class T, size_t Width, size_t Height>
 inline auto PixelBuffer<T, Width, Height>::transformCoords(size_t x, size_t y) -> size_t
 {
-  if (x > Width || y > Height) {
-    return 0U;
-  } else {
-    return (y * Width) + x;
-  }
+  return (x > Width || y > Height) ? 0U : (y * Width) + x;
 }
 
 struct Rgb {

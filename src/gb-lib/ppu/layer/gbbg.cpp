@@ -15,8 +15,6 @@ GbBg::GbBg(
 {
 }
 
-GbBg::~GbBg() = default;
-
 void GbBg::draw(GbPixelBuffer& buffer)
 {
   for (uint8_t x = 0; x < LcdWidth; ++x) {
