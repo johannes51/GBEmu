@@ -2,7 +2,6 @@
 
 #include "cpu_defines.h"
 #include "id/instructiondecoder.h"
-#include "location/location.h"
 #include "mem/imemoryview.h"
 #include "operation/operation.h"
 #include "ops/arithmetic.h"
@@ -50,10 +49,10 @@ void Cpu::clock()
   }
 }
 
-auto Cpu::nextOpcode() -> LocationUP
+auto Cpu::nextOpcode() -> Location8UP
 {
   auto pc = registers_->get(WordRegister::PC);
-  auto result = mem_->getLocation(hlp::indirect(*pc));
-  ops::increment<uint16_t>(*pc);
+  auto result = mem_->getLocation8(hlp::indirect(*pc));
+  ops::increment(*pc);
   return result;
 }

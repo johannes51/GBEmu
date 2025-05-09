@@ -5,8 +5,8 @@
 TEST(NullLocationTest, Read)
 {
   NullLocation a;
-  EXPECT_ANY_THROW(a.getByte());
-  EXPECT_ANY_THROW(a.getWord());
+  EXPECT_ANY_THROW(a.get());
+  EXPECT_ANY_THROW(a.get());
 }
 
 TEST(NullLocationTest, Write)

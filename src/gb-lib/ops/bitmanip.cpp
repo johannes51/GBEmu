@@ -1,23 +1,30 @@
 #include "bitmanip.h"
 
-#include "location/location.h"
+#include "location/location16.h"
+#include "location/location8.h"
 
-auto ops::bit(const Location& location, uint8_t bitPos) -> ops::OpResult
+auto ops::bit(const Location8& location, uint8_t bitPos) -> ops::OpResult
 {
-  const auto result = (static_cast<unsigned int>(location.getByte() >> bitPos) & 0b1U) == 0;
+  const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
   return { result ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::NoChange };
 }
 
-auto ops::set(Location& location, uint8_t bitPos) -> ops::OpResult
+auto ops::bit(const Location16& location, uint8_t bitPos) -> ops::OpResult
 {
-  const uint8_t result = location.getByte() | (0b1U << bitPos);
+  const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
+  return { result ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::NoChange };
+}
+
+auto ops::set(Location8& location, uint8_t bitPos) -> ops::OpResult
+{
+  const uint8_t result = location.get() | (0b1U << bitPos);
   location = result;
   return {};
 }
 
-auto ops::reset(Location& location, uint8_t bitPos) -> ops::OpResult
+auto ops::reset(Location8& location, uint8_t bitPos) -> ops::OpResult
 {
-  const uint8_t result = location.getByte() & ~(0b1U << bitPos);
+  const uint8_t result = location.get() & ~(0b1U << bitPos);
   location = result;
   return {};
 }

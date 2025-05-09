@@ -1,20 +1,20 @@
 #include "zerolocation.h"
 
-#include <array>
+uint8_t ZeroLocation8::zero_ = { 0U };
 
-std::array<uint8_t, 2> ZeroLocation::zero_ = { 0 };
+auto ZeroLocation8::get() const -> const uint8_t& { return zero_; }
 
-auto ZeroLocation::getByte() const -> const uint8_t& { return zero_.front(); }
-
-auto ZeroLocation::getWord() const -> const uint16_t& { return *reinterpret_cast<uint16_t*>(&zero_.front()); }
-
-auto ZeroLocation::operator=(const uint8_t& rhs) -> ZeroLocation&
+auto ZeroLocation8::operator=(const uint8_t& rhs) -> ZeroLocation8&
 {
   (void)rhs;
   return *this;
 }
 
-auto ZeroLocation::operator=(const uint16_t& rhs) -> ZeroLocation&
+uint16_t ZeroLocation16::zero_ = { 0U };
+
+auto ZeroLocation16::get() const -> uint16_t { return zero_; }
+
+auto ZeroLocation16::operator=(const uint16_t& rhs) -> ZeroLocation16&
 {
   (void)rhs;
   return *this;

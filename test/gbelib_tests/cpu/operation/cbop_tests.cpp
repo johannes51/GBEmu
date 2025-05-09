@@ -17,9 +17,9 @@ TEST(CbOpTest, RotateRight)
   EXPECT_EQ(2U, op.cycles());
   EXPECT_ANY_THROW(op.nextOpcode(variableLocation(uint8_t { 0x00U })));
 
-  EXPECT_NE(0b01010101U, r.get(ByteRegister::A)->getByte());
+  EXPECT_NE(0b01010101U, r.get(ByteRegister::A)->get());
   EXPECT_NO_THROW(op.execute(r, *IMemoryViewSP()));
-  EXPECT_EQ(0b01010101U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0b01010101U, r.get(ByteRegister::A)->get());
 }
 
 TEST(CbOpTest, RotateRightCarry)

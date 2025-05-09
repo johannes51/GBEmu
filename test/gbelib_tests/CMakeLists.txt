@@ -67,7 +67,8 @@ set(TEST_SOURCES
     location/location_tests.cpp
     location/nulllocation_tests.cpp
     location/ramlocation_tests.cpp
-    location/register_tests.cpp
+    location/register8_tests.cpp
+    location/register16_tests.cpp
     location/romlocation_tests.cpp
     location/variablelocation_tests.cpp
     location/zerolocation_tests.cpp
@@ -97,7 +98,6 @@ set(TEST_SOURCES
     ops/arithmetic_tests.cpp
     ops/bitmanip_tests.cpp
     ops/logic_tests.cpp
-    ops/memory_tests.cpp
     ops/ops_tests.cpp
     ops/shiftrotate_tests.cpp
     peripherals/gbinterrupthandler_tests.cpp

@@ -2,7 +2,7 @@
 
 #include "cpu/cpuregisters.h"
 #include "cpu/operation/wordaluoperation.h"
-#include "location/location.h"
+#include "location/location8.h"
 
 TEST(WordAluOperationTest, Inc)
 {
@@ -15,7 +15,7 @@ TEST(WordAluOperationTest, Inc)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0xC3A2U, r.get(WordRegister::DE)->getWord());
+  EXPECT_EQ(0xC3A2U, r.get(WordRegister::DE)->get());
 }
 
 TEST(WordAluOperationTest, Dec)
@@ -29,7 +29,7 @@ TEST(WordAluOperationTest, Dec)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0xC3A0U, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xC3A0U, r.get(WordRegister::HL)->get());
 }
 
 TEST(WordAluOperationTest, Add)
@@ -44,5 +44,5 @@ TEST(WordAluOperationTest, Add)
   EXPECT_EQ(2, op.cycles());
 
   EXPECT_NO_THROW(op.execute(r, *m));
-  EXPECT_EQ(0x7A13U, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0x7A13U, r.get(WordRegister::HL)->get());
 }

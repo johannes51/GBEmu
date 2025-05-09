@@ -68,8 +68,8 @@ TEST_F(GbInterruptHandlerTest, Jumps)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x1234U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0040U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x1234U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0040U, r.get(WordRegister::PC)->get());
 
   *r.get(WordRegister::PC) = std::uint16_t { 0x2345U };
   rIe->set(0xFFU);
@@ -77,8 +77,8 @@ TEST_F(GbInterruptHandlerTest, Jumps)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x2345U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0048U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x2345U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0048U, r.get(WordRegister::PC)->get());
 
   *r.get(WordRegister::PC) = std::uint16_t { 0x3456U };
   rIe->set(0xFFU);
@@ -86,8 +86,8 @@ TEST_F(GbInterruptHandlerTest, Jumps)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x3456U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0050U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x3456U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0050U, r.get(WordRegister::PC)->get());
 
   *r.get(WordRegister::PC) = std::uint16_t { 0x4567U };
   rIe->set(0xFFU);
@@ -95,8 +95,8 @@ TEST_F(GbInterruptHandlerTest, Jumps)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x4567U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0058U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x4567U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0058U, r.get(WordRegister::PC)->get());
 
   *r.get(WordRegister::PC) = std::uint16_t { 0x5678U };
   rIe->set(0xFFU);
@@ -104,8 +104,8 @@ TEST_F(GbInterruptHandlerTest, Jumps)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x5678U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0060U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x5678U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0060U, r.get(WordRegister::PC)->get());
 }
 
 TEST_F(GbInterruptHandlerTest, Priority)
@@ -120,13 +120,13 @@ TEST_F(GbInterruptHandlerTest, Priority)
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x1234U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0040U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x1234U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0040U, r.get(WordRegister::PC)->get());
 
   *r.get(WordRegister::PC) = std::uint16_t { 0x2345U };
 
   ASSERT_TRUE(h.isInterrupt());
   h.execute(r, m);
-  EXPECT_EQ(0x2345U, m.getLocation(hlp::indirect(*r.get(WordRegister::SP)), true)->getWord());
-  EXPECT_EQ(0x0058U, r.get(WordRegister::PC)->getWord());
+  EXPECT_EQ(0x2345U, m.getLocation16(hlp::indirect(*r.get(WordRegister::SP)))->get());
+  EXPECT_EQ(0x0058U, r.get(WordRegister::PC)->get());
 }

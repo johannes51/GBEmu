@@ -13,21 +13,21 @@ TEST(ShiftrotateTest, RLC)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11000000U, l->getByte());
+  EXPECT_EQ(0b11000000U, l->get());
 
   res = ops::rlc(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000001U, l->getByte());
+  EXPECT_EQ(0b10000001U, l->get());
 
   res = ops::rlc(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000011, l->getByte());
+  EXPECT_EQ(0b00000011, l->get());
 
   *l = uint8_t { 0b00000000U };
   res = ops::rlc(*l);
@@ -46,14 +46,14 @@ TEST(ShiftrotateTest, RL)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11000001U, l->getByte());
+  EXPECT_EQ(0b11000001U, l->get());
 
   res = ops::rl(*l, false);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000010U, l->getByte());
+  EXPECT_EQ(0b10000010U, l->get());
 
   *l = uint8_t { 0b00000000U };
   res = ops::rl(*l, false);
@@ -72,21 +72,21 @@ TEST(ShiftrotateTest, RRC)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000011U, l->getByte());
+  EXPECT_EQ(0b00000011U, l->get());
 
   res = ops::rrc(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000001U, l->getByte());
+  EXPECT_EQ(0b10000001U, l->get());
 
   res = ops::rrc(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11000000U, l->getByte());
+  EXPECT_EQ(0b11000000U, l->get());
 
   *l = uint8_t { 0b00000000U };
   res = ops::rrc(*l);
@@ -105,14 +105,14 @@ TEST(ShiftrotateTest, RR)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000011U, l->getByte());
+  EXPECT_EQ(0b10000011U, l->get());
 
   res = ops::rr(*l, false);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01000001U, l->getByte());
+  EXPECT_EQ(0b01000001U, l->get());
 
   *l = uint8_t { 0b00000000U };
   res = ops::rr(*l, false);
@@ -131,21 +131,21 @@ TEST(ShiftrotateTest, SLA)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11000000U, l->getByte());
+  EXPECT_EQ(0b11000000U, l->get());
 
   res = ops::sla(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000000U, l->getByte());
+  EXPECT_EQ(0b10000000U, l->get());
 
   res = ops::sla(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000, l->getByte());
+  EXPECT_EQ(0b00000000, l->get());
 }
 
 TEST(ShiftrotateTest, SRA)
@@ -157,14 +157,14 @@ TEST(ShiftrotateTest, SRA)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11000011U, l->getByte());
+  EXPECT_EQ(0b11000011U, l->get());
 
   res = ops::sra(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b11100001U, l->getByte());
+  EXPECT_EQ(0b11100001U, l->get());
 
   *l = uint8_t { 0b00000001U };
 
@@ -173,7 +173,7 @@ TEST(ShiftrotateTest, SRA)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000, l->getByte());
+  EXPECT_EQ(0b00000000, l->get());
 }
 
 TEST(ShiftrotateTest, SRL)
@@ -185,14 +185,14 @@ TEST(ShiftrotateTest, SRL)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01000011U, l->getByte());
+  EXPECT_EQ(0b01000011U, l->get());
 
   res = ops::srl(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00100001U, l->getByte());
+  EXPECT_EQ(0b00100001U, l->get());
 
   *l = uint8_t { 0b00000001U };
 
@@ -201,7 +201,7 @@ TEST(ShiftrotateTest, SRL)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000, l->getByte());
+  EXPECT_EQ(0b00000000, l->get());
 }
 
 TEST(ShiftrotateTest, SWAP)
@@ -213,14 +213,14 @@ TEST(ShiftrotateTest, SWAP)
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01101000U, l->getByte());
+  EXPECT_EQ(0b01101000U, l->get());
 
   *l = uint8_t { 0b00000001U };
 
   res = ops::swap(*l);
 
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00010000U, l->getByte());
+  EXPECT_EQ(0b00010000U, l->get());
 
   *l = uint8_t { 0b00000000U };
 
@@ -229,5 +229,5 @@ TEST(ShiftrotateTest, SWAP)
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000000, l->getByte());
+  EXPECT_EQ(0b00000000, l->get());
 }

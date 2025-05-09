@@ -4,7 +4,8 @@
 #include <stdint.h>
 
 #include "cpu_defines.h"
-#include "location/register.h"
+#include "location/register16.h"
+#include "location/register8.h"
 
 enum class ByteRegister { A = 0, F, B, C, D, E, H, L, NumRegs, None };
 
@@ -16,8 +17,8 @@ public:
   virtual ~RegistersInterface() = default;
   DISABLE_COPY_AND_MOVE(RegistersInterface)
 
-  virtual RegisterUP get(ByteRegister registerName) = 0;
-  virtual RegisterUP get(WordRegister registerName) = 0;
+  virtual Register8UP get(ByteRegister registerName) = 0;
+  virtual Register16UP get(WordRegister registerName) = 0;
 
   virtual FlagsView& getFlags() = 0;
   virtual const FlagsView& getFlags() const = 0;

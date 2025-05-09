@@ -1,17 +1,15 @@
 #ifndef NULLLOCATION_H
 #define NULLLOCATION_H
 
-#include "location.h"
+#include "location8.h"
 
-class NullLocation final : public Location {
+class NullLocation final : public Location8 {
 public:
   NullLocation();
   DISABLE_COPY_AND_MOVE(NullLocation)
 
-  const uint8_t& getByte() const override;
-  const uint16_t& getWord() const override;
+  const uint8_t& get() const override;
   NullLocation& operator=(const uint8_t& rhs) override;
-  NullLocation& operator=(const uint16_t& rhs) override;
 };
 
 #endif // NULLLOCATION_H

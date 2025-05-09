@@ -20,7 +20,7 @@ auto TileData::loadTile(address_type address) const -> std::array<uint8_t, TileD
 {
   std::array<uint8_t, TileDataSize> result {};
   for (uint8_t i = 0; i < TileDataSize; ++i) {
-    result[i] = mem_->getLocation(address + i)->getByte();
+    result[i] = mem_->getLocation8(address + i)->get();
   }
   return result;
 }

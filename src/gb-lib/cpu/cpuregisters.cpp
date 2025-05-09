@@ -29,18 +29,18 @@ CpuRegisters::CpuRegisters()
   flags_ = std::make_unique<CpuFlags>(get(ByteRegister::F)->getReference());
 }
 
-auto CpuRegisters::get(ByteRegister registerName) -> RegisterUP
+auto CpuRegisters::get(ByteRegister registerName) -> Register8UP
 {
   if (!Mappings.contains(registerName)) {
     throw std::invalid_argument("Unable to provide register");
   }
   const auto& mapping = Mappings.at(registerName);
-  return std::make_unique<Register>(registers_[mapping.first], mapping.second);
+  return std::make_unique<Register8>(registers_[mapping.first], mapping.second);
 }
 
-auto CpuRegisters::get(WordRegister registerName) -> RegisterUP
+auto CpuRegisters::get(WordRegister registerName) -> Register16UP
 {
-  return std::make_unique<Register>(registers_.at(registerName));
+  return std::make_unique<Register16>(registers_.at(registerName));
 }
 
 CpuRegisters::~CpuRegisters() = default;

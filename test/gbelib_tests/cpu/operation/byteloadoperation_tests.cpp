@@ -24,21 +24,21 @@ TEST(ByteLoadOperationTest, Immediate)
   IMemoryViewSP m;
   loadImmediate.execute(r, *m);
 
-  EXPECT_EQ(0x42U, r.get(ByteRegister::L)->getByte());
+  EXPECT_EQ(0x42U, r.get(ByteRegister::L)->get());
 }
 
 TEST(ByteLoadOperationTest, ImmediateIndirect)
 {
   TestBank b({ 0, 2 });
 
-  *b.getLocation(0, true) = uint16_t { 0x0002U };
+  *b.getLocation16(0) = uint16_t { 0x0002U };
 
   ByteLoadOddball loadImmediateIndirect { ByteLoadOddball::Direction::Indirect,
     ByteLoadOddball::Indirection::ImmediateStandard };
   EXPECT_FALSE(loadImmediateIndirect.isComplete());
-  loadImmediateIndirect.nextOpcode(b.getLocation(0));
+  loadImmediateIndirect.nextOpcode(b.getLocation8(0));
   EXPECT_FALSE(loadImmediateIndirect.isComplete());
-  loadImmediateIndirect.nextOpcode(b.getLocation(1));
+  loadImmediateIndirect.nextOpcode(b.getLocation8(1));
   ASSERT_TRUE(loadImmediateIndirect.isComplete());
 
   CpuRegisters r;
@@ -47,7 +47,7 @@ TEST(ByteLoadOperationTest, ImmediateIndirect)
   *r.get(ByteRegister::A) = uint8_t { 0x42U };
   loadImmediateIndirect.execute(r, b);
 
-  EXPECT_EQ(0x42U, b.getLocation(2)->getByte());
+  EXPECT_EQ(0x42U, b.getLocation8(2)->get());
 }
 
 TEST(ByteLoadOperationTest, ImmediateIndirect2)
@@ -64,10 +64,10 @@ TEST(ByteLoadOperationTest, ImmediateIndirect2)
   CpuRegisters r;
   EXPECT_EQ(3, loadImmediateIndirect2.cycles());
 
-  *b.getLocation(0xFF00U) = uint8_t { 0x42U };
+  *b.getLocation8(0xFF00U) = uint8_t { 0x42U };
   loadImmediateIndirect2.execute(r, b);
 
-  EXPECT_EQ(0x42U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0x42U, r.get(ByteRegister::A)->get());
 }
 
 TEST(ByteLoadOperationTest, ImmediateRegisterIndirect)
@@ -87,11 +87,11 @@ TEST(ByteLoadOperationTest, ImmediateRegisterIndirect)
 
   EXPECT_EQ(3, loadImmediateRegisterIndirect.cycles());
 
-  *b.getLocation(0xFF00U) = uint8_t { 0x42U };
+  *b.getLocation8(0xFF00U) = uint8_t { 0x42U };
   *r.get(WordRegister::HL) = uint16_t { 0xFF00U };
   loadImmediateRegisterIndirect.execute(r, b);
 
-  EXPECT_EQ(0x02U, b.getLocation(0xFF00U)->getByte());
+  EXPECT_EQ(0x02U, b.getLocation8(0xFF00U)->get());
 }
 
 TEST(ByteLoadOperationTest, RegisterIndirect)
@@ -107,9 +107,9 @@ TEST(ByteLoadOperationTest, RegisterIndirect)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  EXPECT_NE(0x3CU, m.getLocation(0xDFFFU)->getByte());
+  EXPECT_NE(0x3CU, m.getLocation8(0xDFFFU)->get());
   loadRI.execute(r, m);
-  EXPECT_EQ(0x3CU, m.getLocation(0xDFFFU)->getByte());
+  EXPECT_EQ(0x3CU, m.getLocation8(0xDFFFU)->get());
 }
 
 TEST(ByteLoadOperationTest, RegisterIndirect2)
@@ -124,10 +124,10 @@ TEST(ByteLoadOperationTest, RegisterIndirect2)
 
   *r.get(WordRegister::DE) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
-  *m.getLocation(0xDFFFU) = uint8_t { 0xF3U };
+  *m.getLocation8(0xDFFFU) = uint8_t { 0xF3U };
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0xF3U, r.get(ByteRegister::A)->getByte());
+  EXPECT_EQ(0xF3U, r.get(ByteRegister::A)->get());
 }
 
 TEST(ByteLoadOperationTest, Post)
@@ -142,10 +142,10 @@ TEST(ByteLoadOperationTest, Post)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  *m.getLocation(0xDFFFU) = uint8_t { 0xF3U };
+  *m.getLocation8(0xDFFFU) = uint8_t { 0xF3U };
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0xE000U, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xE000U, r.get(WordRegister::HL)->get());
 }
 
 TEST(ByteLoadOperationTest, Post2)
@@ -160,10 +160,10 @@ TEST(ByteLoadOperationTest, Post2)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  *m.getLocation(0xDFFFU) = uint8_t { 0xF3U };
+  *m.getLocation8(0xDFFFU) = uint8_t { 0xF3U };
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0xDFFEU, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xDFFEU, r.get(WordRegister::HL)->get());
 }
 
 TEST(ByteLoadOperationTest, Post3)
@@ -178,10 +178,10 @@ TEST(ByteLoadOperationTest, Post3)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  *m.getLocation(0xDFFFU) = uint8_t { 0xF3U };
+  *m.getLocation8(0xDFFFU) = uint8_t { 0xF3U };
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0xE000U, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xE000U, r.get(WordRegister::HL)->get());
 }
 
 TEST(ByteLoadOperationTest, Post4)
@@ -196,10 +196,10 @@ TEST(ByteLoadOperationTest, Post4)
   *r.get(WordRegister::HL) = uint16_t { 0xDFFFU };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  *m.getLocation(0xDFFFU) = uint8_t { 0xF3U };
+  *m.getLocation8(0xDFFFU) = uint8_t { 0xF3U };
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0xDFFEU, r.get(WordRegister::HL)->getWord());
+  EXPECT_EQ(0xDFFEU, r.get(WordRegister::HL)->get());
 }
 
 TEST(ByteLoadOperationTest, RegisterC)
@@ -216,7 +216,7 @@ TEST(ByteLoadOperationTest, RegisterC)
 
   loadRI.execute(r, m);
 
-  EXPECT_EQ(0x3CU, m.getLocation(0xFF42U)->getByte());
+  EXPECT_EQ(0x3CU, m.getLocation8(0xFF42U)->get());
 }
 
 TEST(ByteLoadOperationTest, Standard)
@@ -230,7 +230,7 @@ TEST(ByteLoadOperationTest, Standard)
   *r.get(ByteRegister::C) = uint8_t { 0x42U };
   *r.get(ByteRegister::A) = uint8_t { 0x3CU };
 
-  EXPECT_NE(0x3CU, r.get(ByteRegister::C)->getByte());
+  EXPECT_NE(0x3CU, r.get(ByteRegister::C)->get());
   loadS.execute(r, *IMemoryViewSP());
-  EXPECT_EQ(0x3CU, r.get(ByteRegister::C)->getByte());
+  EXPECT_EQ(0x3CU, r.get(ByteRegister::C)->get());
 }

@@ -138,9 +138,9 @@ auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
   return std::make_unique<ByteLoadIndirect>(direction, dirReg, indirReg, postAction);
 }
 
-auto ByteLoadsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto ByteLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opc { opcodeLocation.getByte() };
+  const OpcodeView opc { opcodeLocation.get() };
 
   if (opc.value() >= 0x40U && opc.value() <= 0x7FU) {
     if (opc.lowerNibble() == 0x6U || opc.lowerNibble() == 0xEU

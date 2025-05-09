@@ -3,9 +3,9 @@
 #include "cpu/operation/basicrotate.h"
 #include "opcodeview.h"
 
-auto BasicRotateDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto BasicRotateDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
   return std::make_unique<BasicRotate>(
       (opcode.lowerNibble() == 0x7U) ? RotateDirection::Left : RotateDirection::Right, opcode.upperNibble() == 0x0U);
 }

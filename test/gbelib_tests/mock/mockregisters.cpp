@@ -5,19 +5,19 @@ MockRegisters::MockRegisters()
 {
 }
 
-auto MockRegisters::get(ByteRegister registerName) -> RegisterUP
+auto MockRegisters::get(ByteRegister registerName) -> Register8UP
 {
   (void)registerName;
   throw std::logic_error("Not implemented.");
-  return RegisterUP {};
+  return Register8UP {};
 }
 
-auto MockRegisters::get(WordRegister registerName) -> RegisterUP
+auto MockRegisters::get(WordRegister registerName) -> Register16UP
 {
   if (!regs_.contains(registerName)) {
     regs_.insert({ registerName, 0U });
   }
-  return std::make_unique<Register>(regs_[registerName]);
+  return std::make_unique<Register16>(regs_[registerName]);
 }
 
 auto MockRegisters::getFlags() -> FlagsView&

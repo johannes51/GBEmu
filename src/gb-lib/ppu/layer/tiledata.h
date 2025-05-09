@@ -3,7 +3,7 @@
 
 #include <memory>
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
 #include "tile.h"

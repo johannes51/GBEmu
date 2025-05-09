@@ -20,8 +20,8 @@ TEST(PushPopTest, Push)
   EXPECT_EQ(4, pp.cycles());
 
   pp.execute(r, b);
-  EXPECT_EQ(0x0EU, r.get(WordRegister::SP)->getWord());
-  EXPECT_EQ(value, b.getLocation(0x0EU, true)->getWord());
+  EXPECT_EQ(0x0EU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(value, b.getLocation16(0x0EU)->get());
 }
 
 TEST(PushPopTest, Pop)
@@ -31,7 +31,7 @@ TEST(PushPopTest, Pop)
   *r.get(WordRegister::SP) = uint16_t { 0x0EU };
 
   TestBank b { { 0x00U, 0x10U } };
-  *b.getLocation(0x0EU, true) = value;
+  *b.getLocation16(0x0EU) = value;
 
   PushPop pp { PushPop::Direction::Pop, WordRegister::HL };
   ASSERT_TRUE(pp.isComplete());
@@ -39,6 +39,6 @@ TEST(PushPopTest, Pop)
   EXPECT_EQ(3, pp.cycles());
 
   pp.execute(r, b);
-  EXPECT_EQ(0x10U, r.get(WordRegister::SP)->getWord());
-  EXPECT_EQ(value, b.getLocation(0x0EU, true)->getWord());
+  EXPECT_EQ(0x10U, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(value, b.getLocation16(0x0EU)->get());
 }

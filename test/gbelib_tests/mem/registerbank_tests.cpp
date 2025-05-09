@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/registerbank.h"
 
 using namespace std;
@@ -20,27 +20,27 @@ TEST(RegisterBankTest, Initial)
   uint8_t initial = 0xC4;
   address_type address = 0xFF3B;
   RegisterBank b { address, initial };
-  EXPECT_EQ(initial, b.getLocation(address)->getByte());
+  EXPECT_EQ(initial, b.getLocation8(address)->get());
 }
 
 TEST(RegisterBankTest, Write8)
 {
   RegisterBank b { 0, 0x16 };
-  auto writeByte = b.getLocation(0);
+  auto writeByte = b.getLocation8(0);
   uint8_t value = 0xA2;
   *writeByte = value;
-  auto readByte = b.getLocation(0);
-  EXPECT_EQ(value, readByte->getByte());
+  auto readByte = b.getLocation8(0);
+  EXPECT_EQ(value, readByte->get());
 }
 
 TEST(RegisterBankTest, Write16)
 {
   RegisterBank b { 0, 0x16 };
-  EXPECT_ANY_THROW(b.getLocation(0, true));
+  EXPECT_ANY_THROW(b.getLocation16(0));
 }
 
 TEST(RegisterBankTest, Oob)
 {
   RegisterBank b { 0 };
-  EXPECT_ANY_THROW(b.getLocation(4));
+  EXPECT_ANY_THROW(b.getLocation8(4));
 }

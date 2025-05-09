@@ -1,7 +1,6 @@
 #include "byteloadimmediate.h"
 
 #include "mem/imemoryview.h"
-#include "ops/memory.h"
 #include "util/helpers.h"
 
 ByteLoadImmediate::~ByteLoadImmediate() = default;
@@ -23,7 +22,7 @@ ByteLoadImmediate::ByteLoadImmediate(WordRegister destRegister)
   }
 }
 
-void ByteLoadImmediate::nextOpcode(LocationUP opcode)
+void ByteLoadImmediate::nextOpcode(Location8UP opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
@@ -42,11 +41,11 @@ void ByteLoadImmediate::execute(RegistersInterface& registers, IMemoryView& memo
   if (!isComplete()) {
     throw std::invalid_argument("No immediate value configured");
   }
-  LocationUP dest;
+  Location8UP dest;
   if (indirect_) {
-    dest = memory.getLocation(hlp::indirect(*registers.get(WordRegister::HL)));
+    dest = memory.getLocation8(hlp::indirect(*registers.get(WordRegister::HL)));
   } else {
     dest = registers.get(destRegister_);
   }
-  ops::load<uint8_t>(*dest, *immediate_);
+  *dest = immediate_->get();
 }

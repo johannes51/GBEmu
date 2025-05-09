@@ -13,7 +13,7 @@ public:
   ByteLoadOddball(Direction direction, Indirection indirection);
   ~ByteLoadOddball();
 
-  void nextOpcode(LocationUP opcode) override;
+  void nextOpcode(Location8UP opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -22,7 +22,8 @@ public:
 private:
   const Direction direction_;
   const Indirection indirection_;
-  LocationUP immediate_;
+  Location8UP immediate8_;
+  Location16UP immediate16_;
 };
 
 #endif // BYTE_LOAD_ODDBALL_H

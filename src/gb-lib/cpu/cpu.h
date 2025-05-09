@@ -3,7 +3,7 @@
 
 #include "cpu_defines.h"
 #include "id/instructiondecoder.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "peripherals/interrupthandler.h"
 
@@ -17,7 +17,7 @@ public:
   void clock();
 
 private:
-  LocationUP nextOpcode();
+  Location8UP nextOpcode();
 
   const IMemoryViewSP mem_;
   const RegistersInterfaceUP registers_;

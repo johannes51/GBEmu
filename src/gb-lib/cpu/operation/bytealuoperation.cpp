@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/flagsview.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
 #include "ops/logic.h"
@@ -20,7 +20,7 @@ ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
   }
 }
 
-void ByteAluOperation::nextOpcode(LocationUP opcode)
+void ByteAluOperation::nextOpcode(Location8UP opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already complete");
@@ -60,9 +60,9 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   case ByteAluFunction::Add:
   case ByteAluFunction::AddCarry: {
     auto loc = registers.get(ByteRegister::A);
-    result = ops::add<uint8_t>(*loc, *getSource(registers, memory));
+    result = ops::add(*loc, *getSource(registers, memory));
     if (function_ == ByteAluFunction::AddCarry && registers.getFlags().carry()) {
-      ops::increment<uint8_t>(*loc);
+      ops::increment(*loc);
     }
     break;
   }
@@ -71,19 +71,19 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     auto loc = registers.get(ByteRegister::A);
     result = ops::sub(*loc, *getSource(registers, memory));
     if (function_ == ByteAluFunction::SubCarry && registers.getFlags().carry()) {
-      ops::decrement<uint8_t>(*loc);
+      ops::decrement(*loc);
     }
     break;
     break;
   }
   case ByteAluFunction::Inc: {
     auto loc = getSource(registers, memory);
-    result = ops::increment<uint8_t>(*loc);
+    result = ops::increment(*loc);
     break;
   }
   case ByteAluFunction::Dec: {
     auto loc = getSource(registers, memory);
-    result = ops::decrement<uint8_t>(*loc);
+    result = ops::decrement(*loc);
     break;
   }
   case ByteAluFunction::And: {
@@ -110,7 +110,7 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   apply(registers.getFlags(), result);
 }
 
-auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> LocationUP
+auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location8UP
 {
   switch (source_) {
   case Source::Immediate:
@@ -120,7 +120,7 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    return mem.getLocation(hlp::indirect(*reg.get(WordRegister::HL)));
+    return mem.getLocation8(hlp::indirect(*reg.get(WordRegister::HL)));
     break;
   case Source::Register:
     if (!register_) {

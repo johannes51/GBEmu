@@ -44,7 +44,7 @@ void GbChannel3::tickApuDiv(const FrameSequence sequence)
 
 void GbChannel3::advanceWaveRam()
 {
-  auto ramSample = waveRam_->getLocation(waveRamPtr_.address)->getByte();
+  auto ramSample = waveRam_->getLocation8(waveRamPtr_.address)->get();
   if (waveRamPtr_.upper) {
     ramSample = hlp::getBits(ramSample, HALF_BYTE_SHIFT, HALF_BYTE_SHIFT);
   } else {

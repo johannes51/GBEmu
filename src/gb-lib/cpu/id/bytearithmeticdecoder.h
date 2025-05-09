@@ -4,6 +4,7 @@
 #include "instructiondecoder.h"
 
 #include "cpu/id/opcodeview.h"
+#include "location/location8.h"
 
 enum class ByteAluFunction;
 enum class ByteRegister;
@@ -12,7 +13,7 @@ class ByteArithmeticDecoder : public InstructionDecoder {
 public:
   ByteArithmeticDecoder() = default;
 
-  OperationUP decode(const Location& opcodeLocation) const override;
+  OperationUP decode(const Location8& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:

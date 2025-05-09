@@ -135,9 +135,9 @@ auto bit(const OpcodeView& opcode) -> unsigned
   }
 }
 
-auto CbOpDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto CbOpDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
 
   const auto fun = function(opcode);
   if (fun != CbOp::CbFunction::Bit && fun != CbOp::CbFunction::Set && fun != CbOp::CbFunction::Reset) {

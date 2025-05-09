@@ -30,12 +30,12 @@ TEST(BitmanipTest, Set)
   auto expected = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::NoChange, ops::FlagResult::NoChange,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00010011U, l->getByte());
+  EXPECT_EQ(0b00010011U, l->get());
 
   res = ops::set(*l, 4U);
 
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00010011U, l->getByte());
+  EXPECT_EQ(0b00010011U, l->get());
 }
 
 TEST(BitmanipTest, Reset)
@@ -47,10 +47,10 @@ TEST(BitmanipTest, Reset)
   auto expected = ops::OpResult { ops::FlagResult::NoChange, ops::FlagResult::NoChange, ops::FlagResult::NoChange,
     ops::FlagResult::NoChange };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000010U, l->getByte());
+  EXPECT_EQ(0b00000010U, l->get());
 
   res = ops::reset(*l, 0U);
 
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00000010U, l->getByte());
+  EXPECT_EQ(0b00000010U, l->get());
 }

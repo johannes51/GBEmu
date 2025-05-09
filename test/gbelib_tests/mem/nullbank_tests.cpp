@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/nullbank.h"
 
 using namespace std;
@@ -11,11 +11,11 @@ TEST(NullBankTest, Write)
   address_type loc = 0x03;
   uint8_t value = 0xA2;
 
-  *b.getLocation(loc) = value;
+  *b.getLocation8(loc) = value;
 
-  EXPECT_EQ(0U, b.getLocation(loc)->getByte());
+  EXPECT_EQ(0U, b.getLocation8(loc)->get());
 
-  *b.getLocation(loc + 1U) = value;
+  *b.getLocation8(loc + 1U) = value;
 
-  EXPECT_EQ(0U, b.getLocation(loc, true)->getWord());
+  EXPECT_EQ(0U, b.getLocation16(loc)->get());
 }

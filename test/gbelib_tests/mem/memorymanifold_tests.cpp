@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/memorymanifold.h"
 #include "mem/nullbank.h"
 
@@ -11,14 +11,14 @@ TEST(MemoryManifoldTest, AddSubmanager1)
   m.addSubManager(std::make_unique<NullBank>(MemoryArea { 32, 63 }));
 
   EXPECT_EQ(2, m.availableAreas().size());
-  EXPECT_ANY_THROW(m.getLocation(0));
-  EXPECT_NO_THROW(m.getLocation(5));
-  EXPECT_NO_THROW(m.getLocation(15));
-  EXPECT_ANY_THROW(m.getLocation(27));
-  EXPECT_NO_THROW(m.getLocation(32));
-  EXPECT_NO_THROW(m.getLocation(50));
-  EXPECT_NO_THROW(m.getLocation(63));
-  EXPECT_ANY_THROW(m.getLocation(64));
+  EXPECT_ANY_THROW(m.getLocation8(0));
+  EXPECT_NO_THROW(m.getLocation8(5));
+  EXPECT_NO_THROW(m.getLocation8(15));
+  EXPECT_ANY_THROW(m.getLocation8(27));
+  EXPECT_NO_THROW(m.getLocation8(32));
+  EXPECT_NO_THROW(m.getLocation8(50));
+  EXPECT_NO_THROW(m.getLocation8(63));
+  EXPECT_ANY_THROW(m.getLocation8(64));
 }
 
 TEST(MemoryManifoldTest, AddSubmanager2)

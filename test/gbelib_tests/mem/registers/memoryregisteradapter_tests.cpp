@@ -3,7 +3,7 @@
 #include "mock/testbank.h"
 #include <memory>
 
-#include "location/location.h"
+#include "location/location8.h"
 
 #include "mem/registers/memoryregisteradapter.h"
 
@@ -24,7 +24,7 @@ TEST(MemoryRegisterAdapterTestNF, Construction) { EXPECT_NO_THROW((MemoryRegiste
 
 TEST_F(MemoryRegisterAdapterTest, Construction)
 {
-  *b->getLocation(0x0U) = uint8_t { 0b01010101U };
+  *b->getLocation8(0x0U) = uint8_t { 0b01010101U };
 
   EXPECT_EQ(0b01010101U, a.get());
   EXPECT_TRUE(a.testBit(0U));
@@ -39,7 +39,7 @@ TEST_F(MemoryRegisterAdapterTest, Construction)
 
 TEST_F(MemoryRegisterAdapterTest, SetGet)
 {
-  *b->getLocation(0x0U) = uint8_t { 0b01010101U };
+  *b->getLocation8(0x0U) = uint8_t { 0b01010101U };
 
   EXPECT_EQ(0b01010101U, a.get());
   EXPECT_TRUE(a.testBit(0U));
@@ -52,7 +52,7 @@ TEST_F(MemoryRegisterAdapterTest, SetGet)
 
 TEST_F(MemoryRegisterAdapterTest, SetBit)
 {
-  *b->getLocation(0x0U) = uint8_t { 0b10U };
+  *b->getLocation8(0x0U) = uint8_t { 0b10U };
 
   ASSERT_FALSE(a.testBit(0U));
   ASSERT_TRUE(a.testBit(1U));

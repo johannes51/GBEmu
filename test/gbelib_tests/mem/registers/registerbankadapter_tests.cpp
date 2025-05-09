@@ -3,7 +3,7 @@
 #include "mock/testbank.h"
 #include <memory>
 
-#include "location/location.h"
+#include "location/location8.h"
 
 #include "mem/registers/registerbankadapter.h"
 
@@ -26,7 +26,7 @@ TEST(RegisterBankAdapterTestNF, Construction)
 
 TEST_F(RegisterBankAdapterTest, Construction)
 {
-  *b->getLocation(0x0U) = uint8_t { 0b01010101U };
+  *b->getLocation8(0x0U) = uint8_t { 0b01010101U };
 
   //   EXPECT_EQ(0b01010101U, a.get()); nicht abstrakt machen
   //   EXPECT_EQ(1U, a.testBit(0U));

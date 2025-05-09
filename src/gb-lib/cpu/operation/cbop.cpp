@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/id/cbopdecoder.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "ops/bitmanip.h"
 #include "ops/shiftrotate.h"
@@ -30,7 +30,7 @@ void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
   if (!isComplete()) {
     throw std::logic_error("No bit set on bit op.");
   }
-  auto op = indirect_ ? memory.getLocation(hlp::indirect(*registers.get(WordRegister::HL))) : registers.get(operand_);
+  auto op = indirect_ ? memory.getLocation8(hlp::indirect(*registers.get(WordRegister::HL))) : registers.get(operand_);
   switch (function_) {
   case CbFunction::RotateRight:
     apply(registers.getFlags(), ops::rrc(*op));

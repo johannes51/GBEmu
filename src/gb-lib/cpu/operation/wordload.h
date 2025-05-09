@@ -1,12 +1,11 @@
 #ifndef WORD_LOAD_H
 #define WORD_LOAD_H
 
-#include <optional>
-
 #include "operation.h"
 
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/location16.h"
+#include "location/location8.h"
 
 class WordLoad final : public Operation {
 public:
@@ -19,7 +18,7 @@ public:
   WordLoad(Destination destination, Source source);
   ~WordLoad();
 
-  void nextOpcode(LocationUP opcode) override;
+  void nextOpcode(Location8UP opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -33,7 +32,8 @@ private:
   const Source source_;
   WordRegister destRegister_ = WordRegister::None;
   WordRegister srcRegister_ = WordRegister::None;
-  LocationUP immediate_ = nullptr;
+  Location8UP immediate8_ = nullptr;
+  Location16UP immediate16_ = nullptr;
 };
 
 #endif // WORD_LOAD_H

@@ -11,12 +11,20 @@ RegisterBank::RegisterBank(const address_type& start, const uint8_t& initial)
 {
 }
 
-auto RegisterBank::getLocation(const address_type address, bool tryWord) -> LocationUP
+auto RegisterBank::getLocation8(const address_type address) -> Location8UP
 {
-  if (address != start_ || tryWord) {
+  if (address != start_) {
     throw std::invalid_argument("Out of bounds");
   }
-  return std::make_unique<RamLocation>(Location::Type::Single, *this, start_);
+  return std::make_unique<RamLocation>(*this, start_);
+}
+
+auto RegisterBank::getLocation16(const address_type address) -> Location16UP
+{
+  (void)address;
+  throw std::invalid_argument("Out of bounds");
+
+  return {};
 }
 
 auto RegisterBank::availableAreas() -> std::vector<MemoryArea> { return { { start_, start_ } }; }

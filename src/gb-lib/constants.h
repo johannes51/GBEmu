@@ -12,9 +12,9 @@ constexpr unsigned int MASK_LOWER_HALF_BYTE = 0x0FU;
 constexpr unsigned int BYTE_SHIFT = 8U;
 constexpr unsigned int HALF_BYTE_SHIFT = 4U;
 
-constexpr unsigned int BYTE_BIT_MASK = 0xFFU;
+constexpr unsigned int BYTE_MASK = 0xFFU;
 constexpr unsigned int BYTE_BIT_COUNT = 8U;
-constexpr unsigned int TWO_BYTE_BIT_MASK = 0xFFFFU;
+constexpr unsigned int TWO_BYTE_MASK = 0xFFFFU;
 constexpr unsigned int TWO_BYTE_BIT_COUNT = 16U;
 
 constexpr address_type ZERO_PAGE_BASE = 0xFF00;

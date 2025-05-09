@@ -4,11 +4,11 @@
 
 #include "../operation/bytealuoperation.h"
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/location8.h"
 
-auto ByteArithmeticDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto ByteArithmeticDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() >= 0x8U && opcode.upperNibble() <= 0xBU) {
     return bulkArithmetic(opcode);
   } else if (opcode.upperNibble() <= 0x3U
@@ -18,7 +18,7 @@ auto ByteArithmeticDecoder::decode(const Location& opcodeLocation) const -> Oper
   } else if (opcode.upperNibble() >= 0xCU) {
     return immediate(opcode);
   }
-  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()) };
+  throw std::logic_error { "Unimplemented opcode: " + std::to_string(opcodeLocation.get()) };
 }
 
 auto ByteArithmeticDecoder::decodedOpcodes() const -> std::vector<uint8_t>

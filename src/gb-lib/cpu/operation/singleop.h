@@ -9,7 +9,7 @@ template <unsigned Cycles> class SingleOp : public Operation {
 public:
   ~SingleOp() override = default;
 
-  virtual void nextOpcode(LocationUP opcode) override
+  virtual void nextOpcode(Location8UP opcode) override
   {
     (void)opcode;
     throw std::logic_error("Single Opcode instruction");

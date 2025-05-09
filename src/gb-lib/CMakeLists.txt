@@ -123,14 +123,18 @@ target_sources(gbelib PRIVATE
   gb_factories/registerfactory.h
   location/bufferlocation.h
   location/bufferlocation.cpp
-  location/location.h
-  location/location.cpp
+  location/fusedlocation16.h
+  location/fusedlocation16.cpp
+  location/location16.h
+  location/location8.h
   location/nulllocation.h
   location/nulllocation.cpp
   location/ramlocation.h
   location/ramlocation.cpp
-  location/register.h
-  location/register.cpp
+  location/register16.h
+  location/register16.cpp
+  location/register8.h
+  location/register8.cpp
   location/romlocation.h
   location/romlocation.cpp
   location/variablelocation.h
@@ -175,7 +179,6 @@ target_sources(gbelib PRIVATE
   ops/bitmanip.cpp
   ops/logic.h
   ops/logic.cpp
-  ops/memory.h
   ops/ops.h
   ops/shiftrotate.h
   ops/shiftrotate.cpp

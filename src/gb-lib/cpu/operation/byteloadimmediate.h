@@ -6,7 +6,7 @@
 #include "operation.h"
 
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/location8.h"
 
 class ByteLoadImmediate final : public Operation {
 public:
@@ -15,7 +15,7 @@ public:
   ~ByteLoadImmediate() override;
   DISABLE_COPY_AND_MOVE(ByteLoadImmediate)
 
-  void nextOpcode(LocationUP opcode) override;
+  void nextOpcode(Location8UP opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -24,7 +24,7 @@ public:
 private:
   ByteRegister destRegister_;
   bool indirect_;
-  LocationUP immediate_;
+  Location8UP immediate_;
 };
 
 #endif // BYTE_LOAD_IMMEDIATE_H

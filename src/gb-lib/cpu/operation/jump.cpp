@@ -4,14 +4,14 @@
 
 #include "cpu/flagsview.h"
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/location8.h"
+#include "location/variablelocation.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
-#include "ops/memory.h"
 #include "util/helpers.h"
 
 Jump::Jump(JumpType type, TargetType target, Condition condition)
-    : param_(nullptr)
+    : param_(nullptr, nullptr)
     , type_(type)
     , target_(target)
     , condition_(condition)
@@ -44,15 +44,15 @@ void Jump::showFlags(const FlagsView& flags)
   }
 }
 
-void Jump::nextOpcode(LocationUP opcode)
+void Jump::nextOpcode(Location8UP opcode)
 {
   if (type_ != JumpType::Regular && type_ != JumpType::Call && type_ != JumpType::Reset) {
     throw std::logic_error("Needs no immediate data.");
   }
-  if (!param_) {
-    param_ = std::move(opcode);
-  } else if (!param_->isWord()) {
-    param_->fuse(*opcode);
+  if (!param_.hasLower()) {
+    param_.setLower(std::move(opcode));
+  } else if (!param_.hasUpper()) {
+    param_.setUpper(std::move(opcode));
   } else {
     throw std::logic_error("Enough opcodes already");
   }
@@ -62,9 +62,10 @@ auto Jump::isComplete() -> bool
 {
   switch (type_) {
   case JumpType::Regular:
-    return taken_.has_value() && param_ && (target_ != TargetType::Absolute || param_->isWord());
+    return taken_.has_value() && param_.hasLower() && (target_ != TargetType::Absolute || param_.hasUpper());
   case JumpType::Call:
-    return taken_.has_value() && param_ && param_->isWord();
+  case JumpType::Reset:
+    return taken_.has_value() && param_.hasLower() && param_.hasUpper();
   default:
     return taken_.has_value();
   }
@@ -115,37 +116,38 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
       switch (type_) {
       case JumpType::Call:
       case JumpType::Reset:
-        ops::decrement<uint16_t>(*sp);
-        ops::decrement<uint16_t>(*sp);
+        ops::decrement(*sp);
+        ops::decrement(*sp);
         {
-          auto memLoc = memory.getLocation(hlp::indirect(*sp), true);
-          ops::load<uint16_t>(*memLoc, *registers.get(WordRegister::PC));
+          auto memLoc = memory.getLocation16(hlp::indirect(*sp));
+          *memLoc = registers.get(WordRegister::PC)->get();
         }
         [[fallthrough]];
       case JumpType::Regular:
-        if (!param_) {
+        if (!param_.hasLower()) {
           throw std::invalid_argument("Adress location bytes not configured");
-        } else if (!param_->isWord()) {
+        } else if (!param_.hasUpper()) {
           throw std::invalid_argument("Only single byte provided, two are needed.");
         }
-        ops::load<uint16_t>(*pc, *param_);
+        *pc = param_.get();
         break;
       case JumpType::Indirect:
-        ops::load<uint16_t>(*pc, *registers.get(WordRegister::HL));
+        *pc = registers.get(WordRegister::HL)->get();
         break;
       case JumpType::RetI:
         registers.getFlags().enableInterrupt();
         [[fallthrough]];
       case JumpType::Return:
-        ops::load<uint16_t>(*pc, *memory.getLocation(hlp::indirect(*sp), true));
-        ops::increment<uint16_t>(*sp);
-        ops::increment<uint16_t>(*sp);
+        *pc = memory.getLocation16(hlp::indirect(*sp))->get();
+        ops::increment(*sp);
+        ops::increment(*sp);
       }
     } else /*if (target_ == TargetType::Relative)*/ {
-      if (!param_) {
+      if (!param_.hasLower()) {
         throw std::invalid_argument("Adress location byte not configured");
       }
-      ops::addSigned(*pc, *param_);
+      auto signedLocation = variableLocation(param_.lower());
+      ops::addSigned(*pc, *signedLocation);
     }
   }
 }

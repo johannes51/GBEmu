@@ -21,8 +21,8 @@ TEST(TileMapTests, GetTile)
 TEST(TileMapTests, GetTileContent)
 {
   auto mem = std::make_shared<TestBank>(MemoryArea { 0x8000, 0x9FFF });
-  *mem->getLocation(0x8040) = uint16_t { 0xFFFF };
-  //  *mem->getLocation(0x9800) = uint8_t(4);
+  *mem->getLocation16(0x8040) = uint16_t { 0xFFFF };
+  //  *mem->getLocation8(0x9800) = uint8_t(4);
   //  auto td = std::make_unique<TileData>(MockRegisterAdapter::make(), mem);
   //  TileMap t(MockRegisterAdapter::make(), std::move(mem), std::move(td), 4);
   //  auto tile = t.getTile({ 0, 0 });

@@ -17,7 +17,6 @@ protected:
 
 private:
   uint8_t& getByteReference(address_type address);
-  uint16_t& getWordReference(address_type address);
 
   std::span<uint8_t, std::dynamic_extent> buffer_;
 };
