@@ -103,6 +103,7 @@ set(TEST_SOURCES
     peripherals/gbinterrupthandler_tests.cpp
     peripherals/gbtimer_tests.cpp
     ppu/gbrenderer_tests.cpp
+    ppu/pixelbuffer_tests.cpp
     ppu/ppu_tests.cpp
     ppu/layer/gbbg_tests.cpp
     ppu/layer/gbobjects_tests.cpp

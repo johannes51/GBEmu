@@ -63,9 +63,8 @@ void GbChannel3::advanceWaveRam()
   case VolumePattern25Pct:
     ramSample >>= 2U;
     break;
-  default:
-    // unreachable
-    break;
+  default: // NOTE: unreachable LCOV_EXCL_LINE
+    break; // LCOV_EXCL_LINE
   }
   dac_.set(ramSample);
   if (waveRamPtr_.upper) {

@@ -27,7 +27,8 @@ protected:
 
 TEST(GbPulseChannelTestsNF, Construction)
 {
-  EXPECT_ANY_THROW(GbPulseChannel c(nullptr, nullptr, nullptr, nullptr, nullptr));
+  EXPECT_ANY_THROW(GbPulseChannel c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), nullptr,
+      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
   EXPECT_NO_THROW(GbPulseChannel c(MockRegisterAdapter::make(), MockRegisterAdapter::make(),
       MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make()));
 }
