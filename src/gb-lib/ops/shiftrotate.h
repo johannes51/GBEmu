@@ -6,7 +6,7 @@
 
 #include "ops.h"
 
-class Location;
+class Location8;
 
 namespace ops {
 
@@ -18,21 +18,21 @@ constexpr uint8_t LsbMask = 0b00000001;
 
 } // namespace detail
 
-OpResult rr(Location& location, bool carry);
+OpResult rr(Location8& location, bool carry);
 
-OpResult rrc(Location& location);
+OpResult rrc(Location8& location);
 
-OpResult rl(Location& location, bool carry);
+OpResult rl(Location8& location, bool carry);
 
-OpResult rlc(Location& location);
+OpResult rlc(Location8& location);
 
-OpResult sra(Location& location);
+OpResult sra(Location8& location);
 
-OpResult sla(Location& location);
+OpResult sla(Location8& location);
 
-OpResult srl(Location& location);
+OpResult srl(Location8& location);
 
-OpResult swap(Location& location);
+OpResult swap(Location8& location);
 
 } // namespace ops
 

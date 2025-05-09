@@ -3,20 +3,20 @@
 #include <stdexcept>
 
 #include "cpu/operation/operation.h"
-#include "location/location.h"
+#include "location/location8.h"
 
 BaseInstructionDecoder::BaseInstructionDecoder()
     : decoders_()
 {
 }
 
-auto BaseInstructionDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto BaseInstructionDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
   InstructionDecoder* decoder = nullptr;
   try {
-    decoder = decoders_.at(opcodeLocation.getByte()).get();
+    decoder = decoders_.at(opcodeLocation.get()).get();
   } catch (...) {
-    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcodeLocation.getByte()));
+    throw std::invalid_argument("Unimplemented opcode: " + std::to_string(opcodeLocation.get()));
   }
   return decoder->decode(opcodeLocation);
 }

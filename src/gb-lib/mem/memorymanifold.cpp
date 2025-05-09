@@ -4,7 +4,7 @@
 #include <numeric>
 #include <stdexcept>
 
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem_tools.h"
 
 void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
@@ -21,9 +21,14 @@ void MemoryManifold::addSubManager(const IMemoryManagerSP& newSubManager)
       [newSubManager](const auto& newArea) { return std::make_pair(newArea, newSubManager); });
 }
 
-auto MemoryManifold::getLocation(const address_type address, bool tryWord) -> LocationUP
+auto MemoryManifold::getLocation8(const address_type address) -> Location8UP
 {
-  return selectManager(address)->getLocation(address, tryWord);
+  return selectManager(address)->getLocation8(address);
+}
+
+auto MemoryManifold::getLocation16(const address_type address) -> Location16UP
+{
+  return selectManager(address)->getLocation16(address);
 }
 
 auto MemoryManifold::availableAreas() -> std::vector<MemoryArea>

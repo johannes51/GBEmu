@@ -12,9 +12,3 @@ auto BufferBank::getByteReference(address_type address) -> uint8_t&
 {
   return buffer_[mem_tools::translateAddressSafe(address, singleArea())];
 }
-
-auto BufferBank::getWordReference(address_type address) -> uint16_t&
-{
-  mem_tools::assertSafe(address + 1, singleArea());
-  return *reinterpret_cast<uint16_t*>(&buffer_[mem_tools::translateAddressSafe(address, singleArea())]);
-}

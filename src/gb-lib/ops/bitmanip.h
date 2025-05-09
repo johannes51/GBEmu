@@ -5,15 +5,17 @@
 
 #include "ops.h"
 
-class Location;
+class Location8;
+class Location16;
 
 namespace ops {
 
-OpResult bit(const Location& location, uint8_t bitPos);
+OpResult bit(const Location8& location, uint8_t bitPos);
+OpResult bit(const Location16& location, uint8_t bitPos);
 
-OpResult set(Location& location, uint8_t bitPos);
+OpResult set(Location8& location, uint8_t bitPos);
 
-OpResult reset(Location& location, uint8_t bitPos);
+OpResult reset(Location8& location, uint8_t bitPos);
 
 } // namespace ops
 

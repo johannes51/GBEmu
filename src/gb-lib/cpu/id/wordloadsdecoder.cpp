@@ -5,12 +5,12 @@
 #include "cpu/operation/pushpop.h"
 #include "cpu/operation/wordload.h"
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/location8.h"
 
-auto WordLoadsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto WordLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
   OperationUP result;
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.value() == 0x08U) {
     auto resultWL = std::make_unique<WordLoad>(WordLoad::Destination::ImmediateIndirect, WordLoad::Source::Register);
     resultWL->setSource(WordRegister::SP);

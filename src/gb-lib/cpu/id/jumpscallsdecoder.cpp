@@ -5,9 +5,9 @@
 #include "cpu/operation/jump.h"
 #include "location/variablelocation.h"
 
-auto JumpsCallsDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto JumpsCallsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() <= 0x3U) {
     return std::make_unique<Jump>(JumpType::Regular, TargetType::Relative, condition(opcode));
   } else {
@@ -21,7 +21,7 @@ auto JumpsCallsDecoder::decode(const Location& opcodeLocation) const -> Operatio
       return result;
     }
   }
-  throw std::logic_error("Unhandled opcode: " + std::to_string(opcodeLocation.getByte()));
+  throw std::logic_error("Unhandled opcode: " + std::to_string(opcodeLocation.get()));
 }
 
 auto JumpsCallsDecoder::decodedOpcodes() const -> std::vector<uint8_t>

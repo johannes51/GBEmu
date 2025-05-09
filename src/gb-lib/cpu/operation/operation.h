@@ -3,7 +3,7 @@
 
 #include "cpu/cpu_defines.h"
 #include "cpu/flagsview.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "ops/ops.h"
 
@@ -14,7 +14,7 @@ public:
   DISABLE_COPY_AND_MOVE(Operation)
 
   virtual void showFlags(const FlagsView& flags) { (void)flags; }
-  virtual void nextOpcode(LocationUP opcode) = 0;
+  virtual void nextOpcode(Location8UP opcode) = 0;
   virtual bool isComplete() = 0;
 
   virtual unsigned cycles() = 0;

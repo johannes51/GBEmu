@@ -3,7 +3,7 @@
 // #include <stdexcept>
 
 // #include "cpu/registersinterface.h"
-// #include "location/location.h"
+// #include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
 // #include "ops/memory.h"
@@ -23,22 +23,22 @@ void PushPop::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   auto sp = registers.get(WordRegister::SP);
   if (direction_ == Direction::Push) {
-    ops::decrement<uint16_t>(*sp);
-    ops::decrement<uint16_t>(*sp);
+    ops::decrement(*sp);
+    ops::decrement(*sp);
   }
-  auto stackLoc = memory.getLocation(hlp::indirect(*sp), true);
+  auto stackLoc = memory.getLocation16(hlp::indirect(*sp));
   if (direction_ == Direction::Pop) {
-    ops::increment<uint16_t>(*sp);
-    ops::increment<uint16_t>(*sp);
+    ops::increment(*sp);
+    ops::increment(*sp);
   }
   auto target = registers.get(targetRegister_);
 
   switch (direction_) {
   case Direction::Push:
-    *stackLoc = target->getWord();
+    *stackLoc = target->get();
     break;
   case Direction::Pop:
-    *target = stackLoc->getWord();
+    *target = stackLoc->get();
     break;
   case Direction::Invalid:
     [[fallthrough]];

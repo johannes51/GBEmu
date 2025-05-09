@@ -3,10 +3,10 @@
 #include <stdexcept>
 
 #include "cpu/registersinterface.h"
-#include "location/location.h"
+#include "location/fusedlocation16.h"
+#include "location/location8.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
-#include "ops/memory.h"
 #include "util/helpers.h"
 
 WordLoad::WordLoad(Destination destination, Source source)
@@ -17,24 +17,24 @@ WordLoad::WordLoad(Destination destination, Source source)
 
 WordLoad::~WordLoad() = default;
 
-void WordLoad::nextOpcode(LocationUP opcode)
+void WordLoad::nextOpcode(Location8UP opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
   }
-  if (!immediate_) {
-    immediate_ = std::move(opcode);
-  } else if (!immediate_->isWord()) {
-    immediate_->fuse(*opcode);
+  if (!immediate8_ && !immediate16_) {
+    immediate8_ = std::move(opcode);
+  } else if (!immediate16_) {
+    immediate16_ = std::make_unique<FusedLocation16>(std::move(immediate8_), std::move(opcode));
   }
 }
 
 auto WordLoad::isComplete() -> bool
 {
   if (source_ == Source::Immediate || destination_ == Destination::ImmediateIndirect) {
-    return static_cast<bool>(immediate_) && immediate_->isWord();
+    return static_cast<bool>(immediate16_);
   } else if (source_ == Source::RegisterImmediate) {
-    return static_cast<bool>(immediate_);
+    return static_cast<bool>(immediate8_);
   } else {
     return true;
   }
@@ -60,28 +60,28 @@ auto WordLoad::cycles() -> unsigned
 void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   auto sp = registers.get(WordRegister::SP);
-  LocationUP destLoc;
+  Location16UP destLoc;
   switch (destination_) {
   case Destination::Register:
     destLoc = registers.get(destRegister_);
     break;
   case Destination::ImmediateIndirect:
-    if (!immediate_) {
+    if (!immediate16_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    destLoc = memory.getLocation(hlp::indirect(*immediate_));
+    destLoc = memory.getLocation16(hlp::indirect(*immediate16_));
     break;
   case Destination::RegisterIndirect:
-    destLoc = memory.getLocation(hlp::indirect(*registers.get(destRegister_)));
+    destLoc = memory.getLocation16(hlp::indirect(*registers.get(destRegister_)));
     break;
   }
-  LocationUP srcLoc;
+  Location16UP srcLoc;
   switch (source_) {
   case Source::Immediate:
-    if (!immediate_) {
+    if (!immediate16_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    srcLoc = std::move(immediate_);
+    srcLoc = std::move(immediate16_);
     break;
   case Source::Register:
     srcLoc = registers.get(srcRegister_);
@@ -90,11 +90,11 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     srcLoc = registers.get(WordRegister::SP);
     break;
   }
-  ops::load<uint16_t>(*destLoc, *srcLoc);
+  *destLoc = srcLoc->get();
   if (source_ == Source::RegisterImmediate) {
-    if (!immediate_) {
+    if (!immediate8_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    ops::addSigned(*destLoc, *immediate_);
+    ops::addSigned(*destLoc, *immediate8_);
   }
 }

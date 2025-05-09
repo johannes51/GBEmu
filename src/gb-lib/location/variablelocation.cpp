@@ -1,16 +1,32 @@
 #include "variablelocation.h"
 
 #include "constants.h"
-#include "location/location.h"
+#include "fusedlocation16.h"
 
-auto variableLocation(const uint8_t& value) -> LocationUP { return std::make_unique<VariableLocation<uint8_t>>(value); }
-
-auto variableLocation(const uint8_t& lowValue, const uint8_t& highValue) -> LocationUP
+VariableLocation::VariableLocation(const uint8_t& variable)
+    : Location8()
+    , variable_(variable)
 {
-  return std::make_unique<VariableLocation<uint16_t>>(static_cast<unsigned int>(highValue) << BYTE_SHIFT | lowValue);
 }
 
-auto variableLocation(const uint16_t& value) -> LocationUP
+auto VariableLocation::get() const -> const uint8_t& { return variable_; }
+
+auto VariableLocation::operator=(const uint8_t& rhs) -> VariableLocation&
 {
-  return std::make_unique<VariableLocation<uint16_t>>(value);
+  variable_ = rhs;
+  return *this;
+}
+
+auto variableLocation(const uint8_t& value) -> Location8UP { return std::make_unique<VariableLocation>(value); }
+
+auto variableLocation(const uint8_t& lowValue, const uint8_t& highValue) -> Location16UP
+{
+  return std::make_unique<FusedLocation16>(variableLocation(lowValue), variableLocation(highValue));
+}
+
+auto variableLocation(const uint16_t& value) -> Location16UP
+{
+  const uint8_t lower = value & BYTE_MASK;
+  const uint8_t upper = static_cast<uint16_t>(value >> BYTE_SHIFT) & BYTE_MASK;
+  return variableLocation(lower, upper);
 }

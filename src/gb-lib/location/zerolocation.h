@@ -1,23 +1,37 @@
 #ifndef ZEROLOCATION_H
 #define ZEROLOCATION_H
 
-#include "location.h"
+#include "location16.h"
+#include "location8.h"
 
-class ZeroLocation final : public Location {
+class ZeroLocation8 final : public Location8 {
 public:
-  ZeroLocation()
-      : Location(Type::Both)
+  ZeroLocation8()
+      : Location8()
   {
   }
-  DISABLE_COPY_AND_MOVE(ZeroLocation)
+  DISABLE_COPY_AND_MOVE(ZeroLocation8)
 
-  const uint8_t& getByte() const override;
-  const uint16_t& getWord() const override;
-  ZeroLocation& operator=(const uint8_t& rhs) override;
-  ZeroLocation& operator=(const uint16_t& rhs) override;
+  const uint8_t& get() const override;
+  ZeroLocation8& operator=(const uint8_t& rhs) override;
 
 private:
-  static std::array<uint8_t, 2> zero_;
+  static uint8_t zero_;
+};
+
+class ZeroLocation16 final : public Location16 {
+public:
+  ZeroLocation16()
+      : Location16()
+  {
+  }
+  DISABLE_COPY_AND_MOVE(ZeroLocation16)
+
+  uint16_t get() const override;
+  ZeroLocation16& operator=(const uint16_t& rhs) override;
+
+private:
+  static uint16_t zero_;
 };
 
 #endif // ZEROLOCATION_H

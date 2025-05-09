@@ -12,9 +12,10 @@ public:
 
   void addSubManager(const IMemoryManagerSP& newSubManager);
 
-  LocationUP getLocation(const address_type address, bool tryWord = false) override;
+  Location8UP getLocation8(const address_type address) override;
+  Location16UP getLocation16(const address_type address) override;
 
-  virtual std::vector<MemoryArea> availableAreas() override;
+  std::vector<MemoryArea> availableAreas() override;
 
 private:
   IMemoryManagerSP& selectManager(const address_type address);

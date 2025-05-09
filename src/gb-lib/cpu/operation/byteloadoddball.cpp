@@ -2,28 +2,28 @@
 
 // #include <stdexcept>
 
+#include "location/fusedlocation16.h"
 #include "mem/imemoryview.h"
-#include "ops/memory.h"
 #include "util/helpers.h"
 
 ByteLoadOddball::ByteLoadOddball(Direction direction, Indirection indirection)
     : direction_(direction)
     , indirection_(indirection)
-    , immediate_(nullptr)
+    , immediate8_(nullptr)
 {
 }
 
 ByteLoadOddball::~ByteLoadOddball() = default;
 
-void ByteLoadOddball::nextOpcode(LocationUP opcode)
+void ByteLoadOddball::nextOpcode(Location8UP opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
   }
-  if (!immediate_) {
-    immediate_ = std::move(opcode);
-  } else if (!immediate_->isWord()) {
-    immediate_->fuse(*opcode);
+  if (!immediate8_ && !immediate16_) {
+    immediate8_ = std::move(opcode);
+  } else if (!immediate16_) {
+    immediate16_ = std::make_unique<FusedLocation16>(std::move(immediate8_), std::move(opcode));
   }
 }
 
@@ -34,10 +34,10 @@ auto ByteLoadOddball::isComplete() -> bool
     return true;
     break;
   case Indirection::ImmediateStandard:
-    return static_cast<bool>(immediate_) && immediate_->isWord();
+    return static_cast<bool>(immediate16_);
     break;
   case Indirection::ImmediateZeroPage:
-    return static_cast<bool>(immediate_);
+    return static_cast<bool>(immediate8_);
     break;
   default:
     throw std::logic_error("Unreachable");
@@ -72,18 +72,18 @@ void ByteLoadOddball::execute(RegistersInterface& registers, IMemoryView& memory
     indirAdress = hlp::indirectZeroPage(*registers.get(ByteRegister::C));
     break;
   case Indirection::ImmediateStandard:
-    indirAdress = hlp::indirect(*immediate_);
+    indirAdress = hlp::indirect(*immediate16_);
     break;
   case Indirection::ImmediateZeroPage:
-    indirAdress = hlp::indirectZeroPage(*immediate_);
+    indirAdress = hlp::indirectZeroPage(*immediate8_);
     break;
   }
-  const auto indirLoc = memory.getLocation(indirAdress);
+  const auto indirLoc = memory.getLocation8(indirAdress);
   const auto registerA = registers.get(ByteRegister::A);
 
   if (direction_ == Direction::Register) {
-    ops::load<uint8_t>(*registerA, *indirLoc);
+    *registerA = indirLoc->get();
   } else /*if (direction_ == Direction::Register)*/ {
-    ops::load<uint8_t>(*indirLoc, *registerA);
+    *indirLoc = registerA->get();
   }
 }

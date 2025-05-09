@@ -179,7 +179,6 @@ target_sources(gbelib PRIVATE
   ops/bitmanip.cpp
   ops/logic.h
   ops/logic.cpp
-  ops/memory.h
   ops/ops.h
   ops/shiftrotate.h
   ops/shiftrotate.cpp

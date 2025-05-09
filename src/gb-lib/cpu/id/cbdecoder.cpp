@@ -3,12 +3,12 @@
 #include <stdexcept>
 
 #include "cpu/operation/cbprefix.h"
-#include "location/location.h"
+#include "location/location8.h"
 #include "opcodeview.h"
 
-auto CbDecoder::decode(const Location& opcodeLocation) const -> OperationUP
+auto CbDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
-  const OpcodeView opcode { opcodeLocation.getByte() };
+  const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.value() == 0xCBU) {
     return std::make_unique<CbPrefix>(std::make_unique<CbOpDecoder>());
   } else {

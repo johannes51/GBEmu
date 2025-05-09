@@ -8,7 +8,8 @@ public:
   MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManagerSP mirrored);
   DISABLE_COPY_AND_MOVE(MirrorBank)
 
-  LocationUP getLocation(const address_type address, bool tryWord = false) override;
+  Location8UP getLocation8(const address_type address) override;
+  Location16UP getLocation16(const address_type address) override;
 
 private:
   const int offset_;
