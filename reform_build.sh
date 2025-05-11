@@ -20,4 +20,9 @@ cd ..
 mkdir Sanitizer
 cd Sanitizer
 cmake -DCMAKE_BUILD_TYPE=Sanitizer ../..
+cd ..
+
+mkdir Coverage
+cd Coverage
+cmake -DCMAKE_BUILD_TYPE=Coverage ../..
 
