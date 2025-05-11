@@ -5,8 +5,8 @@ include(GoogleTest)
 
 add_custom_target(tests)
 include_directories(
-    ${GTEST_INCLUDE_DIRS}
-    ${GMOCK_INCLUDE_DIRS}
+  ${GTEST_INCLUDE_DIRS}
+  ${GMOCK_INCLUDE_DIRS}
 )
 
 enable_testing()

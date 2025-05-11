@@ -230,7 +230,7 @@ target_sources(gbelib PRIVATE
   util/fallingedgedetector.h
   util/helpers.h
   util/helpers.cpp
-  )
+)
 
 set_target_properties(gbelib PROPERTIES PUBLIC_HEADER "sys/systemmanager.h")
 target_include_directories(gbelib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
@@ -244,7 +244,7 @@ enable_wall(gbelib)
 
 check_cxx_compiler_flag(-Wstringop-overflow HAVE_STRINGOP_OVERFLOW)
 if (HAVE_STRINGOP_OVERFLOW)
-    target_compile_options(gbelib PUBLIC -Wno-stringop-overflow)
+  target_compile_options(gbelib PUBLIC -Wno-stringop-overflow)
 endif()
 
 clang_format(format_gbelib gbelib)
@@ -256,4 +256,4 @@ build_docs()
 install(TARGETS gbelib
   ARCHIVE DESTINATION CMAKE_ARCHIVE_OUTPUT_DIRECTORY
   PUBLIC_HEADER DESTINATION include/gbelib
-  )
+)
