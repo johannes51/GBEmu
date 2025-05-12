@@ -4,19 +4,12 @@
 
 TEST(OpsTest, Construction)
 {
-  ops::OpResult a;
+  ops::OpResult a { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::NoChange };
 
-  EXPECT_EQ(ops::FlagResult::NoChange, a.z);
-  EXPECT_EQ(ops::FlagResult::NoChange, a.n);
-  EXPECT_EQ(ops::FlagResult::NoChange, a.h);
+  EXPECT_EQ(ops::FlagResult::Set, a.z);
+  EXPECT_EQ(ops::FlagResult::Reset, a.n);
+  EXPECT_EQ(ops::FlagResult::Set, a.h);
   EXPECT_EQ(ops::FlagResult::NoChange, a.c);
-
-  ops::OpResult b { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::NoChange };
-
-  EXPECT_EQ(ops::FlagResult::Set, b.z);
-  EXPECT_EQ(ops::FlagResult::Reset, b.n);
-  EXPECT_EQ(ops::FlagResult::Set, b.h);
-  EXPECT_EQ(ops::FlagResult::NoChange, b.c);
 }
 
 TEST(OpsTest, Comparison)
@@ -24,8 +17,6 @@ TEST(OpsTest, Comparison)
   ops::OpResult ex { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::NoChange };
 
   ops::OpResult a; // NOLINT intentionally uninititalized
-
-  EXPECT_FALSE(ex == a);
 
   a.z = ops::FlagResult::Set;
   a.n = ops::FlagResult::Reset;

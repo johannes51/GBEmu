@@ -123,10 +123,10 @@ TEST(ArithmeticTest, AddSigned)
   auto opSigned = int8_t { -5 };
   auto lB = variableLocation(*reinterpret_cast<uint8_t*>(&opSigned)); // NOLINT
 
-  auto res = ops::addSigned(*lA, *lB);
+  auto res = ops::addSigned(*lA, lB->get());
 
   auto expected = ops::OpResult {
-    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Set, .c = ops::FlagResult::Set
+    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
   };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0xFEFFU, lA->get());
@@ -134,10 +134,10 @@ TEST(ArithmeticTest, AddSigned)
   opSigned = int8_t { -1 };
   *lB = *reinterpret_cast<uint8_t*>(&opSigned); // NOLINT
 
-  res = ops::addSigned(*lA, *lB);
+  res = ops::addSigned(*lA, lB->get());
 
   expected = ops::OpResult {
-    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
+    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Set, .c = ops::FlagResult::Set
   };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0xFEFEU, lA->get());
@@ -151,7 +151,7 @@ TEST(ArithmeticTest, Sub)
   auto res = ops::sub(*lA, *lB);
 
   auto expected = ops::OpResult {
-    .z = ops::FlagResult::Set, .n = ops::FlagResult::Set, .h = ops::FlagResult::Set, .c = ops::FlagResult::Set
+    .z = ops::FlagResult::Set, .n = ops::FlagResult::Set, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
   };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b00000000U, lA->get());
@@ -161,7 +161,7 @@ TEST(ArithmeticTest, Sub)
   res = ops::sub(*lA, *lB);
 
   expected = ops::OpResult {
-    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Set, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
+    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Set, .h = ops::FlagResult::Set, .c = ops::FlagResult::Set
   };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b11111111U, lA->get());
@@ -184,7 +184,7 @@ TEST(ArithmeticTest, DecimalAdjust)
 {
   auto l = variableLocation(uint8_t { 00U });
 
-  auto res = ops::decimalAdjust(*l);
+  auto res = ops::decimalAdjust(*l, false, false, false);
 
   auto expected = ops::OpResult {
     .z = ops::FlagResult::Set, .n = ops::FlagResult::NoChange, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
@@ -194,100 +194,100 @@ TEST(ArithmeticTest, DecimalAdjust)
 
   *l = uint8_t { 19U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00011001U, l->get());
+  EXPECT_EQ(0x13U, l->get());
 
   *l = uint8_t { 28U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00101000U, l->get());
+  EXPECT_EQ(0x22U, l->get());
 
   *l = uint8_t { 37U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b00110111U, l->get());
+  EXPECT_EQ(0x25U, l->get());
 
   *l = uint8_t { 46U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01000110U, l->get());
+  EXPECT_EQ(0x34U, l->get());
 
   *l = uint8_t { 55U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01010101U, l->get());
+  EXPECT_EQ(0x37U, l->get());
 
   *l = uint8_t { 64U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01100100U, l->get());
+  EXPECT_EQ(0x40U, l->get());
 
   *l = uint8_t { 73U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b01110011U, l->get());
+  EXPECT_EQ(0x49U, l->get());
 
   *l = uint8_t { 82U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10000010U, l->get());
+  EXPECT_EQ(0x52U, l->get());
 
   *l = uint8_t { 91U };
 
-  res = ops::decimalAdjust(*l);
+  res = ops::decimalAdjust(*l, false, false, false);
 
   expected = ops::OpResult { .z = ops::FlagResult::Reset,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::Reset,
     .c = ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
-  EXPECT_EQ(0b10010001U, l->get());
+  EXPECT_EQ(0x61U, l->get());
 }

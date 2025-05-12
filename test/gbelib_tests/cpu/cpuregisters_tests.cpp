@@ -73,7 +73,7 @@ TEST(CpuRegistersTest, InitialL)
 TEST(CpuRegistersTest, InitialSp)
 {
   CpuRegisters regs;
-  EXPECT_EQ(0xFFFF, regs.get(WordRegister::SP)->get());
+  EXPECT_EQ(0xFFFE, regs.get(WordRegister::SP)->get());
 }
 
 TEST(CpuRegistersTest, NonByte)

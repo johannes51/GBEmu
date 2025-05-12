@@ -47,9 +47,20 @@ TEST(BasicRotateTest, Test4)
   CpuRegisters r;
   BasicRotate op { RotateDirection::Right, false };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
+  *r.get(ByteRegister::A) = 0b01010101U;
 
   EXPECT_TRUE(op.isComplete());
   EXPECT_EQ(1U, op.cycles());
 
+  r.getFlags().clearCarry();
+  r.getFlags().clearHalfCarry();
+  r.getFlags().clearSubtract();
+  r.getFlags().clearZero();
+
   EXPECT_NO_THROW(op.execute(r, mem));
+
+  EXPECT_TRUE(r.getFlags().carry());
+  EXPECT_FALSE(r.getFlags().halfCarry());
+  EXPECT_FALSE(r.getFlags().subtract());
+  EXPECT_FALSE(r.getFlags().zero());
 }

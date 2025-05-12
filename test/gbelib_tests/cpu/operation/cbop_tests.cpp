@@ -10,7 +10,7 @@
 TEST(CbOpTest, RotateRight)
 {
   CpuRegisters r;
-  CbOp op { CbOp::CbFunction::RotateRight, ByteRegister::A, false };
+  CbOp op { CbOp::CbFunction::RotateRightCiruclar, ByteRegister::A, false };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
   *r.get(ByteRegister::A) = uint8_t { 0b10101010U };
 

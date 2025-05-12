@@ -8,21 +8,21 @@ TEST(ShiftrotateTest, RLC)
 {
   auto l = variableLocation(uint8_t { 0b01100000U });
 
-  auto res = ops::rlc(*l);
+  auto res = ops::rl(*l);
 
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b11000000U, l->get());
 
-  res = ops::rlc(*l);
+  res = ops::rl(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b10000001U, l->get());
 
-  res = ops::rlc(*l);
+  res = ops::rl(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
@@ -30,7 +30,7 @@ TEST(ShiftrotateTest, RLC)
   EXPECT_EQ(0b00000011, l->get());
 
   *l = uint8_t { 0b00000000U };
-  res = ops::rlc(*l);
+  res = ops::rl(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
@@ -67,21 +67,21 @@ TEST(ShiftrotateTest, RRC)
 {
   auto l = variableLocation(uint8_t { 0b00000110U });
 
-  auto res = ops::rrc(*l);
+  auto res = ops::rr(*l);
 
   auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
     ops::FlagResult::Reset };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b00000011U, l->get());
 
-  res = ops::rrc(*l);
+  res = ops::rr(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b10000001U, l->get());
 
-  res = ops::rrc(*l);
+  res = ops::rr(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Set };
@@ -89,7 +89,7 @@ TEST(ShiftrotateTest, RRC)
   EXPECT_EQ(0b11000000U, l->get());
 
   *l = uint8_t { 0b00000000U };
-  res = ops::rrc(*l);
+  res = ops::rr(*l);
 
   expected
       = ops::OpResult { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset };
