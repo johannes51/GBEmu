@@ -26,7 +26,7 @@ TEST(CbOpTest, RotateRight)
 TEST(CbOpTest, RotateRightCarry)
 {
   CpuRegisters r;
-  CbOp op { CbOp::CbFunction::RotateRightCarry, ByteRegister::A, false };
+  CbOp op { CbOp::CbFunction::RotateRightCiruclar, ByteRegister::A, false };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   EXPECT_TRUE(op.isComplete());
@@ -52,7 +52,7 @@ TEST(CbOpTest, RotateLeft)
 TEST(CbOpTest, RotateLeftCarry)
 {
   CpuRegisters r;
-  CbOp op { CbOp::CbFunction::RotateLeftCarry, ByteRegister::A, false };
+  CbOp op { CbOp::CbFunction::RotateLeftCircular, ByteRegister::A, false };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
   EXPECT_TRUE(op.isComplete());

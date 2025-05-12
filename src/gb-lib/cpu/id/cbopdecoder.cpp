@@ -14,7 +14,7 @@ auto function(const OpcodeView& opcode) -> CbOp::CbFunction
   } else {
     if (opcode.lowerNibble() <= 0x7U) {
       if (opcode.upperNibble() == 0x0U) {
-        return CbOp::CbFunction::RotateLeftCarry;
+        return CbOp::CbFunction::RotateLeftCircular;
       } else if (opcode.upperNibble() == 0x1U) {
         return CbOp::CbFunction::RotateLeft;
       } else if (opcode.upperNibble() == 0x2U) {
@@ -24,7 +24,7 @@ auto function(const OpcodeView& opcode) -> CbOp::CbFunction
       }
     } else {
       if (opcode.upperNibble() == 0x0U) {
-        return CbOp::CbFunction::RotateRightCarry;
+        return CbOp::CbFunction::RotateRightCiruclar;
       } else if (opcode.upperNibble() == 0x1U) {
         return CbOp::CbFunction::RotateRight;
       } else if (opcode.upperNibble() == 0x2U) {

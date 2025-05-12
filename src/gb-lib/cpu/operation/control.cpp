@@ -19,7 +19,7 @@ void Control::execute(RegistersInterface& registers, IMemoryView& memory)
     registers.getFlags().disableInterrupt();
     break;
   case ControlOp::Halt:
-    throw std::logic_error("Halt unimplemented.");
+    // throw std::logic_error("Halt unimplemented."); treat like nop
     break;
   case ControlOp::Stop:
     throw std::logic_error("Stop unimplemented.");

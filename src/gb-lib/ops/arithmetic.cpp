@@ -2,6 +2,7 @@
 
 #include "bitmanip.h"
 #include "constants.h"
+#include "location/variablelocation.h"
 
 #include <cstring>
 
@@ -9,32 +10,36 @@ auto ops::increment(Location8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() + 1;
   location = numericalResult;
-  auto halfCarry = (static_cast<unsigned int>(numericalResult) & MASK_LOWER_HALF_BYTE) == 0x0U;
-  return { (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
-    halfCarry ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange };
+  const auto halfCarry = (static_cast<unsigned int>(numericalResult) & LOWER_HALF_BYTE_MASK) == 0x0U;
+  return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = FlagResult::NoChange };
 }
 
 auto ops::increment(Location16& location) -> ops::OpResult
 {
   const uint16_t numericalResult = location.get() + 1;
   location = numericalResult;
-  return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
+  return { .z = FlagResult::NoChange, .n = FlagResult::NoChange, .h = FlagResult::NoChange, .c = FlagResult::NoChange };
 }
 
 auto ops::decrement(Location8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() - 1;
   location = numericalResult;
-  auto halfCarry = (numericalResult & MASK_LOWER_HALF_BYTE) != 0;
-  return { (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
-    halfCarry ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange };
+  const auto halfCarry = (numericalResult & LOWER_HALF_BYTE_MASK) == 0xFU;
+  return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Set,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = FlagResult::NoChange };
 }
 
 auto ops::decrement(Location16& location) -> ops::OpResult
 {
   const uint16_t numericalResult = location.get() - 1;
   location = numericalResult;
-  return { FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange, FlagResult::NoChange };
+  return { .z = FlagResult::NoChange, .n = FlagResult::NoChange, .h = FlagResult::NoChange, .c = FlagResult::NoChange };
 }
 
 auto ops::add(Location8& a, const Location8& b) -> ops::OpResult
@@ -42,145 +47,141 @@ auto ops::add(Location8& a, const Location8& b) -> ops::OpResult
   auto aVal = a.get();
   auto bVal = b.get();
 
-  auto carry = std::numeric_limits<uint8_t>::max() - aVal < bVal;
+  const auto carry = std::numeric_limits<uint8_t>::max() - aVal < bVal;
 
   const uint8_t numericalResult = aVal + bVal;
   a = numericalResult;
 
-  auto halfCarry = (MASK_LOWER_HALF_BYTE & aVal) + (MASK_LOWER_HALF_BYTE & bVal) > MASK_LOWER_HALF_BYTE;
+  const auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bVal) > LOWER_HALF_BYTE_MASK;
 
-  return { (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset,
-    halfCarry ? FlagResult::Set : FlagResult::Reset, carry ? FlagResult::Set : FlagResult::Reset };
+  return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = carry ? FlagResult::Set : FlagResult::Reset };
+}
+
+auto ops::add_carry(Location8& a, const Location8& b, const bool carryFlag) -> ops::OpResult
+{
+  const auto aVal = a.get();
+  const auto bVal = b.get();
+
+  auto carry = std::numeric_limits<uint8_t>::max() - aVal < bVal;
+  auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bVal) > LOWER_HALF_BYTE_MASK;
+
+  uint8_t numericalResult = aVal + bVal;
+
+  if (carryFlag) {
+    carry |= numericalResult == std::numeric_limits<uint8_t>::max();
+    halfCarry |= (LOWER_HALF_BYTE_MASK & numericalResult) == LOWER_HALF_BYTE_MASK;
+    ++numericalResult;
+  }
+
+  a = numericalResult;
+
+  return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 auto ops::add(Location16& a, const Location16& b) -> ops::OpResult
 {
-  auto aVal = a.get();
-  auto bVal = b.get();
-
-  auto carry = std::numeric_limits<uint16_t>::max() - aVal < bVal;
+  const auto aVal = a.get();
+  const auto bVal = b.get();
 
   const uint16_t numericalResult = aVal + bVal;
   a = numericalResult;
 
-  aVal >>= BYTE_SHIFT;
-  bVal >>= BYTE_SHIFT;
+  const auto carry = (BIT_15_MASK & aVal) + (BIT_15_MASK & bVal) > BIT_15_MASK;
+  const auto halfCarry = (BIT_11_MASK & aVal) + (BIT_11_MASK & bVal) > BIT_11_MASK;
 
-  const auto halfCarry = (MASK_LOWER_HALF_BYTE & aVal) + (MASK_LOWER_HALF_BYTE & bVal) > MASK_LOWER_HALF_BYTE;
-
-  return { FlagResult::NoChange, FlagResult::Reset, halfCarry ? FlagResult::Set : FlagResult::Reset,
-    carry ? FlagResult::Set : FlagResult::Reset };
+  return { .z = FlagResult::NoChange,
+    .n = FlagResult::Reset,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::addSigned(Location16& a, const Location8& bUnsigned) -> ops::OpResult
+auto ops::addSigned(Location16& a, const uint8_t bUnsigned) -> ops::OpResult
 {
-  auto operandUnsigned = bUnsigned.get();
   int8_t operand = 0;
-  std::memcpy(&operand, &operandUnsigned, sizeof(operand)); // NOTE: this only works as 2's complement (so always)
-  const uint16_t result = a.get() + operand;
+  std::memcpy(&operand, &bUnsigned, sizeof(operand)); // NOTE: this only works as 2's complement (so always)
+  const uint16_t aVal = a.get();
+  const uint16_t result = aVal + operand;
 
-  const auto halfCarry = ((bit(a, 3U).z == FlagResult::Set) && (bit(bUnsigned, 3U).z == FlagResult::Reset));
-  const auto carry = ((bit(a, 7U).z == FlagResult::Set) && (bit(bUnsigned, 7U).z == FlagResult::Reset));
+  const auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bUnsigned) > LOWER_HALF_BYTE_MASK;
+  const auto carry = std::numeric_limits<uint8_t>::max() - (LOWER_BYTE_MASK & aVal) < bUnsigned;
 
   a = result;
 
-  return { FlagResult::Reset, FlagResult::Reset, halfCarry ? FlagResult::Set : FlagResult::Reset,
-    carry ? FlagResult::Set : FlagResult::Reset };
+  return { .z = FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
+    .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
 auto ops::sub(Location8& a, const Location8& b) -> ops::OpResult
 {
   auto borrow = a.get() < b.get();
-  auto halfBorrow = (MASK_LOWER_HALF_BYTE & a.get()) < (MASK_LOWER_HALF_BYTE & b.get());
+  auto halfBorrow = (LOWER_HALF_BYTE_MASK & a.get()) < (LOWER_HALF_BYTE_MASK & b.get());
 
   const uint8_t result = a.get() - b.get();
   a = result;
 
-  return { (result == 0U) ? FlagResult::Set : FlagResult::Reset, FlagResult::Set,
-    !halfBorrow ? FlagResult::Set : FlagResult::Reset, !borrow ? FlagResult::Set : FlagResult::Reset };
+  return { .z = (result == 0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Set,
+    .h = halfBorrow ? FlagResult::Set : FlagResult::Reset,
+    .c = borrow ? FlagResult::Set : FlagResult::Reset };
+}
+
+auto ops::sub_carry(Location8& a, const Location8& b, const bool carryFlag) -> ops::OpResult
+{
+  auto borrow = a.get() < b.get();
+  auto halfBorrow = (LOWER_HALF_BYTE_MASK & a.get()) < (LOWER_HALF_BYTE_MASK & b.get());
+
+  uint8_t numericalResult = a.get() - b.get();
+
+  if (carryFlag) {
+    borrow |= numericalResult == 0U;
+    halfBorrow |= (LOWER_HALF_BYTE_MASK & numericalResult) == 0U;
+    --numericalResult;
+  }
+
+  a = numericalResult;
+
+  return { .z = (numericalResult == 0U) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Set,
+    .h = halfBorrow ? FlagResult::Set : FlagResult::Reset,
+    .c = borrow ? FlagResult::Set : FlagResult::Reset };
 }
 
 auto ops::complement(Location8& operand) -> ops::OpResult
 {
   operand = static_cast<uint8_t>(operand.get() ^ std::numeric_limits<uint8_t>::max());
-  return { FlagResult::NoChange, FlagResult::Set, FlagResult::Set, FlagResult::NoChange };
+  return { .z = FlagResult::NoChange, .n = FlagResult::Set, .h = FlagResult::Set, .c = FlagResult::NoChange };
 }
 
-auto ops::decimalAdjust(Location8& operand) -> ops::OpResult
+auto ops::decimalAdjust(
+    Location8& operand, const bool carry, const bool halfCarry, const bool subtract) -> ops::OpResult
 {
-  uint8_t lowerNibble = 0U;
-  uint8_t upperNibble = 0U;
-  // NOLINTBEGIN(*-magic-numbers)
-  switch (operand.get() % 10U) {
-  case 0:
-  default:
-    lowerNibble = 0b0000;
-    break;
-  case 1:
-    lowerNibble = 0b0001;
-    break;
-  case 2:
-    lowerNibble = 0b0010;
-    break;
-  case 3:
-    lowerNibble = 0b0011;
-    break;
-  case 4:
-    lowerNibble = 0b0100;
-    break;
-  case 5:
-    lowerNibble = 0b0101;
-    break;
-  case 6:
-    lowerNibble = 0b0110;
-    break;
-  case 7:
-    lowerNibble = 0b0111;
-    break;
-  case 8:
-    lowerNibble = 0b1000;
-    break;
-  case 9:
-    lowerNibble = 0b1001;
-    break;
-  }
-  switch (operand.get() / 10U) {
-  case 0:
-  default:
-    upperNibble = 0b0000;
-    break;
-  case 1:
-    upperNibble = 0b0001;
-    break;
-  case 2:
-    upperNibble = 0b0010;
-    break;
-  case 3:
-    upperNibble = 0b0011;
-    break;
-  case 4:
-    upperNibble = 0b0100;
-    break;
-  case 5:
-    upperNibble = 0b0101;
-    break;
-  case 6:
-    upperNibble = 0b0110;
-    break;
-  case 7:
-    upperNibble = 0b0111;
-    break;
-  case 8:
-    upperNibble = 0b1000;
-    break;
-  case 9:
-    upperNibble = 0b1001;
-    break;
-  }
-  // NOLINTEND(*-magic-numbers)
-  const auto result = static_cast<uint8_t>(static_cast<uint8_t>(upperNibble << HALF_BYTE_SHIFT) | lowerNibble);
+  const auto value = operand.get();
 
-  operand = result;
-  return { (operand.get() == 0) ? FlagResult::Set : FlagResult::Reset, FlagResult::NoChange, FlagResult::Reset,
-    FlagResult::Reset };
+  auto newCarry = carry;
+  // NOLINTBEGIN(*-magic-numbers)
+  uint8_t offset = 0U;
+  if (carry || (!subtract && (value > 0x99U))) {
+    offset |= 0x60U;
+    newCarry = true;
+  }
+  if (halfCarry || (!subtract && ((value & 0xFU) > 0x9U))) {
+    offset |= 0x6U;
+  }
+  const auto newValue = static_cast<uint8_t>(subtract ? value - offset : value + offset);
+  // NOLINTEND(*-magic-numbers)
+
+  operand = newValue;
+
+  return { .z = (newValue == 0) ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::NoChange,
+    .h = FlagResult::Reset,
+    .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }

@@ -9,9 +9,9 @@ class CbOp : public SingleOp<0> {
 public:
   enum class CbFunction {
     RotateRight,
-    RotateRightCarry,
+    RotateRightCiruclar,
     RotateLeft,
-    RotateLeftCarry,
+    RotateLeftCircular,
     ShiftRightArithmetic,
     ShiftLeftArithmetic,
     ShiftRightLogic,

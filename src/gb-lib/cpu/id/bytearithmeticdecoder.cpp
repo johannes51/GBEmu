@@ -98,9 +98,13 @@ auto ByteArithmeticDecoder::incDec(const OpcodeView& opcode) -> OperationUP
 
 auto ByteArithmeticDecoder::bulkArithmetic(const OpcodeView& opcode) -> OperationUP
 {
-  auto op = std::make_unique<ByteAluOperation>(bulkFunction(opcode), Source::Register);
-  op->setRegister(sourceRegister(opcode));
-  return op;
+  if ((opcode.lowerNibble() == 0x6U) || (opcode.lowerNibble() == 0xEU)) {
+    return std::make_unique<ByteAluOperation>(bulkFunction(opcode), Source::Indirect);
+  } else {
+    auto op = std::make_unique<ByteAluOperation>(bulkFunction(opcode), Source::Register);
+    op->setRegister(sourceRegister(opcode));
+    return op;
+  }
 }
 
 auto ByteArithmeticDecoder::immediate(const OpcodeView& opcode) -> OperationUP

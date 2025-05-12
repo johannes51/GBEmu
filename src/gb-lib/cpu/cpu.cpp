@@ -27,6 +27,8 @@ auto Cpu::clock() -> bool
 
   if (--ticksTillExecution_ == 0) {
     nextOperation_->execute(*registers_, *mem_);
+    *registers_->get(ByteRegister::F)
+        = registers_->get(ByteRegister::F)->get() & UPPER_HALF_BYTE_MASK; // NOTE: this is so dumb
     if (executingInterrupt_) {
       interruptHandler_ = InterruptHandlerUP { dynamic_cast<InterruptHandler*>(nextOperation_.release()) };
       executingInterrupt_ = false;

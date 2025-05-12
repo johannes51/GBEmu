@@ -54,28 +54,24 @@ auto ByteAluOperation::cycles() -> unsigned
 void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
-  ops::OpResult result { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
-    ops::FlagResult::Reset };
+  ops::OpResult result {
+    .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
+  };
   switch (function_) {
   case ByteAluFunction::Add:
-  case ByteAluFunction::AddCarry: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::add(*loc, *getSource(registers, memory));
-    if (function_ == ByteAluFunction::AddCarry && registers.getFlags().carry()) {
-      ops::increment(*loc);
-    }
+    result = ops::add(*registers.get(ByteRegister::A), *getSource(registers, memory));
     break;
-  }
+  case ByteAluFunction::AddCarry:
+    result
+        = ops::add_carry(*registers.get(ByteRegister::A), *getSource(registers, memory), registers.getFlags().carry());
+    break;
   case ByteAluFunction::Sub:
-  case ByteAluFunction::SubCarry: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::sub(*loc, *getSource(registers, memory));
-    if (function_ == ByteAluFunction::SubCarry && registers.getFlags().carry()) {
-      ops::decrement(*loc);
-    }
+    result = ops::sub(*registers.get(ByteRegister::A), *getSource(registers, memory));
     break;
+  case ByteAluFunction::SubCarry:
+    result
+        = ops::sub_carry(*registers.get(ByteRegister::A), *getSource(registers, memory), registers.getFlags().carry());
     break;
-  }
   case ByteAluFunction::Inc: {
     auto loc = getSource(registers, memory);
     result = ops::increment(*loc);

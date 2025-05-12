@@ -41,6 +41,6 @@ void Sweep::modifyPeriod()
   } else {
     newPeriod += change;
   }
-  nr13_->set(newPeriod & MASK_LOWER_BYTE);
+  nr13_->set(newPeriod & LOWER_BYTE_MASK);
   nr14_->set(nr14_->get() | static_cast<uint8_t>(newPeriod >> BYTE_SHIFT));
 }

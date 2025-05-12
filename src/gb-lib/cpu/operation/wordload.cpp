@@ -95,6 +95,6 @@ void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
     if (!immediate8_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    ops::addSigned(*destLoc, *immediate8_);
+    apply(registers.getFlags(), ops::addSigned(*destLoc, immediate8_->get()));
   }
 }

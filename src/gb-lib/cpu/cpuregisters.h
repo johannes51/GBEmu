@@ -28,7 +28,7 @@ private:
   static constexpr uint8_t INITIAL_H = 0x01;
   static constexpr uint8_t INITIAL_L = 0x4D;
   static constexpr uint8_t INITIAL_SPu = 0xFF;
-  static constexpr uint8_t INITIAL_SPl = 0xFF;
+  static constexpr uint8_t INITIAL_SPl = 0xFE;
   static constexpr uint8_t INITIAL_PCu = 0x01;
   static constexpr uint8_t INITIAL_PCl = 0x00;
 

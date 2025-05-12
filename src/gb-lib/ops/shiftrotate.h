@@ -18,18 +18,14 @@ constexpr uint8_t LsbMask = 0b00000001;
 
 } // namespace detail
 
+OpResult rr(Location8& location);
 OpResult rr(Location8& location, bool carry);
 
-OpResult rrc(Location8& location);
-
+OpResult rl(Location8& location);
 OpResult rl(Location8& location, bool carry);
 
-OpResult rlc(Location8& location);
-
 OpResult sra(Location8& location);
-
 OpResult sla(Location8& location);
-
 OpResult srl(Location8& location);
 
 OpResult swap(Location8& location);

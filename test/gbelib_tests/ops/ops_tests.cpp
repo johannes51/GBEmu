@@ -23,7 +23,7 @@ TEST(OpsTest, Comparison)
 {
   ops::OpResult ex { ops::FlagResult::Set, ops::FlagResult::Reset, ops::FlagResult::Set, ops::FlagResult::NoChange };
 
-  ops::OpResult a;
+  ops::OpResult a; // NOLINT intentionally uninititalized
 
   EXPECT_FALSE(ex == a);
 
