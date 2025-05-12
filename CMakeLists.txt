@@ -9,8 +9,11 @@ set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake;")
 include(compiler-options)
 include(doxygen)
 include(clang-tools)
-include(code-coverage)
 include(profiles)
+if(CMAKE_BUILD_TYPE MATCHES "[Cc][Oo][Vv][Ee][Rr][Aa][Gg][Ee]")
+  include(code-coverage)
+endif()
+
 
 add_subdirectory(src)
 add_subdirectory(test)

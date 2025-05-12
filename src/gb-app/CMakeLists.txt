@@ -11,11 +11,11 @@ SET(CMAKE_AUTOUIC ON)
 SET(CMAKE_AUTORCC ON)
 
 set( SRCS
-    main.cpp
-    widgets/mainwindow.cpp
-    widgets/mainwindow.h
-    widgets/mainwindow.ui
-    )
+  main.cpp
+  widgets/mainwindow.cpp
+  widgets/mainwindow.h
+  widgets/mainwindow.ui
+)
 
 add_executable(app)
 target_sources(app PRIVATE ${SRCS})

@@ -34,14 +34,14 @@ endif()
 # Adds clang-tidy checks to the compilation, with the given arguments being used
 # as the options set.
 function(clang_tidy TARGET_NAME)
-    if(CLANG_TIDY_ACTIVE)
-        if(CLANG_TIDY_EXE)
-          set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
-          set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY_EXPORT_FIXES_DIR "./")
-        else()
-            message(FATAL_ERROR "clang-tidy is needed.")
-        endif()
+  if(CLANG_TIDY_ACTIVE)
+    if(CLANG_TIDY_EXE)
+      set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY "${CLANG_TIDY_EXE}")
+      set_target_properties(${TARGET_NAME} PROPERTIES CXX_CLANG_TIDY_EXPORT_FIXES_DIR "./")
+    else()
+      message(FATAL_ERROR "clang-tidy is needed.")
     endif()
+  endif()
 endfunction()
 
 # Adds cppcheck to the compilation, with the given arguments being used as the
@@ -49,11 +49,11 @@ endfunction()
 function(cppcheck TARGET_NAME)
   if(CPPCHECK_EXE)
     set_target_properties(${TARGET_NAME} PROPERTIES CMAKE_CXX_CPPCHECK
-        "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
-        )
-    else()
-      message(FATAL_ERROR "cppcheck is needed.")
-  endif()
+      "${CPPCHECK_EXE};--enable=warning,performance,portability,missingInclude;--template=\"[{severity}][{id}] {message} {callstack} \(On {file}:{line}\)\";--suppress=missingIncludeSystem;--quiet;--verbose;--force"
+    )
+else()
+  message(FATAL_ERROR "cppcheck is needed.")
+endif()
 endfunction()
 
 
@@ -86,9 +86,9 @@ function(clang_format TARGET_NAME)
   if(CLANG_FORMAT_EXE)
     # Check through the ARGN's, determine existant files
     foreach(item
-            IN
-            LISTS
-            ARGN)
+        IN
+        LISTS
+        ARGN)
 
       if(TARGET ${item})
         # If the item is a target, then we'll attempt to grab the associated
@@ -97,9 +97,9 @@ function(clang_format TARGET_NAME)
         if(NOT _TARGET_TYPE STREQUAL "INTERFACE_LIBRARY")
           get_property(_TEMP TARGET ${item} PROPERTY SOURCES)
           foreach(iter
-                  IN
-                  LISTS
-                  _TEMP)
+              IN
+              LISTS
+              _TEMP)
             if(EXISTS ${iter})
               set(FORMAT_FILES ${FORMAT_FILES} ${iter})
             elseif(EXISTS ${CMAKE_CURRENT_SOURCE_DIR}/${iter})
@@ -126,10 +126,10 @@ function(clang_format TARGET_NAME)
       else()
 
         add_custom_target(${TARGET_NAME}
-                          COMMAND ${CLANG_FORMAT_EXE}
-                                  -i
-                                  -style=file
-                                  ${FORMAT_FILES})
+          COMMAND ${CLANG_FORMAT_EXE}
+          -i
+          -style=file
+          ${FORMAT_FILES})
 
         if(NOT TARGET format)
           add_custom_target(format)

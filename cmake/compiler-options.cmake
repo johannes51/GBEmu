@@ -4,7 +4,7 @@ function(enable_wall TARGET)
     # GCC
     target_compile_options(${TARGET} PRIVATE "-Wall" "-Wextra" "-pedantic")
   elseif("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-         OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
+      OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
     # Clang
     target_compile_options(${TARGET} PRIVATE "-Wall" "-Wextra" "-pedantic")
   elseif(MSVC)
@@ -18,7 +18,7 @@ function(enable_wnone TARGET)
     # GCC
     target_compile_options(${TARGET} PRIVATE "-w")
   elseif("${CMAKE_C_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang"
-         OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
+      OR "${CMAKE_CXX_COMPILER_ID}" MATCHES "(Apple)?[Cc]lang")
     # Clang
     target_compile_options(${TARGET} PRIVATE "-w")
   elseif(MSVC)
@@ -30,8 +30,8 @@ endfunction()
 
 function(set_std_properties TARGET STANDARD)
   set_target_properties(${TARGET} PROPERTIES CXX_STANDARD ${STANDARD}
-                                             CXX_STANDARD_REQUIRED ON
-                                             CXX_EXTENSIONS OFF)
+    CXX_STANDARD_REQUIRED ON
+    CXX_EXTENSIONS OFF)
 endfunction()
 
 function(msvc_option TARGET STANDARD)
