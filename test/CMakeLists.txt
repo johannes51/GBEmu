@@ -12,3 +12,4 @@ include_directories(
 enable_testing()
 
 add_subdirectory(gbelib_tests)
+add_subdirectory(gb-doc)

@@ -14,10 +14,11 @@ public:
   ~Cpu();
   DISABLE_COPY_AND_MOVE(Cpu)
 
-  void clock();
+  bool clock();
 
 private:
-  Location8UP nextOpcode();
+  OperationUP loadNextOperation();
+  Location8UP fetchNextOpcode();
 
   const IMemoryViewSP mem_;
   const RegistersInterfaceUP registers_;

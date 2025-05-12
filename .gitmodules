@@ -1,0 +1,3 @@
+[submodule "test/gb-doc/repo"]
+	path = test/gb-doc/repo
+	url = https://github.com/robert/gameboy-doctor.git
