@@ -19,37 +19,50 @@ Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem, InstructionDecoder
 
 Cpu::~Cpu() = default;
 
-void Cpu::clock()
+auto Cpu::clock() -> bool
 {
   if (!nextOperation_) {
-    if (registers_->getFlags().interruptEnabled() && interruptHandler_->isInterrupt()) {
-      nextOperation_ = OperationUP { static_cast<Operation*>(interruptHandler_.release()) };
-      executingInterrupt_ = true;
-      registers_->getFlags().disableInterrupt();
-    } else {
-      const auto next = nextOpcode();
-      nextOperation_ = instructionDecoder_->decode(*next);
-    }
-    nextOperation_->showFlags(registers_->getFlags());
-    while (!nextOperation_->isComplete()) {
-      auto next = nextOpcode();
-      nextOperation_->nextOpcode(std::move(next));
-    }
-    ticksTillExecution_ = nextOperation_->cycles();
+    nextOperation_ = loadNextOperation();
   }
-  --ticksTillExecution_;
-  if (ticksTillExecution_ == 0) {
+
+  if (--ticksTillExecution_ == 0) {
     nextOperation_->execute(*registers_, *mem_);
     if (executingInterrupt_) {
       interruptHandler_ = InterruptHandlerUP { dynamic_cast<InterruptHandler*>(nextOperation_.release()) };
       executingInterrupt_ = false;
+      return false;
     } else {
       nextOperation_.reset();
+      return true;
     }
+  } else {
+    return false;
   }
 }
 
-auto Cpu::nextOpcode() -> Location8UP
+auto Cpu::loadNextOperation() -> OperationUP
+{
+  OperationUP result;
+  if (registers_->getFlags().interruptEnabled() && interruptHandler_->isInterrupt()) {
+    result = OperationUP { static_cast<Operation*>(interruptHandler_.release()) };
+    executingInterrupt_ = true;
+    registers_->getFlags().disableInterrupt();
+  } else {
+    const auto next = fetchNextOpcode();
+    result = instructionDecoder_->decode(*next);
+  }
+  if (result) {
+    result->showFlags(registers_->getFlags());
+    while (!result->isComplete()) {
+      auto next = fetchNextOpcode();
+      result->nextOpcode(std::move(next));
+    }
+    ticksTillExecution_ = result->cycles();
+  }
+  return result;
+}
+
+auto Cpu::fetchNextOpcode() -> Location8UP
 {
   auto pc = registers_->get(WordRegister::PC);
   auto result = mem_->getLocation8(hlp::indirect(*pc));
