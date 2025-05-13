@@ -24,6 +24,7 @@ void Control::execute(RegistersInterface& registers, IMemoryView& memory)
   case ControlOp::Stop:
     throw std::logic_error("Stop unimplemented.");
     break;
+  case ControlOp::Nop:
   default:
     break;
   }

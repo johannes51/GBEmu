@@ -6,13 +6,19 @@
 auto ops::bit(const Location8& location, uint8_t bitPos) -> ops::OpResult
 {
   const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
-  return { result ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::NoChange };
+  return { .z = result ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = FlagResult::Set,
+    .c = FlagResult::NoChange };
 }
 
 auto ops::bit(const Location16& location, uint8_t bitPos) -> ops::OpResult
 {
   const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
-  return { result ? FlagResult::Set : FlagResult::Reset, FlagResult::Reset, FlagResult::Set, FlagResult::NoChange };
+  return { .z = result ? FlagResult::Set : FlagResult::Reset,
+    .n = FlagResult::Reset,
+    .h = FlagResult::Set,
+    .c = FlagResult::NoChange };
 }
 
 auto ops::set(Location8& location, uint8_t bitPos) -> ops::OpResult
