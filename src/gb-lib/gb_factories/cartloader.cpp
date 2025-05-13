@@ -41,7 +41,7 @@ auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buff
   read16K(rom1Span, romFile_);
   auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
 
-  auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
+  auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(2 * BankSize, BankSize) };
   read16K(ram0Span, romFile_); // FIXME: this is a major bug
   auto ram0 = std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
 

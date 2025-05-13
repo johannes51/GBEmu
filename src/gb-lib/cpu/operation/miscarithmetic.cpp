@@ -14,7 +14,9 @@ void MiscArithmetic::execute(RegistersInterface& registers, IMemoryView& memory)
   switch (function_) {
   case MiscArithmeticFunction::DecimalAdjustA: {
     auto reg = registers.get(ByteRegister::A);
-    apply(registers.getFlags(), ops::decimalAdjust(*reg));
+    apply(registers.getFlags(),
+        ops::decimalAdjust(
+            *reg, registers.getFlags().carry(), registers.getFlags().halfCarry(), registers.getFlags().subtract()));
     break;
   }
   case MiscArithmeticFunction::ComplementA: {

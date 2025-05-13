@@ -5,7 +5,6 @@
 #include "cpu/flagsview.h"
 #include "cpu/registersinterface.h"
 #include "location/location8.h"
-#include "location/variablelocation.h"
 #include "mem/imemoryview.h"
 #include "ops/arithmetic.h"
 #include "util/helpers.h"
@@ -146,8 +145,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
       if (!param_.hasLower()) {
         throw std::invalid_argument("Adress location byte not configured");
       }
-      auto signedLocation = variableLocation(param_.lower());
-      ops::addSigned(*pc, *signedLocation);
+      ops::addSigned(*pc, param_.lower());
     }
   }
 }

@@ -22,7 +22,7 @@ auto Register8::get() const -> const uint8_t&
 auto Register8::operator=(const uint8_t& rhs) -> Register8&
 {
   buffer_ = upper_
-      ? (static_cast<unsigned int>(buffer_ & MASK_LOWER_BYTE) | static_cast<unsigned int>(rhs << BYTE_SHIFT))
-      : (static_cast<unsigned int>(buffer_ & MASK_UPPER_BYTE) | rhs);
+      ? (static_cast<unsigned int>(buffer_ & LOWER_BYTE_MASK) | static_cast<unsigned int>(rhs << BYTE_SHIFT))
+      : (static_cast<unsigned int>(buffer_ & UPPER_BYTE_MASK) | rhs);
   return *this;
 }

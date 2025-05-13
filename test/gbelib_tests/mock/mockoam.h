@@ -1,5 +1,5 @@
-#ifndef MOCKTILEMAP_H
-#define MOCKTILEMAP_H
+#ifndef MOCKOAM_H
+#define MOCKOAM_H
 
 #include "ppu/layer/oam.h"
 
@@ -18,4 +18,4 @@ private:
   std::vector<Object> objects_;
 };
 
-#endif // MOCKTILEMAP_H
+#endif // MOCKOAM_H

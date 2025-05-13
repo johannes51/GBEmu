@@ -118,31 +118,24 @@ auto loadRegisterIndirect(const OpcodeView opcode) -> OperationUP
       ? ByteLoadIndirect::Direction::Indirect
       : ByteLoadIndirect::Direction::Register;
 
-  auto dest = ByteRegister::A;
-  auto indirReg = WordRegister::None;
+  auto indirReg = WordRegister::HL;
   auto postAction = ByteLoadIndirect::Post::None;
-  if (opcode.upperNibble() == 0x7U) {
-    dest = bulkSource(opcode);
-    indirReg = WordRegister::HL;
-  } else if (((opcode.lowerNibble() == 0x6U) || (opcode.lowerNibble() == 0xEU)) && (opcode.upperNibble() <= 0x6U)
-      && (opcode.upperNibble() >= 0x4U)) {
-    dest = destination(opcode);
-    indirReg = WordRegister::HL;
-  } else if (opcode.upperNibble() == 0x0U) {
+  auto dirReg = ByteRegister::A;
+  if (opcode.upperNibble() == 0x0U) {
     indirReg = WordRegister::BC;
   } else if (opcode.upperNibble() == 0x1U) {
     indirReg = WordRegister::DE;
   } else if (opcode.upperNibble() == 0x2U) {
-    indirReg = WordRegister::HL;
     postAction = ByteLoadIndirect::Post::Increment;
   } else if (opcode.upperNibble() == 0x3U) {
-    indirReg = WordRegister::HL;
     postAction = ByteLoadIndirect::Post::Decrement;
+  } else if ((opcode.lowerNibble() == 0x6U) || (opcode.lowerNibble() == 0xEU)) {
+    dirReg = destination(opcode);
   } else {
-    throw std::logic_error("Invalid opcode for register indirect load");
+    dirReg = bulkSource(opcode);
   }
 
-  return std::make_unique<ByteLoadIndirect>(direction, dest, indirReg, postAction);
+  return std::make_unique<ByteLoadIndirect>(direction, dirReg, indirReg, postAction);
 }
 
 auto ByteLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP

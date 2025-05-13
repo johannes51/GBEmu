@@ -15,17 +15,25 @@ void BasicRotate::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
   auto reg = registers.get(ByteRegister::A);
+  auto result = ops::OpResult { .z = ops::FlagResult::NoChange,
+    .n = ops::FlagResult::NoChange,
+    .h = ops::FlagResult::NoChange,
+    .c = ops::FlagResult::NoChange };
   if (direction_ == RotateDirection::Right) {
     if (throughCarry_) {
-      ops::rr(*reg, registers.getFlags().carry());
+      result = ops::rr(*reg, registers.getFlags().carry());
     } else {
-      ops::rrc(*reg);
+      result = ops::rr(*reg);
     }
   } else /*if (direction_ == RotateDirection::Left)*/ {
     if (throughCarry_) {
-      ops::rl(*reg, registers.getFlags().carry());
+      result = ops::rl(*reg, registers.getFlags().carry());
     } else {
-      ops::rlc(*reg);
+      result = ops::rl(*reg);
     }
   }
+  result.z = ops::FlagResult::Reset;
+  result.n = ops::FlagResult::Reset;
+  result.h = ops::FlagResult::Reset;
+  apply(registers.getFlags(), result);
 }

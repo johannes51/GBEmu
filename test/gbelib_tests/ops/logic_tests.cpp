@@ -12,8 +12,12 @@ TEST(LogicTest, And)
 
   auto res = ops::andF(*d, *s);
 
-  auto expected = ops::OpResult { ops::FlagResult::Reset, ops::FlagResult::Reset, ops::FlagResult::Reset,
-    ops::FlagResult::Reset };
+  auto expected = ops::OpResult {
+    .z = ops::FlagResult::Reset,
+    .n = ops::FlagResult::Reset,
+    .h = ops::FlagResult::Set,
+    .c = ops::FlagResult::Reset,
+  };
   EXPECT_EQ(expected, res);
   EXPECT_EQ(0b00001010U, d->get());
 

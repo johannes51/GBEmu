@@ -33,16 +33,16 @@ void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
   auto op = indirect_ ? memory.getLocation8(hlp::indirect(*registers.get(WordRegister::HL))) : registers.get(operand_);
   switch (function_) {
   case CbFunction::RotateRight:
-    apply(registers.getFlags(), ops::rrc(*op));
-    break;
-  case CbFunction::RotateRightCarry:
     apply(registers.getFlags(), ops::rr(*op, registers.getFlags().carry()));
     break;
-  case CbFunction::RotateLeft:
-    apply(registers.getFlags(), ops::rlc(*op));
+  case CbFunction::RotateRightCiruclar:
+    apply(registers.getFlags(), ops::rr(*op));
     break;
-  case CbFunction::RotateLeftCarry:
+  case CbFunction::RotateLeft:
     apply(registers.getFlags(), ops::rl(*op, registers.getFlags().carry()));
+    break;
+  case CbFunction::RotateLeftCircular:
+    apply(registers.getFlags(), ops::rl(*op));
     break;
   case CbFunction::ShiftRightArithmetic:
     apply(registers.getFlags(), ops::sra(*op));
@@ -60,10 +60,10 @@ void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
     apply(registers.getFlags(), ops::bit(*op, affectedBit_));
     break;
   case CbFunction::Set:
-    apply(registers.getFlags(), ops::set(*op, affectedBit_));
+    ops::set(*op, affectedBit_);
     break;
   case CbFunction::Reset:
-    apply(registers.getFlags(), ops::reset(*op, affectedBit_));
+    ops::reset(*op, affectedBit_);
     break;
   default:
     throw std::logic_error("Unimplemented.");
