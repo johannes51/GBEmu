@@ -7,13 +7,13 @@
 class MockTileMap : public TileMap {
 public:
   MockTileMap()
-      : TileMap(nullptr, nullptr, nullptr, -1)
+      : TileMap(nullptr, nullptr, -1)
   {
   }
-  Tile getTile(const TileAddress& address) override
+  int8_t getIndex(const TileAddress &address) const override
   {
     (void)address;
-    return Tile { { 0x7C, 0x7C, 0x00, 0xC6, 0xC6, 0x00, 0x00, 0xFE, 0xC6, 0xC6, 0x00, 0xC6, 0xC6, 0x00, 0x00, 0x00 } };
+    return 0U;
   }
 };
 
