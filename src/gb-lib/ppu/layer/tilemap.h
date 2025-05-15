@@ -3,8 +3,6 @@
 
 #include "mem/imemoryview.h"
 #include "mem/registers/iregisteradapter.h"
-#include "tile.h"
-#include "tiledata.h"
 
 struct TileAddress {
   uint8_t x;
@@ -13,19 +11,16 @@ struct TileAddress {
 
 class TileMap {
 public:
-  explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, TileDataUP tiles, uint8_t bit);
+  explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, uint8_t bit);
   virtual ~TileMap();
 
-  virtual Tile getTile(const TileAddress& address);
+  virtual int8_t getIndex(const TileAddress& address) const;
 
 private:
-  int8_t getIndex(uint8_t flatAddress) const;
   address_type baseAdress() const;
 
   IRegisterAdapterSP lcdc_;
   IMemoryViewSP mem_;
-
-  TileDataUP tiles_;
 
   const uint8_t bit_;
 };

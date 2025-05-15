@@ -15,15 +15,13 @@ auto PpuFactory::constructPpu() -> IPpuUP
   PpuRegisterFactory rf { mem_ };
   auto lcdc = rf.get(PpuRegisters::LCDC);
 
-  auto bgTm = std::make_unique<TileMap>(
-      lcdc, mem_, std::make_unique<TileData>(lcdc, mem_, BgWindowTileDataBit), BgTileMapBit);
-  auto bg = std::make_shared<GbBg>(
-      lcdc, rf.get(PpuRegisters::SCX), rf.get(PpuRegisters::SCY), rf.get(PpuRegisters::BGP), std::move(bgTm));
+  auto bgTm = std::make_unique<TileMap>(lcdc, mem_, BgTileMapBit);
+  auto bg = std::make_shared<GbBg>(lcdc, rf.get(PpuRegisters::SCX), rf.get(PpuRegisters::SCY),
+      rf.get(PpuRegisters::BGP), std::make_unique<TileData>(lcdc, mem_, BgWindowTileDataBit), std::move(bgTm));
 
-  auto winTm = std::make_unique<TileMap>(
-      lcdc, mem_, std::make_unique<TileData>(lcdc, mem_, BgWindowTileDataBit), WindowTileMapBit);
-  auto win = std::make_shared<GbWindow>(
-      lcdc, rf.get(PpuRegisters::WX), rf.get(PpuRegisters::WY), rf.get(PpuRegisters::BGP), std::move(winTm));
+  auto winTm = std::make_unique<TileMap>(lcdc, mem_, WindowTileMapBit);
+  auto win = std::make_shared<GbWindow>(lcdc, rf.get(PpuRegisters::WX), rf.get(PpuRegisters::WY),
+      rf.get(PpuRegisters::BGP), std::make_unique<TileData>(lcdc, mem_, BgWindowTileDataBit), std::move(winTm));
 
   auto obj = std::make_shared<GbObjects>(std::make_unique<Oam>(mem_), lcdc, rf.get(PpuRegisters::OBP0),
       rf.get(PpuRegisters::OBP1), rf.get(PpuRegisters::BGP), std::make_unique<TileData>(lcdc, mem_));

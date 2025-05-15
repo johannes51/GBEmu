@@ -2,16 +2,14 @@
 
 #include "../ppu_constants.h"
 
-auto decomposePos(
-    uint8_t x, uint8_t y, uint8_t scrollX /* = 0*/, uint8_t scrollY /* = 0*/) -> std::pair<TileAddress, TilePos>
+auto decomposePos(const uint8_t x, const uint8_t y, const uint8_t scrollX /* = 0*/,
+    const uint8_t scrollY /* = 0*/) -> std::pair<TileAddress, TilePos>
 {
-  x += scrollX;
-  x %= LcdWidth;
-  y += scrollY;
-  y %= LcdHeight;
-  auto ta = TileAddress { static_cast<uint8_t>(x / TileSize), static_cast<uint8_t>(y / TileSize) };
-  auto po = TilePos { static_cast<uint8_t>(x % TileSize), static_cast<uint8_t>(y % TileSize) };
+  auto totalX = (x + scrollX) % 256U;
+  auto totalY = (y + scrollY) % 256U;
+  auto ta = TileAddress { static_cast<uint8_t>(totalX / TileSize), static_cast<uint8_t>(totalY / TileSize) };
+  auto po = TilePos { static_cast<uint8_t>(totalX % TileSize), static_cast<uint8_t>(totalY % TileSize) };
   return { ta, po };
 }
 
-auto toFlatAddress(const TileAddress& address) -> uint8_t { return (address.x * TileMapSize) + address.y; }
+auto toFlatAddress(const TileAddress& address) -> size_t { return (address.y * TileMapSize) + address.x; }

@@ -5,19 +5,16 @@
 #include "location/location8.h"
 #include "tiledata.h"
 
-TileMap::TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, TileDataUP tiles, uint8_t bit)
+TileMap::TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, uint8_t bit)
     : lcdc_(std::move(lcdc))
     , mem_(std::move(mem))
-    , tiles_(std::move(tiles))
     , bit_(bit)
 {
 }
 
-auto TileMap::getTile(const TileAddress& address) -> Tile { return tiles_->getTile(getIndex(toFlatAddress(address))); }
-
-auto TileMap::getIndex(uint8_t flatAddress) const -> int8_t
+auto TileMap::getIndex(const TileAddress &address) const -> int8_t
 {
-  return static_cast<int8_t>(mem_->getLocation8(baseAdress() + flatAddress)->get()); // TODO: unsigned-signed
+  return static_cast<int8_t>(mem_->getLocation8(baseAdress() + toFlatAddress(address))->get()); // TODO: unsigned-signed
 }
 
 auto TileMap::baseAdress() const -> address_type

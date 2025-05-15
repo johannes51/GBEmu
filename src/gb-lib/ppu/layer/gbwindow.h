@@ -6,12 +6,13 @@
 #include "colortransformation.h"
 #include "gbpalette.h"
 #include "mem/registers/iregisteradapter.h"
+#include "tiledata.h"
 #include "tilemap.h"
 
 class GbWindow : public IWindow {
 public:
-  explicit GbWindow(
-      IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp, TileMapUP map);
+  explicit GbWindow(IRegisterAdapterSP lcdc, IRegisterAdapterSP wx, IRegisterAdapterSP wy, IRegisterAdapterSP bgp,
+      TileDataUP data, TileMapUP map);
   ~GbWindow() override;
 
   void draw(GbPixelBuffer& buffer, const uint8_t currentLine) override;
@@ -21,6 +22,7 @@ private:
   IRegisterAdapterSP wx_;
   IRegisterAdapterSP wy_;
   IRegisterAdapterSP bgp_;
+  TileDataUP data_;
   TileMapUP map_;
   GbPalette pal_;
   GbColorTransformationUP t_;
