@@ -19,6 +19,8 @@ public:
 private:
   uint8_t toTileDataIndex(uint8_t objectTileIndex) const;
 
+  static constexpr int ObjVertOffset = 16U;
+
   OamUP oam_;
   IRegisterAdapterSP lcdc_;
   IRegisterAdapterSP obp1_;

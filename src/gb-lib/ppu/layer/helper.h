@@ -4,10 +4,12 @@
 #include <cstdint>
 #include <utility>
 
+#include "tile.h"
 #include "tilemap.h"
 
-std::pair<TileAddress, TilePos> decomposePos(uint8_t x, uint8_t y, uint8_t scrollX = 0, uint8_t scrollY = 0);
+std::pair<TileAddress, TilePos> decomposePos(
+    const uint8_t x, const uint8_t y, const uint8_t scrollX = 0, const uint8_t scrollY = 0);
 
-uint8_t toFlatAddress(const TileAddress& address);
+size_t toFlatAddress(const TileAddress& address);
 
 #endif // HELPER_H

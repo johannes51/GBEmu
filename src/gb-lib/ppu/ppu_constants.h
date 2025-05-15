@@ -41,8 +41,10 @@ constexpr uint8_t FlipYBit = 6U;
 constexpr uint8_t PriorityBit = 7U;
 
 // Tile Data constants
-constexpr uint8_t TileSize = 8U;
+constexpr uint16_t TileSize = 8U;
 constexpr uint8_t TileMapSize = 32U;
+constexpr uint16_t TileMapWidth = 256U;
+constexpr uint16_t TileMapHeight = 256U;
 constexpr std::size_t TileDataSize = 16U;
 constexpr address_type TileDataSetBaseAddress = 0x8000U;
 constexpr address_type TileDataResetBaseAddress = 0x8800U;

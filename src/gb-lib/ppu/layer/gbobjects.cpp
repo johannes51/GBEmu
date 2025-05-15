@@ -20,9 +20,12 @@ void GbObjects::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
   for (const auto& obj : oam_->getAll()) {
     if (obj.getX() > 0) {
       const auto tile = tileData_->getTile(obj.getTileIndex());
-      for (uint8_t x = 0; x < TileSize; ++x) {
-        buffer.at(x + obj.getX(), currentLine + obj.getY())
-            = t_->convert(pal_.getColor(tile.get(TilePos { .x = x, .y = currentLine })));
+      const auto currentTileLine = (obj.getY() + ObjVertOffset) - currentLine;
+      if (currentTileLine >= 0 && currentTileLine < TileSize) {
+        for (uint8_t x = 0; x < TileSize; ++x) {
+          buffer.at(x + obj.getX(), currentLine)
+              = t_->convert(pal_.getColor(tile.get(TilePos { .x = x, .y = static_cast<uint8_t>(currentTileLine) })));
+        }
       }
     }
   }
