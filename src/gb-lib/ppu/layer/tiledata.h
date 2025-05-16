@@ -9,7 +9,7 @@
 
 class TileData {
 public:
-  explicit TileData(IRegisterAdapterSP lcdc, IMemoryViewSP mem, int8_t bit = -1);
+  explicit TileData(const IRegisterAdapter& lcdc, IMemoryView& mem, int8_t bit = -1);
   virtual ~TileData() = default;
 
   virtual Tile getTile(int16_t index);
@@ -18,8 +18,8 @@ private:
   address_type baseAdress() const;
   std::array<uint8_t, 16> loadTile(address_type address) const;
 
-  IRegisterAdapterSP lcdc_;
-  IMemoryViewSP mem_;
+  const IRegisterAdapter& lcdc_;
+  IMemoryView& mem_;
 
   const int8_t Bit_;
 };

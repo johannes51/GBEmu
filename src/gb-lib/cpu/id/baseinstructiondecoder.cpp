@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/operation/operation.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 BaseInstructionDecoder::BaseInstructionDecoder()
     : decoders_()

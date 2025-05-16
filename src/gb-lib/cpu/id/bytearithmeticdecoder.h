@@ -4,7 +4,7 @@
 #include "instructiondecoder.h"
 
 #include "cpu/id/opcodeview.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 enum class ByteAluFunction;
 enum class ByteRegister;

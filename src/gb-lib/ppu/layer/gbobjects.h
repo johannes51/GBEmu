@@ -9,8 +9,8 @@
 
 class GbObjects : public IObjects {
 public:
-  explicit GbObjects(OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2,
-      IRegisterAdapterSP bgp, TileDataUP tileData);
+  explicit GbObjects(OamUP oam, const IRegisterAdapter& lcdc, const IRegisterAdapter& obp1,
+      const IRegisterAdapter& obp2, const IRegisterAdapter& bgp, TileDataUP tileData);
   ~GbObjects() override = default;
   DEFAULT_COPY_AND_MOVE(GbObjects)
 
@@ -22,9 +22,9 @@ private:
   static constexpr int ObjVertOffset = 16U;
 
   OamUP oam_;
-  IRegisterAdapterSP lcdc_;
-  IRegisterAdapterSP obp1_;
-  IRegisterAdapterSP obp2_;
+  const IRegisterAdapter& lcdc_;
+  const IRegisterAdapter& obp1_;
+  const IRegisterAdapter& obp2_;
   TileDataUP tileData_;
   GbPalette pal_;
   GbColorTransformationUP t_;

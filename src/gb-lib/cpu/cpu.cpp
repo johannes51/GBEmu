@@ -8,10 +8,11 @@
 #include "registersinterface.h"
 #include "util/helpers.h"
 
-Cpu::Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem, InstructionDecoderUP instructionDecoder,
-    InterruptHandlerUP interruptHandler)
-    : mem_(std::move(mem))
+Cpu::Cpu(IMemoryView& mem, RegistersInterfaceUP&& registers, IRegisterAdapterUP ie,
+    InstructionDecoderUP instructionDecoder, InterruptHandlerUP interruptHandler)
+    : mem_(mem)
     , registers_(std::move(registers))
+    , ie_(std::move(ie))
     , instructionDecoder_(std::move(instructionDecoder))
     , interruptHandler_(std::move(interruptHandler))
 {
@@ -26,9 +27,9 @@ auto Cpu::clock() -> bool
   }
 
   if (--ticksTillExecution_ == 0) {
-    nextOperation_->execute(*registers_, *mem_);
-    *registers_->get(ByteRegister::F)
-        = registers_->get(ByteRegister::F)->get() & UPPER_HALF_BYTE_MASK; // NOTE: this is so dumb
+    nextOperation_->execute(*registers_, mem_);
+    registers_->get(ByteRegister::F)
+        = registers_->get(ByteRegister::F).get() & UPPER_HALF_BYTE_MASK; // NOTE: this is so dumb
     if (executingInterrupt_) {
       interruptHandler_ = InterruptHandlerUP { dynamic_cast<InterruptHandler*>(nextOperation_.release()) };
       executingInterrupt_ = false;
@@ -51,23 +52,23 @@ auto Cpu::loadNextOperation() -> OperationUP
     registers_->getFlags().disableInterrupt();
   } else {
     const auto next = fetchNextOpcode();
-    result = instructionDecoder_->decode(*next);
+    result = instructionDecoder_->decode(next);
   }
   if (result) {
     result->showFlags(registers_->getFlags());
     while (!result->isComplete()) {
       auto next = fetchNextOpcode();
-      result->nextOpcode(std::move(next));
+      result->nextOpcode(next);
     }
     ticksTillExecution_ = result->cycles();
   }
   return result;
 }
 
-auto Cpu::fetchNextOpcode() -> Location8UP
+auto Cpu::fetchNextOpcode() -> Location8
 {
   auto pc = registers_->get(WordRegister::PC);
-  auto result = mem_->getLocation8(hlp::indirect(*pc));
-  ops::increment(*pc);
+  auto result = mem_.getLocation8(hlp::indirect(pc));
+  ops::increment(pc);
   return result;
 }

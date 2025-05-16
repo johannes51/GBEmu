@@ -5,7 +5,7 @@
 
 class Sweep {
 public:
-  Sweep(IRegisterAdapterSP nr10, IRegisterAdapterSP nr13, IRegisterAdapterSP nr14);
+  Sweep(const IRegisterAdapter& nr10, IRegisterAdapter& nr13, IRegisterAdapter& nr14);
 
   void clock();
 
@@ -16,9 +16,9 @@ private:
   static constexpr uint8_t CounterBitPos = 4U;
   static constexpr uint8_t CounterBitCount = 3U;
 
-  IRegisterAdapterSP nr10_;
-  IRegisterAdapterSP nr13_;
-  IRegisterAdapterSP nr14_;
+  const IRegisterAdapter& nr10_;
+  IRegisterAdapter& nr13_;
+  IRegisterAdapter& nr14_;
 
   uint8_t counter_ = 0U;
 

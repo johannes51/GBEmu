@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "cpu/operation/operation.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 #include "cpu/id/cbdecoder.h"
 #include "cpu/id/cbopdecoder.h"
@@ -29,20 +29,20 @@ TEST_F(CbOpDecoderTest, Opcodes)
 
 TEST_F(CbOpDecoderTest, CB)
 {
-  auto op = d1.decode(*variableLocation(uint8_t { 0xCBU }));
+  auto op = d1.decode(variableLocation(uint8_t { 0xCBU }));
   ASSERT_TRUE(op);
   EXPECT_FALSE(op->isComplete());
 
-  EXPECT_ANY_THROW(op = d1.decode(*variableLocation(uint8_t { 0xCCU })));
+  EXPECT_ANY_THROW(op = d1.decode(variableLocation(uint8_t { 0xCCU })));
 }
 
 TEST_F(CbOpDecoderTest, CBOp)
 {
-  auto op = d1.decode(*variableLocation(uint8_t { 0xCBU }));
+  auto op = d1.decode(variableLocation(uint8_t { 0xCBU }));
   ASSERT_TRUE(op);
   EXPECT_FALSE(op->isComplete());
 
   for (uint16_t opcode = 0x00U; opcode <= 0xFFU; ++opcode) {
-    EXPECT_NO_THROW(op = d2.decode(*variableLocation(static_cast<uint8_t>(opcode)))) << opcode;
+    EXPECT_NO_THROW(op = d2.decode(variableLocation(static_cast<uint8_t>(opcode)))) << opcode;
   }
 }

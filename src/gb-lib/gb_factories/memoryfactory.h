@@ -8,13 +8,18 @@
 #include "mem/imemoryview.h"
 #include "mem/memoryarea.h"
 
+class IoBank;
+class SingleRegisterBank;
+
 namespace gb {
 
 class MemoryFactory {
 public:
   MemoryFactory(CartLoaderUP&& romLoader, std::vector<uint8_t>& buffer);
 
-  IMemoryViewSP constructMemoryLayout();
+  IoBank* getIoBank();
+  SingleRegisterBank* getIeBank();
+  IMemoryViewUP releaseMemory();
 
 private:
   static constexpr MemoryArea VRAM = { 0x8000, 0x9FFF };
@@ -28,12 +33,17 @@ private:
   static constexpr MemoryArea HRAM = { 0xFF80, 0xFFFE };
   static constexpr address_type IE = 0xFFFF;
 
+  IMemoryViewUP constructMemoryLayout();
   IMemoryManagerSP buildRamBank(MemoryArea area);
+  std::shared_ptr<IoBank> buildIoBank(MemoryArea area);
   std::vector<IMemoryManagerSP> buildCartBanks();
 
   CartLoaderUP loader_;
   std::vector<uint8_t>& buffer_;
   std::vector<uint8_t>::iterator ptr_;
+  IoBank* ioBank_ = nullptr;
+  SingleRegisterBank* ieBank_ = nullptr;
+  IMemoryViewUP mem_ = nullptr; // initialize mem_ last because constructMemoryLayout() needs the other members
 };
 
 } // namespace gb

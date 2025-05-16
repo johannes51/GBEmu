@@ -1,7 +1,7 @@
 #include "logic.h"
 
 #include "constants.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 auto ops::andF(Location8& destination, const Location8& source) -> ops::OpResult
 {

@@ -3,14 +3,11 @@
 #include "constants.h"
 #include "util/helpers.h"
 
-Period::Period(IRegisterAdapterSP nrX3, IRegisterAdapterSP nrX4)
-    : nrX3_(std::move(nrX3))
-    , nrX4_(std::move(nrX4))
+Period::Period(const IRegisterAdapter& nrX3, const IRegisterAdapter& nrX4)
+    : nrX3_(nrX3)
+    , nrX4_(nrX4)
     , period_(MaxPeriod)
 {
-  if (!nrX3_ || !nrX4_) {
-    throw std::invalid_argument("Audio registers not set.");
-  }
   load();
 }
 
@@ -27,7 +24,7 @@ auto Period::clockIsDone() -> bool
 void Period::load()
 {
   const auto frequency
-      = static_cast<uint16_t>(hlp::getBits(static_cast<uint16_t>(nrX4_->get()), 0U, PeriodMsbCount) << BYTE_SHIFT)
-      | nrX3_->get();
+      = static_cast<uint16_t>(hlp::getBits(static_cast<uint16_t>(nrX4_.getByte()), 0U, PeriodMsbCount) << BYTE_SHIFT)
+      | nrX3_.getByte();
   period_ = MaxPeriod - frequency;
 }

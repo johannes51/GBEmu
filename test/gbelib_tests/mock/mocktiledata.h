@@ -6,7 +6,7 @@
 class MockTileData : public TileData {
 public:
   MockTileData(Tile tile = Tile { {} })
-      : TileData(nullptr, nullptr)
+      : TileData(*(IRegisterAdapter*)nullptr, *(IMemoryView*)nullptr)
       , tile_(tile) {};
 
   Tile getTile(int16_t index) override

@@ -7,10 +7,10 @@
 class MockTileMap : public TileMap {
 public:
   MockTileMap()
-      : TileMap(nullptr, nullptr, -1)
+      : TileMap(*(IRegisterAdapter*)nullptr, *(IMemoryView*)nullptr, -1)
   {
   }
-  int8_t getIndex(const TileAddress &address) const override
+  int8_t getIndex(const TileAddress& address) const override
   {
     (void)address;
     return 0U;

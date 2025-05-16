@@ -1,30 +1,26 @@
 #include "memoryregisteradapter.h"
 
-#include "location/location8.h"
+#include "../location8.h"
 #include "util/helpers.h"
 
-MemoryRegisterAdapter::MemoryRegisterAdapter(IMemoryViewSP mem, address_type address)
-    : mem_(std::move(mem))
-    , address_(address)
+MemoryRegisterAdapter::MemoryRegisterAdapter(ByteLocationAdapterUP bufferLocation)
+    : bufferLocation_(std::move(bufferLocation))
 {
 }
 
-auto MemoryRegisterAdapter::get() const -> uint8_t { return mem_->getLocation8(address_)->get(); }
+auto MemoryRegisterAdapter::getByte() const -> const uint8_t& { return bufferLocation_->get(); }
 
-void MemoryRegisterAdapter::set(uint8_t value) { *mem_->getLocation8(address_) = value; }
+void MemoryRegisterAdapter::setByte(const uint8_t value) { bufferLocation_->set(value); }
 
-auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool
-{
-  return hlp::checkBit(mem_->getLocation8(address_)->get(), pos);
-}
+auto MemoryRegisterAdapter::testBit(uint8_t pos) const -> bool { return hlp::checkBit(getByte(), pos); }
 
 void MemoryRegisterAdapter::setBit(uint8_t pos, bool value)
 {
-  auto temp = get();
+  auto temp = getByte();
   if (value) {
     hlp::setBit(temp, pos);
   } else {
     hlp::clearBit(temp, pos);
   }
-  set(temp);
+  setByte(temp);
 }

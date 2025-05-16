@@ -13,22 +13,21 @@ public:
   }
 
 protected:
-  IRegisterAdapterSP nr31;
-  IRegisterAdapterSP nr34;
+  std::shared_ptr<IRegisterAdapter> nr31;
+  std::shared_ptr<IRegisterAdapter> nr34;
 };
 
 TEST(LengthCh3TestsNF, Construction)
 {
-  EXPECT_ANY_THROW(LengthCh3 l(nullptr, nullptr));
-  EXPECT_NO_THROW(LengthCh3 l(MockRegisterAdapter::make(), MockRegisterAdapter::make()));
+  EXPECT_NO_THROW(LengthCh3 l(*MockRegisterAdapter::make(), *MockRegisterAdapter::make()));
 }
 
 TEST_F(LengthCh3Tests, Standard)
 {
-  nr31->set(0xEFU);
-  nr34->set(0b01000000U);
+  nr31->setByte(0xEFU);
+  nr34->setByte(0b01000000U);
 
-  LengthCh3 l { nr31, nr34 };
+  LengthCh3 l { *nr31, *nr34 };
 
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());
@@ -42,36 +41,36 @@ TEST_F(LengthCh3Tests, Standard)
 
 TEST_F(LengthCh3Tests, Restart)
 {
-  nr31->set(0xFEU);
-  nr34->set(0b01000000U);
+  nr31->setByte(0xFEU);
+  nr34->setByte(0b01000000U);
 
-  LengthCh3 l { nr31, nr34 };
+  LengthCh3 l { *nr31, *nr34 };
 
   EXPECT_FALSE(l.isRunOut());
   EXPECT_NO_THROW(l.clock());
   EXPECT_TRUE(l.isRunOut());
 
-  nr34->set(0b00000000U);
-  nr31->set(0xFCU);
+  nr34->setByte(0b00000000U);
+  nr31->setByte(0xFCU);
 
   EXPECT_NO_THROW(l.clock());
   EXPECT_NO_THROW(l.clock());
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());
 
-  nr34->set(0b01000000U);
+  nr34->setByte(0b01000000U);
   EXPECT_NO_THROW(l.clock());
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());
 
-  nr34->set(0b00000000U);
+  nr34->setByte(0b00000000U);
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());
   EXPECT_NO_THROW(l.clock());
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());
 
-  nr34->set(0b01000000U);
+  nr34->setByte(0b01000000U);
   EXPECT_NO_THROW(l.clock());
   EXPECT_NO_THROW(l.clock());
   EXPECT_FALSE(l.isRunOut());

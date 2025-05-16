@@ -7,15 +7,15 @@
 
 class Period {
 public:
-  Period(IRegisterAdapterSP nrX3, IRegisterAdapterSP nrX4);
+  Period(const IRegisterAdapter& nrX3, const IRegisterAdapter& nrX4);
 
   bool clockIsDone();
 
   void load();
 
 private:
-  IRegisterAdapterSP nrX3_;
-  IRegisterAdapterSP nrX4_;
+  const IRegisterAdapter& nrX3_;
+  const IRegisterAdapter& nrX4_;
 
   uint16_t period_;
 

@@ -7,9 +7,9 @@ RegisterBuffer::RegisterBuffer(uint8_t initial)
 {
 }
 
-auto RegisterBuffer::get() const -> uint8_t { return value_; }
+auto RegisterBuffer::getByte() const -> const uint8_t& { return value_; }
 
-void RegisterBuffer::set(uint8_t value) { value_ = value; }
+void RegisterBuffer::setByte(uint8_t value) { value_ = value; }
 
 auto RegisterBuffer::testBit(uint8_t pos) const -> bool { return hlp::checkBit(value_, pos); }
 

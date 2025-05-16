@@ -4,7 +4,7 @@
 #include <vector>
 
 #include "cpu/cpu_defines.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 class InstructionDecoder {
 public:

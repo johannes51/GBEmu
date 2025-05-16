@@ -5,7 +5,7 @@
 #include "cpu/operation/miscarithmetic.h"
 
 #include "cpu/cpuregisters.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 TEST(MiscArithmeticTest, ComplementA)
 {

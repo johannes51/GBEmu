@@ -3,14 +3,14 @@
 #include "peripherals/gbinterrupthandler.h"
 #include "ppu_constants.h"
 
-Ppu::Ppu(IRendererSP renderer, IRegisterAdapterSP lcdc, IRegisterAdapterSP stat, IRegisterAdapterSP rIf,
-    IRegisterAdapterSP ly, IRegisterAdapterSP lyc)
+Ppu::Ppu(IRendererSP renderer, std::unordered_map<PpuRegisters, IRegisterAdapterUP>&& registers, IRegisterAdapter& rIf)
     : renderer_(std::move(renderer))
-    , lcdc_(std::move(lcdc))
-    , stat_(std::move(stat))
-    , if_(std::move(rIf))
-    , ly_(std::move(ly))
-    , lyc_(std::move(lyc))
+    , registers_(std::move(registers))
+    , if_(rIf)
+    , lcdc_(*registers_[PpuRegisters::LCDC])
+    , stat_(*registers_[PpuRegisters::STAT])
+    , ly_(*registers_[PpuRegisters::LY])
+    , lyc_(*registers_[PpuRegisters::LYC])
 {
 }
 
@@ -25,35 +25,35 @@ void Ppu::clock()
     }
   }
 
-  ly_->set(currentLine_);
-  stat_->setBit(LycLyCompareBit, currentLine_ == lyc_->get());
+  ly_.setByte(currentLine_);
+  stat_.setBit(LycLyCompareBit, currentLine_ == lyc_.getByte());
 
-  bool isInterrupt = currentLine_ == lyc_->get();
+  bool isInterrupt = currentLine_ == lyc_.getByte();
   if (currentLine_ < LcdHeight) {
     if (currentColumn_ < Mode2Length) {
-      stat_->setBit(PpuModeHigherBit, true); // Mode 2 = 0b10
-      stat_->setBit(PpuModeLowerBit, false);
-      isInterrupt |= lcdc_->testBit(Mode2IntBit);
+      stat_.setBit(PpuModeHigherBit, true); // Mode 2 = 0b10
+      stat_.setBit(PpuModeLowerBit, false);
+      isInterrupt |= lcdc_.testBit(Mode2IntBit);
     } else if (currentColumn_ < Mode2Length + Mode3MaxLength) {
-      stat_->setBit(PpuModeHigherBit, true); // Mode 3 = 0b11
-      stat_->setBit(PpuModeLowerBit, true);
+      stat_.setBit(PpuModeHigherBit, true); // Mode 3 = 0b11
+      stat_.setBit(PpuModeLowerBit, true);
     } else { // if (currentColumn_ < LcdWidth)
-      stat_->setBit(PpuModeHigherBit, false); // Mode 0 = 0b00
-      stat_->setBit(PpuModeLowerBit, false);
-      isInterrupt |= lcdc_->testBit(Mode0IntBit);
+      stat_.setBit(PpuModeHigherBit, false); // Mode 0 = 0b00
+      stat_.setBit(PpuModeLowerBit, false);
+      isInterrupt |= lcdc_.testBit(Mode0IntBit);
     }
   } else {
-    stat_->setBit(PpuModeHigherBit, false); // Mode 1 = 0b01
-    stat_->setBit(PpuModeLowerBit, true);
+    stat_.setBit(PpuModeHigherBit, false); // Mode 1 = 0b01
+    stat_.setBit(PpuModeLowerBit, true);
     if (currentLine_ == LcdHeight) {
-      if_->setBit(VBlankInterruptBit, true);
+      if_.setBit(VBlankInterruptBit, true);
     }
   }
   if (isInterrupt) {
-    if_->setBit(LcdInterruptBit, true);
+    if_.setBit(LcdInterruptBit, true);
   }
 
-  if (lcdc_->testBit(LcdEnableBit) && currentLine_ < LcdHeight) {
+  if (lcdc_.testBit(LcdEnableBit) && currentLine_ < LcdHeight) {
     renderer_->render(buffer_, currentLine_);
   }
 }

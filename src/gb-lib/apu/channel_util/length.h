@@ -7,12 +7,15 @@
 
 class Length {
 public:
-  Length(IRegisterAdapterSP nrX1, IRegisterAdapterSP nrX4);
+  Length(const IRegisterAdapter& nrX1, const IRegisterAdapter& nrX4);
 
   void clock();
   bool isRunOut() const;
 
 private:
+  void checkEnable();
+  void setCounter();
+
   enum LENGTH_COUNTER : uint8_t {
     LEN_MAX_VAL = 0b01000000U,
     LEN_STOPPED = 0b10000000U,
@@ -22,13 +25,10 @@ private:
   static constexpr uint8_t LenEnableBitPos = 6U;
   static constexpr uint8_t CounterMask = 0b111111U;
 
-  IRegisterAdapterSP nrX1_;
-  IRegisterAdapterSP nrX4_;
+  const IRegisterAdapter& nrX1_;
+  const IRegisterAdapter& nrX4_;
 
   uint8_t counter_ = LEN_INACTIVE;
-
-  void checkEnable();
-  void setCounter();
 };
 
 #endif // LENGTH_H

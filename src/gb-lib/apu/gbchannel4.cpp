@@ -2,16 +2,13 @@
 
 #include "util/helpers.h"
 
-GbChannel4::GbChannel4(IRegisterAdapterSP nr41, IRegisterAdapterSP nr42, IRegisterAdapterSP nr43,
-    IRegisterAdapterSP nr44, IRegisterAdapterSP nr52)
-    : Channel(std::move(nr52))
-    , nr43_(std::move(nr43))
-    , len_(std::move(nr41), std::move(nr44))
-    , env_(std::move(nr42))
+GbChannel4::GbChannel4(const IRegisterAdapter& nr41, const IRegisterAdapter& nr42, const IRegisterAdapter& nr43,
+    const IRegisterAdapter& nr44, IRegisterAdapter& nr52)
+    : Channel(nr52)
+    , nr43_(nr43)
+    , len_(nr41, nr44)
+    , env_(nr42)
 {
-  if (!nr43_) {
-    throw std::invalid_argument("Audio registers not set.");
-  }
   loadPeriod();
 }
 
@@ -44,7 +41,7 @@ void GbChannel4::shift()
 {
   const auto newBit = (hlp::checkBit(lsfr_, LsfrFeedBit1) ^ hlp::checkBit(lsfr_, LsfrFeedBit2)) == 1U;
   hlp::writeBit(lsfr_, LsfrHighBit, newBit);
-  if (nr43_->testBit(LsfrWidthBit)) {
+  if (nr43_.testBit(LsfrWidthBit)) {
     hlp::writeBit(lsfr_, LsfrLowBit, newBit);
   }
   lsfr_ >>= 1U;
@@ -53,6 +50,6 @@ void GbChannel4::shift()
 
 void GbChannel4::loadPeriod()
 {
-  period_ = DivisorTable[hlp::getBits(nr43_->get(), DivisorBits.first, DivisorBits.second)]
-      << hlp::getBits(nr43_->get(), ShiftBits.first, ShiftBits.second);
+  period_ = DivisorTable[hlp::getBits(nr43_.getByte(), DivisorBits.first, DivisorBits.second)]
+      << hlp::getBits(nr43_.getByte(), ShiftBits.first, ShiftBits.second);
 }

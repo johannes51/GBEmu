@@ -123,58 +123,60 @@ target_sources(gbelib PRIVATE
   gb_factories/ppuregisterfactory.h
   gb_factories/ppuregisterfactory.cpp
   gb_factories/registerfactory.h
-  location/bufferlocation.h
-  location/bufferlocation.cpp
-  location/fusedlocation16.h
-  location/fusedlocation16.cpp
-  location/location16.h
-  location/location8.h
-  location/nulllocation.h
-  location/nulllocation.cpp
-  location/ramlocation.h
-  location/ramlocation.cpp
-  location/register16.h
-  location/register16.cpp
-  location/register8.h
-  location/register8.cpp
-  location/romlocation.h
-  location/romlocation.cpp
-  location/variablelocation.h
-  location/variablelocation.cpp
-  location/zerolocation.h
-  location/zerolocation.cpp
-  mem/bufferbank.h
-  mem/bufferbank.cpp
-  mem/imemoryview.h
   mem/imemorymanager.h
+  mem/imemoryview.h
+  mem/location16.h
+  mem/location8.h
+  mem/bytelocationadapter.h
   mem/mem_defines.h
   mem/memoryarea.h
   mem/memoryarea.cpp
-  mem/mirrorbank.h
-  mem/mirrorbank.cpp
-  mem/memorymanifold.h
-  mem/memorymanifold.cpp
-  mem/mem_tools.h
-  mem/mem_tools.cpp
-  mem/nullbank.h
-  mem/nullbank.cpp
-  mem/rambank.h
-  mem/rambank.cpp
-  mem/registerbank.h
-  mem/registerbank.cpp
-  mem/rombank.h
-  mem/rombank.cpp
-  mem/singleareamanager.h
-  mem/singleareamanager.cpp
+  mem/wordlocationadapter.h
+  mem/common/bufferbank.h
+  mem/common/bufferbank.cpp
+  mem/common/bufferlocation.h
+  mem/common/bufferlocation.cpp
+  mem/common/fusedlocation16.h
+  mem/common/fusedlocation16.cpp
+  mem/common/memorymanifold.h
+  mem/common/memorymanifold.cpp
+  mem/common/mem_tools.h
+  mem/common/mem_tools.cpp
+  mem/common/mirrorbank.h
+  mem/common/mirrorbank.cpp
+  mem/common/singleareamanager.h
+  mem/common/singleareamanager.cpp
+  mem/ram/ramlocation.h
+  mem/ram/ramlocation.cpp
+  mem/ram/rambank.h
+  mem/ram/rambank.cpp
+  mem/registers/divregister.h
+  mem/registers/divregister.cpp
+  mem/registers/iobank.h
+  mem/registers/iobank.cpp
   mem/registers/iregisteradapter.h
   mem/registers/memoryregisteradapter.h
   mem/registers/memoryregisteradapter.cpp
-  mem/registers/registerbankadapter.h
-  mem/registers/registerbankadapter.cpp
+  mem/registers/register16.h
+  mem/registers/register16.cpp
+  mem/registers/register8.h
+  mem/registers/register8.cpp
+  mem/registers/singleregisterbank.h
+  mem/registers/singleregisterbank.cpp
   mem/registers/registerbuffer.h
   mem/registers/registerbuffer.cpp
-  mem/registers/divregister.h
-  mem/registers/divregister.cpp
+  mem/rest/nullbank.h
+  mem/rest/nullbank.cpp
+  mem/rest/nulllocation.h
+  mem/rest/nulllocation.cpp
+  mem/rest/variablelocation.h
+  mem/rest/variablelocation.cpp
+  mem/rest/zerolocation.h
+  mem/rest/zerolocation.cpp
+  mem/rom/rombank.h
+  mem/rom/rombank.cpp
+  mem/rom/romlocation.h
+  mem/rom/romlocation.cpp
   ops/arithmetic.h
   ops/arithmetic.cpp
   ops/bitmanip.h

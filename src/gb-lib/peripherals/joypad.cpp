@@ -2,8 +2,8 @@
 
 #include "util/helpers.h"
 
-Joypad::Joypad(IRegisterAdapterSP controllerRegister)
-    : controllerRegister_(std::move(controllerRegister))
+Joypad::Joypad(IRegisterAdapter& controllerRegister)
+    : controllerRegister_(controllerRegister)
     , buttonState_({ { Button::Up, false }, { Button::Down, false }, { Button::Left, false }, { Button::Right, false },
           { Button::A, false }, { Button::B, false }, { Button::Start, false }, { Button::Select, false } })
 {
@@ -11,8 +11,8 @@ Joypad::Joypad(IRegisterAdapterSP controllerRegister)
 
 void Joypad::clock()
 {
-  auto ctrReg = controllerRegister_->get();
-  if (controllerRegister_->testBit(SelectAction)) {
+  auto ctrReg = controllerRegister_.getByte();
+  if (controllerRegister_.testBit(SelectAction)) {
     affectInputBit(ctrReg, Button::A, RightOrA);
     affectInputBit(ctrReg, Button::B, LeftOrB);
     affectInputBit(ctrReg, Button::Select, UpOrSelect);
@@ -24,7 +24,7 @@ void Joypad::clock()
     affectInputBit(ctrReg, Button::Up, UpOrSelect);
     affectInputBit(ctrReg, Button::Down, DownOrStart);
   }
-  controllerRegister_->set(ctrReg);
+  controllerRegister_.setByte(ctrReg);
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }

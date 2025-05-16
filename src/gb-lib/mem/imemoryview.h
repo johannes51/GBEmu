@@ -4,8 +4,8 @@
 #include <memory>
 
 #include "defines.h"
-#include "location/location16.h"
-#include "location/location8.h"
+#include "location16.h"
+#include "location8.h"
 #include "mem_defines.h"
 
 class IMemoryView {
@@ -14,10 +14,10 @@ public:
   virtual ~IMemoryView() = default;
   DISABLE_COPY_AND_MOVE(IMemoryView)
 
-  virtual Location8UP getLocation8(const address_type address) = 0;
-  virtual Location16UP getLocation16(const address_type address) = 0;
+  virtual Location8 getLocation8(const address_type address) = 0;
+  virtual Location16 getLocation16(const address_type address) = 0;
 };
 
-using IMemoryViewSP = std::shared_ptr<IMemoryView>;
+using IMemoryViewUP = std::unique_ptr<IMemoryView>;
 
 #endif // IMEMORYVIEW_H

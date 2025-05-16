@@ -6,7 +6,7 @@
 class MockOam : public Oam {
 public:
   explicit MockOam(std::vector<Object> objects = {})
-      : Oam(nullptr)
+      : Oam(*(IMemoryView*)nullptr)
       , objects_(std::move(objects))
   {
   }

@@ -2,8 +2,8 @@
 #define HELPERS_H
 
 #include "constants.h"
-#include "location/location16.h"
-#include "location/location8.h"
+#include "mem/location16.h"
+#include "mem/location8.h"
 #include "mem/mem_defines.h"
 
 namespace hlp {

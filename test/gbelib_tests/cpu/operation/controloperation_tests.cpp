@@ -6,7 +6,7 @@
 #include "cpu/flagsview.h"
 #include "cpu/operation/control.h"
 #include "cpu/registersinterface.h"
-#include "location/nulllocation.h"
+#include "mem/rest/nulllocation.h"
 
 TEST(ControlOperationTest, Nop)
 {
@@ -22,7 +22,7 @@ TEST(ControlOperationTest, Nop)
 TEST(NopTest, NextOpcode)
 {
   Control nop { ControlOp::Nop };
-  EXPECT_ANY_THROW(nop.nextOpcode(std::make_unique<NullLocation>()));
+  EXPECT_ANY_THROW(nop.nextOpcode({ std::make_unique<NullLocation>() }));
 }
 
 TEST(ControlOperationTest, Ei)

@@ -5,10 +5,12 @@
 
 #include "mockregisteradapter.h"
 
+static auto mockReg = MockRegisterAdapter::make(0b11111111U);
+
 class MockChannel : public Channel {
 public:
   MockChannel()
-      : Channel(MockRegisterAdapter::make(0b11111111U))
+      : Channel(*mockReg)
   {
   }
 

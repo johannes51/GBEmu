@@ -21,15 +21,15 @@ void BasicRotate::execute(RegistersInterface& registers, IMemoryView& memory)
     .c = ops::FlagResult::NoChange };
   if (direction_ == RotateDirection::Right) {
     if (throughCarry_) {
-      result = ops::rr(*reg, registers.getFlags().carry());
+      result = ops::rr(reg, registers.getFlags().carry());
     } else {
-      result = ops::rr(*reg);
+      result = ops::rr(reg);
     }
   } else /*if (direction_ == RotateDirection::Left)*/ {
     if (throughCarry_) {
-      result = ops::rl(*reg, registers.getFlags().carry());
+      result = ops::rl(reg, registers.getFlags().carry());
     } else {
-      result = ops::rl(*reg);
+      result = ops::rl(reg);
     }
   }
   result.z = ops::FlagResult::Reset;

@@ -2,10 +2,10 @@
 
 #include <algorithm>
 
-#include "location/location8.h"
+#include "mem/location8.h"
 
-Oam::Oam(IMemoryViewSP mem)
-    : mem_(std::move(mem))
+Oam::Oam(IMemoryView& mem)
+    : mem_(mem)
 {
 }
 
@@ -14,7 +14,7 @@ auto Oam::getAll() -> std::vector<Object>
   std::vector<Object> result;
   result.reserve(NUM_OBJECTS);
   for (auto ptr = OAM_BASE; ptr < OAM_TOP && result.size() <= NUM_OBJECTS; ++ptr) {
-    mem_->getLocation8(ptr);
+    mem_.getLocation8(ptr);
   }
   return result;
 }

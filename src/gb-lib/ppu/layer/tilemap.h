@@ -11,7 +11,7 @@ struct TileAddress {
 
 class TileMap {
 public:
-  explicit TileMap(IRegisterAdapterSP lcdc, IMemoryViewSP mem, uint8_t bit);
+  explicit TileMap(const IRegisterAdapter& lcdc, IMemoryView& mem, uint8_t bit);
   virtual ~TileMap();
 
   virtual int8_t getIndex(const TileAddress& address) const;
@@ -19,8 +19,8 @@ public:
 private:
   address_type baseAdress() const;
 
-  IRegisterAdapterSP lcdc_;
-  IMemoryViewSP mem_;
+  const IRegisterAdapter& lcdc_;
+  IMemoryView& mem_;
 
   const uint8_t bit_;
 };

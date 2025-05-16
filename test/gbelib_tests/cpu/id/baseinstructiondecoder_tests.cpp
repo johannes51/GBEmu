@@ -4,7 +4,7 @@
 #include "cpu/id/controldecoder.h"
 #include "cpu/operation/operation.h"
 
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 class BaseInstructionDecoderTest : public ::testing::Test {
 public:
@@ -28,13 +28,13 @@ TEST_F(BaseInstructionDecoderTest, Register)
 TEST_F(BaseInstructionDecoderTest, Decode)
 {
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_NO_THROW(d.decode(*variableLocation(uint8_t { 0x00U })));
+  EXPECT_NO_THROW(d.decode(variableLocation(uint8_t { 0x00U })));
 }
 
 TEST_F(BaseInstructionDecoderTest, UndecodedOpcode)
 {
   d.registerDecoder(std::make_shared<ControlDecoder>());
-  EXPECT_ANY_THROW(d.decode(*variableLocation(uint8_t { 0x80U })));
+  EXPECT_ANY_THROW(d.decode(variableLocation(uint8_t { 0x80U })));
 }
 
 TEST_F(BaseInstructionDecoderTest, AlreadyDecodedOpcode)

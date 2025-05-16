@@ -3,8 +3,9 @@
 #include <stdexcept>
 
 #include "cpu/flagsview.h"
-#include "location/location8.h"
 #include "mem/imemoryview.h"
+#include "mem/location8.h"
+#include "mem/rest/variablelocation.h"
 #include "ops/arithmetic.h"
 #include "ops/logic.h"
 #include "util/helpers.h"
@@ -13,19 +14,19 @@ ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
     : function_(function)
     , source_(source)
     , register_(std::nullopt)
-    , immediate_(std::nullopt)
+    , immediate_(nullptr)
 {
   if (source == Source::None) {
     throw std::invalid_argument("source can't be None");
   }
 }
 
-void ByteAluOperation::nextOpcode(Location8UP opcode)
+void ByteAluOperation::nextOpcode(const Location8& opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already complete");
   }
-  immediate_ = std::move(opcode);
+  immediate_ = std::make_unique<Location8>(variableLocation(opcode.get()));
 }
 
 auto ByteAluOperation::isComplete() -> bool
@@ -57,56 +58,52 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   ops::OpResult result {
     .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
   };
+
+  auto regA = registers.get(ByteRegister::A);
   switch (function_) {
   case ByteAluFunction::Add:
-    result = ops::add(*registers.get(ByteRegister::A), *getSource(registers, memory));
+    result = ops::add(regA, getSource(registers, memory));
     break;
   case ByteAluFunction::AddCarry:
-    result
-        = ops::add_carry(*registers.get(ByteRegister::A), *getSource(registers, memory), registers.getFlags().carry());
+    result = ops::add_carry(regA, getSource(registers, memory), registers.getFlags().carry());
     break;
   case ByteAluFunction::Sub:
-    result = ops::sub(*registers.get(ByteRegister::A), *getSource(registers, memory));
+    result = ops::sub(regA, getSource(registers, memory));
     break;
   case ByteAluFunction::SubCarry:
-    result
-        = ops::sub_carry(*registers.get(ByteRegister::A), *getSource(registers, memory), registers.getFlags().carry());
+    result = ops::sub_carry(regA, getSource(registers, memory), registers.getFlags().carry());
     break;
   case ByteAluFunction::Inc: {
     auto loc = getSource(registers, memory);
-    result = ops::increment(*loc);
+    result = ops::increment(loc);
     break;
   }
   case ByteAluFunction::Dec: {
     auto loc = getSource(registers, memory);
-    result = ops::decrement(*loc);
+    result = ops::decrement(loc);
     break;
   }
   case ByteAluFunction::And: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::andF(*loc, *getSource(registers, memory));
+    result = ops::andF(regA, getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Or: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::orF(*loc, *getSource(registers, memory));
+    result = ops::orF(regA, getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Xor: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::xorF(*loc, *getSource(registers, memory));
+    result = ops::xorF(regA, getSource(registers, memory));
     break;
   }
   case ByteAluFunction::Cp: {
-    auto loc = registers.get(ByteRegister::A);
-    result = ops::cpF(*loc, *getSource(registers, memory));
+    result = ops::cpF(regA, getSource(registers, memory));
     break;
   }
   }
   apply(registers.getFlags(), result);
 }
 
-auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location8UP
+auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location8
 {
   switch (source_) {
   case Source::Immediate:
@@ -116,7 +113,7 @@ auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> L
     return std::move(*immediate_);
     break;
   case Source::Indirect:
-    return mem.getLocation8(hlp::indirect(*reg.get(WordRegister::HL)));
+    return mem.getLocation8(hlp::indirect(reg.get(WordRegister::HL)));
     break;
   case Source::Register:
     if (!register_) {

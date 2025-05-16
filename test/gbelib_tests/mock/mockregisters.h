@@ -12,8 +12,9 @@ public:
   MockRegisters();
   ~MockRegisters() override = default;
 
-  Register8UP get(ByteRegister registerName) override;
-  Register16UP get(WordRegister registerName) override;
+  Location8 get(ByteRegister registerName) override;
+  Location16 get(WordRegister registerName) override;
+
   FlagsView& getFlags() override;
   const FlagsView& getFlags() const override;
 

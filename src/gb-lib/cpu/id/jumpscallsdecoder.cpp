@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/operation/jump.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 auto JumpsCallsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {

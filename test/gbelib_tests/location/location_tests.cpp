@@ -1,5 +1,5 @@
 #include "gtest/gtest.h"
 
-#include "location/location8.h"
+#include "mem/location8.h"
 
-#include "mem/rambank.h"
+#include "mem/ram/rambank.h"

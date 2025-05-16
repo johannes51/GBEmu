@@ -2,7 +2,7 @@
 
 #include <stdexcept>
 
-#include "location/location8.h"
+#include "mem/location8.h"
 
 auto WordArithmeticDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {

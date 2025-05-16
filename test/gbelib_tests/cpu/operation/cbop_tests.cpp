@@ -5,22 +5,22 @@
 #include "mock/testbank.h"
 
 #include "cpu/cpuregisters.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 TEST(CbOpTest, RotateRight)
 {
   CpuRegisters r;
   CbOp op { CbOp::CbFunction::RotateRightCiruclar, ByteRegister::A, false };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
-  *r.get(ByteRegister::A) = uint8_t { 0b10101010U };
+  r.get(ByteRegister::A) = uint8_t { 0b10101010U };
 
   EXPECT_TRUE(op.isComplete());
   EXPECT_EQ(2U, op.cycles());
   EXPECT_ANY_THROW(op.nextOpcode(variableLocation(uint8_t { 0x00U })));
 
-  EXPECT_NE(0b01010101U, r.get(ByteRegister::A)->get());
+  EXPECT_NE(0b01010101U, r.get(ByteRegister::A).get());
   EXPECT_NO_THROW(op.execute(r, mem));
-  EXPECT_EQ(0b01010101U, r.get(ByteRegister::A)->get());
+  EXPECT_EQ(0b01010101U, r.get(ByteRegister::A).get());
 }
 
 TEST(CbOpTest, RotateRightCarry)
@@ -107,7 +107,7 @@ TEST(CbOpTest, Swap)
   TestBank b({ 0x0U, 0x1U });
   CbOp op { CbOp::CbFunction::Swap, ByteRegister::A, true };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
-  *r.get(WordRegister::HL) = uint16_t { 0x0000U };
+  r.get(WordRegister::HL) = uint16_t { 0x0000U };
 
   EXPECT_TRUE(op.isComplete());
   EXPECT_EQ(4U, op.cycles());

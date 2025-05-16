@@ -5,13 +5,15 @@
 #include <vector>
 
 #include "cpu/cpu_defines.h"
-#include "ppu/irenderer.h"
-
+#include "gb_factories/peripheralregisterfactory.h"
+#include "mem/imemoryview.h"
 #include "peripherals/tickable.h"
+#include "ppu/irenderer.h"
 
 class SystemManager {
 public:
-  SystemManager(std::unique_ptr<Cpu> cpu, std::vector<TickableSP> peripherals, const GbPixelBuffer* buffer);
+  SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableSP> peripherals,
+      std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* buffer);
   DISABLE_COPY_AND_MOVE(SystemManager)
   ~SystemManager();
 
@@ -20,7 +22,9 @@ public:
 
 private:
   CpuUP cpu_;
+  IMemoryViewUP mem_;
   std::vector<TickableSP> peripherals_;
+  std::unordered_map<PeripheralRegisters, IRegisterAdapterUP> periRegisters_;
   const GbPixelBuffer* buffer_;
 };
 

@@ -11,16 +11,16 @@
 
 class GbBg : public IBackground {
 public:
-  explicit GbBg(IRegisterAdapterSP lcdc, IRegisterAdapterSP scx, IRegisterAdapterSP scy, IRegisterAdapterSP bgp,
-      TileDataUP data, TileMapUP map);
+  explicit GbBg(const IRegisterAdapter& lcdc, const IRegisterAdapter& scx, const IRegisterAdapter& scy,
+      const IRegisterAdapter& bgp, TileDataUP data, TileMapUP map);
   ~GbBg() override = default;
 
   void draw(GbPixelBuffer& buffer, const uint8_t currentLine) override;
 
 private:
-  IRegisterAdapterSP lcdc_;
-  IRegisterAdapterSP scx_;
-  IRegisterAdapterSP scy_;
+  const IRegisterAdapter& lcdc_;
+  const IRegisterAdapter& scx_;
+  const IRegisterAdapter& scy_;
   TileDataUP data_;
   TileMapUP map_;
   GbPalette pal_;

@@ -2,13 +2,13 @@
 
 #include "util/helpers.h"
 
-#include "location/zerolocation.h"
+#include "mem/rest/zerolocation.h"
 
-TEST(HelperTest, Indirect) { EXPECT_EQ(address_type(0x0U), hlp::indirect(*std::make_unique<ZeroLocation16>())); }
+TEST(HelperTest, Indirect) { EXPECT_EQ(address_type(0x0U), hlp::indirect({ std::make_unique<ZeroWordLocation>() })); }
 
 TEST(HelperTest, IndirectZeroPage)
 {
-  EXPECT_EQ(address_type(0xFF00U), hlp::indirectZeroPage(*std::make_unique<ZeroLocation8>()));
+  EXPECT_EQ(address_type(0xFF00U), hlp::indirectZeroPage({ std::make_unique<ZeroByteLocation>() }));
 }
 
 TEST(HelperTest, Bits8)

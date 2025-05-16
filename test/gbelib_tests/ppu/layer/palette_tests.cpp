@@ -4,19 +4,19 @@
 
 #include "mock/mockregisteradapter.h"
 
-TEST(GbPaletteTests, Construction) { EXPECT_NO_THROW(GbPalette p(nullptr)); }
+TEST(GbPaletteTests, Construction) { EXPECT_NO_THROW(GbPalette p(*MockRegisterAdapter::make())); }
 
 TEST(GbPaletteTests, Values)
 {
   auto bgp = MockRegisterAdapter::make();
-  GbPalette p(bgp);
+  GbPalette p(*bgp);
 
   EXPECT_EQ(p.getColor(0b00), GbColors::White);
   EXPECT_EQ(p.getColor(0b01), GbColors::White);
   EXPECT_EQ(p.getColor(0b10), GbColors::White);
   EXPECT_EQ(p.getColor(0b11), GbColors::White);
 
-  bgp->set(0b10011100);
+  bgp->setByte(0b10011100);
 
   EXPECT_EQ(p.getColor(0b00), GbColors::White);
   EXPECT_EQ(p.getColor(0b01), GbColors::Black);
@@ -26,7 +26,7 @@ TEST(GbPaletteTests, Values)
 
 TEST(GbPaletteTests, Exception)
 {
-  GbPalette p(MockRegisterAdapter::make());
+  GbPalette p(*MockRegisterAdapter::make());
 
   EXPECT_ANY_THROW(p.getColor(0b100));
 }

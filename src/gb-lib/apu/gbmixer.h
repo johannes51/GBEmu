@@ -7,7 +7,7 @@
 
 class GbMixer : public IMixer {
 public:
-  GbMixer(IRegisterAdapterSP nr50, IRegisterAdapterSP nr51);
+  GbMixer(const IRegisterAdapter& nr50, const IRegisterAdapter& nr51);
 
   std::pair<double, double> mix(
       double channel1, double channel2, double channel3, double channel4, double vin) override;
@@ -25,8 +25,8 @@ private:
   static constexpr uint8_t vinRight = 3U;
   static constexpr uint8_t vinLeft = 7U;
 
-  IRegisterAdapterSP nr50_;
-  IRegisterAdapterSP nr51_;
+  const IRegisterAdapter& nr50_;
+  const IRegisterAdapter& nr51_;
 };
 
 #endif // GBMIXER_H

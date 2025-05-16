@@ -4,6 +4,8 @@
 
 #include "constants.h"
 #include "cpuflags.h"
+#include "mem/registers/register16.h"
+#include "mem/registers/register8.h"
 
 const std::unordered_map<ByteRegister, std::pair<WordRegister, bool>> CpuRegisters::Mappings {
   { ByteRegister::A, std::make_pair(WordRegister::AF, true) },
@@ -26,21 +28,22 @@ CpuRegisters::CpuRegisters()
   registers_[WordRegister::HL] = static_cast<unsigned int>(INITIAL_H) << BYTE_SHIFT | INITIAL_L;
   registers_[WordRegister::SP] = static_cast<unsigned int>(INITIAL_SPu) << BYTE_SHIFT | INITIAL_SPl;
   registers_[WordRegister::PC] = static_cast<unsigned int>(INITIAL_PCu) << BYTE_SHIFT | INITIAL_PCl;
-  flags_ = std::make_unique<CpuFlags>(get(ByteRegister::F)->getReference());
+
+  flags_ = std::make_unique<CpuFlags>(*reinterpret_cast<uint8_t*>(&registers_[WordRegister::AF]));
 }
 
-auto CpuRegisters::get(ByteRegister registerName) -> Register8UP
+auto CpuRegisters::get(ByteRegister registerName) -> Location8
 {
   if (!Mappings.contains(registerName)) {
     throw std::invalid_argument("Unable to provide register");
   }
   const auto& mapping = Mappings.at(registerName);
-  return std::make_unique<Register8>(registers_[mapping.first], mapping.second);
+  return { std::make_unique<Register8>(registers_[mapping.first], mapping.second) };
 }
 
-auto CpuRegisters::get(WordRegister registerName) -> Register16UP
+auto CpuRegisters::get(WordRegister registerName) -> Location16
 {
-  return std::make_unique<Register16>(registers_.at(registerName));
+  return { std::make_unique<Register16>(registers_.at(registerName)) };
 }
 
 CpuRegisters::~CpuRegisters() = default;

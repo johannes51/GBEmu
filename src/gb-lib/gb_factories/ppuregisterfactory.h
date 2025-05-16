@@ -20,7 +20,7 @@ enum class PpuRegisters {
 
 class PpuRegisterFactory : public RegisterFactory<PpuRegisters> {
 public:
-  explicit PpuRegisterFactory(const IMemoryViewSP& ioBank)
+  explicit PpuRegisterFactory(IoBank& ioBank)
       : RegisterFactory(ioBank, PpuRegisterAddresses)
   {
   }

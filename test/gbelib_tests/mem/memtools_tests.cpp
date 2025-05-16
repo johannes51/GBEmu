@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "mem/mem_tools.h"
+#include "mem/common/mem_tools.h"
 
 TEST(MemoryToolsTest, TranslateAddressSafe)
 {

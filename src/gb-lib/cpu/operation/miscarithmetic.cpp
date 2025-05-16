@@ -16,12 +16,12 @@ void MiscArithmetic::execute(RegistersInterface& registers, IMemoryView& memory)
     auto reg = registers.get(ByteRegister::A);
     apply(registers.getFlags(),
         ops::decimalAdjust(
-            *reg, registers.getFlags().carry(), registers.getFlags().halfCarry(), registers.getFlags().subtract()));
+            reg, registers.getFlags().carry(), registers.getFlags().halfCarry(), registers.getFlags().subtract()));
     break;
   }
   case MiscArithmeticFunction::ComplementA: {
     auto reg = registers.get(ByteRegister::A);
-    apply(registers.getFlags(), ops::complement(*reg));
+    apply(registers.getFlags(), ops::complement(reg));
     break;
   }
   case MiscArithmeticFunction::ComplementCarry: {

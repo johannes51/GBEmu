@@ -3,8 +3,8 @@
 #include "cpu/cpuregisters.h"
 #include "cpu/flagsview.h"
 #include "cpu/operation/jump.h"
-#include "location/location8.h"
-#include "location/variablelocation.h"
+#include "mem/location8.h"
+#include "mem/rest/variablelocation.h"
 #include "mock/testbank.h"
 
 TEST(JumpTest, Direct)
@@ -12,7 +12,7 @@ TEST(JumpTest, Direct)
   CpuRegisters r;
   TestBank b { { 0x00U, 0x01U } };
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
-  *b.getLocation16(0x00U) = uint16_t { 0x195EU };
+  b.getLocation16(0x00U) = uint16_t { 0x195EU };
   Jump jump { JumpType::Regular, TargetType::Absolute, Condition::None };
 
   EXPECT_FALSE(jump.isComplete());
@@ -24,9 +24,9 @@ TEST(JumpTest, Direct)
 
   EXPECT_EQ(4, jump.cycles());
 
-  ASSERT_NE(0x195EU, r.get(WordRegister::PC)->get());
+  ASSERT_NE(0x195EU, r.get(WordRegister::PC).get());
   jump.execute(r, mem);
-  EXPECT_EQ(0x195EU, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x195EU, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Relative)
@@ -41,9 +41,9 @@ TEST(JumpTest, Relative)
 
   EXPECT_EQ(3, jump.cycles());
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   jump.execute(r, mem);
-  EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x191AU, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Z)
@@ -53,7 +53,7 @@ TEST(JumpTest, Z)
 
   CpuRegisters r;
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setZero();
 
   EXPECT_FALSE(jump.isComplete());
@@ -68,12 +68,12 @@ TEST(JumpTest, Z)
   EXPECT_TRUE(jump.isComplete());
 
   jump.execute(r, mem);
-  EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  EXPECT_EQ(0x191AU, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearZero();
   jump.showFlags(r.getFlags());
   jump.execute(r, mem);
-  EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1900U, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, NZ)
@@ -84,7 +84,7 @@ TEST(JumpTest, NZ)
   CpuRegisters r;
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearZero();
 
   EXPECT_FALSE(jump.isComplete());
@@ -92,12 +92,12 @@ TEST(JumpTest, NZ)
   EXPECT_TRUE(jump.isComplete());
 
   jump.execute(r, mem);
-  EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  EXPECT_EQ(0x191AU, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setZero();
   jump.showFlags(r.getFlags());
   jump.execute(r, mem);
-  EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1900U, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, C)
@@ -108,7 +108,7 @@ TEST(JumpTest, C)
   CpuRegisters r;
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setCarry();
 
   EXPECT_FALSE(jump.isComplete());
@@ -118,12 +118,12 @@ TEST(JumpTest, C)
   EXPECT_TRUE(jump.isComplete());
 
   jump.execute(r, mem);
-  EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  EXPECT_EQ(0x191AU, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
   jump.showFlags(r.getFlags());
   jump.execute(r, mem);
-  EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1900U, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, NC)
@@ -134,7 +134,7 @@ TEST(JumpTest, NC)
   CpuRegisters r;
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
 
   EXPECT_FALSE(jump.isComplete());
@@ -144,12 +144,12 @@ TEST(JumpTest, NC)
   EXPECT_TRUE(jump.isComplete());
 
   jump.execute(r, mem);
-  EXPECT_EQ(0x191AU, r.get(WordRegister::PC)->get());
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  EXPECT_EQ(0x191AU, r.get(WordRegister::PC).get());
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().setCarry();
   jump.showFlags(r.getFlags());
   jump.execute(r, mem);
-  EXPECT_EQ(0x1900U, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1900U, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, AbsoluteZ)
@@ -157,12 +157,12 @@ TEST(JumpTest, AbsoluteZ)
   TestBank b({ 0U, 1U });
   Jump jump { JumpType::Regular, TargetType::Absolute, Condition::Z };
 
-  *b.getLocation16(0) = uint16_t { 0x1A1AU };
+  b.getLocation16(0) = uint16_t { 0x1A1AU };
 
   CpuRegisters r;
   auto mem = TestBank { { .from = 0x0000, .to = 0xFFFF } };
 
-  *r.get(WordRegister::PC) = uint16_t { 0x1900U };
+  r.get(WordRegister::PC) = uint16_t { 0x1900U };
   r.getFlags().clearCarry();
 
   EXPECT_ANY_THROW(jump.execute(r, mem));
@@ -180,7 +180,7 @@ TEST(JumpTest, AbsoluteZ)
   EXPECT_EQ(4U, jump.cycles());
 
   jump.execute(r, mem);
-  EXPECT_EQ(0x1A1AU, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1A1AU, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Indirect)
@@ -197,9 +197,9 @@ TEST(JumpTest, Indirect)
   ASSERT_TRUE(jump.isComplete());
   EXPECT_THROW(jump.nextOpcode(variableLocation(uint8_t { 0x19U })), std::logic_error);
 
-  *r.get(WordRegister::HL) = uint16_t { 0x1234U };
+  r.get(WordRegister::HL) = uint16_t { 0x1234U };
   EXPECT_NO_THROW(jump.execute(r, mem));
-  EXPECT_EQ(0x1234U, r.get(WordRegister::PC)->get());
+  EXPECT_EQ(0x1234U, r.get(WordRegister::PC).get());
 }
 
 TEST(JumpTest, Next)
@@ -220,8 +220,8 @@ TEST(JumpTest, CallReturn)
 {
   TestBank b { { 0x00U, 0xFFU } };
   CpuRegisters r;
-  *r.get(WordRegister::PC) = uint16_t { 0xC300U };
-  *r.get(WordRegister::SP) = uint16_t { 0x00FFU };
+  r.get(WordRegister::PC) = uint16_t { 0xC300U };
+  r.get(WordRegister::SP) = uint16_t { 0x00FFU };
 
   Jump call { JumpType::Call, TargetType::Absolute, Condition::None };
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(uint8_t { 0xFEU })));
@@ -232,29 +232,29 @@ TEST(JumpTest, CallReturn)
   EXPECT_EQ(6, call.cycles());
   EXPECT_NO_THROW(call.execute(r, b));
 
-  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU)->get());
-  EXPECT_EQ(0x00U, b.getLocation8(0xFFU)->get());
-  EXPECT_EQ(0xC3FEU, r.get(WordRegister::PC)->get());
-  EXPECT_EQ(0xFDU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU).get());
+  EXPECT_EQ(0x00U, b.getLocation8(0xFFU).get());
+  EXPECT_EQ(0xC3FEU, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFDU, r.get(WordRegister::SP).get());
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::None };
   EXPECT_TRUE(call.isComplete());
   EXPECT_EQ(4, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
-  EXPECT_EQ(0x00U, b.getLocation8(0xFDU)->get());
-  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU)->get());
-  EXPECT_EQ(0xC300U, r.get(WordRegister::PC)->get());
-  EXPECT_EQ(0xFFU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(0x00U, b.getLocation8(0xFDU).get());
+  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU).get());
+  EXPECT_EQ(0xC300U, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFFU, r.get(WordRegister::SP).get());
 }
 
 TEST(JumpTest, RetZ)
 {
   TestBank b { { 0x00U, 0xFFU } };
   CpuRegisters r;
-  *r.get(WordRegister::PC) = uint16_t { 0xE001U };
-  *r.get(WordRegister::SP) = uint16_t { 0xFDU };
-  *b.getLocation16(0xFDU) = uint16_t { 0xC003U };
+  r.get(WordRegister::PC) = uint16_t { 0xE001U };
+  r.get(WordRegister::SP) = uint16_t { 0xFDU };
+  b.getLocation16(0xFDU) = uint16_t { 0xC003U };
   r.getFlags().clearZero();
 
   Jump ret { JumpType::Return, TargetType::Absolute, Condition::Z };
@@ -272,17 +272,17 @@ TEST(JumpTest, RetZ)
   EXPECT_EQ(5, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
-  EXPECT_EQ(0xC003U, r.get(WordRegister::PC)->get());
-  EXPECT_EQ(0xFFU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(0xC003U, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFFU, r.get(WordRegister::SP).get());
 }
 
 TEST(JumpTest, RetI)
 {
   TestBank b { { 0x00U, 0xFFU } };
   CpuRegisters r;
-  *r.get(WordRegister::PC) = uint16_t { 0x0C56U };
-  *r.get(WordRegister::SP) = uint16_t { 0x00FDU };
-  *b.getLocation16(0xFDU) = uint16_t { 0xC003U };
+  r.get(WordRegister::PC) = uint16_t { 0x0C56U };
+  r.get(WordRegister::SP) = uint16_t { 0x00FDU };
+  b.getLocation16(0xFDU) = uint16_t { 0xC003U };
   r.getFlags().disableInterrupt();
 
   Jump ret { JumpType::RetI, TargetType::Absolute, Condition::None };
@@ -290,8 +290,8 @@ TEST(JumpTest, RetI)
   EXPECT_EQ(4, ret.cycles());
   EXPECT_NO_THROW(ret.execute(r, b));
 
-  EXPECT_EQ(0xC003U, r.get(WordRegister::PC)->get());
-  EXPECT_EQ(0xFFU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(0xC003U, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFFU, r.get(WordRegister::SP).get());
   EXPECT_TRUE(r.getFlags().interruptEnabled());
 }
 
@@ -299,8 +299,8 @@ TEST(JumpTest, Reset)
 {
   TestBank b { { 0x00U, 0xFFU } };
   CpuRegisters r;
-  *r.get(WordRegister::PC) = uint16_t { 0xC300U };
-  *r.get(WordRegister::SP) = uint16_t { 0x00FFU };
+  r.get(WordRegister::PC) = uint16_t { 0xC300U };
+  r.get(WordRegister::SP) = uint16_t { 0x00FFU };
 
   Jump call { JumpType::Reset, TargetType::Absolute, Condition::None };
   ASSERT_NO_THROW(call.nextOpcode(variableLocation(uint8_t { 0xFEU })));
@@ -310,8 +310,8 @@ TEST(JumpTest, Reset)
   EXPECT_EQ(4, call.cycles());
   EXPECT_NO_THROW(call.execute(r, b));
 
-  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU)->get());
-  EXPECT_EQ(0x00U, b.getLocation8(0xFFU)->get());
-  EXPECT_EQ(0xC3FEU, r.get(WordRegister::PC)->get());
-  EXPECT_EQ(0xFDU, r.get(WordRegister::SP)->get());
+  EXPECT_EQ(0xC3U, b.getLocation8(0xFEU).get());
+  EXPECT_EQ(0x00U, b.getLocation8(0xFFU).get());
+  EXPECT_EQ(0xC3FEU, r.get(WordRegister::PC).get());
+  EXPECT_EQ(0xFDU, r.get(WordRegister::SP).get());
 }

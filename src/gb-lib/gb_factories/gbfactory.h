@@ -10,6 +10,8 @@
 #include "peripherals/tickable.h"
 #include "sys/systemmanager.h"
 
+class SingleRegisterBank;
+
 class GbFactory {
 public:
   GbFactory(const std::string& romFile, const std::string& ramFile);
@@ -18,16 +20,18 @@ public:
   SystemManagerUP constructSystem();
 
 private:
-  gb::CartLoaderUP cartLoader_;
-  std::vector<uint8_t> buffer_;
-  IMemoryViewSP mem_ = nullptr;
-  std::unique_ptr<PeripheralRegisterFactory> peripheralRF_ = nullptr;
-  const GbPixelBuffer* pixBuf_ = nullptr;
-
   void constructMemory();
   CpuUP constructCpu();
   std::vector<TickableSP> constructPeripherals();
   TickableSP constructTimer();
+
+  gb::CartLoaderUP cartLoader_;
+  std::vector<uint8_t> buffer_;
+  IMemoryViewUP mem_ = nullptr;
+  IoBank* ioBank_ = nullptr;
+  SingleRegisterBank* ieBank_ = nullptr;
+  std::unique_ptr<PeripheralRegisterFactory> peripheralRF_ = nullptr;
+  const GbPixelBuffer* pixBuf_ = nullptr;
 };
 
 #endif // GBFACTORY_H

@@ -1,7 +1,7 @@
 #include "shiftrotate.h"
 
 #include "constants.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 auto ops::rr(Location8& location) -> ops::OpResult
 {

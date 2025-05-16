@@ -3,6 +3,7 @@
 
 #include "defines.h"
 #include "flagsview.h"
+#include "mem/location8.h"
 
 class CpuFlags final : public FlagsView {
 public:

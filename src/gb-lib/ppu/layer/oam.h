@@ -12,7 +12,7 @@ constexpr uint8_t NUM_OBJECTS = 40;
 
 class Oam {
 public:
-  explicit Oam(IMemoryViewSP mem);
+  explicit Oam(IMemoryView& mem);
   virtual ~Oam() = default;
 
   virtual std::vector<Object> getAll();
@@ -21,7 +21,7 @@ private:
   static constexpr address_type OAM_BASE = 0xFE00;
   static constexpr address_type OAM_TOP = 0xFE9F;
 
-  IMemoryViewSP mem_;
+  IMemoryView& mem_;
 };
 
 using OamUP = std::unique_ptr<Oam>;

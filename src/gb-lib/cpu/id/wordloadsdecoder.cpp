@@ -5,7 +5,7 @@
 #include "cpu/operation/pushpop.h"
 #include "cpu/operation/wordload.h"
 #include "cpu/registersinterface.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 auto WordLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {

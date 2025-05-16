@@ -18,29 +18,27 @@ public:
   }
 
 protected:
-  IRegisterAdapterSP nr41;
-  IRegisterAdapterSP nr42;
-  IRegisterAdapterSP nr43;
-  IRegisterAdapterSP nr44;
-  IRegisterAdapterSP nr52;
+  IRegisterAdapterUP nr41;
+  IRegisterAdapterUP nr42;
+  IRegisterAdapterUP nr43;
+  IRegisterAdapterUP nr44;
+  IRegisterAdapterUP nr52;
 };
 
 TEST(GbChannel4TestsNF, Construction)
 {
-  EXPECT_ANY_THROW(GbChannel4 c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), nullptr,
-      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
-  EXPECT_NO_THROW(GbChannel4 c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make(),
-      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
+  EXPECT_NO_THROW(GbChannel4 c(*MockRegisterAdapter::make(), *MockRegisterAdapter::make(), *MockRegisterAdapter::make(),
+      *MockRegisterAdapter::make(), *MockRegisterAdapter::make()));
 }
 
 TEST_F(GbChannel4Tests, Wav)
 {
-  nr52->set(0b10001000U);
-  nr43->set(0b01010000U);
-  nr44->set(0b11000111U);
-  nr42->set(0b11110001U);
-  nr41->set(0b10000011U);
-  GbChannel4 c(nr41, nr42, nr43, nr44, nr52);
+  nr52->setByte(0b10001000U);
+  nr43->setByte(0b01010000U);
+  nr44->setByte(0b11000111U);
+  nr42->setByte(0b11110001U);
+  nr41->setByte(0b10000011U);
+  GbChannel4 c(*nr41, *nr42, *nr43, *nr44, *nr52);
 
   AudioFile<double> a1 {};
   a1.setBitDepth(16);
@@ -63,11 +61,11 @@ TEST_F(GbChannel4Tests, Wav)
   }
   a1.save("bla5.wav");
 
-  nr52->set(0b10001000U);
-  nr43->set(0b01011000U);
-  nr44->set(0b11000111U);
-  nr42->set(0b11110001U);
-  nr41->set(0b10000011U);
+  nr52->setByte(0b10001000U);
+  nr43->setByte(0b01011000U);
+  nr44->setByte(0b11000111U);
+  nr42->setByte(0b11110001U);
+  nr41->setByte(0b10000011U);
 
   AudioFile<double> a2 {};
   a2.setBitDepth(16);

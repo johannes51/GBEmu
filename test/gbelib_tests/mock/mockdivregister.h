@@ -3,12 +3,14 @@
 
 #include <gmock/gmock.h>
 
+#include "mock/mockiobank.h"
+
 #include "mem/registers/divregister.h"
 
 class MockDivRegister : public DivRegister {
 public:
-  MOCK_METHOD(uint8_t, get, (), (const, override));
-  MOCK_METHOD(void, set, (uint8_t), (override));
+  MOCK_METHOD(const uint8_t&, getByte, (), (const, override));
+  MOCK_METHOD(void, setByte, (uint8_t), (override));
   MOCK_METHOD(bool, testBit, (uint8_t), (const, override));
   MOCK_METHOD(void, setBit, (uint8_t, bool), (override));
 
@@ -22,9 +24,12 @@ public:
   }
 
   explicit MockDivRegister()
-      : DivRegister(IMemoryViewSP {})
+      : DivRegister(b_)
   {
   }
+
+private:
+  static MockIoBank b_;
 };
 
 #endif // MOCKDIVREGISTER_H

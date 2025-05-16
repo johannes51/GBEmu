@@ -29,7 +29,7 @@ enum class ApuRegisters {
 
 class ApuRegisterFactory : public RegisterFactory<ApuRegisters> {
 public:
-  explicit ApuRegisterFactory(const IMemoryViewSP& ioBank)
+  explicit ApuRegisterFactory(IoBank& ioBank)
       : RegisterFactory(ioBank, ApuRegisterAddresses)
   {
   }

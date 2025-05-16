@@ -6,7 +6,7 @@
 
 #include "cpu/cpuregisters.h"
 #include "cpu/id/controldecoder.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 TEST(CbPrefixTest, Test)
 {

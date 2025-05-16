@@ -3,19 +3,16 @@
 #include "constants.h"
 #include "util/helpers.h"
 
-GbChannel3::GbChannel3(IRegisterAdapterSP nr30, IRegisterAdapterSP nr31, IRegisterAdapterSP nr32,
-    IRegisterAdapterSP nr33, IRegisterAdapterSP nr34, IRegisterAdapterSP nr52, IMemoryViewSP waveRam)
-    : Channel(std::move(nr52))
-    , nr32_(std::move(nr32))
-    , period_(std::move(nr33), nr34)
-    , len_(std::move(nr31), std::move(nr34))
-    , waveRam_(std::move(waveRam))
+GbChannel3::GbChannel3(const IRegisterAdapter& nr30, const IRegisterAdapter& nr31, const IRegisterAdapter& nr32,
+    const IRegisterAdapter& nr33, const IRegisterAdapter& nr34, IRegisterAdapter& nr52, IMemoryView& waveRam)
+    : Channel(nr52)
+    , nr32_(nr32)
+    , period_(nr33, nr34)
+    , len_(nr31, nr34)
+    , waveRam_(waveRam)
     , waveRamPtr_({ WaveRamStart, false })
 {
-  if (!nr32_ || !waveRam_) {
-    throw std::invalid_argument("Audio registers not set.");
-  }
-  nr30.reset();
+  (void)nr30; // TODO: CH3 dac control
 }
 
 void GbChannel3::clock()
@@ -44,13 +41,13 @@ void GbChannel3::tickApuDiv(const FrameSequence sequence)
 
 void GbChannel3::advanceWaveRam()
 {
-  auto ramSample = waveRam_->getLocation8(waveRamPtr_.address)->get();
+  auto ramSample = waveRam_.getLocation8(waveRamPtr_.address).get();
   if (waveRamPtr_.upper) {
     ramSample = hlp::getBits(ramSample, HALF_BYTE_SHIFT, HALF_BYTE_SHIFT);
   } else {
     ramSample = hlp::getBits(ramSample, 0U, HALF_BYTE_SHIFT);
   }
-  switch (hlp::getBits(nr32_->get(), VolumePatternBitPos, 2U)) {
+  switch (hlp::getBits(nr32_.getByte(), VolumePatternBitPos, 2U)) {
   case VolumePattern0Pct:
     ramSample = 0U;
     break;

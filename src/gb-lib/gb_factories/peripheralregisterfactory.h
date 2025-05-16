@@ -14,25 +14,24 @@ enum class PeripheralRegisters {
   TMA,
   TAC,
   IF,
-  IE,
 };
 
 class PeripheralRegisterFactory : public RegisterFactory<PeripheralRegisters> {
 public:
-  explicit PeripheralRegisterFactory(const IMemoryViewSP& mem)
-      : RegisterFactory(mem, PeripheralRegisterAddresses)
-      , div_(std::make_shared<DivRegister>(mem))
-      , div_apu_(std::make_shared<RegisterBuffer>())
+  explicit PeripheralRegisterFactory(IoBank& ioBank)
+      : RegisterFactory(ioBank, PeripheralRegisterAddresses)
+      , div_(std::make_shared<DivRegister>(ioBank))
+      , div_apu_(std::make_unique<RegisterBuffer>())
   {
   }
 
   DivRegisterSP getDiv();
-  IRegisterAdapterSP getDivApu();
+  IRegisterAdapterUP releaseDivApu();
 
 private:
   static const std::unordered_map<PeripheralRegisters, address_type> PeripheralRegisterAddresses;
   DivRegisterSP div_ = nullptr;
-  IRegisterAdapterSP div_apu_ = nullptr;
+  IRegisterAdapterUP div_apu_ = nullptr;
 };
 
 #endif // PERIPHERALREGISTERFACTORY_H

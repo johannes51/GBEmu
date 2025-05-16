@@ -3,21 +3,24 @@
 
 #include "apu/iapu.h"
 #include "mem/imemoryview.h"
+#include "mem/registers/iobank.h"
 #include "mem/registers/iregisteradapter.h"
 
 class ApuFactory {
 public:
-  explicit ApuFactory(IMemoryViewSP mem, IRegisterAdapterSP div_apu)
-      : mem_(std::move(mem))
-      , div_apu_(div_apu)
+  explicit ApuFactory(IoBank& ioBank, IMemoryView& waveRam, IRegisterAdapterUP div_apu)
+      : ioBank_(ioBank)
+      , waveRam_(waveRam)
+      , div_apu_(std::move(div_apu))
   {
   }
 
   IApuUP constructApu();
 
 private:
-  IMemoryViewSP mem_;
-  IRegisterAdapterSP div_apu_;
+  IoBank& ioBank_;
+  IMemoryView& waveRam_;
+  IRegisterAdapterUP div_apu_;
 };
 
 #endif // APUFACTORY_H

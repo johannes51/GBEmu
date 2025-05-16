@@ -31,7 +31,7 @@ constexpr std::array<std::pair<uint8_t, address_type>, NumInterrupts> HandlerAdr
 
 class GbInterruptHandler : public InterruptHandler {
 public:
-  GbInterruptHandler(IRegisterAdapterSP rIf, IRegisterAdapterSP rIe);
+  GbInterruptHandler(IRegisterAdapter& rIf, const IRegisterAdapter& rIe);
   ~GbInterruptHandler() override = default;
 
   void execute(RegistersInterface& registers, IMemoryView& memory) override;
@@ -39,8 +39,8 @@ public:
   bool isInterrupt() const override;
 
 private:
-  IRegisterAdapterSP if_;
-  IRegisterAdapterSP ie_;
+  IRegisterAdapter& if_;
+  const IRegisterAdapter& ie_;
 
   std::pair<uint8_t, address_type> unmapInterrupt();
   static bool checkInterruptBit(const uint8_t& activeInterrupts, const uint8_t pos);

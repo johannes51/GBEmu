@@ -20,7 +20,7 @@ public:
   ByteAluOperation(ByteAluFunction function, Source source);
   ~ByteAluOperation() override = default;
 
-  void nextOpcode(Location8UP opcode) override;
+  void nextOpcode(const Location8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -29,12 +29,12 @@ public:
   void setRegister(ByteRegister registerName);
 
 private:
-  Location8UP getSource(RegistersInterface& reg, IMemoryView& mem);
+  Location8 getSource(RegistersInterface& reg, IMemoryView& mem);
 
   const ByteAluFunction function_;
   const Source source_;
   std::optional<ByteRegister> register_;
-  std::optional<Location8UP> immediate_;
+  std::unique_ptr<Location8> immediate_;
 };
 
 #endif // BYTEALUOPERATION_H
