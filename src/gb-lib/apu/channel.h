@@ -18,18 +18,15 @@ public:
   virtual void clock() = 0;
   virtual void tickApuDiv(const FrameSequence sequence) = 0;
 
-  virtual void disable() { nr52_->setBit(1U, false); }
+  virtual void disable() { nr52_.setBit(1U, false); }
 
 protected:
-  explicit Channel(IRegisterAdapterSP nr52)
-      : nr52_(std::move(nr52))
+  explicit Channel(IRegisterAdapter& nr52)
+      : nr52_(nr52)
   {
-    if (!nr52_) {
-      throw std::invalid_argument("Audio registers not set.");
-    }
   }
 
-  IRegisterAdapterSP nr52_;
+  IRegisterAdapter& nr52_;
   DAC dac_;
 };
 

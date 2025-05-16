@@ -9,7 +9,7 @@ public:
   void execute(RegistersInterface& registers, IMemoryView& memory) override
   {
     (void)memory;
-    *registers.get(WordRegister::PC) = pc_;
+    registers.get(WordRegister::PC) = pc_;
     wasExecuted_ = true;
   }
   bool isInterrupt() const override { return isInterrupt_; }

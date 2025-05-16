@@ -31,6 +31,6 @@ TEST(CartloaderTest, Banks)
   auto b = c->constructBanks(v);
 
   EXPECT_EQ(b.size(), 3U);
-  EXPECT_EQ(b[0]->getLocation8(0x0104U)->get(), 0xCEU);
-  EXPECT_EQ(b[1]->getLocation8(0x4000U)->get(), 0xC3U);
+  EXPECT_EQ(b[0]->getLocation8(0x0104U).get(), 0xCEU);
+  EXPECT_EQ(b[1]->getLocation8(0x4000U).get(), 0xC3U);
 }

@@ -3,7 +3,7 @@
 #include "cpu/id/unimplementeddecoder.h"
 
 #include "cpu/operation/operation.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 class UnimplementedDecoderTest : public ::testing::Test {
 public:
@@ -24,7 +24,7 @@ TEST_F(UnimplementedDecoderTest, Decode)
 {
   OperationUP op;
   for (uint16_t opcode = 0x00U; opcode <= 0xFFU; ++opcode) {
-    EXPECT_ANY_THROW(op = d.decode(*variableLocation(static_cast<uint8_t>(opcode))));
+    EXPECT_ANY_THROW(op = d.decode(variableLocation(static_cast<uint8_t>(opcode))));
     EXPECT_FALSE(op);
   }
 }

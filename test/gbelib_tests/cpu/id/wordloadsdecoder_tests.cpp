@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
 #include "cpu/operation/operation.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 #include "cpu/id/wordloadsdecoder.h"
 
@@ -43,7 +43,7 @@ TEST_F(WordLoadsDecoderTest, Decode)
     case 0xD5U:
     case 0xE5U:
     case 0xF5U:
-      EXPECT_NO_THROW(op = d.decode(*variableLocation(static_cast<uint8_t>(opcode)))) << opcode;
+      EXPECT_NO_THROW(op = d.decode(variableLocation(static_cast<uint8_t>(opcode)))) << opcode;
       EXPECT_TRUE(op);
       break;
     default:
@@ -51,6 +51,6 @@ TEST_F(WordLoadsDecoderTest, Decode)
     }
     op.reset();
   }
-  EXPECT_ANY_THROW(op = d.decode(*variableLocation(uint8_t { 0xA4U })));
+  EXPECT_ANY_THROW(op = d.decode(variableLocation(uint8_t { 0xA4U })));
   EXPECT_FALSE(op);
 }

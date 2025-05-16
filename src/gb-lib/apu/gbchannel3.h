@@ -10,8 +10,8 @@
 
 class GbChannel3 : public Channel {
 public:
-  GbChannel3(IRegisterAdapterSP nr30, IRegisterAdapterSP nr31, IRegisterAdapterSP nr32, IRegisterAdapterSP nr33,
-      IRegisterAdapterSP nr34, IRegisterAdapterSP nr52, IMemoryViewSP waveRam);
+  GbChannel3(const IRegisterAdapter& nr30, const IRegisterAdapter& nr31, const IRegisterAdapter& nr32,
+      const IRegisterAdapter& nr33, const IRegisterAdapter& nr34, IRegisterAdapter& nr52, IMemoryView& waveRam);
 
   void clock() override;
   void tickApuDiv(const FrameSequence sequence) override;
@@ -31,12 +31,12 @@ private:
   static constexpr uint8_t VolumePattern25Pct = 0b11U;
   static constexpr uint8_t VolumePatternBitPos = 5U;
 
-  IRegisterAdapterSP nr32_;
+  const IRegisterAdapter& nr32_;
 
   Period period_;
   LengthCh3 len_;
 
-  IMemoryViewSP waveRam_;
+  IMemoryView& waveRam_;
   WaveRamLocation waveRamPtr_;
 
   void advanceWaveRam();

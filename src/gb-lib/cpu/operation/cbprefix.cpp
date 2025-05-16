@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/id/cbopdecoder.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 
 CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
     : realOp_()
@@ -11,7 +11,7 @@ CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
 {
 }
 
-void CbPrefix::nextOpcode(Location8UP opcode) { realOp_ = decoder_->decode(*opcode); }
+void CbPrefix::nextOpcode(const Location8& opcode) { realOp_ = decoder_->decode(opcode); }
 
 auto CbPrefix::isComplete() -> bool { return static_cast<bool>(realOp_); }
 

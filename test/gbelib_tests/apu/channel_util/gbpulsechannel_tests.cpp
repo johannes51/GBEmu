@@ -18,30 +18,28 @@ public:
   }
 
 protected:
-  IRegisterAdapterSP nr21;
-  IRegisterAdapterSP nr22;
-  IRegisterAdapterSP nr23;
-  IRegisterAdapterSP nr24;
-  IRegisterAdapterSP nr52;
+  IRegisterAdapterUP nr21;
+  IRegisterAdapterUP nr22;
+  IRegisterAdapterUP nr23;
+  IRegisterAdapterUP nr24;
+  IRegisterAdapterUP nr52;
 };
 
 TEST(GbPulseChannelTestsNF, Construction)
 {
-  EXPECT_ANY_THROW(GbPulseChannel c(MockRegisterAdapter::make(), MockRegisterAdapter::make(), nullptr,
-      MockRegisterAdapter::make(), MockRegisterAdapter::make()));
-  EXPECT_NO_THROW(GbPulseChannel c(MockRegisterAdapter::make(), MockRegisterAdapter::make(),
-      MockRegisterAdapter::make(), MockRegisterAdapter::make(), MockRegisterAdapter::make()));
+  EXPECT_NO_THROW(GbPulseChannel c(*MockRegisterAdapter::make(), *MockRegisterAdapter::make(),
+      *MockRegisterAdapter::make(), *MockRegisterAdapter::make(), *MockRegisterAdapter::make()));
 }
 
 TEST_F(GbPulseChannelTests, Wav)
 {
-  nr52->set(0b10000010U);
-  nr23->set(0b11010000U);
-  nr24->set(0b11000111U);
-  nr22->set(0b11110001U);
-  nr21->set(0b10000011U);
+  nr52->setByte(0b10000010U);
+  nr23->setByte(0b11010000U);
+  nr24->setByte(0b11000111U);
+  nr22->setByte(0b11110001U);
+  nr21->setByte(0b10000011U);
 
-  GbPulseChannel c(nr21, nr22, nr23, nr24, nr52);
+  GbPulseChannel c(*nr21, *nr22, *nr23, *nr24, *nr52);
 
   AudioFile<double> a {};
   a.setBitDepth(16);

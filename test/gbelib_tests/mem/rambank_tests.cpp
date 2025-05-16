@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "location/location8.h"
-#include "mem/rambank.h"
+#include "mem/location8.h"
+#include "mem/ram/rambank.h"
 
 using namespace std;
 
@@ -11,8 +11,8 @@ TEST(RamBankTest, Write8)
   RamBank b({ 0U, 15U }, v);
   auto writeByte = b.getLocation8(4);
   uint8_t value = 0xA2;
-  *writeByte = value;
-  auto readByte = b.getLocation8(4)->get();
+  writeByte = value;
+  auto readByte = b.getLocation8(4).get();
   EXPECT_EQ(value, readByte);
 }
 
@@ -22,8 +22,8 @@ TEST(RamBankTest, Write16)
   RamBank b({ 0U, 15U }, v);
   auto writeWord = b.getLocation16(4);
   uint16_t value = 0xA27E;
-  *writeWord = value;
-  auto readWord = b.getLocation16(4)->get();
+  writeWord = value;
+  auto readWord = b.getLocation16(4).get();
   EXPECT_EQ(value, readWord);
 }
 

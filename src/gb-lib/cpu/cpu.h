@@ -3,14 +3,15 @@
 
 #include "cpu_defines.h"
 #include "id/instructiondecoder.h"
-#include "location/location8.h"
 #include "mem/imemoryview.h"
+#include "mem/location8.h"
+#include "mem/registers/iregisteradapter.h"
 #include "peripherals/interrupthandler.h"
 
 class Cpu {
 public:
-  Cpu(RegistersInterfaceUP&& registers, IMemoryViewSP mem, InstructionDecoderUP instructionDecoder,
-      InterruptHandlerUP interruptHandler);
+  Cpu(IMemoryView& mem, RegistersInterfaceUP&& registers, IRegisterAdapterUP ie,
+      InstructionDecoderUP instructionDecoder, InterruptHandlerUP interruptHandler);
   ~Cpu();
   DISABLE_COPY_AND_MOVE(Cpu)
 
@@ -18,11 +19,12 @@ public:
 
 private:
   OperationUP loadNextOperation();
-  Location8UP fetchNextOpcode();
+  Location8 fetchNextOpcode();
 
-  const IMemoryViewSP mem_;
-  const RegistersInterfaceUP registers_;
-  const InstructionDecoderUP instructionDecoder_;
+  IMemoryView& mem_;
+  RegistersInterfaceUP registers_;
+  IRegisterAdapterUP ie_;
+  InstructionDecoderUP instructionDecoder_;
   InterruptHandlerUP interruptHandler_;
   bool executingInterrupt_ = false;
 

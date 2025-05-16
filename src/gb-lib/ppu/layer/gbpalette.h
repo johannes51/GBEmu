@@ -7,15 +7,15 @@ enum class GbColors { White, LightGray, DarkGray, Black };
 
 class GbPalette {
 public:
-  explicit GbPalette(IRegisterAdapterSP bgp)
-      : bgp_(std::move(bgp))
+  explicit GbPalette(const IRegisterAdapter& bgp)
+      : bgp_(bgp)
   {
   }
 
   GbColors getColor(uint8_t index);
 
 private:
-  IRegisterAdapterSP bgp_;
+  const IRegisterAdapter& bgp_;
 };
 
 #endif // PALETTE_H

@@ -2,7 +2,7 @@
 
 #include "bitmanip.h"
 #include "constants.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 #include <cstring>
 

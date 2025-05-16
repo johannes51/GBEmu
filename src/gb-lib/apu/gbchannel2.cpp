@@ -1,7 +1,7 @@
 #include "gbchannel2.h"
 
-GbChannel2::GbChannel2(IRegisterAdapterSP nr21, IRegisterAdapterSP nr22, IRegisterAdapterSP nr23,
-    IRegisterAdapterSP nr24, IRegisterAdapterSP nr52)
-    : GbPulseChannel(std::move(nr21), std::move(nr22), std::move(nr23), std::move(nr24), std::move(nr52))
+GbChannel2::GbChannel2(const IRegisterAdapter& nr21, const IRegisterAdapter& nr22, const IRegisterAdapter& nr23,
+    const IRegisterAdapter& nr24, IRegisterAdapter& nr52)
+    : GbPulseChannel(nr21, nr22, nr23, nr24, nr52)
 {
 }

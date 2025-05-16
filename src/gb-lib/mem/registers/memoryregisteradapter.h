@@ -3,22 +3,22 @@
 
 #include "iregisteradapter.h"
 
+#include "../common//bufferlocation.h"
 #include "../imemoryview.h"
 
 class MemoryRegisterAdapter : public IRegisterAdapter {
 public:
-  MemoryRegisterAdapter(IMemoryViewSP mem, address_type address);
+  explicit MemoryRegisterAdapter(ByteLocationAdapterUP bufferLocation);
   DISABLE_COPY_AND_MOVE(MemoryRegisterAdapter)
 
-  uint8_t get() const override;
-  void set(uint8_t value) override;
+  const uint8_t& getByte() const override;
+  void setByte(const uint8_t value) override;
 
   bool testBit(uint8_t pos) const override;
   void setBit(uint8_t pos, bool value) override;
 
 private:
-  IMemoryViewSP mem_;
-  address_type address_;
+  ByteLocationAdapterUP bufferLocation_;
 };
 
 #endif // MEMORYREGISTERADAPTER_H

@@ -21,7 +21,7 @@ private:
   ByteRegister directRegister_ = ByteRegister::None;
   WordRegister indirectRegister_ = WordRegister::None;
   Post postAction_ = Post::None;
-  Location8UP immediate_ = nullptr;
+  std::unique_ptr<Location8> immediate_ = nullptr;
 };
 
 #endif // BYTE_LOAD_INDIRECT_H

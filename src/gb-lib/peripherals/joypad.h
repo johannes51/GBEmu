@@ -17,7 +17,7 @@ constexpr uint8_t SelectAction = 0x5;
 
 class Joypad {
 public:
-  explicit Joypad(IRegisterAdapterSP controllerRegister);
+  explicit Joypad(IRegisterAdapter& controllerRegister);
 
   void clock();
 
@@ -27,7 +27,7 @@ public:
 private:
   void affectInputBit(uint8_t& controlRegister, const Button& button, const uint8_t& bit);
 
-  IRegisterAdapterSP controllerRegister_;
+  IRegisterAdapter& controllerRegister_;
   std::unordered_map<Button, bool> buttonState_;
 };
 

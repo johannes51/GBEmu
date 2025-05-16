@@ -2,13 +2,10 @@
 
 #include "util/helpers.h"
 
-Envelope::Envelope(IRegisterAdapterSP nrX2)
-    : nrX2_(std::move(nrX2))
+Envelope::Envelope(const IRegisterAdapter& nrX2)
+    : nrX2_(nrX2)
+    , volume_(readVolume())
 {
-  if (!nrX2_) {
-    throw std::invalid_argument("Audio registers not set.");
-  }
-  volume_ = readVolume();
   readCounter();
 }
 
@@ -24,11 +21,11 @@ void Envelope::clock()
 
 auto Envelope::vol() const -> uint8_t { return volume_; }
 
-void Envelope::readCounter() { counter_ = hlp::getBits(nrX2_->get(), CounterBits.first, CounterBits.second); }
+void Envelope::readCounter() { counter_ = hlp::getBits(nrX2_.getByte(), CounterBits.first, CounterBits.second); }
 
 void Envelope::moveVol()
 {
-  if (nrX2_->testBit(3U)) {
+  if (nrX2_.testBit(3U)) {
     if (volume_ < MaxVolume) {
       ++volume_;
     }
@@ -39,4 +36,4 @@ void Envelope::moveVol()
   }
 }
 
-auto Envelope::readVolume() const -> uint8_t { return nrX2_->get() >> 4U; }
+auto Envelope::readVolume() const -> uint8_t { return nrX2_.getByte() >> 4U; }

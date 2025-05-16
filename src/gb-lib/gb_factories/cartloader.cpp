@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <cstring>
 
-#include "mem/rambank.h"
-#include "mem/rombank.h"
+#include "mem/ram/rambank.h"
+#include "mem/rom/rombank.h"
 
 #include <array>
 

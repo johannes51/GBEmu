@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "../operation/miscarithmetic.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 #include "opcodeview.h"
 
 const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27U, 0x37U, 0x2FU, 0x3FU };

@@ -22,15 +22,15 @@ ByteLoadImmediate::ByteLoadImmediate(WordRegister destRegister)
   }
 }
 
-void ByteLoadImmediate::nextOpcode(Location8UP opcode)
+void ByteLoadImmediate::nextOpcode(const Location8& opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
   }
-  immediate_ = std::move(opcode);
+  immediate_ = std::make_unique<Location8>(variableLocation(opcode.get()));
 }
 
-auto ByteLoadImmediate::isComplete() -> bool { return immediate_ != nullptr; }
+auto ByteLoadImmediate::isComplete() -> bool { return static_cast<bool>(immediate_); }
 
 auto ByteLoadImmediate::cycles() -> unsigned { return indirect_ ? 3 : 2; }
 
@@ -41,11 +41,9 @@ void ByteLoadImmediate::execute(RegistersInterface& registers, IMemoryView& memo
   if (!isComplete()) {
     throw std::invalid_argument("No immediate value configured");
   }
-  Location8UP dest;
   if (indirect_) {
-    dest = memory.getLocation8(hlp::indirect(*registers.get(WordRegister::HL)));
+    memory.getLocation8(hlp::indirect(registers.get(WordRegister::HL))) = immediate_->get();
   } else {
-    dest = registers.get(destRegister_);
+    registers.get(destRegister_) = immediate_->get();
   }
-  *dest = immediate_->get();
 }

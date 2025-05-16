@@ -4,8 +4,8 @@
 #include "operation.h"
 
 #include "cpu/registersinterface.h"
-#include "location/location16.h"
-#include "location/location8.h"
+#include "mem/location16.h"
+#include "mem/location8.h"
 
 class WordLoad final : public Operation {
 public:
@@ -18,7 +18,7 @@ public:
   WordLoad(Destination destination, Source source);
   ~WordLoad();
 
-  void nextOpcode(Location8UP opcode) override;
+  void nextOpcode(const Location8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -32,8 +32,8 @@ private:
   const Source source_;
   WordRegister destRegister_ = WordRegister::None;
   WordRegister srcRegister_ = WordRegister::None;
-  Location8UP immediate8_ = nullptr;
-  Location16UP immediate16_ = nullptr;
+  std::unique_ptr<Location8> immediate8_ = nullptr;
+  std::unique_ptr<Location16> immediate16_ = nullptr;
 };
 
 #endif // WORD_LOAD_H

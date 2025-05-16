@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/operation/cbprefix.h"
-#include "location/location8.h"
+#include "mem/location8.h"
 #include "opcodeview.h"
 
 auto CbDecoder::decode(const Location8& opcodeLocation) const -> OperationUP

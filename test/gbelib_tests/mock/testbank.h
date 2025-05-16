@@ -1,7 +1,7 @@
 #ifndef TESTBANK_H
 #define TESTBANK_H
 
-#include "mem/rambank.h"
+#include "mem/ram/rambank.h"
 
 class TestBank : public RamBank {
 public:

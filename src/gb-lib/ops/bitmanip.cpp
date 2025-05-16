@@ -1,7 +1,7 @@
 #include "bitmanip.h"
 
-#include "location/location16.h"
-#include "location/location8.h"
+#include "mem/location16.h"
+#include "mem/location8.h"
 
 auto ops::bit(const Location8& location, uint8_t bitPos) -> ops::OpResult
 {

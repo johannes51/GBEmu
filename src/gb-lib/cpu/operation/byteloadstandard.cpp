@@ -12,5 +12,5 @@ ByteLoadStandard::~ByteLoadStandard() = default;
 void ByteLoadStandard::execute(RegistersInterface& registers, IMemoryView& memory)
 {
   (void)memory;
-  *registers.get(destRegister_) = registers.get(srcRegister_)->get();
+  registers.get(destRegister_) = registers.get(srcRegister_).get();
 }

@@ -12,25 +12,22 @@ public:
   {
   }
 
-  auto get() const -> uint8_t override { return value_; }
-  void set(uint8_t value) override { value_ = value; }
+  auto getByte() const -> const uint8_t& override { return value_; }
+  void setByte(uint8_t value) override { value_ = value; }
   auto testBit(uint8_t pos) const -> bool override { return hlp::checkBit(value_, pos); }
   void setBit(uint8_t pos, bool value) override
   {
-    auto temp = get();
+    auto temp = getByte();
     if (value) {
       hlp::setBit(temp, pos);
     } else {
       hlp::clearBit(temp, pos);
       ;
     }
-    set(temp);
+    setByte(temp);
   }
 
-  static std::shared_ptr<IRegisterAdapter> make(uint8_t initial = 0U)
-  {
-    return std::make_shared<MockRegisterAdapter>(initial);
-  }
+  static IRegisterAdapterUP make(uint8_t initial = 0U) { return std::make_unique<MockRegisterAdapter>(initial); }
 
 private:
   uint8_t value_;

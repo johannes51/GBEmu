@@ -79,10 +79,8 @@ set(TEST_SOURCES
   mem/mirrorbank_tests.cpp
   mem/rambank_tests.cpp
   mem/rombank_tests.cpp
-  mem/registerbank_tests.cpp
   mem/registers/divregister_tests.cpp
   mem/registers/memoryregisteradapter_tests.cpp
-  mem/registers/registerbankadapter_tests.cpp
   mem/registers/registerbuffer_tests.cpp
   ops/arithmetic_tests.cpp
   ops/bitmanip_tests.cpp
@@ -113,15 +111,19 @@ set(TEST_SOURCES
 )
 
 set(MOCK_SOURCES
+  mock/mockbytelocationadapter.h
   mock/mockchannel.h
   mock/mockdivregister.h
+  mock/mockdivregister.cpp
   mock/mockflags.h
   mock/mockinterrupthandler.h
+  mock/mockiobank.h
   mock/mockmixer.h
   mock/mockoam.h
   mock/mockregisteradapter.h
   mock/mockregisters.h
   mock/mockregisters.cpp
+  mock/mockrenderer.h
   mock/mocktiledata.h
   mock/mocktilemap.h
   mock/testbank.h

@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "location/nulllocation.h"
+#include "mem/rest/nulllocation.h"
 
 TEST(NullLocationTest, Read)
 {
@@ -12,6 +12,6 @@ TEST(NullLocationTest, Read)
 TEST(NullLocationTest, Write)
 {
   NullLocation a;
-  EXPECT_ANY_THROW(a = uint8_t(0x3));
-  EXPECT_ANY_THROW(a = uint16_t(0x3));
+  EXPECT_ANY_THROW(a.set(0x3));
+  EXPECT_ANY_THROW(a.set(0x3));
 }

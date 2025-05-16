@@ -3,6 +3,8 @@
 
 #include "operation.h"
 
+#include <optional>
+
 #include "cpu/registersinterface.h"
 
 class ByteLoadOddball final : public Operation {
@@ -13,7 +15,7 @@ public:
   ByteLoadOddball(Direction direction, Indirection indirection);
   ~ByteLoadOddball();
 
-  void nextOpcode(Location8UP opcode) override;
+  void nextOpcode(const Location8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
@@ -22,8 +24,8 @@ public:
 private:
   const Direction direction_;
   const Indirection indirection_;
-  Location8UP immediate8_;
-  Location16UP immediate16_;
+  std::unique_ptr<Location8> immediate8_;
+  std::unique_ptr<Location16> immediate16_;
 };
 
 #endif // BYTE_LOAD_ODDBALL_H

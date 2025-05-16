@@ -1,0 +1,15 @@
+#ifndef RAMBANK_H
+#define RAMBANK_H
+
+#include "../common/bufferbank.h"
+
+class RamBank : public BufferBank {
+public:
+  RamBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer);
+  DISABLE_COPY_AND_MOVE(RamBank)
+
+  Location8 getLocation8(const address_type address) override;
+  Location16 getLocation16(const address_type address) override;
+};
+
+#endif // RAMBANK_H

@@ -11,8 +11,8 @@
 
 class GbChannel4 : public Channel {
 public:
-  GbChannel4(IRegisterAdapterSP nr41, IRegisterAdapterSP nr42, IRegisterAdapterSP nr43, IRegisterAdapterSP nr44,
-      IRegisterAdapterSP nr52);
+  GbChannel4(const IRegisterAdapter& nr41, const IRegisterAdapter& nr42, const IRegisterAdapter& nr43,
+      const IRegisterAdapter& nr44, IRegisterAdapter& nr52);
 
   void tickApuDiv(const FrameSequence sequence) override;
   void clock() override;
@@ -38,7 +38,7 @@ private:
   static constexpr uint8_t LsfrFeedBit2 = 1U;
   static constexpr uint8_t LsfrWidthBit = 3U;
 
-  IRegisterAdapterSP nr43_;
+  const IRegisterAdapter& nr43_;
 
   Length len_;
   Envelope env_;

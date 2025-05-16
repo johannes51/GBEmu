@@ -3,7 +3,7 @@
 #include "cpu/id/miscarithmeticdecoder.h"
 
 #include "cpu/operation/operation.h"
-#include "location/variablelocation.h"
+#include "mem/rest/variablelocation.h"
 
 class MiscArithmeticDecoderTest : public ::testing::Test {
 public:
@@ -29,11 +29,11 @@ TEST_F(MiscArithmeticDecoderTest, Decode)
     case 0x37U:
     case 0x2FU:
     case 0x3FU:
-      EXPECT_NO_THROW(op = d.decode(*variableLocation(static_cast<uint8_t>(opcode))));
+      EXPECT_NO_THROW(op = d.decode(variableLocation(static_cast<uint8_t>(opcode))));
       EXPECT_TRUE(op);
       break;
     default:
-      EXPECT_ANY_THROW(op = d.decode(*variableLocation(static_cast<uint8_t>(opcode))));
+      EXPECT_ANY_THROW(op = d.decode(variableLocation(static_cast<uint8_t>(opcode))));
       EXPECT_FALSE(op);
       break;
     }

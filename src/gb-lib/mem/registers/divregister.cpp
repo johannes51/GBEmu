@@ -1,22 +1,22 @@
 #include "divregister.h"
 
-DivRegister::DivRegister(IMemoryViewSP mem)
-    : MemoryRegisterAdapter(std::move(mem), DivRegisterAdress)
+DivRegister::DivRegister(IoBank& ioBank)
+    : MemoryRegisterAdapter(ioBank.getRegisterLocation(DivRegisterAdress))
 {
 }
 
-void DivRegister::set(uint8_t value)
+void DivRegister::setByte(uint8_t value)
 {
   (void)value;
   systemTimer_ = 0U;
-  MemoryRegisterAdapter::set(0U);
+  MemoryRegisterAdapter::setByte(0U);
 }
 
 void DivRegister::setBit(uint8_t pos, bool value)
 {
   (void)pos;
   (void)value;
-  set(0U);
+  setByte(0U);
 }
 
 auto DivRegister::testBitSystemTimer(uint8_t pos) const -> bool
@@ -32,4 +32,4 @@ void DivRegister::clock()
   }
 }
 
-void DivRegister::updateDiv() { MemoryRegisterAdapter::set(MemoryRegisterAdapter::get() + 1U); }
+void DivRegister::updateDiv() { setByte(getByte() + 1U); }

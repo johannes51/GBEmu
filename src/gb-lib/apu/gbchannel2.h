@@ -7,8 +7,8 @@
 
 class GbChannel2 : public GbPulseChannel {
 public:
-  GbChannel2(IRegisterAdapterSP nr21, IRegisterAdapterSP nr22, IRegisterAdapterSP nr23, IRegisterAdapterSP nr24,
-      IRegisterAdapterSP nr52);
+  GbChannel2(const IRegisterAdapter& nr21, const IRegisterAdapter& nr22, const IRegisterAdapter& nr23,
+      const IRegisterAdapter& nr24, IRegisterAdapter& nr52);
 
 private:
   bool channelOn_ = false;

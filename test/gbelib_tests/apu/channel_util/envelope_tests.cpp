@@ -12,20 +12,16 @@ public:
   }
 
 protected:
-  IRegisterAdapterSP nrX2;
+  IRegisterAdapterUP nrX2;
 };
 
-TEST(EnvelopeTestsNF, Construction)
-{
-  EXPECT_ANY_THROW(Envelope c(nullptr));
-  EXPECT_NO_THROW(Envelope c(MockRegisterAdapter::make()));
-}
+TEST(EnvelopeTestsNF, Construction) { EXPECT_NO_THROW(Envelope c(*MockRegisterAdapter::make())); }
 
 TEST_F(EnvelopeTests, Down)
 {
-  nrX2->set(0b01000010U);
+  nrX2->setByte(0b01000010U);
 
-  Envelope e { nrX2 };
+  Envelope e { *nrX2 };
 
   EXPECT_EQ(4U, e.vol());
 
@@ -55,9 +51,9 @@ TEST_F(EnvelopeTests, Down)
 
 TEST_F(EnvelopeTests, Up)
 {
-  nrX2->set(0b11001001U);
+  nrX2->setByte(0b11001001U);
 
-  Envelope e { nrX2 };
+  Envelope e { *nrX2 };
 
   EXPECT_EQ(12U, e.vol());
 

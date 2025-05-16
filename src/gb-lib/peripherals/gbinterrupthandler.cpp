@@ -3,9 +3,9 @@
 #include "cpu/operation/pushpop.h"
 #include "cpu/registersinterface.h"
 
-GbInterruptHandler::GbInterruptHandler(IRegisterAdapterSP rIf, IRegisterAdapterSP rIe)
-    : if_(std::move(rIf))
-    , ie_(std::move(rIe))
+GbInterruptHandler::GbInterruptHandler(IRegisterAdapter& rIf, const IRegisterAdapter& rIe)
+    : if_(rIf)
+    , ie_(rIe)
 {
 }
 
@@ -16,18 +16,18 @@ void GbInterruptHandler::execute(RegistersInterface& registers, IMemoryView& mem
 
   const auto selectedInterrupt = unmapInterrupt();
 
-  if_->setBit(selectedInterrupt.first, false);
-  *registers.get(WordRegister::PC) = selectedInterrupt.second;
+  if_.setBit(selectedInterrupt.first, false);
+  registers.get(WordRegister::PC) = selectedInterrupt.second;
 }
 
 auto GbInterruptHandler::isInterrupt() const -> bool
 {
-  return (ie_->get() & static_cast<uint8_t>(if_->get() & InterruptRegisterMask)) != 0U;
+  return (ie_.getByte() & static_cast<uint8_t>(if_.getByte() & InterruptRegisterMask)) != 0U;
 }
 
 auto GbInterruptHandler::unmapInterrupt() -> std::pair<uint8_t, address_type>
 {
-  const auto activeInterrupts = ie_->get() & static_cast<uint8_t>(if_->get() & InterruptRegisterMask);
+  const auto activeInterrupts = ie_.getByte() & static_cast<uint8_t>(if_.getByte() & InterruptRegisterMask);
   for (const auto& bitAddressPair : HandlerAdresses) {
     if (checkInterruptBit(activeInterrupts, bitAddressPair.first)) {
       return bitAddressPair;

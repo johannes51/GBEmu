@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "location/location8.h"
-#include "mem/memorymanifold.h"
-#include "mem/nullbank.h"
+#include "mem/common/memorymanifold.h"
+#include "mem/location8.h"
+#include "mem/rest/nullbank.h"
 
 TEST(MemoryManifoldTest, AddSubmanager1)
 {

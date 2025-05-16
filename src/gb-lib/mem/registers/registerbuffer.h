@@ -8,8 +8,8 @@ public:
   explicit RegisterBuffer(uint8_t initial = 0U);
   DISABLE_COPY_AND_MOVE(RegisterBuffer)
 
-  uint8_t get() const override;
-  void set(uint8_t value) override;
+  const uint8_t& getByte() const override;
+  void setByte(uint8_t value) override;
 
   bool testBit(uint8_t pos) const override;
   void setBit(uint8_t pos, bool value) override;

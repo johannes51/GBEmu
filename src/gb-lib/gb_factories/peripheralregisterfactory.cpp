@@ -9,9 +9,8 @@ const std::unordered_map<PeripheralRegisters, address_type> PeripheralRegisterFa
   { PeripheralRegisters::TMA, 0xFF06 }, // NOLINT
   { PeripheralRegisters::TAC, 0xFF07 }, // NOLINT
   { PeripheralRegisters::IF, 0xFF0F }, // NOLINT
-  { PeripheralRegisters::IE, 0xFFFF }, // NOLINT
 };
 
 auto PeripheralRegisterFactory::getDiv() -> DivRegisterSP { return div_; }
 
-auto PeripheralRegisterFactory::getDivApu() -> IRegisterAdapterSP { return div_apu_; }
+auto PeripheralRegisterFactory::releaseDivApu() -> IRegisterAdapterUP { return std::move(div_apu_); }

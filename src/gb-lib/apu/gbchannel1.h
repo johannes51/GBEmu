@@ -8,13 +8,13 @@
 
 class GbChannel1 : public GbPulseChannel {
 public:
-  GbChannel1(IRegisterAdapterSP nr10, IRegisterAdapterSP nr11, IRegisterAdapterSP nr12, IRegisterAdapterSP nr13,
-      IRegisterAdapterSP nr14, IRegisterAdapterSP nr52);
+  GbChannel1(const IRegisterAdapter& nr10, const IRegisterAdapter& nr11, const IRegisterAdapter& nr12,
+      IRegisterAdapter& nr13, IRegisterAdapter& nr14, IRegisterAdapter& nr52);
 
   void tickApuDiv(const FrameSequence sequence) override;
 
 private:
-  IRegisterAdapterSP nr10_;
+  const IRegisterAdapter& nr10_;
 
   Sweep sweep_;
 };

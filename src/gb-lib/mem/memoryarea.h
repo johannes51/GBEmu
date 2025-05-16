@@ -4,7 +4,7 @@
 #include "mem_defines.h"
 
 struct MemoryArea {
-  size_t size() const;
+  constexpr size_t size() const { return (to - from) + 1U; }
 
   address_type from;
   address_type to;

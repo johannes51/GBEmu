@@ -11,8 +11,8 @@
 
 class GbPulseChannel : public Channel {
 public:
-  GbPulseChannel(IRegisterAdapterSP nrX1, IRegisterAdapterSP nrX2, IRegisterAdapterSP nrX3, IRegisterAdapterSP nrX4,
-      IRegisterAdapterSP nr52);
+  GbPulseChannel(const IRegisterAdapter& nrX1, const IRegisterAdapter& nrX2, const IRegisterAdapter& nrX3,
+      const IRegisterAdapter& nrX4, IRegisterAdapter& nr52);
 
   void clock() override;
   void tickApuDiv(const FrameSequence sequence) override;
@@ -27,9 +27,9 @@ private:
   static constexpr dutyTable PulseDutyWaveformTable = { { { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U },
       { 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U }, { 0U, 0U, 0U, 0U, 1U, 1U, 1U, 1U }, { 1U, 1U, 1U, 1U, 1U, 1U, 0U, 0U } } };
 
-  IRegisterAdapterSP nrX1_;
-  IRegisterAdapterSP nrX3_;
-  IRegisterAdapterSP nrX4_;
+  const IRegisterAdapter& nrX1_;
+  const IRegisterAdapter& nrX3_;
+  const IRegisterAdapter& nrX4_;
 
   Envelope env_;
   Length len_;

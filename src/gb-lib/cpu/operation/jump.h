@@ -3,8 +3,8 @@
 
 #include <optional>
 
-#include "location/fusedlocation16.h"
-#include "location/location8.h"
+#include "mem/common/fusedlocation16.h"
+#include "mem/location8.h"
 #include "operation.h"
 
 enum class JumpType { Regular, Indirect, Call, Return, RetI, Reset };
@@ -25,7 +25,7 @@ public:
   ~Jump() override;
 
   void showFlags(const FlagsView& flags) override;
-  void nextOpcode(Location8UP opcode) override;
+  void nextOpcode(const Location8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;

@@ -7,7 +7,7 @@
 
 class LengthCh3 {
 public:
-  LengthCh3(IRegisterAdapterSP nr31, IRegisterAdapterSP nr34);
+  LengthCh3(const IRegisterAdapter& nr31, const IRegisterAdapter& nr34);
 
   void clock();
   bool isRunOut() const;
@@ -21,8 +21,8 @@ private:
 
   static constexpr uint8_t LenEnableBitPos = 6U;
 
-  IRegisterAdapterSP nr31_;
-  IRegisterAdapterSP nr34_;
+  const IRegisterAdapter& nr31_;
+  const IRegisterAdapter& nr34_;
 
   uint16_t counter_ = LEN_INACTIVE;
 

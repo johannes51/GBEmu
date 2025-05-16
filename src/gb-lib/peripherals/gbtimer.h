@@ -23,18 +23,18 @@ constexpr std::array<std::pair<uint8_t, uint8_t>, 4U> ClockSelectBitMap = {
 
 class GbTimer : public Tickable {
 public:
-  GbTimer(DivRegisterSP div, IRegisterAdapterSP div_apu, IRegisterAdapterSP tima, IRegisterAdapterSP tma,
-      IRegisterAdapterSP tac, IRegisterAdapterSP ifl);
+  GbTimer(DivRegisterSP div, IRegisterAdapter& div_apu, IRegisterAdapter& tima, const IRegisterAdapter& tma,
+      const IRegisterAdapter& tac, IRegisterAdapter& ifl);
 
   void clock() override;
 
 private:
   DivRegisterSP div_;
-  IRegisterAdapterSP div_apu_;
-  IRegisterAdapterSP tima_;
-  IRegisterAdapterSP tma_;
-  IRegisterAdapterSP tac_;
-  IRegisterAdapterSP if_;
+  IRegisterAdapter& div_apu_;
+  IRegisterAdapter& tima_;
+  const IRegisterAdapter& tma_;
+  const IRegisterAdapter& tac_;
+  IRegisterAdapter& if_;
 
   FallingEdgeDetector<bool, false> feSystemTimerBit_;
   FallingEdgeDetector<bool, false> feDivApuBit_;

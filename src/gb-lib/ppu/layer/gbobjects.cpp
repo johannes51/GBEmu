@@ -1,20 +1,20 @@
 #include "gbobjects.h"
 
-GbObjects::GbObjects(OamUP oam, IRegisterAdapterSP lcdc, IRegisterAdapterSP obp1, IRegisterAdapterSP obp2,
-    IRegisterAdapterSP bgp, TileDataUP tileData)
+GbObjects::GbObjects(OamUP oam, const IRegisterAdapter& lcdc, const IRegisterAdapter& obp1,
+    const IRegisterAdapter& obp2, const IRegisterAdapter& bgp, TileDataUP tileData)
     : oam_(std::move(oam))
-    , lcdc_(std::move(lcdc))
-    , obp1_(std::move(obp1))
-    , obp2_(std::move(obp2))
+    , lcdc_(lcdc)
+    , obp1_(obp1)
+    , obp2_(obp2)
     , tileData_(std::move(tileData))
-    , pal_(std::move(bgp)) // TODO: richtiges register
+    , pal_(bgp) // TODO: richtiges register
     , t_(GbColorTransformation::makeGbStdRgb())
 {
 }
 
 void GbObjects::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 {
-  if (!lcdc_->testBit(ObjEnableBit)) {
+  if (!lcdc_.testBit(ObjEnableBit)) {
     return;
   }
   for (const auto& obj : oam_->getAll()) {
@@ -33,5 +33,5 @@ void GbObjects::draw(GbPixelBuffer& buffer, const uint8_t currentLine)
 
 auto GbObjects::toTileDataIndex(uint8_t objectTileIndex) const -> uint8_t
 { // NOLINTNEXTLINE(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
-  return lcdc_->testBit(ObjSizeBit) ? 0b1111110U & objectTileIndex : objectTileIndex; // TODO: vollständig
+  return lcdc_.testBit(ObjSizeBit) ? 0b1111110U & objectTileIndex : objectTileIndex; // TODO: vollständig
 }
