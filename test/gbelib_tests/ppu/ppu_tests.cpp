@@ -6,7 +6,16 @@
 #include "gb_factories/ppuregisterfactory.h"
 #include "ppu/ppu.h"
 
-TEST(PpuTest, Construction) { EXPECT_NO_THROW(Ppu p(nullptr, {}, *MockRegisterAdapter::make())); }
+TEST(PpuTest, Construction)
+{
+  std::unordered_map<PpuRegisters, IRegisterAdapterUP> registers;
+  registers.insert({ PpuRegisters::LCDC, MockRegisterAdapter::make() });
+  registers.insert({ PpuRegisters::STAT, MockRegisterAdapter::make() });
+  registers.insert({ PpuRegisters::LY, MockRegisterAdapter::make() });
+  registers.insert({ PpuRegisters::LYC, MockRegisterAdapter::make() });
+
+  EXPECT_NO_THROW(Ppu p(nullptr, std::move(registers), *MockRegisterAdapter::make()));
+}
 
 TEST(PpuTest, Clock)
 {

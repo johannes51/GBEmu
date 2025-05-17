@@ -7,6 +7,8 @@ class TestBank : public RamBank {
 public:
   TestBank(const MemoryArea& area);
 
+  static IMemoryView& staticBank();
+
 private:
   static std::vector<uint8_t> buffer_;
 };

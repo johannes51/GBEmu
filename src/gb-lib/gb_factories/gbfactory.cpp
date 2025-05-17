@@ -12,10 +12,9 @@
 #include "ppufactory.h"
 
 GbFactory::GbFactory(const std::string& romFile, const std::string& ramFile)
-    : cartLoader_(std::make_unique<gb::CartLoader>(romFile, ramFile))
-    , buffer_()
+    : buffer_()
 {
-  constructMemory();
+  constructMemory(romFile, ramFile);
 }
 
 auto GbFactory::constructSystem() -> SystemManagerUP
@@ -26,12 +25,12 @@ auto GbFactory::constructSystem() -> SystemManagerUP
       std::move(cpu), std::move(mem_), std::move(peri), peripheralRF_->getAll(), pixBuf_);
 }
 
-void GbFactory::constructMemory()
+void GbFactory::constructMemory(const std::string& romFile, const std::string& ramFile)
 {
-  auto mf = gb::MemoryFactory(std::move(cartLoader_), buffer_);
+  auto mf = gb::MemoryFactory(std::make_unique<gb::CartLoader>(romFile, ramFile), buffer_);
   ioBank_ = mf.getIoBank();
   ieBank_ = mf.getIeBank();
-  peripheralRF_ = std::make_unique<PeripheralRegisterFactory>(*mf.getIoBank());
+  peripheralRF_ = std::make_unique<PeripheralRegisterFactory>(*ioBank_);
   mem_ = mf.releaseMemory();
 }
 
@@ -46,16 +45,18 @@ auto GbFactory::constructCpu() -> CpuUP
 
 auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
 {
-  auto a = ApuFactory(*ioBank_, *mem_, peripheralRF_->releaseDivApu());
+  auto divApu = peripheralRF_->releaseDivApu();
+  auto& divApuRef = *divApu;
+  auto a = ApuFactory(*ioBank_, *mem_, std::move(divApu));
   auto p = PpuFactory(*mem_, *ioBank_, peripheralRF_->get(PeripheralRegisters::IF));
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
-  return { a.constructApu(), std::move(ppu), constructTimer() };
+  return { a.constructApu(), std::move(ppu), constructTimer(divApuRef) };
 }
 
-auto GbFactory::constructTimer() -> TickableSP
+auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
 {
-  return { std::make_shared<GbTimer>(peripheralRF_->getDiv(), *peripheralRF_->releaseDivApu(),
-      peripheralRF_->get(PeripheralRegisters::TIMA), peripheralRF_->get(PeripheralRegisters::TMA),
-      peripheralRF_->get(PeripheralRegisters::TAC), peripheralRF_->get(PeripheralRegisters::IF)) };
+  return { std::make_shared<GbTimer>(peripheralRF_->getDiv(), divApu, peripheralRF_->get(PeripheralRegisters::TIMA),
+      peripheralRF_->get(PeripheralRegisters::TMA), peripheralRF_->get(PeripheralRegisters::TAC),
+      peripheralRF_->get(PeripheralRegisters::IF)) };
 }

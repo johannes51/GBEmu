@@ -23,8 +23,9 @@ static const std::vector<uint8_t> TileMapData = {
 
 TEST(GbBgTest, Construction)
 {
-  EXPECT_NO_THROW(GbBg bg(*(IRegisterAdapter*)nullptr, *(IRegisterAdapter*)nullptr, *(IRegisterAdapter*)nullptr,
-      *(IRegisterAdapter*)nullptr, nullptr, nullptr));
+  auto fakeReg = MockRegisterAdapter::make();
+
+  EXPECT_NO_THROW(GbBg bg(*fakeReg, *fakeReg, *fakeReg, *fakeReg, nullptr, nullptr));
 }
 
 TEST(GbBgTest, Draw)

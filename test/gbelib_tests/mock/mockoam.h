@@ -3,10 +3,12 @@
 
 #include "ppu/layer/oam.h"
 
+#include "mock/testbank.h"
+
 class MockOam : public Oam {
 public:
   explicit MockOam(std::vector<Object> objects = {})
-      : Oam(*(IMemoryView*)nullptr)
+      : Oam(TestBank::staticBank())
       , objects_(std::move(objects))
   {
   }

@@ -4,10 +4,12 @@
 #include "ppu/layer/tiledata.h"
 #include "ppu/layer/tilemap.h"
 
+#include "mock/testbank.h"
+
 class MockTileMap : public TileMap {
 public:
   MockTileMap()
-      : TileMap(*(IRegisterAdapter*)nullptr, *(IMemoryView*)nullptr, -1)
+      : TileMap(*fakeReg, TestBank::staticBank(), -1)
   {
   }
   int8_t getIndex(const TileAddress& address) const override
@@ -15,6 +17,9 @@ public:
     (void)address;
     return 0U;
   }
+
+private:
+  static IRegisterAdapterUP fakeReg;
 };
 
 #endif // MOCKTILEMAP_H

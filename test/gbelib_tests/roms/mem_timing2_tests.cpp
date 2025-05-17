@@ -3,7 +3,6 @@
 #include "gb_factories/gbfactory.h"
 
 using namespace std;
-using namespace gb;
 
 TEST(RomTest, MemTiming2)
 {

@@ -3,10 +3,13 @@
 
 #include "ppu/layer/tiledata.h"
 
+#include "mockregisteradapter.h"
+#include "testbank.h"
+
 class MockTileData : public TileData {
 public:
   MockTileData(Tile tile = Tile { {} })
-      : TileData(*(IRegisterAdapter*)nullptr, *(IMemoryView*)nullptr)
+      : TileData(*fakeReg, TestBank::staticBank())
       , tile_(tile) {};
 
   Tile getTile(int16_t index) override
@@ -17,6 +20,8 @@ public:
 
 private:
   Tile tile_;
+
+  static IRegisterAdapterUP fakeReg;
 };
 
 #endif // MOCKTILEDATA_H

@@ -125,7 +125,9 @@ set(MOCK_SOURCES
   mock/mockregisters.cpp
   mock/mockrenderer.h
   mock/mocktiledata.h
+  mock/mocktiledata.cpp
   mock/mocktilemap.h
+  mock/mocktilemap.cpp
   mock/testbank.h
   mock/testbank.cpp
 )

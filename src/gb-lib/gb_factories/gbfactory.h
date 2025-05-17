@@ -3,7 +3,6 @@
 
 #include <vector>
 
-#include "cartloader.h"
 #include "cpu/cpu_defines.h"
 #include "mem/imemoryview.h"
 #include "peripheralregisterfactory.h"
@@ -20,12 +19,11 @@ public:
   SystemManagerUP constructSystem();
 
 private:
-  void constructMemory();
+  void constructMemory(const std::string& romFile, const std::string& ramFile);
   CpuUP constructCpu();
   std::vector<TickableSP> constructPeripherals();
-  TickableSP constructTimer();
+  TickableSP constructTimer(IRegisterAdapter& divApu);
 
-  gb::CartLoaderUP cartLoader_;
   std::vector<uint8_t> buffer_;
   IMemoryViewUP mem_ = nullptr;
   IoBank* ioBank_ = nullptr;
