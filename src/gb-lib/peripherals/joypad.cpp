@@ -24,7 +24,7 @@ void Joypad::clock()
     affectInputBit(ctrReg, Button::Up, UpOrSelect);
     affectInputBit(ctrReg, Button::Down, DownOrStart);
   }
-  controllerRegister_.setByte(ctrReg);
+  controllerRegister_.setByte(ctrReg | ControllerRegisterSetBits);
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }
@@ -35,5 +35,7 @@ void Joypad::affectInputBit(uint8_t& controlRegister, const Button& button, cons
 {
   if (buttonState_[button]) {
     hlp::clearBit(controlRegister, bit);
+  } else {
+    hlp::setBit(controlRegister, bit);
   }
 }

@@ -21,7 +21,7 @@ auto Length::isRunOut() const -> bool { return counter_ == LEN_STOPPED; }
 
 void Length::checkEnable()
 {
-  if (!nrX4_.testBit(LenEnableBitPos)) {
+  if (!nrX4_.testBit(LenEnableBit)) {
     counter_ = LEN_INACTIVE;
   } else if (counter_ == LEN_INACTIVE) {
     setCounter();

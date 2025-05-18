@@ -12,5 +12,4 @@ TEST(RomTest, InteruptTime)
   for (size_t c = 0U; c < 53470U; ++c) {
     EXPECT_NO_THROW(sm->clock()) << "at count: " << c;
   }
-  EXPECT_ANY_THROW(sm->clock()); // TODO: write on ROM
 }

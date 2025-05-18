@@ -20,6 +20,9 @@ public:
   void enableInterrupt() override { }
   void disableInterrupt() override { }
   bool interruptEnabled() const override { return false; }
+  void halt() override { }
+  void unhalt() override { }
+  bool isHalt() const override { return false; }
 };
 
 #endif // MOCKFLAGS_H

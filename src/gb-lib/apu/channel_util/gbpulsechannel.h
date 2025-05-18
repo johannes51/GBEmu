@@ -22,7 +22,7 @@ private:
   using waveformTable = std::array<uint8_t, DutyWaveformLength>;
   static constexpr uint8_t DutyWaveformCount = 4U;
   using dutyTable = std::array<waveformTable, DutyWaveformCount>;
-  static constexpr uint8_t WaveFormBitPos = 6U;
+  static constexpr uint8_t WaveFormBit = 6U;
 
   static constexpr dutyTable PulseDutyWaveformTable = { { { 0U, 0U, 0U, 0U, 0U, 0U, 0U, 1U },
       { 0U, 0U, 0U, 0U, 0U, 0U, 1U, 1U }, { 0U, 0U, 0U, 0U, 1U, 1U, 1U, 1U }, { 1U, 1U, 1U, 1U, 1U, 1U, 0U, 0U } } };

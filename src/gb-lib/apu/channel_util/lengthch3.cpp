@@ -21,7 +21,7 @@ auto LengthCh3::isRunOut() const -> bool { return counter_ == LEN_STOPPED; }
 
 void LengthCh3::checkEnable()
 {
-  if (!nr34_.testBit(LenEnableBitPos)) {
+  if (!nr34_.testBit(LenEnableBit)) {
     counter_ = LEN_INACTIVE;
   } else if (counter_ == LEN_INACTIVE) {
     setCounter();

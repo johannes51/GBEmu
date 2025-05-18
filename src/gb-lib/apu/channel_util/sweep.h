@@ -11,9 +11,9 @@ public:
 
 private:
   static constexpr uint8_t StepBitCount = 3U;
-  static constexpr uint8_t DirectionBitPos = 3U;
+  static constexpr uint8_t DirectionBit = 3U;
   static constexpr uint8_t CounterPeriodMask = 0b111U;
-  static constexpr uint8_t CounterBitPos = 4U;
+  static constexpr uint8_t CounterBit = 4U;
   static constexpr uint8_t CounterBitCount = 3U;
 
   const IRegisterAdapter& nr10_;

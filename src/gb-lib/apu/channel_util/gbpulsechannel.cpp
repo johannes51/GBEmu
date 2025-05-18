@@ -54,4 +54,4 @@ void GbPulseChannel::tickDuty()
 
 void GbPulseChannel::updateSample() { dac_.set(PulseDutyWaveformTable[selectedTable_][dutyPosition_] * env_.vol()); }
 
-void GbPulseChannel::updateWaveform() { selectedTable_ = (nrX1_.getByte() >> WaveFormBitPos); }
+void GbPulseChannel::updateWaveform() { selectedTable_ = (nrX1_.getByte() >> WaveFormBit); }

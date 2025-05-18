@@ -10,8 +10,6 @@ constexpr uint16_t DotsPerCycles = 4U;
 constexpr uint16_t LcdWidth = 160U;
 constexpr uint16_t LcdHeight = 144U;
 constexpr uint16_t LcdWithVBlankHeight = 154U;
-constexpr uint16_t CyclesPerLine = LcdWidth / DotsPerCycles;
-constexpr uint16_t CyclesPerFrame = CyclesPerLine * LcdWithVBlankHeight;
 constexpr uint16_t Mode2Length = 80U;
 constexpr uint16_t Mode3MaxLength = 289U;
 

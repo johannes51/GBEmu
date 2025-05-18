@@ -29,7 +29,7 @@ private:
   static constexpr uint8_t VolumePattern100Pct = 0b01U;
   static constexpr uint8_t VolumePattern50Pct = 0b10U;
   static constexpr uint8_t VolumePattern25Pct = 0b11U;
-  static constexpr uint8_t VolumePatternBitPos = 5U;
+  static constexpr uint8_t VolumePatternBit = 5U;
 
   const IRegisterAdapter& nr32_;
 

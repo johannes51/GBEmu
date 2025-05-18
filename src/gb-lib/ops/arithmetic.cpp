@@ -10,7 +10,7 @@ auto ops::increment(Location8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() + 1;
   location = numericalResult;
-  const auto halfCarry = (static_cast<unsigned int>(numericalResult) & LOWER_HALF_BYTE_MASK) == 0x0U;
+  const auto halfCarry = (static_cast<unsigned int>(numericalResult) & LOWER_NIBBLE_MASK) == 0x0U;
   return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,
     .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
@@ -28,7 +28,7 @@ auto ops::decrement(Location8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() - 1;
   location = numericalResult;
-  const auto halfCarry = (numericalResult & LOWER_HALF_BYTE_MASK) == 0xFU;
+  const auto halfCarry = (numericalResult & LOWER_NIBBLE_MASK) == 0xFU;
   return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Set,
     .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
@@ -52,7 +52,7 @@ auto ops::add(Location8& a, const Location8& b) -> ops::OpResult
   const uint8_t numericalResult = aVal + bVal;
   a = numericalResult;
 
-  const auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bVal) > LOWER_HALF_BYTE_MASK;
+  const auto halfCarry = (LOWER_NIBBLE_MASK & aVal) + (LOWER_NIBBLE_MASK & bVal) > LOWER_NIBBLE_MASK;
 
   return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,
@@ -66,13 +66,13 @@ auto ops::add_carry(Location8& a, const Location8& b, const bool carryFlag) -> o
   const auto bVal = b.get();
 
   auto carry = std::numeric_limits<uint8_t>::max() - aVal < bVal;
-  auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bVal) > LOWER_HALF_BYTE_MASK;
+  auto halfCarry = (LOWER_NIBBLE_MASK & aVal) + (LOWER_NIBBLE_MASK & bVal) > LOWER_NIBBLE_MASK;
 
   uint8_t numericalResult = aVal + bVal;
 
   if (carryFlag) {
     carry |= numericalResult == std::numeric_limits<uint8_t>::max();
-    halfCarry |= (LOWER_HALF_BYTE_MASK & numericalResult) == LOWER_HALF_BYTE_MASK;
+    halfCarry |= (LOWER_NIBBLE_MASK & numericalResult) == LOWER_NIBBLE_MASK;
     ++numericalResult;
   }
 
@@ -108,7 +108,7 @@ auto ops::addSigned(Location16& a, const uint8_t bUnsigned) -> ops::OpResult
   const uint16_t aVal = a.get();
   const uint16_t result = aVal + operand;
 
-  const auto halfCarry = (LOWER_HALF_BYTE_MASK & aVal) + (LOWER_HALF_BYTE_MASK & bUnsigned) > LOWER_HALF_BYTE_MASK;
+  const auto halfCarry = (LOWER_NIBBLE_MASK & aVal) + (LOWER_NIBBLE_MASK & bUnsigned) > LOWER_NIBBLE_MASK;
   const auto carry = std::numeric_limits<uint8_t>::max() - (LOWER_BYTE_MASK & aVal) < bUnsigned;
 
   a = result;
@@ -122,7 +122,7 @@ auto ops::addSigned(Location16& a, const uint8_t bUnsigned) -> ops::OpResult
 auto ops::sub(Location8& a, const Location8& b) -> ops::OpResult
 {
   auto borrow = a.get() < b.get();
-  auto halfBorrow = (LOWER_HALF_BYTE_MASK & a.get()) < (LOWER_HALF_BYTE_MASK & b.get());
+  auto halfBorrow = (LOWER_NIBBLE_MASK & a.get()) < (LOWER_NIBBLE_MASK & b.get());
 
   const uint8_t result = a.get() - b.get();
   a = result;
@@ -136,13 +136,13 @@ auto ops::sub(Location8& a, const Location8& b) -> ops::OpResult
 auto ops::sub_carry(Location8& a, const Location8& b, const bool carryFlag) -> ops::OpResult
 {
   auto borrow = a.get() < b.get();
-  auto halfBorrow = (LOWER_HALF_BYTE_MASK & a.get()) < (LOWER_HALF_BYTE_MASK & b.get());
+  auto halfBorrow = (LOWER_NIBBLE_MASK & a.get()) < (LOWER_NIBBLE_MASK & b.get());
 
   uint8_t numericalResult = a.get() - b.get();
 
   if (carryFlag) {
     borrow |= numericalResult == 0U;
-    halfBorrow |= (LOWER_HALF_BYTE_MASK & numericalResult) == 0U;
+    halfBorrow |= (LOWER_NIBBLE_MASK & numericalResult) == 0U;
     --numericalResult;
   }
 

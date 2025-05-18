@@ -93,8 +93,8 @@ auto ops::srl(Location8& location) -> ops::OpResult
 
 auto ops::swap(Location8& location) -> ops::OpResult
 {
-  const uint8_t result = (static_cast<unsigned int>(location.get() & LOWER_HALF_BYTE_MASK) << HALF_BYTE_SHIFT)
-      | (static_cast<unsigned int>(location.get() & UPPER_HALF_BYTE_MASK) >> HALF_BYTE_SHIFT);
+  const uint8_t result = (static_cast<unsigned int>(location.get() & LOWER_NIBBLE_MASK) << NIBBLE_SHIFT)
+      | (static_cast<unsigned int>(location.get() & UPPER_NIBBLE_MASK) >> NIBBLE_SHIFT);
   location = result;
   return { .z = (result == 0) ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,

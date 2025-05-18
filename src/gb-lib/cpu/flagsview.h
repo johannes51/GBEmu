@@ -27,6 +27,10 @@ public:
   virtual void disableInterrupt() = 0;
   virtual bool interruptEnabled() const = 0;
 
+  virtual void halt() = 0;
+  virtual void unhalt() = 0;
+  virtual bool isHalt() const = 0;
+
 protected:
   FlagsView() = default;
 };

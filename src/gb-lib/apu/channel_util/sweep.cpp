@@ -22,7 +22,7 @@ void Sweep::clock()
   }
 }
 
-void Sweep::loadCounter() { counter_ = hlp::getBits(nr10_.getByte(), CounterBitPos, CounterBitCount); }
+void Sweep::loadCounter() { counter_ = hlp::getBits(nr10_.getByte(), CounterBit, CounterBitCount); }
 
 void Sweep::modifyPeriod()
 {
@@ -33,7 +33,7 @@ void Sweep::modifyPeriod()
   const auto divisor = (1U << step);
   const auto change = (oldPeriod / divisor);
   uint16_t newPeriod = oldPeriod;
-  if (nr10_.testBit(DirectionBitPos)) {
+  if (nr10_.testBit(DirectionBit)) {
     newPeriod -= change;
   } else {
     newPeriod += change;

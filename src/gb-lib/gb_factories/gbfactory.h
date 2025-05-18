@@ -23,6 +23,8 @@ private:
   CpuUP constructCpu();
   std::vector<TickableSP> constructPeripherals();
   TickableSP constructTimer(IRegisterAdapter& divApu);
+  TickableSP constructJoypad();
+  TickableSP constructSerial();
 
   std::vector<uint8_t> buffer_;
   IMemoryViewUP mem_ = nullptr;

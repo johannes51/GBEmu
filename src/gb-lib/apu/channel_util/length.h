@@ -22,7 +22,7 @@ private:
     LEN_INACTIVE = 0b10000001U,
   };
 
-  static constexpr uint8_t LenEnableBitPos = 6U;
+  static constexpr uint8_t LenEnableBit = 6U;
   static constexpr uint8_t CounterMask = 0b111111U;
 
   const IRegisterAdapter& nrX1_;
