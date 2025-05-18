@@ -46,14 +46,19 @@ auto Cpu::clock() -> bool
 auto Cpu::loadNextOperation() -> OperationUP
 {
   OperationUP result;
-  if (registers_->getFlags().interruptEnabled() && interruptHandler_->isInterrupt()) {
-    result = OperationUP { static_cast<Operation*>(interruptHandler_.release()) };
-    executingInterrupt_ = true;
-    registers_->getFlags().disableInterrupt();
-  } else {
+  if (interruptHandler_->isInterrupt()) {
+    registers_->getFlags().unhalt();
+    if (registers_->getFlags().interruptEnabled()) {
+      result = OperationUP { static_cast<Operation*>(interruptHandler_.release()) };
+      executingInterrupt_ = true;
+      registers_->getFlags().disableInterrupt();
+    }
+  }
+  if (!result && !registers_->getFlags().isHalt()) {
     const auto next = fetchNextOpcode();
     result = instructionDecoder_->decode(next);
   }
+
   if (result) {
     result->showFlags(registers_->getFlags());
     while (!result->isComplete()) {

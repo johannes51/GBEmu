@@ -35,9 +35,14 @@ public:
   void disableInterrupt() override;
   bool interruptEnabled() const override;
 
+  void halt() override;
+  void unhalt() override;
+  bool isHalt() const override;
+
 private:
   uint8_t& buffer_;
   bool interrupt_;
+  bool halt_;
 };
 
 #endif // CPUFLAGS_H

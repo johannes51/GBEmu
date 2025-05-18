@@ -193,6 +193,8 @@ target_sources(gbelib PRIVATE
   peripherals/interrupthandler.h
   peripherals/joypad.h
   peripherals/joypad.cpp
+  peripherals/serial.h
+  peripherals/serial.cpp
   peripherals/tickable.h
   ppu/ippu.h
   ppu/irenderer.h

@@ -9,6 +9,8 @@
 #include "memoryfactory.h"
 #include "peripherals/gbinterrupthandler.h"
 #include "peripherals/gbtimer.h"
+#include "peripherals/joypad.h"
+#include "peripherals/serial.h"
 #include "ppufactory.h"
 
 GbFactory::GbFactory(const std::string& romFile, const std::string& ramFile)
@@ -51,7 +53,7 @@ auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
   auto p = PpuFactory(*mem_, *ioBank_, peripheralRF_->get(PeripheralRegisters::IF));
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
-  return { a.constructApu(), std::move(ppu), constructTimer(divApuRef) };
+  return { a.constructApu(), std::move(ppu), constructTimer(divApuRef), constructJoypad(), constructSerial() };
 }
 
 auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
@@ -59,4 +61,15 @@ auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
   return { std::make_shared<GbTimer>(peripheralRF_->getDiv(), divApu, peripheralRF_->get(PeripheralRegisters::TIMA),
       peripheralRF_->get(PeripheralRegisters::TMA), peripheralRF_->get(PeripheralRegisters::TAC),
       peripheralRF_->get(PeripheralRegisters::IF)) };
+}
+
+auto GbFactory::constructJoypad() -> TickableSP
+{
+  return std::make_shared<Joypad>(peripheralRF_->get(PeripheralRegisters::JOYP));
+}
+
+auto GbFactory::constructSerial() -> TickableSP
+{
+  return std::make_shared<Serial>(peripheralRF_->get(PeripheralRegisters::SB),
+      peripheralRF_->get(PeripheralRegisters::SC), peripheralRF_->get(PeripheralRegisters::IF));
 }

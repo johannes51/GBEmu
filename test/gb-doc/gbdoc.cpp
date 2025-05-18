@@ -11,21 +11,24 @@ using namespace std::literals;
 #include "gb_factories/instructionsetbuilder.h"
 #include "gb_factories/memoryfactory.h"
 #include "gb_factories/peripheralregisterfactory.h"
+#include "gb_factories/ppufactory.h"
 
 #include "cpu/cpu.h"
 #include "cpu/cpuregisters.h"
 #include "mem/registers/singleregisterbank.h"
 #include "peripherals/gbinterrupthandler.h"
 #include "peripherals/gbtimer.h"
+#include "peripherals/joypad.h"
+#include "peripherals/serial.h"
 
 static const std::vector<std::pair<std::string, size_t>> romList = {
   {{"01"s}, {1256633U}} /* PASS! */,
-  {{"02"s}, {152036U}} /* Interrupt handling 161057 */,
+  {{"02"s}, {161057U}} /* PASS */,
   {{"03"s}, {1066160U}} /* PASS! */,
   {{"04"s}, {1260504U}} /* PASS! */,
   {{"05"s}, {1761126U}} /* PASS! */,
   {{"06"s}, {241011U}} /* PASS! */,
-  {{"07"s}, {254075U}} /* RET failt, PC zu hoch? 587415 */,
+  {{"07"s}, {587415}} /* PASS */,
   {{"08"s}, {221630U}} /* PASS! */,
   {{"09"s}, {4418120U}} /* PASS! */,
   {{"10"s}, {6712461U}} /* PASS! */,
@@ -51,7 +54,7 @@ void print(std::ostream& s, IMemoryView& m, RegistersInterface& r)
     << (unsigned int)m.getLocation8(pc).get() << "," << std::setw(2)
     << (unsigned int)m.getLocation8(pc + 1).get() << "," << std::setw(2)
     << (unsigned int)m.getLocation8(pc + 2).get() << "," << std::setw(2)
-    << (unsigned int)m.getLocation8(pc + 3).get() << std::endl;
+    << (unsigned int)m.getLocation8(pc + 3).get() << "\n";
 }
 
 bool runTest(const std::string& number, const size_t limit)
@@ -61,9 +64,13 @@ bool runTest(const std::string& number, const size_t limit)
   auto ramFile = number + ".sav";
   std::ofstream fileStream(outFile);
 
+  std::cout << "Executing " << romFile<< "\n";
+
   std::shared_ptr<Cpu> cpu;
   std::shared_ptr<GbTimer> t;
-      CpuRegisters* r = nullptr;
+  std::shared_ptr<Joypad> j;
+  CpuRegisters* r = nullptr;
+  TickableSP serial;
 
   auto mf = gb::MemoryFactory(std::make_unique<gb::CartLoader>(romFile, ramFile), buffer);
   auto peripheralRF = PeripheralRegisterFactory(*mf.getIoBank());
@@ -75,9 +82,11 @@ bool runTest(const std::string& number, const size_t limit)
     t = std::make_shared<GbTimer>(peripheralRF.getDiv(), *peripheralRF.releaseDivApu(),
         peripheralRF.get(PeripheralRegisters::TIMA), peripheralRF.get(PeripheralRegisters::TMA),
         peripheralRF.get(PeripheralRegisters::TAC), peripheralRF.get(PeripheralRegisters::IF));
+    j = std::make_shared<Joypad>(peripheralRF.get(PeripheralRegisters::JOYP));
     auto ie = mf.getIeBank()->asRegister();
     auto ih = std::make_unique<GbInterruptHandler>(peripheralRF.get(PeripheralRegisters::IF), *ie);
     cpu = std::make_shared<Cpu>(*m, std::move(r_up), std::move(ie), InstructionSetBuilder::construct(), std::move(ih));
+    serial = std::make_shared<Serial>(peripheralRF.get(PeripheralRegisters::SB), peripheralRF.get(PeripheralRegisters::SC), peripheralRF.get(PeripheralRegisters::IF));
   }
   m->getLocation8(0xFF44U) = 0x90U;
   print(fileStream, *m, *r);
@@ -95,6 +104,8 @@ bool runTest(const std::string& number, const size_t limit)
         print(fileStream, *m, *r);
       }
       t->clock();
+      j->clock();
+      serial->clock();
     } catch(...) {
       print(fileStream, *m, *r);
       return false;

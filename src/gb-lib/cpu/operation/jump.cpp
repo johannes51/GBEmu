@@ -116,6 +116,7 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
       switch (type_) {
       case JumpType::Call:
       case JumpType::Reset:
+        // push PC
         ops::decrement(sp);
         ops::decrement(sp);
         {

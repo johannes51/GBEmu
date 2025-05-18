@@ -5,6 +5,7 @@
 CpuFlags::CpuFlags(uint8_t& buffer)
     : buffer_(buffer)
     , interrupt_(true)
+    , halt_(false)
 {
 }
 
@@ -37,3 +38,9 @@ void CpuFlags::enableInterrupt() { interrupt_ = true; }
 void CpuFlags::disableInterrupt() { interrupt_ = false; }
 
 auto CpuFlags::interruptEnabled() const -> bool { return interrupt_; }
+
+void CpuFlags::halt() { halt_ = true; }
+
+void CpuFlags::unhalt() { halt_ = false; }
+
+auto CpuFlags::isHalt() const -> bool { return halt_; }

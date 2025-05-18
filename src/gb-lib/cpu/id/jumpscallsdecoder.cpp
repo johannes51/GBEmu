@@ -133,4 +133,5 @@ void JumpsCallsDecoder::feedResetOpcode(Operation& op, OpcodeView opcode)
     break;
   }
   op.nextOpcode(variableLocation(lower));
+  op.nextOpcode(variableLocation(uint8_t { 0U }));
 }

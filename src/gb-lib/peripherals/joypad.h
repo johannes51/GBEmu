@@ -1,6 +1,8 @@
 #ifndef JOYPAD_H
 #define JOYPAD_H
 
+#include "tickable.h"
+
 #include <memory>
 #include <unordered_map>
 
@@ -15,17 +17,19 @@ constexpr uint8_t DownOrStart = 0x3;
 constexpr uint8_t SelectDirection = 0x4;
 constexpr uint8_t SelectAction = 0x5;
 
-class Joypad {
+class Joypad : public Tickable {
 public:
   explicit Joypad(IRegisterAdapter& controllerRegister);
 
-  void clock();
+  void clock() override;
 
   void press(Button button);
   void release(Button button);
 
 private:
   void affectInputBit(uint8_t& controlRegister, const Button& button, const uint8_t& bit);
+
+  static constexpr uint8_t ControllerRegisterSetBits = 0b11000000U;
 
   IRegisterAdapter& controllerRegister_;
   std::unordered_map<Button, bool> buttonState_;

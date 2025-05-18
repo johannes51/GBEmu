@@ -22,4 +22,6 @@ constexpr unsigned int TWO_BYTE_BIT_COUNT = 16U;
 
 constexpr address_type ZERO_PAGE_BASE = 0xFF00;
 
+constexpr uint32_t GB_CLOCK = 1048576U;
+
 #endif // CONSTANTS_H
