@@ -43,11 +43,11 @@ void GbChannel3::advanceWaveRam()
 {
   auto ramSample = waveRam_.getLocation8(waveRamPtr_.address).get();
   if (waveRamPtr_.upper) {
-    ramSample = hlp::getBits(ramSample, HALF_BYTE_SHIFT, HALF_BYTE_SHIFT);
+    ramSample = hlp::getBits(ramSample, NIBBLE_SHIFT, NIBBLE_SHIFT);
   } else {
-    ramSample = hlp::getBits(ramSample, 0U, HALF_BYTE_SHIFT);
+    ramSample = hlp::getBits(ramSample, 0U, NIBBLE_SHIFT);
   }
-  switch (hlp::getBits(nr32_.getByte(), VolumePatternBitPos, 2U)) {
+  switch (hlp::getBits(nr32_.getByte(), VolumePatternBit, 2U)) {
   case VolumePattern0Pct:
     ramSample = 0U;
     break;
