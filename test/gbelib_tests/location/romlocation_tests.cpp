@@ -15,6 +15,6 @@ TEST(RomLocationTest, Write)
   uint8_t b { 0xFU };
   RomLocation a { b };
 
-  EXPECT_ANY_THROW(a.set(0U));
+  EXPECT_NO_THROW(a.set(0U));
   EXPECT_EQ(0xFU, a.get());
 }

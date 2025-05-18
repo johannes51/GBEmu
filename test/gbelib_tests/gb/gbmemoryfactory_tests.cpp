@@ -8,21 +8,21 @@
 using namespace std;
 using namespace gb;
 
-address_type startROM0 = 0x0000;
-address_type endROM0 = 0x3FFF;
-address_type startROM1 = 0x4000;
-address_type endROM1 = 0x7FFF;
-address_type startWRAM0 = 0xC000;
-address_type endWRAM0 = 0xCFFF;
-address_type startWRAM1 = 0xD000;
-address_type endWRAM1 = 0xDFFF;
-address_type startECHO = 0xE000;
-address_type endECHO = 0xFDFF;
-address_type startNOTUSED = 0xFEA0;
-address_type endNOTUSED = 0xFEFF;
-address_type startHRAM = 0xFF80;
-address_type endHRAM = 0xFFFE;
-address_type startPC = 0x0100;
+address_type startROM0 = 0x0000U;
+address_type endROM0 = 0x3FFFU;
+address_type startROM1 = 0x4000U;
+address_type endROM1 = 0x7FFFU;
+address_type startWRAM0 = 0xC000U;
+address_type endWRAM0 = 0xCFFFU;
+address_type startWRAM1 = 0xD000U;
+address_type endWRAM1 = 0xDFFFU;
+address_type startECHO = 0xE000U;
+address_type endECHO = 0xFDFFU;
+address_type startNOTUSED = 0xFEA0U;
+address_type endNOTUSED = 0xFEFFU;
+address_type startHRAM = 0xFF80U;
+address_type endHRAM = 0xFFFEU;
+address_type startPC = 0x0100U;
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint16_t value)
 {
@@ -63,9 +63,10 @@ TEST(GBMemoryFactoryTest, ROM0t1)
   auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.releaseMemory();
-  EXPECT_EQ(0x3C, mem->getLocation8(startROM0).get());
-  EXPECT_EQ(0xC9, mem->getLocation8(startROM0 + 1).get());
-  EXPECT_ANY_THROW(mem->getLocation8(startROM0) = uint8_t(0x00));
+  EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
+  EXPECT_EQ(0xC9U, mem->getLocation8(startROM0 + 1).get());
+  EXPECT_NO_THROW(mem->getLocation8(startROM0) = uint8_t(0x00U));
+  EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
 }
 
 TEST(GBMemoryFactoryTest, ROM0t2)
@@ -73,11 +74,12 @@ TEST(GBMemoryFactoryTest, ROM0t2)
   auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.releaseMemory();
-  EXPECT_EQ(0x00, mem->getLocation8(startPC).get());
-  EXPECT_EQ(0xC3, mem->getLocation8(startPC + 1).get());
-  EXPECT_EQ(0x37, mem->getLocation8(startPC + 2).get());
-  EXPECT_EQ(0x06, mem->getLocation8(startPC + 3).get());
-  EXPECT_ANY_THROW(mem->getLocation8(startPC) = uint8_t(0x00));
+  EXPECT_EQ(0x00U, mem->getLocation8(startPC).get());
+  EXPECT_EQ(0xC3U, mem->getLocation8(startPC + 1).get());
+  EXPECT_EQ(0x37U, mem->getLocation8(startPC + 2).get());
+  EXPECT_EQ(0x06U, mem->getLocation8(startPC + 3).get());
+  EXPECT_NO_THROW(mem->getLocation8(startPC + 1) = uint8_t(0x00U));
+  EXPECT_EQ(0xC3U, mem->getLocation8(startPC + 1).get());
 }
 
 TEST(GBMemoryFactoryTest, ROM0t3)
@@ -86,8 +88,9 @@ TEST(GBMemoryFactoryTest, ROM0t3)
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.releaseMemory();
   unsigned val = mem->getLocation16(endROM0 - 1).get();
-  EXPECT_EQ(0x066E, val);
-  EXPECT_ANY_THROW(mem->getLocation8(endROM0) = uint8_t(0x00));
+  EXPECT_EQ(0x066EU, val);
+  EXPECT_NO_THROW(mem->getLocation8(endROM0) = uint8_t(0x00U));
+  EXPECT_EQ(0x06U, mem->getLocation8(endROM0).get());
 }
 
 TEST(GBMemoryFactoryTest, ROM1t1)
@@ -95,9 +98,10 @@ TEST(GBMemoryFactoryTest, ROM1t1)
   auto v = std::vector<uint8_t> {};
   auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
   auto mem = f.releaseMemory();
-  EXPECT_EQ(0xC3, mem->getLocation8(startROM1).get());
-  EXPECT_EQ(0x20, mem->getLocation8(startROM1 + 1).get());
-  EXPECT_ANY_THROW(mem->getLocation8(startROM1) = uint8_t(0x00));
+  EXPECT_EQ(0xC3U, mem->getLocation8(startROM1).get());
+  EXPECT_EQ(0x20U, mem->getLocation8(startROM1 + 1).get());
+  EXPECT_NO_THROW(mem->getLocation8(startROM0) = uint8_t(0x00U));
+  EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
 }
 
 TEST(GBMemoryFactoryTest, WRAM0t1)
