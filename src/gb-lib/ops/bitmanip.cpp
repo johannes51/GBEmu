@@ -5,7 +5,7 @@
 
 auto ops::bit(const Location8& location, uint8_t bitPos) -> ops::OpResult
 {
-  const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
+  const auto result = (static_cast<unsigned>(location.get() >> bitPos) & 0b1U) == 0;
   return { .z = result ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,
     .h = FlagResult::Set,
@@ -14,7 +14,7 @@ auto ops::bit(const Location8& location, uint8_t bitPos) -> ops::OpResult
 
 auto ops::bit(const Location16& location, uint8_t bitPos) -> ops::OpResult
 {
-  const auto result = (static_cast<unsigned int>(location.get() >> bitPos) & 0b1U) == 0;
+  const auto result = (static_cast<unsigned>(location.get() >> bitPos) & 0b1U) == 0;
   return { .z = result ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,
     .h = FlagResult::Set,

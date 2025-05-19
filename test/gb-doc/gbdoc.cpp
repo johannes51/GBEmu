@@ -41,20 +41,20 @@ void print(std::ostream& s, IMemoryView& m, RegistersInterface& r)
 {
   const auto pc = hlp::indirect(r.get(WordRegister::PC));
   s << std::hex << std::uppercase << std::setfill('0');
-  s << "A:" << std::setw(2) << (unsigned int)r.get(ByteRegister::A).get() << std::setw(0)
-    << " F:" << std::setw(2) << (unsigned int)r.get(ByteRegister::F).get() << std::setw(0)
-    << " B:" << std::setw(2) << (unsigned int)r.get(ByteRegister::B).get() << std::setw(0)
-    << " C:" << std::setw(2) << (unsigned int)r.get(ByteRegister::C).get() << std::setw(0)
-    << " D:" << std::setw(2) << (unsigned int)r.get(ByteRegister::D).get() << std::setw(0)
-    << " E:" << std::setw(2) << (unsigned int)r.get(ByteRegister::E).get() << std::setw(0)
-    << " H:" << std::setw(2) << (unsigned int)r.get(ByteRegister::H).get() << std::setw(0)
-    << " L:" << std::setw(2) << (unsigned int)r.get(ByteRegister::L).get() << std::setw(0)
-    << " SP:" << std::setw(4) << (unsigned int)r.get(WordRegister::SP).get() << std::setw(0)
-    << " PC:" << std::setw(4) << (unsigned int)pc << std::setw(0) << " PCMEM:" << std::setw(2)
-    << (unsigned int)m.getLocation8(pc).get() << "," << std::setw(2)
-    << (unsigned int)m.getLocation8(pc + 1).get() << "," << std::setw(2)
-    << (unsigned int)m.getLocation8(pc + 2).get() << "," << std::setw(2)
-    << (unsigned int)m.getLocation8(pc + 3).get() << "\n";
+  s << "A:" << std::setw(2) << (unsigned)r.get(ByteRegister::A).get() << std::setw(0)
+    << " F:" << std::setw(2) << (unsigned)r.get(ByteRegister::F).get() << std::setw(0)
+    << " B:" << std::setw(2) << (unsigned)r.get(ByteRegister::B).get() << std::setw(0)
+    << " C:" << std::setw(2) << (unsigned)r.get(ByteRegister::C).get() << std::setw(0)
+    << " D:" << std::setw(2) << (unsigned)r.get(ByteRegister::D).get() << std::setw(0)
+    << " E:" << std::setw(2) << (unsigned)r.get(ByteRegister::E).get() << std::setw(0)
+    << " H:" << std::setw(2) << (unsigned)r.get(ByteRegister::H).get() << std::setw(0)
+    << " L:" << std::setw(2) << (unsigned)r.get(ByteRegister::L).get() << std::setw(0)
+    << " SP:" << std::setw(4) << (unsigned)r.get(WordRegister::SP).get() << std::setw(0)
+    << " PC:" << std::setw(4) << (unsigned)pc << std::setw(0) << " PCMEM:" << std::setw(2)
+    << (unsigned)m.getLocation8(pc).get() << "," << std::setw(2)
+    << (unsigned)m.getLocation8(pc + 1).get() << "," << std::setw(2)
+    << (unsigned)m.getLocation8(pc + 2).get() << "," << std::setw(2)
+    << (unsigned)m.getLocation8(pc + 3).get() << "\n";
 }
 
 bool runTest(const std::string& number, const size_t limit)

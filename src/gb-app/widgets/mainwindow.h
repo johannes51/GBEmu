@@ -25,9 +25,9 @@ public slots:
   void drawGbFrame();
 
 private:
-  static constexpr unsigned int SecondByte = 8U;
-  static constexpr unsigned int ThirdByte = 16U;
-  static constexpr unsigned int Alpha = 0xFF000000U;
+  static constexpr unsigned SecondByte = 8U;
+  static constexpr unsigned ThirdByte = 16U;
+  static constexpr unsigned Alpha = 0xFF000000U;
 
   std::unique_ptr<Ui::MainWindow> ui_;
 

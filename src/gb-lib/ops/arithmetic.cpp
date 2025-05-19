@@ -10,7 +10,7 @@ auto ops::increment(Location8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() + 1;
   location = numericalResult;
-  const auto halfCarry = (static_cast<unsigned int>(numericalResult) & LOWER_NIBBLE_MASK) == 0x0U;
+  const auto halfCarry = (static_cast<unsigned>(numericalResult) & LOWER_NIBBLE_MASK) == 0x0U;
   return { .z = (numericalResult == 0x0U) ? FlagResult::Set : FlagResult::Reset,
     .n = FlagResult::Reset,
     .h = halfCarry ? FlagResult::Set : FlagResult::Reset,
