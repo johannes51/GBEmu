@@ -19,7 +19,7 @@ constexpr uint8_t SelectAction = 0x5;
 
 class Joypad : public Tickable {
 public:
-  explicit Joypad(IRegisterAdapter& controllerRegister);
+  explicit Joypad(IRegisterAdapter& controllerRegister, IRegisterAdapter& rIf);
 
   void clock() override;
 
@@ -33,6 +33,7 @@ private:
 
   IRegisterAdapter& controllerRegister_;
   std::unordered_map<Button, bool> buttonState_;
+  IRegisterAdapter& if_;
 };
 
 using JoypadUP = std::unique_ptr<Joypad>;

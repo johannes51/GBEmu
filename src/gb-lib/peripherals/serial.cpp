@@ -42,8 +42,8 @@ void Serial::clockSerial()
 
 void Serial::clockRegister()
 {
-  const auto newValue = static_cast<uint8_t>(
-      static_cast<unsigned int>(sb_.getByte() << 1U) | 1U); // shift in 1s, simulating no connection
+  const auto newValue
+      = static_cast<uint8_t>(static_cast<unsigned>(sb_.getByte() << 1U) | 1U); // shift in 1s, simulating no connection
   sb_.setByte(newValue);
 }
 

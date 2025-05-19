@@ -15,5 +15,5 @@ TEST(SystemManagerTest, PixelBuffer)
 {
   GbFactory f { "cpu_instrs.gb", "cpu_instrs.sav" };
   const auto s = f.constructSystem();
-  EXPECT_NE(nullptr, s->getBuffer());
+  EXPECT_NE(nullptr, s->getPixBuffer());
 }

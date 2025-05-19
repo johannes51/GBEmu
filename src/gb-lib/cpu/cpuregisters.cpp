@@ -22,12 +22,12 @@ CpuRegisters::CpuRegisters()
     : registers_()
     , flags_()
 {
-  registers_[WordRegister::AF] = static_cast<unsigned int>(INITIAL_A) << BYTE_SHIFT | INITIAL_F;
-  registers_[WordRegister::BC] = static_cast<unsigned int>(INITIAL_B) << BYTE_SHIFT | INITIAL_C;
-  registers_[WordRegister::DE] = static_cast<unsigned int>(INITIAL_D) << BYTE_SHIFT | INITIAL_E;
-  registers_[WordRegister::HL] = static_cast<unsigned int>(INITIAL_H) << BYTE_SHIFT | INITIAL_L;
-  registers_[WordRegister::SP] = static_cast<unsigned int>(INITIAL_SPu) << BYTE_SHIFT | INITIAL_SPl;
-  registers_[WordRegister::PC] = static_cast<unsigned int>(INITIAL_PCu) << BYTE_SHIFT | INITIAL_PCl;
+  registers_[WordRegister::AF] = static_cast<unsigned>(INITIAL_A) << BYTE_SHIFT | INITIAL_F;
+  registers_[WordRegister::BC] = static_cast<unsigned>(INITIAL_B) << BYTE_SHIFT | INITIAL_C;
+  registers_[WordRegister::DE] = static_cast<unsigned>(INITIAL_D) << BYTE_SHIFT | INITIAL_E;
+  registers_[WordRegister::HL] = static_cast<unsigned>(INITIAL_H) << BYTE_SHIFT | INITIAL_L;
+  registers_[WordRegister::SP] = static_cast<unsigned>(INITIAL_SPu) << BYTE_SHIFT | INITIAL_SPl;
+  registers_[WordRegister::PC] = static_cast<unsigned>(INITIAL_PCu) << BYTE_SHIFT | INITIAL_PCl;
 
   flags_ = std::make_unique<CpuFlags>(*reinterpret_cast<uint8_t*>(&registers_[WordRegister::AF]));
 }

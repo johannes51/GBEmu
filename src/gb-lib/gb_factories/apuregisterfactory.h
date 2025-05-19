@@ -35,7 +35,7 @@ public:
   }
 
 private:
-  static const std::unordered_map<ApuRegisters, address_type> ApuRegisterAddresses;
+  static const RegisterFactory<ApuRegisters>::InputMap ApuRegisterAddresses;
 };
 
 #endif // APUREGISTERFACTORY_H

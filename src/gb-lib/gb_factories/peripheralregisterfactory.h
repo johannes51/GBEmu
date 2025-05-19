@@ -29,7 +29,7 @@ public:
   IRegisterAdapterUP releaseDivApu();
 
 private:
-  static const std::unordered_map<PeripheralRegisters, address_type> PeripheralRegisterAddresses;
+  static const RegisterFactory<PeripheralRegisters>::InputMap PeripheralRegisterAddresses;
   DivRegisterSP div_ = nullptr;
   IRegisterAdapterUP div_apu_ = nullptr;
 };

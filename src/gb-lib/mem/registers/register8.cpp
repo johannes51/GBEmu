@@ -15,7 +15,7 @@ auto Register8::get() const -> const uint8_t&
 
 void Register8::set(const uint8_t& value)
 {
-  buffer_ = upper_ ? static_cast<uint16_t>(static_cast<unsigned int>(buffer_ & LOWER_BYTE_MASK)
-                         | static_cast<unsigned int>(value << BYTE_SHIFT))
-                   : static_cast<uint16_t>(static_cast<unsigned int>(buffer_ & UPPER_BYTE_MASK) | value);
+  buffer_ = upper_ ? static_cast<uint16_t>(
+                         static_cast<unsigned>(buffer_ & LOWER_BYTE_MASK) | static_cast<unsigned>(value << BYTE_SHIFT))
+                   : static_cast<uint16_t>(static_cast<unsigned>(buffer_ & UPPER_BYTE_MASK) | value);
 }

@@ -10,9 +10,7 @@ template <class T, size_t Width, size_t Height> class PixelBuffer {
 public:
   PixelBuffer() = default;
 
-  T* data();
-
-  T* line_data(size_t y);
+  const T* data() const;
 
   T& at(size_t x, size_t y);
   const T& at(size_t x, size_t y) const;
@@ -27,7 +25,7 @@ private:
   std::array<T, Width * Height> data_;
 };
 
-template <class T, size_t Width, size_t Height> inline auto PixelBuffer<T, Width, Height>::data() -> T*
+template <class T, size_t Width, size_t Height> inline auto PixelBuffer<T, Width, Height>::data() const -> const T*
 {
   return data_.data();
 }
@@ -65,6 +63,7 @@ inline auto PixelBuffer<T, Width, Height>::transformCoords(size_t x, size_t y) -
 }
 
 struct Rgb {
+  uint8_t a = 0xFFU;
   uint8_t r;
   uint8_t g;
   uint8_t b;

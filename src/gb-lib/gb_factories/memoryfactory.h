@@ -15,7 +15,7 @@ namespace gb {
 
 class MemoryFactory {
 public:
-  MemoryFactory(CartLoaderUP&& romLoader, std::vector<uint8_t>& buffer);
+  MemoryFactory(CartLoaderUP romLoader, std::vector<uint8_t>& buffer);
 
   IoBank* getIoBank();
   SingleRegisterBank* getIeBank();

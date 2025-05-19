@@ -5,9 +5,9 @@
 TEST(FallingEdgeDetectorTest, Construction)
 {
   EXPECT_NO_THROW(FallingEdgeDetector<int> f);
-  EXPECT_NO_THROW(FallingEdgeDetector<unsigned int> f);
+  EXPECT_NO_THROW(FallingEdgeDetector<unsigned> f);
   EXPECT_NO_THROW(FallingEdgeDetector<int> f(1));
-  EXPECT_NO_THROW((FallingEdgeDetector<unsigned int, 1>(2)));
+  EXPECT_NO_THROW((FallingEdgeDetector<unsigned, 1>(2)));
 }
 
 TEST(FallingEdgeDetectorTest, AbInitio)

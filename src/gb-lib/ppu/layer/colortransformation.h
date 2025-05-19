@@ -8,8 +8,8 @@
 #include "gbpalette.h"
 
 const std::unordered_map<GbColors, Rgb> GbStdRgb
-    = { { GbColors::White, { 155, 188, 15 } }, { GbColors::LightGray, { 139, 172, 15 } },
-        { GbColors::DarkGray, { 48, 98, 48 } }, { GbColors::Black, { 15, 56, 15 } } };
+    = { { GbColors::White, { .r = 155, .g = 188, .b = 15 } }, { GbColors::LightGray, { .r = 139, .g = 172, .b = 15 } },
+        { GbColors::DarkGray, { .r = 48, .g = 98, .b = 48 } }, { GbColors::Black, { .r = 15, .g = 56, .b = 15 } } };
 
 template <typename InType, typename OutType> class ColorTransformation {
 public:

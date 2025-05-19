@@ -1,5 +1,6 @@
 #include "unimplementeddecoder.h"
 
+#include <sstream>
 #include <stdexcept>
 
 #include "../operation/operation.h"
@@ -10,7 +11,9 @@ const std::vector<uint8_t> UnimplementedDecoder::decodedOpcodes_
 auto UnimplementedDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
 {
   (void)opcodeLocation;
-  throw std::invalid_argument("Unimplemented (in HW) opcode");
+  std::stringstream stream;
+  stream << "Unimplemented (in HW) opcode: " << std::hex << static_cast<int>(opcodeLocation.get());
+  throw std::invalid_argument(stream.str());
   return {};
 }
 

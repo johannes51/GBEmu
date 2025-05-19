@@ -26,7 +26,7 @@ public:
   }
 
 private:
-  static const std::unordered_map<PpuRegisters, address_type> PpuRegisterAddresses;
+  static const RegisterFactory<PpuRegisters>::InputMap PpuRegisterAddresses;
 };
 
 #endif // PPUREGISTERFACTORY_H

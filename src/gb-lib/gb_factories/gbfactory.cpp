@@ -24,7 +24,7 @@ auto GbFactory::constructSystem() -> SystemManagerUP
   auto cpu = constructCpu();
   auto peri = constructPeripherals();
   return std::make_unique<SystemManager>(
-      std::move(cpu), std::move(mem_), std::move(peri), peripheralRF_->getAll(), pixBuf_);
+      std::move(cpu), std::move(mem_), std::move(peri), peripheralRF_->getAll(), pixBuf_, std::move(buffer_));
 }
 
 void GbFactory::constructMemory(const std::string& romFile, const std::string& ramFile)
@@ -65,7 +65,8 @@ auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
 
 auto GbFactory::constructJoypad() -> TickableSP
 {
-  return std::make_shared<Joypad>(peripheralRF_->get(PeripheralRegisters::JOYP));
+  return std::make_shared<Joypad>(
+      peripheralRF_->get(PeripheralRegisters::JOYP), peripheralRF_->get(PeripheralRegisters::IF));
 }
 
 auto GbFactory::constructSerial() -> TickableSP

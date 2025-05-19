@@ -10,7 +10,7 @@
 #include "mem/registers/singleregisterbank.h"
 #include "mem/rest/nullbank.h"
 
-gb::MemoryFactory::MemoryFactory(CartLoaderUP&& romLoader, std::vector<uint8_t>& buffer)
+gb::MemoryFactory::MemoryFactory(CartLoaderUP romLoader, std::vector<uint8_t>& buffer)
     : loader_(std::move(romLoader))
     , buffer_(buffer)
     , ptr_(buffer_.begin())
