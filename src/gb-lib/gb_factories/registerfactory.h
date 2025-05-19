@@ -6,43 +6,44 @@
 #include "mem/registers/iobank.h"
 #include "mem/registers/memoryregisteradapter.h"
 
-template <typename E>
-std::unordered_map<E, IRegisterAdapterUP> constructRegisterMap(
-    const IMemoryView& ioBank, const std::unordered_map<E, address_type>& map);
-
 template <typename E> class RegisterFactory {
 public:
+  using InputMap = std::unordered_map<E, std::pair<address_type, uint8_t>>;
+  using OutputMap = std::unordered_map<E, IRegisterAdapterUP>;
+
   IRegisterAdapter& get(E name);
-  std::unordered_map<E, IRegisterAdapterUP> getAll();
+  OutputMap getAll();
 
 protected:
-  explicit RegisterFactory(IoBank& ioBank, const std::unordered_map<E, address_type>& map);
+  explicit RegisterFactory(IoBank& ioBank, const InputMap& map);
 
 private:
-  std::unordered_map<E, IRegisterAdapterUP> registers_;
+  static OutputMap constructRegisterMap(IoBank& ioBank, const InputMap& map);
+
+  OutputMap registers_;
 };
 
 template <typename E> IRegisterAdapter& RegisterFactory<E>::get(E name) { return *registers_.at(name); }
 
-template <typename E> inline std::unordered_map<E, IRegisterAdapterUP> RegisterFactory<E>::getAll()
+template <typename E> inline RegisterFactory<E>::OutputMap RegisterFactory<E>::getAll()
 {
   return std::move(registers_);
 }
 
 template <typename E>
-RegisterFactory<E>::RegisterFactory(IoBank& ioBank, const std::unordered_map<E, address_type>& map)
-    : registers_(constructRegisterMap<E>(ioBank, map))
+RegisterFactory<E>::RegisterFactory(IoBank& ioBank, const InputMap& map)
+    : registers_(constructRegisterMap(ioBank, map))
 {
 }
 
 template <typename E>
-std::unordered_map<E, IRegisterAdapterUP> constructRegisterMap(
-    IoBank& ioBank, const std::unordered_map<E, address_type>& map)
+RegisterFactory<E>::OutputMap RegisterFactory<E>::constructRegisterMap(IoBank& ioBank, const InputMap& map)
 {
-  std::unordered_map<E, IRegisterAdapterUP> result;
+  OutputMap result;
   for (const auto& regAddPair : map) {
-    result.emplace(
-        regAddPair.first, std::make_unique<MemoryRegisterAdapter>(ioBank.getRegisterLocation(regAddPair.second)));
+    auto emplaceResult = result.emplace(
+        regAddPair.first, std::make_unique<MemoryRegisterAdapter>(ioBank.getRegisterLocation(regAddPair.second.first)));
+    (emplaceResult.first)->second->setByte(regAddPair.second.second);
   }
   return result;
 }
