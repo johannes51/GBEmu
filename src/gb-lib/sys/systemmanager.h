@@ -13,19 +13,21 @@
 class SystemManager {
 public:
   SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableSP> peripherals,
-      std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* buffer);
+      std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* pixBuffer,
+      std::vector<uint8_t>&& memBuffer);
   DISABLE_COPY_AND_MOVE(SystemManager)
   ~SystemManager();
 
   void clock() const;
-  const GbPixelBuffer* getBuffer() const;
+  const GbPixelBuffer* getPixBuffer() const;
 
 private:
   CpuUP cpu_;
   IMemoryViewUP mem_;
   std::vector<TickableSP> peripherals_;
   std::unordered_map<PeripheralRegisters, IRegisterAdapterUP> periRegisters_;
-  const GbPixelBuffer* buffer_;
+  const GbPixelBuffer* pixBuffer_;
+  std::vector<uint8_t> memBuffer_;
 };
 
 using SystemManagerUP = std::unique_ptr<SystemManager>;

@@ -3,12 +3,14 @@
 #include "cpu/cpu.h"
 
 SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableSP> peripherals,
-    std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* buffer)
+    std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* pixBuffer,
+    std::vector<uint8_t>&& memBuffer)
     : cpu_(std::move(cpu))
     , mem_(std::move(mem))
     , peripherals_(std::move(peripherals))
     , periRegisters_(std::move(periRegisters))
-    , buffer_(buffer)
+    , pixBuffer_(pixBuffer)
+    , memBuffer_(std::move(memBuffer))
 {
 }
 
@@ -22,4 +24,4 @@ void SystemManager::clock() const
   }
 }
 
-auto SystemManager::getBuffer() const -> const GbPixelBuffer* { return buffer_; }
+auto SystemManager::getPixBuffer() const -> const GbPixelBuffer* { return pixBuffer_; }

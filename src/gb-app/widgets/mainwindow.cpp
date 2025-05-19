@@ -18,7 +18,7 @@ MainWindow::MainWindow(QWidget* parent)
 
   GbFactory f { fn.absoluteFilePath().toStdString(), (fn.absolutePath() + fn.baseName() + ".sav").toStdString() };
   sm_ = f.constructSystem();
-  buffer_ = sm_->getBuffer(); // NOLINT(cppcoreguidelines-prefer-member-initializer)
+  buffer_ = sm_->getPixBuffer(); // NOLINT(cppcoreguidelines-prefer-member-initializer)
 
   timer_.setSingleShot(true);
   timer_.start(
