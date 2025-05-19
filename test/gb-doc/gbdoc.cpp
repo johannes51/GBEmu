@@ -82,7 +82,7 @@ bool runTest(const std::string& number, const size_t limit)
     t = std::make_shared<GbTimer>(peripheralRF.getDiv(), *peripheralRF.releaseDivApu(),
         peripheralRF.get(PeripheralRegisters::TIMA), peripheralRF.get(PeripheralRegisters::TMA),
         peripheralRF.get(PeripheralRegisters::TAC), peripheralRF.get(PeripheralRegisters::IF));
-    j = std::make_shared<Joypad>(peripheralRF.get(PeripheralRegisters::JOYP));
+    j = std::make_shared<Joypad>(peripheralRF.get(PeripheralRegisters::JOYP), peripheralRF.get(PeripheralRegisters::IF));
     auto ie = mf.getIeBank()->asRegister();
     auto ih = std::make_unique<GbInterruptHandler>(peripheralRF.get(PeripheralRegisters::IF), *ie);
     cpu = std::make_shared<Cpu>(*m, std::move(r_up), std::move(ie), InstructionSetBuilder::construct(), std::move(ih));

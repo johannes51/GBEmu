@@ -65,7 +65,8 @@ auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
 
 auto GbFactory::constructJoypad() -> TickableSP
 {
-  return std::make_shared<Joypad>(peripheralRF_->get(PeripheralRegisters::JOYP));
+  return std::make_shared<Joypad>(
+      peripheralRF_->get(PeripheralRegisters::JOYP), peripheralRF_->get(PeripheralRegisters::IF));
 }
 
 auto GbFactory::constructSerial() -> TickableSP
