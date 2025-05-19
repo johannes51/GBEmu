@@ -23,7 +23,14 @@ auto CbOp::isComplete() -> bool
       || (affectedBit_ < INVALID_BIT);
 }
 
-auto CbOp::cycles() -> unsigned { return indirect_ ? 4 : 2; }
+auto CbOp::cycles() -> unsigned
+{
+  if (indirect_) {
+    return function_ != CbFunction::Bit ? 4U : 3U;
+  } else {
+    return 2U;
+  }
+}
 
 void CbOp::execute(RegistersInterface& registers, IMemoryView& memory)
 {
