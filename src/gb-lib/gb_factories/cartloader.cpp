@@ -26,28 +26,28 @@ auto gb::CartLoader::calculateNeccessarySize() -> size_t // NOLINT(readability-c
   return 3 * BankSize;
 }
 
-auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buffer) -> std::vector<IMemoryManagerSP>
+auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buffer) -> std::vector<IMemoryManagerUP>
 {
-  std::vector<IMemoryManagerSP> result;
+  std::vector<IMemoryManagerUP> result;
   if (romFile_.fail()) {
     throw std::runtime_error("Could not open ROM file.");
   }
 
   auto rom0Span = std::span<uint8_t, BankSize> { buffer.subspan(0, BankSize) };
   read16K(rom0Span, romFile_);
-  auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, rom0Span);
+  auto rom0 = std::make_unique<RomBank>(MemoryArea { StartROM0, EndROM0 }, rom0Span);
 
   auto rom1Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
   read16K(rom1Span, romFile_);
-  auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
+  auto rom1 = std::make_unique<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
 
   auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(2 * BankSize, BankSize) };
   read16K(ram0Span, romFile_); // FIXME: this is a major bug
-  auto ram0 = std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
+  auto ram0 = std::make_unique<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
 
-  result.push_back(rom0);
-  result.push_back(rom1);
-  result.push_back(ram0);
+  result.push_back(std::move(rom0));
+  result.push_back(std::move(rom1));
+  result.push_back(std::move(ram0));
 
   return result;
 }

@@ -10,7 +10,7 @@ public:
   MemoryManifold() = default;
   DISABLE_COPY_AND_MOVE(MemoryManifold)
 
-  void addSubManager(const IMemoryManagerSP& newSubManager);
+  void addSubManager(IMemoryManagerUP newSubManager);
 
   Location8 getLocation8(const address_type address) override;
   Location16 getLocation16(const address_type address) override;
@@ -20,8 +20,9 @@ public:
 private:
   IMemoryManager& selectManager(const address_type address);
 
-  std::vector<std::pair<MemoryArea, IMemoryManagerSP>> subManagers_
-      = std::vector<std::pair<MemoryArea, IMemoryManagerSP>>();
+  std::vector<std::pair<MemoryArea, IMemoryManager*>> subManagersMap_
+      = std::vector<std::pair<MemoryArea, IMemoryManager*>>();
+  std::vector<IMemoryManagerUP> subManagersHold_;
 };
 
 #endif // MEMORYMANIFOLD_H

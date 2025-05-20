@@ -34,9 +34,9 @@ private:
   static constexpr address_type IE = 0xFFFF;
 
   IMemoryViewUP constructMemoryLayout();
-  IMemoryManagerSP buildRamBank(MemoryArea area);
-  std::shared_ptr<IoBank> buildIoBank(MemoryArea area);
-  std::vector<IMemoryManagerSP> buildCartBanks();
+  IMemoryManagerUP buildRamBank(MemoryArea area);
+  std::unique_ptr<IoBank> buildIoBank(MemoryArea area);
+  std::vector<IMemoryManagerUP> buildCartBanks();
 
   CartLoaderUP loader_;
   std::vector<uint8_t>& buffer_;

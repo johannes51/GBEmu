@@ -14,7 +14,7 @@ auto RomBank::getLocation8(const address_type address) -> Location8
   if (!mem_tools::isSafe(address, singleArea())) {
     throw std::invalid_argument("Out of bounds");
   }
-  return { std::make_unique<RomLocation>(this->getByteReference(address)) };
+  return { std::make_unique<RomLocation>(getByteReference(address)) };
 }
 
 auto RomBank::getLocation16(const address_type address) -> Location16
@@ -23,6 +23,6 @@ auto RomBank::getLocation16(const address_type address) -> Location16
     throw std::invalid_argument("Out of bounds");
   }
   return { std::make_unique<FusedLocation16>(
-      std::make_unique<Location8>(std::make_unique<RomLocation>(this->getByteReference(address))),
-      std::make_unique<Location8>((std::make_unique<RomLocation>(this->getByteReference(address + 1U))))) };
+      std::make_unique<Location8>(std::make_unique<RomLocation>(getByteReference(address))),
+      std::make_unique<Location8>((std::make_unique<RomLocation>(getByteReference(address + 1U))))) };
 }

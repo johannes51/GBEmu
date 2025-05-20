@@ -5,7 +5,7 @@
 
 class MirrorBank : public SingleAreaManager {
 public:
-  MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManagerSP mirrored);
+  MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManager& mirrored);
   DISABLE_COPY_AND_MOVE(MirrorBank)
 
   Location8 getLocation8(const address_type address) override;
@@ -13,7 +13,7 @@ public:
 
 private:
   const int offset_;
-  IMemoryManagerSP mirrored_;
+  IMemoryManager& mirrored_;
 };
 
 #endif // MIRRORBANK_H

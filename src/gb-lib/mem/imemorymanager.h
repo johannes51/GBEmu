@@ -16,6 +16,6 @@ public:
   virtual std::vector<MemoryArea> availableAreas() = 0;
 };
 
-using IMemoryManagerSP = std::shared_ptr<IMemoryManager>;
+using IMemoryManagerUP = std::unique_ptr<IMemoryManager>;
 
 #endif // IMEMORYMANAGER_H
