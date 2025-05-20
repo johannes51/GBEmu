@@ -25,6 +25,7 @@ private:
   TickableSP constructTimer(IRegisterAdapter& divApu);
   TickableSP constructJoypad();
   TickableSP constructSerial();
+  TickableSP constructOamDma();
 
   std::vector<uint8_t> buffer_;
   IMemoryViewUP mem_ = nullptr;

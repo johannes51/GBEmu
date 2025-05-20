@@ -1,14 +1,15 @@
 #include "peripheralregisterfactory.h"
 
 const RegisterFactory<PeripheralRegisters>::InputMap PeripheralRegisterFactory::PeripheralRegisterAddresses = {
-  { PeripheralRegisters::JOYP, { 0xFF00, 0xCFU } }, // NOLINT
-  { PeripheralRegisters::SB, { 0xFF01, 0x00U } }, // NOLINT
-  { PeripheralRegisters::SC, { 0xFF02, 0x7EU } }, // NOLINT
-  // { PeripheralRegisters::DIV, {0xFF04} }, // NOTE: Is it's own thing now
-  { PeripheralRegisters::TIMA, { 0xFF05, 0x00U } }, // NOLINT
-  { PeripheralRegisters::TMA, { 0xFF06, 0x00U } }, // NOLINT
-  { PeripheralRegisters::TAC, { 0xFF07, 0xF8U } }, // NOLINT
-  { PeripheralRegisters::IF, { 0xFF0F, 0xE1U } }, // NOLINT
+  { PeripheralRegisters::JOYP, { 0xFF00U, 0xCFU } }, // NOLINT
+  { PeripheralRegisters::SB, { 0xFF01U, 0x00U } }, // NOLINT
+  { PeripheralRegisters::SC, { 0xFF02U, 0x7EU } }, // NOLINT
+  // { PeripheralRegisters::DIV, {0xFF04U} }, // NOTE: Is it's own thing now
+  { PeripheralRegisters::TIMA, { 0xFF05U, 0x00U } }, // NOLINT
+  { PeripheralRegisters::TMA, { 0xFF06U, 0x00U } }, // NOLINT
+  { PeripheralRegisters::TAC, { 0xFF07U, 0xF8U } }, // NOLINT
+  { PeripheralRegisters::IF, { 0xFF0FU, 0xE1U } }, // NOLINT
+  { PeripheralRegisters::DMA, { 0xFF46U, 0x00U } }, // NOLINT
 };
 
 auto PeripheralRegisterFactory::getDiv() -> DivRegisterSP { return div_; }

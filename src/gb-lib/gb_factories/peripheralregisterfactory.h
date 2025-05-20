@@ -6,15 +6,7 @@
 #include "mem/registers/divregister.h"
 #include "mem/registers/registerbuffer.h"
 
-enum class PeripheralRegisters {
-  JOYP,
-  SB,
-  SC,
-  TIMA,
-  TMA,
-  TAC,
-  IF,
-};
+enum class PeripheralRegisters { JOYP, SB, SC, TIMA, TMA, TAC, IF, DMA };
 
 class PeripheralRegisterFactory : public RegisterFactory<PeripheralRegisters> {
 public:

@@ -193,6 +193,8 @@ target_sources(gbelib PRIVATE
   peripherals/interrupthandler.h
   peripherals/joypad.h
   peripherals/joypad.cpp
+  peripherals/oamdma.h
+  peripherals/oamdma.cpp
   peripherals/serial.h
   peripherals/serial.cpp
   peripherals/tickable.h

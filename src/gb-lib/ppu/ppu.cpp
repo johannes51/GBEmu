@@ -18,6 +18,7 @@ void Ppu::clock()
 {
   const auto enabled = lcdc_.testBit(LcdEnableBit);
   if (enabled) {
+    auto drawNextLine = false;
     currentColumn_ += DotsPerCycles;
     if (currentColumn_ >= LcdWidth) {
       currentColumn_ = 0U;
@@ -25,6 +26,7 @@ void Ppu::clock()
       if (currentLine_ >= LcdWithVBlankHeight) {
         currentLine_ = 0U;
       }
+      drawNextLine = true;
     }
     ly_.setByte(currentLine_);
     stat_.setBit(LycLyCompareBit, currentLine_ == lyc_.getByte());
@@ -36,7 +38,9 @@ void Ppu::clock()
         stat_.setBit(PpuModeLowerBit, false);
         isInterrupt |= lcdc_.testBit(Mode2IntBit);
 
-        renderer_->render(buffer_, currentLine_);
+        if (drawNextLine) {
+          renderer_->render(buffer_, currentLine_);
+        }
       } else if (currentColumn_ < Mode2Length + Mode3MaxLength) {
         stat_.setBit(PpuModeHigherBit, true); // Mode 3 = 0b11
         stat_.setBit(PpuModeLowerBit, true);
