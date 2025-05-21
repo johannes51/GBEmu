@@ -16,8 +16,7 @@ auto variableLocation(const uint8_t& value) -> Location8 { return { std::make_un
 
 auto variableLocation(const uint8_t& lowValue, const uint8_t& highValue) -> Location16
 {
-  return { std::make_unique<FusedLocation16>(std::make_unique<Location8>(variableLocation(lowValue)),
-      std::make_unique<Location8>(variableLocation(highValue))) };
+  return { FusedLocation16::construct({variableLocation(lowValue)}, {variableLocation(highValue)}) };
 }
 
 auto variableLocation(const uint16_t& value) -> Location16

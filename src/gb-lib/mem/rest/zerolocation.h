@@ -7,8 +7,9 @@
 
 class ZeroByteLocation final : public ByteLocationAdapter {
 public:
-  ZeroByteLocation() { }
+  ZeroByteLocation() = default;
   DISABLE_COPY_AND_MOVE(ZeroByteLocation)
+  ~ZeroByteLocation() override = default;
 
   const uint8_t& get() const override;
   void set(const uint8_t&) override;
@@ -21,8 +22,9 @@ private:
 
 class ZeroWordLocation final : public WordLocationAdapter {
 public:
-  ZeroWordLocation() { }
+  ZeroWordLocation() = default;
   DISABLE_COPY_AND_MOVE(ZeroWordLocation)
+  ~ZeroWordLocation() override = default;
 
   const uint16_t& get() const override;
   void set(const uint16_t& value) override;

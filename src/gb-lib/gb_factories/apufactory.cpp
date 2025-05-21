@@ -8,7 +8,7 @@
 #include "apu/gbmixer.h"
 #include "apuregisterfactory.h"
 
-auto ApuFactory::constructApu() -> IApuUP
+auto ApuFactory::constructApu() -> TickableUP
 {
   ApuRegisterFactory a { ioBank_ };
   auto ch1 = std::make_shared<GbChannel1>(a.get(ApuRegisters::NR10), a.get(ApuRegisters::NR11),

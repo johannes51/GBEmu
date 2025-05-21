@@ -23,8 +23,10 @@ constexpr std::array<std::pair<uint8_t, uint8_t>, 4U> ClockSelectBitMap = {
 
 class GbTimer : public Tickable {
 public:
-  GbTimer(DivRegisterSP div, IRegisterAdapter& div_apu, IRegisterAdapter& tima, const IRegisterAdapter& tma,
+  explicit GbTimer(DivRegisterSP div, IRegisterAdapter& div_apu, IRegisterAdapter& tima, const IRegisterAdapter& tma,
       const IRegisterAdapter& tac, IRegisterAdapter& ifl);
+  DISABLE_COPY_AND_MOVE(GbTimer)
+  ~GbTimer() override = default;
 
   void clock() override;
 

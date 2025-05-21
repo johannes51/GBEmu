@@ -21,11 +21,11 @@ public:
 private:
   void constructMemory(const std::string& romFile, const std::string& ramFile);
   CpuUP constructCpu();
-  std::vector<TickableSP> constructPeripherals();
-  TickableSP constructTimer(IRegisterAdapter& divApu);
-  TickableSP constructJoypad();
-  TickableSP constructSerial();
-  TickableSP constructOamDma();
+  std::vector<TickableUP> constructPeripherals();
+  TickableUP constructTimer(IRegisterAdapter& divApu);
+  TickableUP constructJoypad();
+  TickableUP constructSerial();
+  TickableUP constructOamDma();
 
   std::vector<uint8_t> buffer_;
   IMemoryViewUP mem_ = nullptr;

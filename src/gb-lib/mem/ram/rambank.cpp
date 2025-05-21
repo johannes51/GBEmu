@@ -24,7 +24,6 @@ auto RamBank::getLocation16(const address_type address) -> Location16
   if (!mem_tools::isSafe(address, singleArea()) || !mem_tools::isSafe(address + 1, singleArea())) {
     throw std::invalid_argument("Out of bounds");
   }
-  return { std::make_unique<FusedLocation16>(
-      std::make_unique<Location8>(std::make_unique<RamLocation>(getByteReference(address))),
-      std::make_unique<Location8>(std::make_unique<RamLocation>(getByteReference(address + 1U)))) };
+  return { FusedLocation16::construct({std::make_unique<RamLocation>(getByteReference(address))},
+      {std::make_unique<RamLocation>(getByteReference(address + 1U))}) };
 }

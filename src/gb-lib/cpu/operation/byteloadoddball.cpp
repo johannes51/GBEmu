@@ -24,8 +24,7 @@ void ByteLoadOddball::nextOpcode(const Location8& opcode)
   if (!immediate8_ && !immediate16_) {
     immediate8_ = std::make_unique<Location8>(variableLocation(opcode.get()));
   } else if (!immediate16_) {
-    immediate16_ = std::make_unique<Location16>(std::make_unique<FusedLocation16>(
-        std::move(immediate8_), std::make_unique<Location8>(variableLocation(opcode.get()))));
+    immediate16_ = std::make_unique<Location16>(FusedLocation16::construct(std::move(*immediate8_), variableLocation(opcode.get())));
   }
 }
 

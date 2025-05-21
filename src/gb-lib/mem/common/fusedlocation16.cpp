@@ -39,6 +39,12 @@ void FusedLocation16::setUpper(std::unique_ptr<Location8>&& value)
   reloadBuffer();
 }
 
+auto FusedLocation16::construct(Location8&& lower, Location8&& upper) -> WordLocationAdapterUP
+{
+  return std::make_unique<FusedLocation16>(
+      std::make_unique<Location8>(std::move(lower)), std::make_unique<Location8>(std::move(upper)));
+}
+
 void FusedLocation16::reloadBuffer()
 {
   if (hasLower() && hasUpper()) {

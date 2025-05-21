@@ -46,7 +46,7 @@ auto GbFactory::constructCpu() -> CpuUP
       InstructionSetBuilder::construct(), std::move(interruptHandler)) };
 }
 
-auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
+auto GbFactory::constructPeripherals() -> std::vector<TickableUP>
 {
   auto divApu = peripheralRF_->releaseDivApu();
   auto& divApuRef = *divApu;
@@ -54,30 +54,39 @@ auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
   auto p = PpuFactory(*mem_, *ioBank_, peripheralRF_->get(PeripheralRegisters::IF));
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
-  return { a.constructApu(), std::move(ppu), constructTimer(divApuRef), constructJoypad(), constructSerial(),
-    constructOamDma() };
+  auto ppuT = TickableUP { ppu.release() };
+
+  std::vector<TickableUP> result;
+  result.push_back(a.constructApu());
+  result.push_back(std::move(ppuT));
+  result.push_back(constructTimer(divApuRef));
+  result.push_back(constructJoypad());
+  result.push_back(constructSerial());
+  result.push_back(constructOamDma());
+
+  return result;
 }
 
-auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
+auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableUP
 {
-  return { std::make_shared<GbTimer>(peripheralRF_->getDiv(), divApu, peripheralRF_->get(PeripheralRegisters::TIMA),
+  return { std::make_unique<GbTimer>(peripheralRF_->getDiv(), divApu, peripheralRF_->get(PeripheralRegisters::TIMA),
       peripheralRF_->get(PeripheralRegisters::TMA), peripheralRF_->get(PeripheralRegisters::TAC),
       peripheralRF_->get(PeripheralRegisters::IF)) };
 }
 
-auto GbFactory::constructJoypad() -> TickableSP
+auto GbFactory::constructJoypad() -> TickableUP
 {
-  return std::make_shared<Joypad>(
+  return std::make_unique<Joypad>(
       peripheralRF_->get(PeripheralRegisters::JOYP), peripheralRF_->get(PeripheralRegisters::IF));
 }
 
-auto GbFactory::constructSerial() -> TickableSP
+auto GbFactory::constructSerial() -> TickableUP
 {
-  return std::make_shared<Serial>(peripheralRF_->get(PeripheralRegisters::SB),
+  return std::make_unique<Serial>(peripheralRF_->get(PeripheralRegisters::SB),
       peripheralRF_->get(PeripheralRegisters::SC), peripheralRF_->get(PeripheralRegisters::IF));
 }
 
-auto GbFactory::constructOamDma() -> TickableSP
+auto GbFactory::constructOamDma() -> TickableUP
 {
-  return std::make_shared<OamDma>(peripheralRF_->get(PeripheralRegisters::DMA), *mem_);
+  return std::make_unique<OamDma>(peripheralRF_->get(PeripheralRegisters::DMA), *mem_);
 }

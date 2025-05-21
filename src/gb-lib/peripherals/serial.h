@@ -9,6 +9,8 @@
 class Serial : public Tickable {
 public:
   explicit Serial(IRegisterAdapter& sb, IRegisterAdapter& sc, IRegisterAdapter& rIf);
+  DISABLE_COPY_AND_MOVE(Serial)
+  ~Serial() override = default;
 
   void clock() override;
 

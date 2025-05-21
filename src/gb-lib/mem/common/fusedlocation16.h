@@ -19,6 +19,8 @@ public:
   void setLower(std::unique_ptr<Location8>&& value);
   void setUpper(std::unique_ptr<Location8>&& value);
 
+  static WordLocationAdapterUP construct(Location8&& lower, Location8&& upper);
+
 private:
   void reloadBuffer();
 

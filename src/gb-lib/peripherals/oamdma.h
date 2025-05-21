@@ -11,6 +11,8 @@
 class OamDma : public Tickable {
 public:
   explicit OamDma(IRegisterAdapter& dmaRegister, IMemoryView& mem);
+  DISABLE_COPY_AND_MOVE(OamDma)
+  ~OamDma() override = default;
 
   void clock() override;
 

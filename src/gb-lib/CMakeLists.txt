@@ -169,6 +169,8 @@ target_sources(gbelib PRIVATE
   mem/rest/nullbank.cpp
   mem/rest/nulllocation.h
   mem/rest/nulllocation.cpp
+  mem/rest/onelocation.h
+  mem/rest/onelocation.cpp
   mem/rest/variablelocation.h
   mem/rest/variablelocation.cpp
   mem/rest/zerolocation.h

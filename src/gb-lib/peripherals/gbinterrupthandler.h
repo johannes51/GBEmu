@@ -32,6 +32,7 @@ constexpr std::array<std::pair<uint8_t, address_type>, NumInterrupts> HandlerAdr
 class GbInterruptHandler : public InterruptHandler {
 public:
   GbInterruptHandler(IRegisterAdapter& rIf, const IRegisterAdapter& rIe);
+  DISABLE_COPY_AND_MOVE(GbInterruptHandler)
   ~GbInterruptHandler() override = default;
 
   void execute(RegistersInterface& registers, IMemoryView& memory) override;

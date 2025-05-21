@@ -17,6 +17,4 @@ protected:
   IApu() = default;
 };
 
-using IApuUP = std::unique_ptr<IApu>;
-
 #endif // IAPU_H

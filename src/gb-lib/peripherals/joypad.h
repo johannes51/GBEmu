@@ -20,6 +20,8 @@ constexpr uint8_t SelectAction = 0x5;
 class Joypad : public Tickable {
 public:
   explicit Joypad(IRegisterAdapter& controllerRegister, IRegisterAdapter& rIf);
+  DISABLE_COPY_AND_MOVE(Joypad)
+  ~Joypad() override = default;
 
   void clock() override;
 

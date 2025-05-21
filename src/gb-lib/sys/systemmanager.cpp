@@ -2,7 +2,7 @@
 
 #include "cpu/cpu.h"
 
-SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableSP> peripherals,
+SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableUP>&& peripherals,
     std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* pixBuffer,
     std::vector<uint8_t>&& memBuffer)
     : cpu_(std::move(cpu))

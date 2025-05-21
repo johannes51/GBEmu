@@ -15,7 +15,7 @@ public:
   {
   }
 
-  IApuUP constructApu();
+  TickableUP constructApu();
 
 private:
   IoBank& ioBank_;

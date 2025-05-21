@@ -70,7 +70,7 @@ bool runTest(const std::string& number, const size_t limit)
   std::shared_ptr<GbTimer> t;
   std::shared_ptr<Joypad> j;
   CpuRegisters* r = nullptr;
-  TickableSP serial;
+  TickableUP serial;
 
   auto mf = gb::MemoryFactory(std::make_unique<gb::CartLoader>(romFile, ramFile), buffer);
   auto peripheralRF = PeripheralRegisterFactory(*mf.getIoBank());
@@ -86,7 +86,7 @@ bool runTest(const std::string& number, const size_t limit)
     auto ie = mf.getIeBank()->asRegister();
     auto ih = std::make_unique<GbInterruptHandler>(peripheralRF.get(PeripheralRegisters::IF), *ie);
     cpu = std::make_shared<Cpu>(*m, std::move(r_up), std::move(ie), InstructionSetBuilder::construct(), std::move(ih));
-    serial = std::make_shared<Serial>(peripheralRF.get(PeripheralRegisters::SB), peripheralRF.get(PeripheralRegisters::SC), peripheralRF.get(PeripheralRegisters::IF));
+    serial = std::make_unique<Serial>(peripheralRF.get(PeripheralRegisters::SB), peripheralRF.get(PeripheralRegisters::SC), peripheralRF.get(PeripheralRegisters::IF));
   }
   m->getLocation8(0xFF44U) = 0x90U;
   print(fileStream, *m, *r);
