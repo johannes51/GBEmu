@@ -2,13 +2,12 @@
 
 #include "cpu/cpu.h"
 
-SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableUP>&& peripherals,
-    std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* pixBuffer,
-    std::vector<uint8_t>&& memBuffer)
+SystemManager::SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, CartUP cart,
+    std::vector<TickableUP>&& peripherals, const GbPixelBuffer* pixBuffer, std::vector<uint8_t>&& memBuffer)
     : cpu_(std::move(cpu))
     , mem_(std::move(mem))
+    , cart_(std::move(cart))
     , peripherals_(std::move(peripherals))
-    , periRegisters_(std::move(periRegisters))
     , pixBuffer_(pixBuffer)
     , memBuffer_(std::move(memBuffer))
 {

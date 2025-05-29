@@ -1,9 +1,9 @@
 #include "shiftrotate.h"
 
 #include "constants.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
-auto ops::rr(Location8& location) -> ops::OpResult
+auto ops::rr(ILocation8& location) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::LsbMask) > 0U;
@@ -15,7 +15,7 @@ auto ops::rr(Location8& location) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::rr(Location8& location, bool carry) -> ops::OpResult
+auto ops::rr(ILocation8& location, bool carry) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::LsbMask) > 0;
@@ -27,7 +27,7 @@ auto ops::rr(Location8& location, bool carry) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::rl(Location8& location) -> ops::OpResult
+auto ops::rl(ILocation8& location) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::MsbMask) > 0;
@@ -39,7 +39,7 @@ auto ops::rl(Location8& location) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::rl(Location8& location, bool carry) -> ops::OpResult
+auto ops::rl(ILocation8& location, bool carry) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::MsbMask) > 0;
@@ -51,7 +51,7 @@ auto ops::rl(Location8& location, bool carry) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::sra(Location8& location) -> ops::OpResult
+auto ops::sra(ILocation8& location) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::LsbMask) > 0;
@@ -64,7 +64,7 @@ auto ops::sra(Location8& location) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::sla(Location8& location) -> ops::OpResult
+auto ops::sla(ILocation8& location) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::MsbMask) > 0;
@@ -76,7 +76,7 @@ auto ops::sla(Location8& location) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::srl(Location8& location) -> ops::OpResult
+auto ops::srl(ILocation8& location) -> ops::OpResult
 {
   const auto& value = location.get();
   const auto newCarry = (value & detail::LsbMask) > 0;
@@ -88,7 +88,7 @@ auto ops::srl(Location8& location) -> ops::OpResult
     .c = newCarry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::swap(Location8& location) -> ops::OpResult
+auto ops::swap(ILocation8& location) -> ops::OpResult
 {
   const uint8_t result = (static_cast<unsigned>(location.get() & LOWER_NIBBLE_MASK) << NIBBLE_SHIFT)
       | (static_cast<unsigned>(location.get() & UPPER_NIBBLE_MASK) >> NIBBLE_SHIFT);

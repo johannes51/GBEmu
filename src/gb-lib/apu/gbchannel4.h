@@ -7,12 +7,13 @@
 
 #include "channel_util/envelope.h"
 #include "channel_util/length.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/iobank.h"
+#include "io/ioregister.h"
+#include "io/iregisteradapter.h"
 
 class GbChannel4 : public Channel {
 public:
-  GbChannel4(const IRegisterAdapter& nr41, const IRegisterAdapter& nr42, const IRegisterAdapter& nr43,
-      const IRegisterAdapter& nr44, IRegisterAdapter& nr52);
+  GbChannel4(IoBank& io, IRegisterAdapter& nr52);
 
   void tickApuDiv(const FrameSequence sequence) override;
   void clock() override;
@@ -38,7 +39,12 @@ private:
   static constexpr uint8_t LsfrFeedBit2 = 1U;
   static constexpr uint8_t LsfrWidthBit = 3U;
 
-  const IRegisterAdapter& nr43_;
+  static constexpr address_type Nr40Adress = 0xFF1FU;
+
+  IoRegister nr41_;
+  IoRegister nr42_;
+  IoRegister nr43_;
+  IoRegister nr44_;
 
   Length len_;
   Envelope env_;

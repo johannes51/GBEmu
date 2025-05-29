@@ -3,79 +3,51 @@
 #include <algorithm>
 
 #include "cartloader.h"
-#include "mem/common/memorymanifold.h"
 #include "mem/common/mirrorbank.h"
+#include "mem/gbmemorymap.h"
 #include "mem/ram/rambank.h"
-#include "mem/registers/iobank.h"
-#include "mem/registers/singleregisterbank.h"
-#include "mem/rest/nullbank.h"
+#include "mem/rest/singleregisterbank.h"
+#include "mem/rest/zerobank.h"
 
-gb::MemoryFactory::MemoryFactory(CartLoaderUP romLoader, std::vector<uint8_t>& buffer)
-    : loader_(std::move(romLoader))
-    , buffer_(buffer)
+gb::MemoryFactory::MemoryFactory(
+    IMemoryView& cartBanks, IoBankUP ioBank, std::span<uint8_t, std::dynamic_extent> buffer)
+    : buffer_(buffer)
     , ptr_(buffer_.begin())
+    , cartBanks_(cartBanks)
+    , ioBank_(std::move(ioBank))
     , mem_(constructMemoryLayout())
 {
 }
 
-auto gb::MemoryFactory::getIoBank() -> IoBank* { return ioBank_; }
+auto gb::MemoryFactory::releaseVram() -> IMemoryViewUP { return std::move(vram_); }
 
-auto gb::MemoryFactory::getIeBank() -> SingleRegisterBank* { return ieBank_; }
+auto gb::MemoryFactory::releaseOam() -> IMemoryViewUP { return std::move(oam_); }
 
-auto gb::MemoryFactory::releaseMemory() -> IMemoryViewUP { return std::move(mem_); }
+auto gb::MemoryFactory::releaseMemory() -> IMemoryWordViewUP { return std::move(mem_); }
 
-auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryViewUP
+auto gb::MemoryFactory::getSize() -> size_t { return VRAM.size() + WRAM.size() + OAM.size() + IO.size() + HRAM.size(); }
+
+auto gb::MemoryFactory::constructMemoryLayout() -> IMemoryWordViewUP
 {
-  auto manifold = std::make_unique<MemoryManifold>();
+  vram_ = buildRamBank(VRAM);
+  oam_ = buildRamBank(OAM);
 
-  for (auto& bankManager : buildCartBanks()) {
-    manifold->addSubManager(std::move(bankManager));
-  }
+  auto notUsed = std::make_unique<ZeroBank>(NOT_USED);
 
-  manifold->addSubManager(buildRamBank(VRAM));
-  auto wram0 = buildRamBank(WRAM0);
-  auto wram1 = buildRamBank(WRAM1);
-  manifold->addSubManager(std::move(wram0));
-  manifold->addSubManager(std::move(wram1));
-  manifold->addSubManager(std::make_unique<MirrorBank>(MIRROR_L, WRAM0, std::move(wram0)));
-  manifold->addSubManager(std::make_unique<MirrorBank>(MIRROR_U, WRAM1, std::move(wram1)));
-  manifold->addSubManager(buildRamBank(OAM));
-  manifold->addSubManager(std::make_unique<NullBank>(NOT_USED));
-  auto ioBankUP = buildIoBank(IO);
-  ioBank_ = ioBankUP.get();
-  manifold->addSubManager(std::move(ioBankUP));
-  manifold->addSubManager(buildRamBank(HRAM));
-  auto ieBankSP = std::make_unique<SingleRegisterBank>(IE);
-  ieBank_ = ieBankSP.get();
-  manifold->addSubManager(std::move(ieBankSP));
+  auto wram = buildRamBank(WRAM);
+  auto mirror = std::make_unique<MirrorBank>(MIRROR, WRAM, *wram);
 
-  return manifold;
+  auto hram = buildRamBank(HRAM);
+
+  auto ie = std::make_unique<SingleRegisterBank>(IE);
+
+  return std::make_unique<GbMemoryMap>(cartBanks_, cartBanks_, *vram_, cartBanks_, std::move(wram), std::move(mirror),
+      *oam_, std::move(notUsed), std::move(ioBank_), std::move(hram), std::move(ie));
 }
 
-auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryManagerUP
+auto gb::MemoryFactory::buildRamBank(MemoryArea area) -> IMemoryViewUP
 {
   auto result = std::make_unique<RamBank>(area, std::span(ptr_, area.size()));
   std::advance(ptr_, area.size());
-  return result;
-}
-
-auto gb::MemoryFactory::buildIoBank(MemoryArea area) -> std::unique_ptr<IoBank>
-{
-  auto result = std::make_unique<IoBank>(area, std::span(ptr_, area.size()));
-  std::advance(ptr_, area.size());
-  return result;
-}
-
-auto gb::MemoryFactory::buildCartBanks() -> std::vector<IMemoryManagerUP>
-{
-  const auto cartSize = loader_->calculateNeccessarySize();
-  const auto fullSize = cartSize + VRAM.size() + WRAM0.size() + WRAM1.size() + OAM.size() + IO.size() + HRAM.size();
-  buffer_.resize(fullSize);
-  ptr_ = buffer_.begin();
-  std::vector<IMemoryManagerUP> result {};
-  if (loader_) {
-    result = loader_->constructBanks(std::span { buffer_ }.subspan(0, cartSize));
-    std::advance(ptr_, cartSize);
-  }
   return result;
 }

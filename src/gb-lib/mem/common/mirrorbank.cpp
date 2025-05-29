@@ -2,11 +2,11 @@
 
 #include <stdexcept>
 
-#include "../location8.h"
+#include "../ilocation8.h"
 #include "mem_tools.h"
 
-MirrorBank::MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManager& mirrored)
-    : SingleAreaManager(mirrorArea)
+MirrorBank::MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryView& mirrored)
+    : SingleAreaView(mirrorArea)
     , offset_(originalArea.from - mirrorArea.from)
     , mirrored_(mirrored)
 {
@@ -15,13 +15,7 @@ MirrorBank::MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalA
   }
 }
 
-auto MirrorBank::getLocation8(const address_type address) -> Location8
+auto MirrorBank::getLocation8(const address_type address) -> ILocation8&
 {
-  return mirrored_.getLocation8(mem_tools::translateAddressSafe(address, singleArea(), offset_));
-}
-
-auto MirrorBank::getLocation16(const address_type address) -> Location16
-{
-  mem_tools::assertSafe(address + 1, singleArea());
-  return mirrored_.getLocation16(mem_tools::translateAddressSafe(address, singleArea(), offset_));
+  return mirrored_.getLocation8(mem_tools::translateAddressSafe(address, area_, offset_));
 }

@@ -2,7 +2,7 @@
 
 #include "../ppu_constants.h"
 #include "helper.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "tiledata.h"
 
 TileMap::TileMap(const IRegisterAdapter& lcdc, IMemoryView& mem, uint8_t bit)

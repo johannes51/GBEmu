@@ -5,11 +5,11 @@
 #include "mock/mockregisteradapter.h"
 #include "mock/testbank.h"
 
-#include "mem/rest/nullbank.h"
+#include "mem/rest/zerobank.h"
 
 TEST(TileDataTests, Construction)
 {
-  auto mem = std::make_shared<NullBank>(MemoryArea { 0x8000, 0x9FFF });
+  auto mem = std::make_shared<ZeroBank>(MemoryArea { 0x8000, 0x9FFF });
   EXPECT_NO_THROW(TileData td(*MockRegisterAdapter::make(), *mem));
 }
 

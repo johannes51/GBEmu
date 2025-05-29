@@ -4,10 +4,19 @@
 
 RomLocation::RomLocation(uint8_t& buffer)
     : BufferLocation(buffer)
+    , mbc_(nullptr)
+    , address_(0x0000U)
 {
 }
 
-void RomLocation::set(const uint8_t& value)
+auto RomLocation::operator=(const uint8_t& rhs) -> RomLocation&
 {
-  (void)value; // TODO: ignore all ROM writes for now, add MBC later.
+  if (mbc_ != nullptr) {
+    mbc_->handleWrite(address_, rhs);
+  }
+  return *this;
 }
+
+void RomLocation::setMbc(Mbc* value) { mbc_ = value; }
+
+void RomLocation::setAddress(const address_type value) { address_ = value; }

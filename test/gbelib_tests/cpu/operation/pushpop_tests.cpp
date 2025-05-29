@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/operation/pushpop.h"
+#include "cpu/registers/cpuregisters.h"
 
 #include "mock/testbank.h"
 

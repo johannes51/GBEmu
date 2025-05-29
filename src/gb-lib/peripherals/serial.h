@@ -4,11 +4,14 @@
 #include "tickable.h"
 
 #include "constants.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/fixedmaskioregister.h"
+#include "io/iobank.h"
+#include "io/ioregister.h"
+#include "io/iregisteradapter.h"
 
 class Serial : public Tickable {
 public:
-  explicit Serial(IRegisterAdapter& sb, IRegisterAdapter& sc, IRegisterAdapter& rIf);
+  explicit Serial(IoBank& io, IRegisterAdapter& rIf);
   DISABLE_COPY_AND_MOVE(Serial)
   ~Serial() override = default;
 
@@ -26,8 +29,8 @@ private:
   static constexpr uint8_t ClockSelectBit = 0U;
   static constexpr uint8_t TransferEnableBit = 0U;
 
-  IRegisterAdapter& sb_;
-  IRegisterAdapter& sc_;
+  IoRegister sb_;
+  FixedMaskIoRegister<0b01111110U> sc_;
   IRegisterAdapter& if_;
   uint16_t remainingCpuTicks_ = TickDivider;
   int8_t remainingSerialTicks_ = -1;

@@ -1,6 +1,6 @@
 #include "miscarithmetic.h"
 
-#include "../registersinterface.h"
+#include "../registers/registersinterface.h"
 #include "ops/arithmetic.h"
 
 MiscArithmetic::MiscArithmetic(const MiscArithmeticFunction& function)
@@ -8,19 +8,19 @@ MiscArithmetic::MiscArithmetic(const MiscArithmeticFunction& function)
 {
 }
 
-void MiscArithmetic::execute(RegistersInterface& registers, IMemoryView& memory)
+void MiscArithmetic::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
   switch (function_) {
   case MiscArithmeticFunction::DecimalAdjustA: {
-    auto reg = registers.get(ByteRegister::A);
+    auto& reg = registers.get(ByteRegister::A);
     apply(registers.getFlags(),
         ops::decimalAdjust(
             reg, registers.getFlags().carry(), registers.getFlags().halfCarry(), registers.getFlags().subtract()));
     break;
   }
   case MiscArithmeticFunction::ComplementA: {
-    auto reg = registers.get(ByteRegister::A);
+    auto& reg = registers.get(ByteRegister::A);
     apply(registers.getFlags(), ops::complement(reg));
     break;
   }

@@ -2,10 +2,10 @@
 
 #include "util/helpers.h"
 
-GbMixer::GbMixer(const IRegisterAdapter& nr50, const IRegisterAdapter& nr51)
-    : nr50_(nr50)
-    , nr51_(nr51)
+GbMixer::GbMixer(IoBank& io)
 {
+  io.registerRegister(Nr50Address + 0U, &nr50_);
+  io.registerRegister(Nr50Address + 1U, &nr51_);
 }
 
 auto GbMixer::mix(

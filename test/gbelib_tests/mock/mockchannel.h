@@ -18,7 +18,7 @@ public:
   void tickApuDiv(const FrameSequence sequence) override { (void)sequence; }
   void disable() override { }
 
-  static ChannelSP make() { return std::make_shared<MockChannel>(); }
+  static ChannelUP make() { return std::make_unique<MockChannel>(); }
 };
 
 #endif // MOCKCHANNEL_H

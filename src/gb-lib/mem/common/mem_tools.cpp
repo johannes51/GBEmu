@@ -1,8 +1,7 @@
 #include "mem_tools.h"
 
-#include <stdexcept>
-
 #include <numeric>
+#include <stdexcept>
 
 auto mem_tools::translateAddressSafe(const address_type& inputAddress, const MemoryArea& area) -> address_type
 {

@@ -16,16 +16,16 @@ ByteLoadIndirect::ByteLoadIndirect(
 ByteLoadIndirect::~ByteLoadIndirect() = default;
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void ByteLoadIndirect::execute(RegistersInterface& registers, IMemoryView& memory)
+void ByteLoadIndirect::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
-  auto memLocation = memory.getLocation8(hlp::indirect(registers.get(indirectRegister_)));
-  auto registerLocation = registers.get(directRegister_);
+  auto& memLocation = memory.getLocation8(hlp::indirect(registers.get(indirectRegister_)));
+  auto& registerLocation = registers.get(directRegister_);
   if (direction_ == Direction::Indirect) {
     memLocation = registerLocation.get();
   } else /*if (direction_ == Direction::Register)*/ {
     registerLocation = memLocation.get();
   }
-  auto indirReg = registers.get(indirectRegister_);
+  auto& indirReg = registers.get(indirectRegister_);
   switch (postAction_) {
   case Post::Increment:
     ops::increment(indirReg);

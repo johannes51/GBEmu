@@ -1,6 +1,6 @@
 #include "wordaluoperation.h"
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "ops/arithmetic.h"
 
 WordAluOperation::WordAluOperation(WordAluFunction function, WordRegister targetRegister)
@@ -9,13 +9,13 @@ WordAluOperation::WordAluOperation(WordAluFunction function, WordRegister target
 {
 }
 
-void WordAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
+void WordAluOperation::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
-  auto reg = registers.get(register_);
+  auto& reg = registers.get(register_);
   switch (function_) {
   case WordAluFunction::Add: {
-    auto hl = registers.get(WordRegister::HL);
+    auto& hl = registers.get(WordRegister::HL);
     apply(registers.getFlags(), ops::add(hl, reg));
     break;
   }

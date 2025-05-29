@@ -4,8 +4,8 @@
 
 #include "cpu/operation/cbprefix.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/id/controldecoder.h"
+#include "cpu/registers/cpuregisters.h"
 #include "mem/rest/variablelocation.h"
 
 TEST(CbPrefixTest, Test)

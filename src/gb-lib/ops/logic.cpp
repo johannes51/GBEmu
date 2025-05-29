@@ -1,9 +1,9 @@
 #include "logic.h"
 
 #include "constants.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
-auto ops::andF(Location8& destination, const Location8& source) -> ops::OpResult
+auto ops::andF(ILocation8& destination, const ILocation8& source) -> ops::OpResult
 {
   const uint8_t result = source.get() & destination.get();
   destination = result;
@@ -13,7 +13,7 @@ auto ops::andF(Location8& destination, const Location8& source) -> ops::OpResult
     .c = FlagResult::Reset };
 }
 
-auto ops::orF(Location8& destination, const Location8& source) -> ops::OpResult
+auto ops::orF(ILocation8& destination, const ILocation8& source) -> ops::OpResult
 {
   const uint8_t result = source.get() | destination.get();
   destination = result;
@@ -23,7 +23,7 @@ auto ops::orF(Location8& destination, const Location8& source) -> ops::OpResult
     .c = FlagResult::Reset };
 }
 
-auto ops::xorF(Location8& destination, const Location8& source) -> ops::OpResult
+auto ops::xorF(ILocation8& destination, const ILocation8& source) -> ops::OpResult
 {
   const uint8_t result = source.get() ^ destination.get();
   destination = result;
@@ -33,7 +33,7 @@ auto ops::xorF(Location8& destination, const Location8& source) -> ops::OpResult
     .c = FlagResult::Reset };
 }
 
-auto ops::cpF(Location8& destination, const Location8& source) -> ops::OpResult
+auto ops::cpF(ILocation8& destination, const ILocation8& source) -> ops::OpResult
 {
   const auto zero = source.get() == destination.get();
   const auto carry = destination.get() < source.get();

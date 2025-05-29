@@ -3,10 +3,10 @@
 #include <stdexcept>
 
 #include "cpu/operation/cbprefix.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "opcodeview.h"
 
-auto CbDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto CbDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.value() == 0xCBU) {

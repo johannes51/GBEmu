@@ -1,10 +1,11 @@
 #include "gtest/gtest.h"
 
 #include "mock/mockinterrupthandler.h"
+#include "mock/mockiobank.h"
 #include "mock/mockregisteradapter.h"
 
 #include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
+#include "cpu/registers/cpuregisters.h"
 #include "gb_factories/cartloader.h"
 #include "gb_factories/instructionsetbuilder.h"
 #include "gb_factories/memoryfactory.h"
@@ -15,22 +16,28 @@ using namespace gb;
 TEST(CpuTest, Construction)
 {
   std::vector<uint8_t> v;
-  auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
-  auto reg = make_unique<CpuRegisters>();
-  auto ie = MockRegisterAdapter::make();
-  EXPECT_NO_THROW(Cpu cpu(*mem, std::move(reg), std::move(ie), InstructionDecoderUP {}, InterruptHandlerUP {}));
+  CartLoader cl { "cpu_instrs.gb", "cpu_instrs.sav" };
+  v.resize(cl.calculateNeccessarySize() + MemoryFactory::getSize());
+  auto cart = cl.constructCart(v);
+  auto mem = MemoryFactory(cart->getBanks(), MockIoBank::make(), v).releaseMemory();
+
+  EXPECT_NO_THROW(Cpu cpu(*mem, make_unique<CpuRegisters>(), InstructionDecoderUP {}, InterruptHandlerUP {}));
 }
 
 TEST(CpuTest, Execution)
 {
   std::vector<uint8_t> v;
-  auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
+  CartLoader cl { "cpu_instrs.gb", "cpu_instrs.sav" };
+  v.resize(cl.calculateNeccessarySize() + MemoryFactory::getSize());
+  auto cart = cl.constructCart(v);
+  auto mem = MemoryFactory(cart->getBanks(), MockIoBank::make(), v).releaseMemory();
+
   auto reg = make_unique<CpuRegisters>();
   auto* regAsPtr = reg.get();
-  auto ie = MockRegisterAdapter::make();
-  Cpu cpu(*mem, std::move(reg), std::move(ie), InstructionSetBuilder::construct(), MockInterruptHandler::make());
+  MockInterruptHandler* unused = nullptr;
+  Cpu cpu(*mem, std::move(reg), InstructionSetBuilder::construct(), MockInterruptHandler::make(unused));
+
+  EXPECT_EQ(0x0100U, regAsPtr->get(WordRegister::PC).get());
   ASSERT_NO_THROW(cpu.clock()); // NOP
   EXPECT_EQ(0x0101U, regAsPtr->get(WordRegister::PC).get());
 }
@@ -38,12 +45,16 @@ TEST(CpuTest, Execution)
 TEST(CpuTest, Execution2)
 {
   std::vector<uint8_t> v;
-  auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
+  CartLoader cl { "cpu_instrs.gb", "cpu_instrs.sav" };
+  v.resize(cl.calculateNeccessarySize() + MemoryFactory::getSize());
+  auto cart = cl.constructCart(v);
+  auto mem = MemoryFactory(cart->getBanks(), MockIoBank::make(), v).releaseMemory();
+
   auto reg = make_unique<CpuRegisters>();
   auto* regAsPtr = reg.get();
-  auto ie = MockRegisterAdapter::make();
-  Cpu cpu(*mem, std::move(reg), std::move(ie), InstructionSetBuilder::construct(), MockInterruptHandler::make());
+  MockInterruptHandler* unused = nullptr;
+  Cpu cpu(*mem, std::move(reg), InstructionSetBuilder::construct(), MockInterruptHandler::make(unused));
+
   ASSERT_NO_THROW(cpu.clock()); // NOP
   EXPECT_EQ(0x0101U, regAsPtr->get(WordRegister::PC).get());
   EXPECT_NO_THROW(cpu.clock()); // 0x0101 JP 0x0637
@@ -57,14 +68,15 @@ TEST(CpuTest, Execution2)
 TEST(CpuTest, Interrupt)
 {
   std::vector<uint8_t> v;
-  auto f = MemoryFactory(make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
+  CartLoader cl { "cpu_instrs.gb", "cpu_instrs.sav" };
+  v.resize(cl.calculateNeccessarySize() + MemoryFactory::getSize());
+  auto cart = cl.constructCart(v);
+  auto mem = MemoryFactory(cart->getBanks(), MockIoBank::make(), v).releaseMemory();
+
   auto reg = make_unique<CpuRegisters>();
   auto* regAsPtr = reg.get();
   MockInterruptHandler* ih = nullptr;
-  auto ie = MockRegisterAdapter::make();
-  Cpu cpu(*mem, std::move(reg), std::move(ie), InstructionSetBuilder::construct(),
-      MockInterruptHandler::make(ih, true, 0x0100U));
+  Cpu cpu(*mem, std::move(reg), InstructionSetBuilder::construct(), MockInterruptHandler::make(ih, true, 0x0100U));
 
   regAsPtr->getFlags().disableInterrupt();
   ASSERT_NO_THROW(cpu.clock()); // NOP

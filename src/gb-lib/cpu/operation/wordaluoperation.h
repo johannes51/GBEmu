@@ -3,7 +3,7 @@
 
 #include "singleop.h"
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 namespace ops {
 struct OpResult;
@@ -15,7 +15,7 @@ class WordAluOperation : public SingleOp<2> {
 public:
   WordAluOperation(WordAluFunction function, WordRegister targetRegister);
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   WordAluFunction function_;

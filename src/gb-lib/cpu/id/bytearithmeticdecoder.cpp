@@ -3,10 +3,10 @@
 #include <stdexcept>
 
 #include "../operation/bytealuoperation.h"
-#include "cpu/registersinterface.h"
-#include "mem/location8.h"
+#include "../registers/registersinterface.h"
+#include "mem/ilocation8.h"
 
-auto ByteArithmeticDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto ByteArithmeticDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() >= 0x8U && opcode.upperNibble() <= 0xBU) {

@@ -3,14 +3,13 @@
 
 #include "channel_util/gbpulsechannel.h"
 
-#include "mem/registers/iregisteradapter.h"
-
 class GbChannel2 : public GbPulseChannel {
 public:
-  GbChannel2(const IRegisterAdapter& nr21, const IRegisterAdapter& nr22, const IRegisterAdapter& nr23,
-      const IRegisterAdapter& nr24, IRegisterAdapter& nr52);
+  GbChannel2(IoBank& io, IRegisterAdapter& nr52);
 
 private:
+  static constexpr address_type Nr20Adress = 0xFF15U;
+
   bool channelOn_ = false;
 };
 

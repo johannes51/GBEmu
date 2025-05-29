@@ -5,7 +5,6 @@
 #include <vector>
 
 #include "mem/imemoryview.h"
-#include "mem/registers/iregisteradapter.h"
 #include "object.h"
 
 constexpr uint8_t NUM_OBJECTS = 40;

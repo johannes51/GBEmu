@@ -3,14 +3,14 @@
 
 #include <vector>
 
-#include "cpu/cpu_defines.h"
-#include "mem/location8.h"
+#include "../operation/operation.h"
+#include "mem/ilocation8.h"
 
 class InstructionDecoder {
 public:
   virtual ~InstructionDecoder() = default;
 
-  virtual OperationUP decode(const Location8& opcodeLocation) const = 0;
+  virtual OperationUP decode(const ILocation8& opcodeLocation) const = 0;
 
   virtual std::vector<uint8_t> decodedOpcodes() const = 0;
 

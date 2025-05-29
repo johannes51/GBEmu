@@ -1,6 +1,6 @@
 #include "gbrenderer.h"
 
-GbRenderer::GbRenderer(IBackgroundSP bg, IWindowSP win, IObjectsSP obj)
+GbRenderer::GbRenderer(IBackgroundUP bg, IWindowUP win, IObjectsUP obj)
     : bg_(std::move(bg))
     , win_(std::move(win))
     , obj_(std::move(obj))

@@ -3,7 +3,7 @@
 
 #include <cstdint>
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 
 class LengthCh3 {
 public:

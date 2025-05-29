@@ -3,12 +3,12 @@
 #include <stdexcept>
 
 #include "../operation/miscarithmetic.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "opcodeview.h"
 
 const std::vector<uint8_t> MiscArithmeticDecoder::decodedOpcodes_ = { 0x27U, 0x37U, 0x2FU, 0x3FU };
 
-auto MiscArithmeticDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto MiscArithmeticDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   return std::make_unique<MiscArithmetic>(decodeFunction(opcode.value()));

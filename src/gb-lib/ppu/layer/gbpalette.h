@@ -1,7 +1,7 @@
 #ifndef GB_PALETTE_H
 #define GB_PALETTE_H
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 
 enum class GbColors { White, LightGray, DarkGray, Black };
 

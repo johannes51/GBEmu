@@ -2,12 +2,12 @@
 
 #include <stdexcept>
 
-#include "cpu/operation/pushpop.h"
-#include "cpu/operation/wordload.h"
-#include "cpu/registersinterface.h"
-#include "mem/location8.h"
+#include "../operation/pushpop.h"
+#include "../operation/wordload.h"
+#include "../registers/registersinterface.h"
+#include "mem/ilocation8.h"
 
-auto WordLoadsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto WordLoadsDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   OperationUP result;
   const OpcodeView opcode { opcodeLocation.get() };

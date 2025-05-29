@@ -3,9 +3,10 @@
 
 #include <vector>
 
-#include "cpu/cpu_defines.h"
-#include "mem/imemoryview.h"
-#include "peripheralregisterfactory.h"
+#include "cartloader.h"
+#include "io/iobank.h"
+#include "io/iregisteradapter.h"
+#include "mem/imemorywordview.h"
 #include "peripherals/tickable.h"
 #include "sys/systemmanager.h"
 
@@ -19,8 +20,9 @@ public:
   SystemManagerUP constructSystem();
 
 private:
-  void constructMemory(const std::string& romFile, const std::string& ramFile);
-  CpuUP constructCpu();
+  CartUP buildCart(const std::string& romFile, const std::string& ramFile);
+  IMemoryWordViewUP constructMemory();
+  std::unique_ptr<Cpu> constructCpu();
   std::vector<TickableUP> constructPeripherals();
   TickableUP constructTimer(IRegisterAdapter& divApu);
   TickableUP constructJoypad();
@@ -28,10 +30,13 @@ private:
   TickableUP constructOamDma();
 
   std::vector<uint8_t> buffer_;
-  IMemoryViewUP mem_ = nullptr;
-  IoBank* ioBank_ = nullptr;
-  SingleRegisterBank* ieBank_ = nullptr;
-  std::unique_ptr<PeripheralRegisterFactory> peripheralRF_ = nullptr;
+  CartUP cart_;
+  IoBank* ioBank_;
+  IMemoryViewUP vram_;
+  IMemoryViewUP oam_;
+  IMemoryWordViewUP mem_; // construct last because other members are written by this
+
+  IRegisterAdapter* if_ = nullptr;
   const GbPixelBuffer* pixBuf_ = nullptr;
 };
 

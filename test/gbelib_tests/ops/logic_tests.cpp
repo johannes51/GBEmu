@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "ops/logic.h"
 
 #include "mem/rest/variablelocation.h"

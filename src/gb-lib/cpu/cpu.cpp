@@ -1,24 +1,20 @@
 #include "cpu.h"
 
-#include "cpu_defines.h"
 #include "id/instructiondecoder.h"
 #include "mem/imemoryview.h"
 #include "operation/operation.h"
 #include "ops/arithmetic.h"
-#include "registersinterface.h"
+#include "registers/registersinterface.h"
 #include "util/helpers.h"
 
-Cpu::Cpu(IMemoryView& mem, RegistersInterfaceUP&& registers, IRegisterAdapterUP ie,
-    InstructionDecoderUP instructionDecoder, InterruptHandlerUP interruptHandler)
+Cpu::Cpu(IMemoryWordView& mem, RegistersInterfaceUP registers, InstructionDecoderUP instructionDecoder,
+    InterruptHandlerUP interruptHandler)
     : mem_(mem)
     , registers_(std::move(registers))
-    , ie_(std::move(ie))
     , instructionDecoder_(std::move(instructionDecoder))
     , interruptHandler_(std::move(interruptHandler))
 {
 }
-
-Cpu::~Cpu() = default;
 
 auto Cpu::clock() -> bool
 {
@@ -26,7 +22,7 @@ auto Cpu::clock() -> bool
     nextOperation_ = loadNextOperation();
   }
 
-  if (--ticksTillExecution_ == 0) {
+  if (!registers_->getFlags().isHalt() && --ticksTillExecution_ == 0) {
     nextOperation_->execute(*registers_, mem_);
     registers_->get(ByteRegister::F)
         = registers_->get(ByteRegister::F).get() & UPPER_NIBBLE_MASK; // NOTE: this is so dumb
@@ -55,14 +51,14 @@ auto Cpu::loadNextOperation() -> OperationUP
     }
   }
   if (!result && !registers_->getFlags().isHalt()) {
-    const auto next = fetchNextOpcode();
+    const auto& next = fetchNextOpcode();
     result = instructionDecoder_->decode(next);
   }
 
   if (result) {
     result->showFlags(registers_->getFlags());
     while (!result->isComplete()) {
-      auto next = fetchNextOpcode();
+      auto& next = fetchNextOpcode();
       result->nextOpcode(next);
     }
     ticksTillExecution_ = result->cycles();
@@ -70,10 +66,10 @@ auto Cpu::loadNextOperation() -> OperationUP
   return result;
 }
 
-auto Cpu::fetchNextOpcode() -> Location8
+auto Cpu::fetchNextOpcode() -> ILocation8&
 {
-  auto pc = registers_->get(WordRegister::PC);
-  auto result = mem_.getLocation8(hlp::indirect(pc));
+  auto& pc = registers_->get(WordRegister::PC);
+  auto& result = mem_.getLocation8(hlp::indirect(pc));
   ops::increment(pc);
   return result;
 }

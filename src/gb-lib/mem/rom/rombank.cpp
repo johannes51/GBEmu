@@ -1,28 +1,18 @@
 #include "rombank.h"
 
 #include "../common/mem_tools.h"
-#include "mem/common/fusedlocation16.h"
-#include "romlocation.h"
 
 RomBank::RomBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer)
     : BufferBank(area, buffer)
+    , loc_(buffer_[0U])
 {
 }
 
-auto RomBank::getLocation8(const address_type address) -> Location8
+auto RomBank::getLocation8(const address_type address) -> ILocation8&
 {
-  if (!mem_tools::isSafe(address, singleArea())) {
-    throw std::invalid_argument("Out of bounds");
-  }
-  return { std::make_unique<RomLocation>(getByteReference(address)) };
+  loc_.setBuffer(buffer_[mem_tools::translateAddressSafe(address, area_)]);
+  loc_.setAddress(address);
+  return loc_;
 }
 
-auto RomBank::getLocation16(const address_type address) -> Location16
-{
-  if (!mem_tools::isSafe(address, singleArea()) || !mem_tools::isSafe(address + 1, singleArea())) {
-    throw std::invalid_argument("Out of bounds");
-  }
-  return { FusedLocation16::construct(
-      {std::make_unique<RomLocation>(getByteReference(address))},
-      {std::make_unique<RomLocation>(getByteReference(address + 1U))}) };
-}
+void RomBank::setMbc(Mbc* value) { loc_.setMbc(value); }

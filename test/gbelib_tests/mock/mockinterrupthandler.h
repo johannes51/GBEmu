@@ -1,12 +1,12 @@
 #ifndef MOCKINTERRUPTHANDLER_H
 #define MOCKINTERRUPTHANDLER_H
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 #include "peripherals/interrupthandler.h"
 
 class MockInterruptHandler : public InterruptHandler {
 public:
-  void execute(RegistersInterface& registers, IMemoryView& memory) override
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override
   {
     (void)memory;
     registers.get(WordRegister::PC) = pc_;

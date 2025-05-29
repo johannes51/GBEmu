@@ -1,26 +1,31 @@
 #ifndef MOCKIOBANK_H
 #define MOCKIOBANK_H
 
-#include "mem/registers/iobank.h"
+#include "io/iobank.h"
 
-#include "mockregisteradapter.h"
+#include "mem/common/bufferlocation.h"
+#include "mem/common/mem_tools.h"
 
 class MockIoBank : public IoBank {
 public:
-  MockIoBank(std::span<uint8_t, std::dynamic_extent> buffer)
-      : IoBank({}, buffer)
-      , buffer_(buffer)
+  explicit MockIoBank()
+      : IoBank()
+      , buffer_(Io.size())
+      , loc_(buffer_[0U])
   {
   }
 
-  ByteLocationAdapterUP getRegisterLocation(const address_type address) override
+  ILocation8& getLocation8(const address_type address) override
   {
-    (void)address;
-    return std::make_unique<BufferLocation>(buffer_[0U]);
+    loc_.setBuffer(buffer_[mem_tools::translateAddressSafe(address, area_)]);
+    return loc_;
   }
+
+  static IoBankUP make() { return std::make_unique<MockIoBank>(); }
 
 private:
-  std::span<uint8_t, std::dynamic_extent> buffer_;
+  std::vector<uint8_t> buffer_;
+  BufferLocation loc_;
 };
 
 #endif // MOCKIOBANK_H

@@ -1,9 +1,17 @@
 #include "onelocation.h"
 
-uint8_t OneLocation::one_ = { 0xFFU };
+uint8_t OneLocation::one_ = { 0xFFU }; // NOLINT(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
-const uint8_t& OneLocation::get() const { return one_; }
+auto OneLocation::get() const -> const uint8_t& { return one_; }
 
-void OneLocation::set(const uint8_t& value) { (void)value; }
+auto OneLocation::operator=(const uint8_t& rhs) -> OneLocation&
+{
+  (void)rhs;
+  return *this;
+}
 
-ByteLocationAdapterUP OneLocation::copy() { return std::make_unique<OneLocation>(); }
+auto OneLocation::instance() -> ILocation8&
+{
+  static OneLocation l;
+  return l;
+}

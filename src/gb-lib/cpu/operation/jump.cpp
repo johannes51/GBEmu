@@ -2,17 +2,16 @@
 
 #include <stdexcept>
 
-#include "cpu/flagsview.h"
-#include "cpu/registersinterface.h"
+#include "../registers/flagsview.h"
+#include "../registers/registersinterface.h"
+#include "mem/ilocation8.h"
 #include "mem/imemoryview.h"
-#include "mem/location8.h"
 #include "mem/rest/variablelocation.h"
 #include "ops/arithmetic.h"
 #include "util/helpers.h"
 
 Jump::Jump(JumpType type, TargetType target, Condition condition)
-    : param_(nullptr, nullptr)
-    , type_(type)
+    : type_(type)
     , target_(target)
     , condition_(condition)
     , taken_(std::nullopt)
@@ -44,15 +43,15 @@ void Jump::showFlags(const FlagsView& flags)
   }
 }
 
-void Jump::nextOpcode(const Location8& opcode)
+void Jump::nextOpcode(const ILocation8& opcode)
 {
   if (type_ != JumpType::Regular && type_ != JumpType::Call && type_ != JumpType::Reset) {
     throw std::logic_error("Needs no immediate data.");
   }
-  if (!param_.hasLower()) {
-    param_.setLower(std::make_unique<Location8>(variableLocation(opcode.get())));
-  } else if (!param_.hasUpper()) {
-    param_.setUpper(std::make_unique<Location8>(variableLocation(opcode.get())));
+  if (!immediateL_) {
+    immediateL_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
+  } else if (!immediateH_) {
+    immediateH_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
   } else {
     throw std::logic_error("Enough opcodes already");
   }
@@ -62,10 +61,10 @@ auto Jump::isComplete() -> bool
 {
   switch (type_) {
   case JumpType::Regular:
-    return taken_.has_value() && param_.hasLower() && (target_ != TargetType::Absolute || param_.hasUpper());
+    return taken_.has_value() && immediateL_ && (target_ != TargetType::Absolute || immediateH_);
   case JumpType::Call:
   case JumpType::Reset:
-    return taken_.has_value() && param_.hasLower() && param_.hasUpper();
+    return taken_.has_value() && immediateL_ && immediateH_;
   default:
     return taken_.has_value();
   }
@@ -104,15 +103,15 @@ auto Jump::cycles() -> unsigned
   return result;
 }
 
-void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
+void Jump::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
-  auto pc = registers.get(WordRegister::PC);
+  auto& pc = registers.get(WordRegister::PC);
   if (!taken_) {
     throw std::logic_error("Registers not shown");
   }
   if (*taken_) {
     if (target_ == TargetType::Absolute) {
-      auto sp = registers.get(WordRegister::SP);
+      auto& sp = registers.get(WordRegister::SP);
       switch (type_) {
       case JumpType::Call:
       case JumpType::Reset:
@@ -120,17 +119,17 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         ops::decrement(sp);
         ops::decrement(sp);
         {
-          auto memLoc = memory.getLocation16(hlp::indirect(sp));
+          auto& memLoc = memory.getLocation16(hlp::indirect(sp));
           memLoc = registers.get(WordRegister::PC).get();
         }
         [[fallthrough]];
       case JumpType::Regular:
-        if (!param_.hasLower()) {
+        if (!immediateL_) {
           throw std::invalid_argument("Adress location bytes not configured");
-        } else if (!param_.hasUpper()) {
+        } else if (!immediateH_) {
           throw std::invalid_argument("Only single byte provided, two are needed.");
         }
-        pc = param_.get();
+        pc = FusedLocation16::construct(immediateL_.get(), immediateH_.get()).get();
         break;
       case JumpType::Indirect:
         pc = registers.get(WordRegister::HL).get();
@@ -144,10 +143,10 @@ void Jump::execute(RegistersInterface& registers, IMemoryView& memory)
         ops::increment(sp);
       }
     } else /*if (target_ == TargetType::Relative)*/ {
-      if (!param_.hasLower()) {
+      if (!immediateL_) {
         throw std::invalid_argument("Adress location byte not configured");
       }
-      ops::addSigned(pc, param_.lower());
+      ops::addSigned(pc, immediateL_->get());
     }
   }
 }

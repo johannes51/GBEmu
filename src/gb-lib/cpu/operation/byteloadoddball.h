@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 class ByteLoadOddball final : public Operation {
 public:
@@ -15,17 +15,17 @@ public:
   ByteLoadOddball(Direction direction, Indirection indirection);
   ~ByteLoadOddball();
 
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   const Direction direction_;
   const Indirection indirection_;
-  std::unique_ptr<Location8> immediate8_;
-  std::unique_ptr<Location16> immediate16_;
+  std::unique_ptr<ILocation8> immediateL_;
+  std::unique_ptr<ILocation8> immediateH_;
 };
 
 #endif // BYTE_LOAD_ODDBALL_H

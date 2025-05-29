@@ -6,7 +6,8 @@
 #include <array>
 #include <utility>
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iobank.h"
+#include "io/ioregister.h"
 
 constexpr uint8_t InterruptRegisterMask = 0b00011111U;
 
@@ -31,17 +32,21 @@ constexpr std::array<std::pair<uint8_t, address_type>, NumInterrupts> HandlerAdr
 
 class GbInterruptHandler : public InterruptHandler {
 public:
-  GbInterruptHandler(IRegisterAdapter& rIf, const IRegisterAdapter& rIe);
+  explicit GbInterruptHandler(IoBank& io, ILocation8& ie);
   DISABLE_COPY_AND_MOVE(GbInterruptHandler)
   ~GbInterruptHandler() override = default;
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
   bool isInterrupt() const override;
 
+  IRegisterAdapter* getIf();
+
 private:
-  IRegisterAdapter& if_;
-  const IRegisterAdapter& ie_;
+  static constexpr address_type IfAddress = 0xFF0FU;
+
+  IoRegister if_;
+  ILocation8& ie_;
 
   std::pair<uint8_t, address_type> unmapInterrupt();
   static bool checkInterruptBit(const uint8_t& activeInterrupts, const uint8_t pos);

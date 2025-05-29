@@ -1,14 +1,14 @@
 #include "control.h"
 
-#include "cpu/flagsview.h"
-#include "cpu/registersinterface.h"
+#include "../registers/flagsview.h"
+#include "../registers/registersinterface.h"
 
 Control::Control(ControlOp op)
     : op_(op)
 {
 }
 
-void Control::execute(RegistersInterface& registers, IMemoryView& memory)
+void Control::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
   switch (op_) {

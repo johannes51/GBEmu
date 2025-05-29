@@ -13,8 +13,8 @@ MainWindow::MainWindow(QWidget* parent)
 {
   ui_->setupUi(this);
 
-  const auto fn
-      = QFileInfo { QFileDialog::getOpenFileName(nullptr, "", "/home/jo/Downloads/gb/gb-test-roms-master/", "*.gb") };
+  const auto fn = QFileInfo { QFileDialog::getOpenFileName(
+      nullptr, "", "/home/jo/Downloads/gb/gb-test-roms-master/", "ROMs (*.gb *.gbc)") };
 
   GbFactory f { fn.absoluteFilePath().toStdString(), (fn.absolutePath() + fn.baseName() + ".sav").toStdString() };
   sm_ = f.constructSystem();

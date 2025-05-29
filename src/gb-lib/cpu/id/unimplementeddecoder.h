@@ -7,7 +7,7 @@ class UnimplementedDecoder : public InstructionDecoder {
 public:
   UnimplementedDecoder() = default;
 
-  OperationUP decode(const Location8& opcodeLocation) const override;
+  OperationUP decode(const ILocation8& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:

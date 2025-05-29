@@ -3,25 +3,48 @@
 #include "../common/fusedlocation16.h"
 #include "constants.h"
 
-VariableLocation::VariableLocation(const uint8_t& variable)
+VariableLocation8::VariableLocation8(const uint8_t& variable)
     : variable_(variable)
 {
 }
 
-auto VariableLocation::get() const -> const uint8_t& { return variable_; }
-
-void VariableLocation::set(const uint8_t& value) { variable_ = value; }
-
-auto variableLocation(const uint8_t& value) -> Location8 { return { std::make_unique<VariableLocation>(value) }; }
-
-auto variableLocation(const uint8_t& lowValue, const uint8_t& highValue) -> Location16
+VariableLocation8::VariableLocation8(VariableLocation8&& other) noexcept
+    : variable_(other.variable_)
 {
-  return { FusedLocation16::construct({variableLocation(lowValue)}, {variableLocation(highValue)}) };
 }
 
-auto variableLocation(const uint16_t& value) -> Location16
+auto VariableLocation8::get() const -> const uint8_t& { return variable_; }
+
+auto VariableLocation8::operator=(const uint8_t& rhs) -> VariableLocation8&
 {
-  const uint8_t lower = value & BYTE_MASK;
-  const uint8_t upper = static_cast<uint16_t>(value >> BYTE_SHIFT) & BYTE_MASK;
-  return variableLocation(lower, upper);
+  variable_ = rhs;
+  return *this;
 }
+
+VariableLocation16::VariableLocation16(const uint16_t& variable)
+    : variable_(variable)
+{
+}
+
+VariableLocation16::VariableLocation16(VariableLocation16&& other) noexcept
+    : variable_(other.variable_)
+{
+}
+
+auto VariableLocation16::get() const -> const uint16_t& { return variable_; }
+
+auto VariableLocation16::operator=(const uint16_t& rhs) -> VariableLocation16&
+{
+  variable_ = rhs;
+  return *this;
+}
+
+auto variableLocation(const uint8_t& value) -> VariableLocation8 { return VariableLocation8 { value }; }
+
+auto variableLocation(const uint8_t& lowValue, const uint8_t& highValue) -> VariableLocation16
+{
+  const uint16_t value = static_cast<uint16_t>(highValue << BYTE_SHIFT) | lowValue;
+  return variableLocation(value);
+}
+
+auto variableLocation(const uint16_t& value) -> VariableLocation16 { return VariableLocation16 { value }; }

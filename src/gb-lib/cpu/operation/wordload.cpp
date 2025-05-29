@@ -2,10 +2,10 @@
 
 #include <stdexcept>
 
-#include "cpu/registersinterface.h"
+#include "../registers/registersinterface.h"
 #include "mem/common/fusedlocation16.h"
+#include "mem/ilocation8.h"
 #include "mem/imemoryview.h"
-#include "mem/location8.h"
 #include "mem/rest/variablelocation.h"
 #include "ops/arithmetic.h"
 #include "util/helpers.h"
@@ -18,25 +18,24 @@ WordLoad::WordLoad(Destination destination, Source source)
 
 WordLoad::~WordLoad() = default;
 
-void WordLoad::nextOpcode(const Location8& opcode)
+void WordLoad::nextOpcode(const ILocation8& opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
   }
-  if (!immediate8_ && !immediate16_) {
-    immediate8_ = std::make_unique<Location8>(variableLocation(opcode.get()));
-  } else if (!immediate16_) {
-    immediate16_ = std::make_unique<Location16>(FusedLocation16::construct(
-        std::move(*immediate8_), variableLocation(opcode.get())));
+  if (!immediateL_ && !immediateH_) {
+    immediateL_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
+  } else if (!immediateH_) {
+    immediateH_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
   }
 }
 
 auto WordLoad::isComplete() -> bool
 {
   if (source_ == Source::Immediate || destination_ == Destination::ImmediateIndirect) {
-    return static_cast<bool>(immediate16_);
+    return static_cast<bool>(immediateL_) && static_cast<bool>(immediateH_);
   } else if (source_ == Source::RegisterImmediate) {
-    return static_cast<bool>(immediate8_);
+    return static_cast<bool>(immediateL_);
   } else {
     return true;
   }
@@ -59,45 +58,44 @@ auto WordLoad::cycles() -> unsigned
   return result;
 }
 
-void WordLoad::execute(RegistersInterface& registers, IMemoryView& memory)
+void WordLoad::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
-  auto sp = registers.get(WordRegister::SP);
-  Location16 destLoc {};
+  auto immediate16 = FusedLocation16::construct(immediateL_.get(), immediateH_.get());
+  ILocation16* destLoc = nullptr;
   switch (destination_) {
   case Destination::Register:
-    destLoc = registers.get(destRegister_);
+    destLoc = &registers.get(destRegister_);
     break;
   case Destination::ImmediateIndirect:
-    if (!immediate16_) {
+    if (!static_cast<bool>(immediateL_) && !static_cast<bool>(immediateH_)) {
       throw std::invalid_argument("No immediate value configured");
     }
-    destLoc = memory.getLocation16(hlp::indirect(*immediate16_));
+    destLoc = &memory.getLocation16(hlp::indirect(immediate16));
     break;
   case Destination::RegisterIndirect:
-    destLoc = memory.getLocation16(hlp::indirect(registers.get(destRegister_)));
+    destLoc = &memory.getLocation16(hlp::indirect(registers.get(destRegister_)));
     break;
   }
-  Location16 srcLoc {};
+  ILocation16* srcLoc = nullptr;
   switch (source_) {
   case Source::Immediate:
-    if (!immediate16_) {
+    if (!static_cast<bool>(immediateL_) && !static_cast<bool>(immediateH_)) {
       throw std::invalid_argument("No immediate value configured");
     }
-    srcLoc = std::move(*immediate16_);
-    immediate16_.reset();
+    srcLoc = &immediate16;
     break;
   case Source::Register:
-    srcLoc = registers.get(srcRegister_);
+    srcLoc = &registers.get(srcRegister_);
     break;
   case Source::RegisterImmediate:
-    srcLoc = registers.get(WordRegister::SP);
+    srcLoc = &registers.get(WordRegister::SP);
     break;
   }
-  destLoc = srcLoc.get();
+  *destLoc = srcLoc->get();
   if (source_ == Source::RegisterImmediate) {
-    if (!immediate8_) {
+    if (!immediateL_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    apply(registers.getFlags(), ops::addSigned(destLoc, immediate8_->get()));
+    apply(registers.getFlags(), ops::addSigned(*destLoc, immediateL_->get()));
   }
 }

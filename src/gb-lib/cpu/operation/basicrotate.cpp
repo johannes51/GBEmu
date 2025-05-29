@@ -1,7 +1,7 @@
 #include "basicrotate.h"
 
-#include "cpu/flagsview.h"
-#include "cpu/registersinterface.h"
+#include "../registers/flagsview.h"
+#include "../registers/registersinterface.h"
 #include "ops/shiftrotate.h"
 #include "util/helpers.h"
 
@@ -11,10 +11,10 @@ BasicRotate::BasicRotate(const RotateDirection& direction, bool throughCarry)
 {
 }
 
-void BasicRotate::execute(RegistersInterface& registers, IMemoryView& memory)
+void BasicRotate::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
-  auto reg = registers.get(ByteRegister::A);
+  auto& reg = registers.get(ByteRegister::A);
   auto result = ops::OpResult { .z = ops::FlagResult::NoChange,
     .n = ops::FlagResult::NoChange,
     .h = ops::FlagResult::NoChange,

@@ -1,7 +1,9 @@
 #ifndef MEMORYTOOLS_H
 #define MEMORYTOOLS_H
 
-#include "../imemorymanager.h"
+#include <vector>
+
+#include "../mem_defines.h"
 
 namespace mem_tools {
 address_type translateAddressSafe(const address_type& inputAddress, const MemoryArea& area);

@@ -5,13 +5,14 @@
 
 #include "channel_util/lengthch3.h"
 #include "channel_util/period.h"
+#include "io/iobank.h"
+#include "io/ioregister.h"
+#include "io/iregisteradapter.h"
 #include "mem/imemoryview.h"
-#include "mem/registers/iregisteradapter.h"
 
 class GbChannel3 : public Channel {
 public:
-  GbChannel3(const IRegisterAdapter& nr30, const IRegisterAdapter& nr31, const IRegisterAdapter& nr32,
-      const IRegisterAdapter& nr33, const IRegisterAdapter& nr34, IRegisterAdapter& nr52, IMemoryView& waveRam);
+  GbChannel3(IoBank& io, IRegisterAdapter& nr52, IMemoryView& waveRam);
 
   void clock() override;
   void tickApuDiv(const FrameSequence sequence) override;
@@ -22,6 +23,8 @@ private:
     bool upper;
   };
 
+  static constexpr address_type Nr30Adress = 0xFF1AU;
+
   static constexpr uint16_t WaveRamStart = 0xFF30U;
   static constexpr uint16_t WaveRamTop = 0xFF3FU;
 
@@ -31,7 +34,11 @@ private:
   static constexpr uint8_t VolumePattern25Pct = 0b11U;
   static constexpr uint8_t VolumePatternBit = 5U;
 
-  const IRegisterAdapter& nr32_;
+  IoRegister nr30_;
+  IoRegister nr31_;
+  IoRegister nr32_;
+  IoRegister nr33_;
+  IoRegister nr34_;
 
   Period period_;
   LengthCh3 len_;

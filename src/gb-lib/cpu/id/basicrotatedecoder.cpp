@@ -3,7 +3,7 @@
 #include "cpu/operation/basicrotate.h"
 #include "opcodeview.h"
 
-auto BasicRotateDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto BasicRotateDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   return std::make_unique<BasicRotate>(

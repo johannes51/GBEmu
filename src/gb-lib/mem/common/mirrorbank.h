@@ -1,19 +1,20 @@
 #ifndef MIRRORBANK_H
 #define MIRRORBANK_H
 
-#include "singleareamanager.h"
+#include "../common/singleareaview.h"
 
-class MirrorBank : public SingleAreaManager {
+#include "../mem_defines.h"
+
+class MirrorBank : public SingleAreaView {
 public:
-  MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryManager& mirrored);
+  MirrorBank(const MemoryArea& mirrorArea, const MemoryArea& originalArea, IMemoryView& mirrored);
   DISABLE_COPY_AND_MOVE(MirrorBank)
 
-  Location8 getLocation8(const address_type address) override;
-  Location16 getLocation16(const address_type address) override;
+  ILocation8& getLocation8(const address_type address) override;
 
 private:
   const int offset_;
-  IMemoryManager& mirrored_;
+  IMemoryView& mirrored_;
 };
 
 #endif // MIRRORBANK_H

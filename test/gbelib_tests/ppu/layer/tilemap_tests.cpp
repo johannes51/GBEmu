@@ -5,7 +5,7 @@
 #include "mock/mockregisteradapter.h"
 #include "mock/testbank.h"
 
-#include "mem/rest/nullbank.h"
+#include "mem/rest/zerobank.h"
 #include "ppu/layer/tiledata.h"
 
 // clang-format off
@@ -949,13 +949,13 @@ static const std::vector<uint8_t> TileMapData = {
 
 TEST(TileMapTests, Construction)
 {
-  auto mem = std::make_shared<NullBank>(MemoryArea { 0x8000, 0x9FFF });
+  auto mem = std::make_shared<ZeroBank>(MemoryArea { 0x8000, 0x9FFF });
   TileMap t(*MockRegisterAdapter::make(), *mem, 4);
 }
 
 TEST(TileMapTests, GetTile)
 {
-  auto mem = std::make_shared<NullBank>(MemoryArea { 0x8000, 0x9FFF });
+  auto mem = std::make_shared<ZeroBank>(MemoryArea { 0x8000, 0x9FFF });
   auto lcdc = MockRegisterAdapter::make();
   TileMap t(*lcdc, *mem, 4);
   EXPECT_NO_THROW(t.getIndex({ 0U, 0U }));

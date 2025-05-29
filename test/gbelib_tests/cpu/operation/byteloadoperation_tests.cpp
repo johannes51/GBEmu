@@ -7,7 +7,7 @@
 
 #include "mock/testbank.h"
 
-#include "cpu/cpuregisters.h"
+#include "cpu/registers/cpuregisters.h"
 #include "mem/rest/variablelocation.h"
 
 TEST(ByteLoadOperationTest, Immediate)
@@ -21,7 +21,7 @@ TEST(ByteLoadOperationTest, Immediate)
   CpuRegisters r;
   EXPECT_EQ(2, loadImmediate.cycles());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  IMemoryWordViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   loadImmediate.execute(r, *m);
 
   EXPECT_EQ(0x42U, r.get(ByteRegister::L).get());

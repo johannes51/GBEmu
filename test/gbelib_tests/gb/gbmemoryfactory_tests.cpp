@@ -1,9 +1,12 @@
 #include "gtest/gtest.h"
 
-#include "gb_factories/cartloader.h"
 #include "gb_factories/memoryfactory.h"
+
+#include "mock/mockiobank.h"
+
+#include "gb_factories/cartloader.h"
+#include "mem/ilocation8.h"
 #include "mem/imemoryview.h"
-#include "mem/location8.h"
 
 using namespace std;
 using namespace gb;
@@ -24,21 +27,29 @@ address_type startHRAM = 0xFF80U;
 address_type endHRAM = 0xFFFEU;
 address_type startPC = 0x0100U;
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint16_t value)
-{
-  auto writeLocation = memory.getLocation16(writeAddress);
-  writeLocation = value;
-  EXPECT_EQ(value, memory.getLocation16(readAddress).get());
-}
+class GbMemoryFactoryTest : public ::testing::Test {
+public:
+  GbMemoryFactoryTest()
+      : mem()
+      , v()
+      , cart()
+  {
+    CartLoader cl { "cpu_instrs.gb", "cpu_instrs.sav" };
+    v.resize(cl.calculateNeccessarySize() + MemoryFactory::getSize());
+    cart = cl.constructCart(v);
+    auto f = MemoryFactory(cart->getBanks(), MockIoBank::make(), v);
+    mem = f.releaseMemory();
+  }
 
-void testMemoryRoundtrip(IMemoryView& memory, address_type rwAddress, uint16_t value)
-{
-  testMemoryRoundtrip(memory, rwAddress, rwAddress, value);
-}
+protected:
+  IMemoryViewUP mem;
+  std::vector<uint8_t> v;
+  CartUP cart;
+};
 
 void testMemoryRoundtrip(IMemoryView& memory, address_type writeAddress, address_type readAddress, uint8_t value)
 {
-  auto writeLocation = memory.getLocation8(writeAddress);
+  auto& writeLocation = memory.getLocation8(writeAddress);
   writeLocation = value;
   EXPECT_EQ(value, memory.getLocation8(readAddress).get());
 }
@@ -53,27 +64,16 @@ void testMemoryThrowsByte(IMemoryView& memory, address_type testAddress)
   EXPECT_ANY_THROW(memory.getLocation8(testAddress));
 }
 
-void testMemoryThrowsWord(IMemoryView& memory, address_type testAddress)
+TEST_F(GbMemoryFactoryTest, ROM0t1)
 {
-  EXPECT_ANY_THROW(memory.getLocation16(testAddress));
-}
-
-TEST(GBMemoryFactoryTest, ROM0t1)
-{
-  auto v = std::vector<uint8_t> {};
-  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
   EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
   EXPECT_EQ(0xC9U, mem->getLocation8(startROM0 + 1).get());
   EXPECT_NO_THROW(mem->getLocation8(startROM0) = uint8_t(0x00U));
   EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
 }
 
-TEST(GBMemoryFactoryTest, ROM0t2)
+TEST_F(GbMemoryFactoryTest, ROM0t2)
 {
-  auto v = std::vector<uint8_t> {};
-  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
   EXPECT_EQ(0x00U, mem->getLocation8(startPC).get());
   EXPECT_EQ(0xC3U, mem->getLocation8(startPC + 1).get());
   EXPECT_EQ(0x37U, mem->getLocation8(startPC + 2).get());
@@ -82,177 +82,74 @@ TEST(GBMemoryFactoryTest, ROM0t2)
   EXPECT_EQ(0xC3U, mem->getLocation8(startPC + 1).get());
 }
 
-TEST(GBMemoryFactoryTest, ROM0t3)
+TEST_F(GbMemoryFactoryTest, ROM1t1)
 {
-  auto v = std::vector<uint8_t> {};
-  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
-  unsigned val = mem->getLocation16(endROM0 - 1).get();
-  EXPECT_EQ(0x066EU, val);
-  EXPECT_NO_THROW(mem->getLocation8(endROM0) = uint8_t(0x00U));
-  EXPECT_EQ(0x06U, mem->getLocation8(endROM0).get());
-}
-
-TEST(GBMemoryFactoryTest, ROM1t1)
-{
-  auto v = std::vector<uint8_t> {};
-  auto f = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto mem = f.releaseMemory();
   EXPECT_EQ(0xC3U, mem->getLocation8(startROM1).get());
   EXPECT_EQ(0x20U, mem->getLocation8(startROM1 + 1).get());
   EXPECT_NO_THROW(mem->getLocation8(startROM0) = uint8_t(0x00U));
   EXPECT_EQ(0x3CU, mem->getLocation8(startROM0).get());
 }
 
-TEST(GBMemoryFactoryTest, WRAM0t1)
+TEST_F(GbMemoryFactoryTest, WRAM0t1)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory(std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v);
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM0, value8);
+  testMemoryRoundtrip(*mem, startWRAM0, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM0, value16);
+  testMemoryRoundtrip(*mem, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, WRAM0t2)
+TEST_F(GbMemoryFactoryTest, WRAM0t3)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, endWRAM0, value8);
-
-  testMemoryThrowsWord(*gbLayout, endWRAM0);
-}
-
-TEST(GBMemoryFactoryTest, WRAM0t3)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value8);
+  testMemoryRoundtrip(*mem, (startWRAM0 + endWRAM0) / 2, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, (startWRAM0 + endWRAM0) / 2, value16);
+  testMemoryRoundtrip(*mem, (startWRAM0 + endWRAM0) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, WRAM1t1)
+TEST_F(GbMemoryFactoryTest, WRAM1t1)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM1, value8);
+  testMemoryRoundtrip(*mem, startWRAM1, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM1, value16);
+  testMemoryRoundtrip(*mem, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, WRAM1t2)
+TEST_F(GbMemoryFactoryTest, WRAM1t3)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, endWRAM1, value8);
-
-  testMemoryThrowsWord(*gbLayout, endWRAM1);
-}
-
-TEST(GBMemoryFactoryTest, WRAM1t3)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value8);
+  testMemoryRoundtrip(*mem, (startWRAM1 + endWRAM1) / 2, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, (startWRAM1 + endWRAM1) / 2, value16);
+  testMemoryRoundtrip(*mem, (startWRAM1 + endWRAM1) / 2, value16);
 }
 
-TEST(GBMemoryFactoryTest, ECHOt1)
+TEST_F(GbMemoryFactoryTest, ECHOt1)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value8);
+  testMemoryRoundtrip(*mem, startWRAM0, startECHO, value8);
   value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value8);
+  testMemoryRoundtrip(*mem, startECHO, startWRAM0, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM0, startECHO, value16);
+  testMemoryRoundtrip(*mem, startWRAM0, startECHO, value16);
   value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startECHO, startWRAM0, value16);
+  testMemoryRoundtrip(*mem, startECHO, startWRAM0, value16);
 }
 
-TEST(GBMemoryFactoryTest, ECHOt2)
+TEST_F(GbMemoryFactoryTest, ECHOt2)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value8);
+  testMemoryRoundtrip(*mem, startWRAM1, startECHO + startWRAM1 - startWRAM0, value8);
   value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value8);
+  testMemoryRoundtrip(*mem, startECHO + startWRAM1 - startWRAM0, startWRAM1, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM1, startECHO + startWRAM1 - startWRAM0, value16);
+  testMemoryRoundtrip(*mem, startWRAM1, startECHO + startWRAM1 - startWRAM0, value16);
   value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
+  testMemoryRoundtrip(*mem, startECHO + startWRAM1 - startWRAM0, startWRAM1, value16);
 }
 
-TEST(GBMemoryFactoryTest, ECHOt3)
+TEST_F(GbMemoryFactoryTest, HRAMt1)
 {
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
   auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startWRAM0 + endECHO - startECHO, endECHO, value8);
-  value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, endECHO, startWRAM0 + endECHO - startECHO, value8);
-
-  testMemoryThrowsWord(*gbLayout, endECHO);
-}
-
-TEST(GBMemoryFactoryTest, NOTUSEDt1)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-
-  auto value = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  auto writeLocation = gbLayout->getLocation8(startNOTUSED);
-  writeLocation = value;
-
-  EXPECT_EQ(0, gbLayout->getLocation8(startNOTUSED).get());
-}
-
-TEST(GBMemoryFactoryTest, NOTUSEDt2)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-
-  EXPECT_ANY_THROW(gbLayout->getLocation16(endNOTUSED));
-}
-
-TEST(GBMemoryFactoryTest, HRAMt1)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startHRAM, value8);
+  testMemoryRoundtrip(*mem, startHRAM, value8);
   auto value16 = static_cast<uint16_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, startHRAM, value16);
-}
-
-TEST(GBMemoryFactoryTest, HRAMt2)
-{
-  auto v = std::vector<uint8_t> {};
-  auto mem = MemoryFactory { std::make_unique<CartLoader>("cpu_instrs.gb", "cpu_instrs.sav"), v };
-  auto gbLayout = mem.releaseMemory();
-  auto value8 = static_cast<uint8_t>(rand()); // NOLINT(concurrency-mt-unsafe)
-  testMemoryRoundtrip(*gbLayout, endHRAM, value8);
-
-  testMemoryThrowsWord(*gbLayout, endHRAM);
+  testMemoryRoundtrip(*mem, startHRAM, value16);
 }

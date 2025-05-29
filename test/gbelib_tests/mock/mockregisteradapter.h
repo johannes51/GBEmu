@@ -1,7 +1,7 @@
 #ifndef MOCKREGISTERADAPTER_H
 #define MOCKREGISTERADAPTER_H
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 
 #include "util/helpers.h"
 
@@ -27,7 +27,10 @@ public:
     setByte(temp);
   }
 
-  static IRegisterAdapterUP make(uint8_t initial = 0U) { return std::make_unique<MockRegisterAdapter>(initial); }
+  static std::unique_ptr<IRegisterAdapter> make(uint8_t initial = 0U)
+  {
+    return std::make_unique<MockRegisterAdapter>(initial);
+  }
 
 private:
   uint8_t value_;

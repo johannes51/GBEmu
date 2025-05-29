@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "mem/rom/rombank.h"
 
 TEST(RomBankTest, Indirect)

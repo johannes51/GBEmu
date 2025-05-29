@@ -2,139 +2,97 @@
 
 #include "peripherals/gbtimer.h"
 
-#include "mock/mockdivregister.h"
+#include "mock/mockiobank.h"
 #include "mock/mockregisteradapter.h"
 
 #include "peripherals/gbinterrupthandler.h"
 
-using ::testing::Return;
-using ::testing::StrictMock;
-
 class GbTimerTest : public ::testing::Test {
 public:
   GbTimerTest()
-      : div_(MockDivRegister::make())
-      , div_apu_(MockRegisterAdapter::make())
-      , tima_(MockRegisterAdapter::make())
-      , tma_(MockRegisterAdapter::make())
-      , tac_(MockRegisterAdapter::make())
-      , if_(MockRegisterAdapter::make())
+      : div_apu_()
+      , if_()
   {
   }
 
 protected:
-  std::shared_ptr<StrictMock<MockDivRegister>> div_;
-  IRegisterAdapterUP div_apu_;
-  IRegisterAdapterUP tima_;
-  IRegisterAdapterUP tma_;
-  IRegisterAdapterUP tac_;
-  IRegisterAdapterUP if_;
+  IoRegister div_apu_;
+  IoRegister if_;
+  MockIoBank b_;
 
   void SetUp() override
   {
-    EXPECT_CALL(*div_, setByte(0U)).WillOnce(Return());
-    div_->setByte(0U);
-    div_apu_->setByte(0U);
-    tima_->setByte(0U);
-    tma_->setByte(0U);
-    if_->setByte(0U);
+    div_apu_.setByte(0U);
+    if_.setByte(0U);
   }
 };
 
-TEST_F(GbTimerTest, Construction) { EXPECT_NO_THROW((GbTimer { div_, *div_apu_, *tima_, *tma_, *tac_, *if_ })); }
+TEST_F(GbTimerTest, Construction) { EXPECT_NO_THROW((GbTimer { b_, div_apu_, if_ })); }
 
 TEST_F(GbTimerTest, Interrupt)
 {
-  GbTimer t { div_, *div_apu_, *tima_, *tma_, *tac_, *if_ };
-  tac_->setByte(0b101U); // Every 4 clocks
-  tma_->setByte(0xFDU); // Every 3 increments
-  tima_->setByte(0xFEU); // 2 increments away
+  GbTimer t { b_, div_apu_, if_ };
+  t.getTac()->setByte(0b101U); // Every 4 clocks
+  t.getTma()->setByte(0xFDU); // Every 3 increments
+  t.getTima()->setByte(0xFEU); // 2 increments away
 
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0xFEU, tima_->getByte());
-  EXPECT_FALSE(if_->testBit(TimerInterruptBit));
+  EXPECT_EQ(0xFEU, t.getTima()->getByte());
+  EXPECT_FALSE(if_.testBit(TimerInterruptBit));
 
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(true));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0xFEU, tima_->getByte());
-  EXPECT_FALSE(if_->testBit(TimerInterruptBit));
+  EXPECT_EQ(0xFEU, t.getTima()->getByte());
+  EXPECT_FALSE(if_.testBit(TimerInterruptBit));
 
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0xFFU, tima_->getByte());
-  EXPECT_FALSE(if_->testBit(TimerInterruptBit));
+  t.clock();
+  EXPECT_EQ(0xFFU, t.getTima()->getByte());
+  EXPECT_FALSE(if_.testBit(TimerInterruptBit));
 
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(true));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0xFDU, tima_->getByte());
-  EXPECT_TRUE(if_->testBit(TimerInterruptBit));
+  t.clock();
+  EXPECT_NE(0xFDU, t.getTima()->getByte());
+  EXPECT_FALSE(if_.testBit(TimerInterruptBit));
+  t.clock();
+  EXPECT_EQ(0xFDU, t.getTima()->getByte());
+  EXPECT_TRUE(if_.testBit(TimerInterruptBit));
 }
 
 TEST_F(GbTimerTest, SysTimerBit)
 {
-  GbTimer t { div_, *div_apu_, *tima_, *tma_, *tac_, *if_ };
+  GbTimer t { b_, div_apu_, if_ };
 
-  tac_->setByte(0b100U); // Every 256 clocks
-  EXPECT_CALL(*div_, testBitSystemTimer(7U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
+  t.getTac()->setByte(0b100U); // Every 256 clocks
   t.clock();
-  EXPECT_EQ(0U, tima_->getByte());
+  EXPECT_EQ(0U, t.getTima()->getByte());
 
-  tac_->setByte(0b101U); // Every 4 clocks
-  EXPECT_CALL(*div_, testBitSystemTimer(1U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
+  t.getTac()->setByte(0b101U); // Every 4 clocks
   t.clock();
-  EXPECT_EQ(0U, tima_->getByte());
+  EXPECT_EQ(0U, t.getTima()->getByte());
 
-  tac_->setByte(0b110U); // Every 16 clocks
-  EXPECT_CALL(*div_, testBitSystemTimer(3U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
+  t.getTac()->setByte(0b110U); // Every 16 clocks
   t.clock();
-  EXPECT_EQ(0U, tima_->getByte());
+  EXPECT_EQ(1U, t.getTima()->getByte());
 
-  tac_->setByte(0b111U); // Every 64 clocks
-  EXPECT_CALL(*div_, testBitSystemTimer(5U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
+  t.getTac()->setByte(0b111U); // Every 64 clocks
   t.clock();
-  EXPECT_EQ(0U, tima_->getByte());
+  EXPECT_EQ(1U, t.getTima()->getByte());
 }
 
 TEST_F(GbTimerTest, DivApu)
 {
-  GbTimer t { div_, *div_apu_, *tima_, *tma_, *tac_, *if_ };
+  GbTimer t { b_, div_apu_, if_ };
 
-  EXPECT_CALL(*div_, testBitSystemTimer(7U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0x0U, div_apu_->getByte());
+  EXPECT_EQ(0x0U, div_apu_.getByte());
 
-  EXPECT_CALL(*div_, testBitSystemTimer(7U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(true));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
   t.clock();
-  EXPECT_EQ(0x0U, div_apu_->getByte());
+  EXPECT_EQ(0x0U, div_apu_.getByte());
 
-  EXPECT_CALL(*div_, testBitSystemTimer(7U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, testBitSystemTimer(10U)).WillOnce(Return(false));
-  EXPECT_CALL(*div_, clock()).WillOnce(Return());
-  t.clock();
-  EXPECT_EQ(0x1U, div_apu_->getByte());
+  for (auto i = 0U; i < 2046U; ++i) {
+    t.clock();
+  }
+
+  EXPECT_EQ(0x1U, div_apu_.getByte());
 }

@@ -2,31 +2,21 @@
 
 #include "util/helpers.h"
 
-Apu::Apu(IMixerUP mixer, const std::array<ChannelSP, 4U>& channels,
-    std::unordered_map<ApuRegisters, IRegisterAdapterUP>&& registers, IRegisterAdapterUP divApu)
-    : mixer_(std::move(mixer))
-    , channels_(channels)
-    , registers_(std::move(registers))
-    , divApu_(std::move(divApu))
+Apu::Apu()
+    : mixer_()
+    , channels_()
+    , divApu_()
     , currentSample_({ 0., 0. })
 {
-  if (!divApu_) {
-    throw std::invalid_argument("DIV-APU not provided.");
-  }
-  if (!mixer_) {
-    throw std::invalid_argument("Mixer not set.");
-  }
-  for (auto& ch : channels_) {
-    if (!ch) {
-      throw std::invalid_argument("Channel not set.");
-    }
-  };
-  fs_.isTick(divApu_->getByte());
+  fs_.isTick(divApu_.getByte());
 }
 
 void Apu::clock()
 {
-  if (fs_.isTick(divApu_->getByte())) {
+  if (!mixer_) {
+    throw std::invalid_argument("Mixer not set.");
+  }
+  if (fs_.isTick(divApu_.getByte())) {
     const auto seq = fs_.get();
     for (auto& ch : channels_) {
       ch->tickApuDiv(seq);
@@ -40,3 +30,22 @@ void Apu::clock()
 }
 
 auto Apu::currentSample() -> const std::pair<double, double>& { return currentSample_; }
+
+auto Apu::getDivApu() -> IRegisterAdapter& { return divApu_; }
+
+auto Apu::getNr52() -> IRegisterAdapter& { return nr52_; }
+
+void Apu::addChannel(ChannelUP channel)
+{
+  for (auto& channelElem : channels_) {
+    if (!channelElem) {
+      channelElem = std::move(channel);
+      break;
+    }
+  }
+  if (channel) {
+    throw std::logic_error("Tried to add more than 4 channels.");
+  }
+}
+
+void Apu::setMixer(IMixerUP mixer) { mixer_ = std::move(mixer); }

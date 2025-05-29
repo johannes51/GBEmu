@@ -1,21 +1,21 @@
 #ifndef BUFFERLOCATION_H
 #define BUFFERLOCATION_H
 
-#include "../location8.h"
+#include "../ilocation8.h"
 
-#include "bufferbank.h"
-
-class BufferLocation : public ByteLocationAdapter {
+class BufferLocation : public ILocation8 {
 public:
   explicit BufferLocation(uint8_t& buffer);
   virtual ~BufferLocation() = default;
   DISABLE_COPY_AND_MOVE(BufferLocation)
 
   const uint8_t& get() const override;
-  void set(const uint8_t& value) override;
+  BufferLocation& operator=(const uint8_t& rhs) override;
+
+  void setBuffer(uint8_t& buffer);
 
 private:
-  uint8_t& buffer_;
+  uint8_t* buffer_;
 };
 
 #endif // BUFFERLOCATION_H

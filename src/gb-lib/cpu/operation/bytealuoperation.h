@@ -5,7 +5,7 @@
 
 #include <optional>
 
-#include "../registersinterface.h"
+#include "../registers/registersinterface.h"
 
 namespace ops {
 struct OpResult;
@@ -20,21 +20,21 @@ public:
   ByteAluOperation(ByteAluFunction function, Source source);
   ~ByteAluOperation() override = default;
 
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
   void setRegister(ByteRegister registerName);
 
 private:
-  Location8 getSource(RegistersInterface& reg, IMemoryView& mem);
+  ILocation8& getSource(RegistersInterface& reg, IMemoryView& mem);
 
   const ByteAluFunction function_;
   const Source source_;
   std::optional<ByteRegister> register_;
-  std::unique_ptr<Location8> immediate_;
+  std::unique_ptr<ILocation8> immediate_;
 };
 
 #endif // BYTEALUOPERATION_H

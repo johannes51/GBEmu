@@ -9,7 +9,7 @@ class Control final : public SingleOp<1> {
 public:
   Control(ControlOp op);
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   ControlOp op_;

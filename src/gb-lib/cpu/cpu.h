@@ -1,34 +1,33 @@
 #ifndef CPU_H
 #define CPU_H
 
-#include "cpu_defines.h"
 #include "id/instructiondecoder.h"
+#include "io/ioregister.h"
+#include "mem/ilocation8.h"
 #include "mem/imemoryview.h"
-#include "mem/location8.h"
-#include "mem/registers/iregisteradapter.h"
 #include "peripherals/interrupthandler.h"
+#include "registers/registersinterface.h"
 
 class Cpu {
 public:
-  Cpu(IMemoryView& mem, RegistersInterfaceUP&& registers, IRegisterAdapterUP ie,
-      InstructionDecoderUP instructionDecoder, InterruptHandlerUP interruptHandler);
-  ~Cpu();
+  Cpu(IMemoryWordView& mem, RegistersInterfaceUP registers, InstructionDecoderUP instructionDecoder,
+      InterruptHandlerUP interruptHandler);
+  ~Cpu() = default;
   DISABLE_COPY_AND_MOVE(Cpu)
 
   bool clock();
 
 private:
   OperationUP loadNextOperation();
-  Location8 fetchNextOpcode();
+  ILocation8& fetchNextOpcode();
 
-  IMemoryView& mem_;
+  IMemoryWordView& mem_;
   RegistersInterfaceUP registers_;
-  IRegisterAdapterUP ie_;
   InstructionDecoderUP instructionDecoder_;
   InterruptHandlerUP interruptHandler_;
   bool executingInterrupt_ = false;
 
-  OperationUP nextOperation_ = nullptr;
+  OperationUP nextOperation_;
   unsigned ticksTillExecution_ = 0;
 };
 

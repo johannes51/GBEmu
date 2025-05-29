@@ -1,11 +1,10 @@
 #include "gbchannel1.h"
 
-GbChannel1::GbChannel1(const IRegisterAdapter& nr10, const IRegisterAdapter& nr11, const IRegisterAdapter& nr12,
-    IRegisterAdapter& nr13, IRegisterAdapter& nr14, IRegisterAdapter& nr52)
-    : GbPulseChannel(nr11, nr12, nr13, nr14, nr52)
-    , nr10_(nr10)
-    , sweep_(nr10, nr13, nr14)
+GbChannel1::GbChannel1(IoBank& io, IRegisterAdapter& nr52)
+    : GbPulseChannel(io, Nr10Adress, nr52)
+    , sweep_(nr10_, nrX3_, nrX4_)
 {
+  io.registerRegister(Nr10Adress, &nr10_);
 }
 
 void GbChannel1::tickApuDiv(const FrameSequence sequence)

@@ -3,11 +3,12 @@
 
 #include "imixer.h"
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iobank.h"
+#include "io/ioregister.h"
 
 class GbMixer : public IMixer {
 public:
-  GbMixer(const IRegisterAdapter& nr50, const IRegisterAdapter& nr51);
+  explicit GbMixer(IoBank& io);
 
   std::pair<double, double> mix(
       double channel1, double channel2, double channel3, double channel4, double vin) override;
@@ -25,8 +26,10 @@ private:
   static constexpr uint8_t vinRight = 3U;
   static constexpr uint8_t vinLeft = 7U;
 
-  const IRegisterAdapter& nr50_;
-  const IRegisterAdapter& nr51_;
+  static constexpr address_type Nr50Address = 0xFF24U;
+
+  IoRegister nr50_;
+  IoRegister nr51_;
 };
 
 #endif // GBMIXER_H
