@@ -8,14 +8,14 @@
 
 class GbRenderer : public IRenderer {
 public:
-  explicit GbRenderer(IBackgroundSP bg, IWindowSP win, IObjectsSP obj);
+  explicit GbRenderer(IBackgroundUP bg, IWindowUP win, IObjectsUP obj);
 
   void render(GbPixelBuffer& buffer, const uint8_t currentLine) override;
 
 private:
-  IBackgroundSP bg_;
-  IWindowSP win_;
-  IObjectsSP obj_;
+  IBackgroundUP bg_;
+  IWindowUP win_;
+  IObjectsUP obj_;
 };
 
 #endif // GBRENDERER_H

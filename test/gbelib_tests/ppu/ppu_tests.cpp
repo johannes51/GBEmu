@@ -3,7 +3,6 @@
 #include "mock/mockregisteradapter.h"
 #include "mock/mockrenderer.h"
 
-#include "gb_factories/ppuregisterfactory.h"
 #include "ppu/ppu.h"
 
 TEST(PpuTest, Construction)

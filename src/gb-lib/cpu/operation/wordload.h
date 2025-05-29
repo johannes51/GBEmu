@@ -3,9 +3,9 @@
 
 #include "operation.h"
 
-#include "cpu/registersinterface.h"
-#include "mem/location16.h"
-#include "mem/location8.h"
+#include "../registers/registersinterface.h"
+#include "mem/ilocation16.h"
+#include "mem/ilocation8.h"
 
 class WordLoad final : public Operation {
 public:
@@ -18,11 +18,11 @@ public:
   WordLoad(Destination destination, Source source);
   ~WordLoad();
 
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
   void setDestination(WordRegister destRegister);
   void setSource(WordRegister srcRegister);
@@ -32,8 +32,8 @@ private:
   const Source source_;
   WordRegister destRegister_ = WordRegister::None;
   WordRegister srcRegister_ = WordRegister::None;
-  std::unique_ptr<Location8> immediate8_ = nullptr;
-  std::unique_ptr<Location16> immediate16_ = nullptr;
+  std::unique_ptr<ILocation8> immediateL_;
+  std::unique_ptr<ILocation8> immediateH_;
 };
 
 #endif // WORD_LOAD_H

@@ -1,29 +1,31 @@
 #ifndef FUSEDLOCATION16_H
 #define FUSEDLOCATION16_H
 
-#include "../wordlocationadapter.h"
+#include "../ilocation16.h"
 
-#include "../location8.h"
+#include "../ilocation8.h"
 
-class FusedLocation16 final : public WordLocationAdapter {
+class FusedLocation16 final : public ILocation16 {
 public:
-  explicit FusedLocation16(std::unique_ptr<Location8> lower, std::unique_ptr<Location8> upper);
+  explicit FusedLocation16(ILocation8* lower, ILocation8* upper);
 
   const uint16_t& get() const override;
-  void set(const uint16_t& value) override;
+  FusedLocation16& operator=(const uint16_t& rhs) override;
 
   bool hasLower() const;
   bool hasUpper() const;
   uint8_t lower() const;
   uint8_t upper() const;
-  void setLower(std::unique_ptr<Location8>&& value);
-  void setUpper(std::unique_ptr<Location8>&& value);
+  void setLower(ILocation8* value);
+  void setUpper(ILocation8* value);
+
+  static FusedLocation16 construct(ILocation8* lower, ILocation8* upper);
 
 private:
   void reloadBuffer();
 
-  std::unique_ptr<Location8> lower_;
-  std::unique_ptr<Location8> upper_;
+  ILocation8* lower_;
+  ILocation8* upper_;
   uint16_t buffer_;
 };
 

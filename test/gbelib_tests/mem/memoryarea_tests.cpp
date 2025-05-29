@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "mem/memoryarea.h"
+#include "mem/mem_defines.h"
 
 TEST(MemoryAreaTest, LessThan)
 {

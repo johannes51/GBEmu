@@ -2,9 +2,9 @@
 
 #include <stdexcept>
 
-#include "cpu/flagsview.h"
+#include "../registers/flagsview.h"
+#include "mem/ilocation8.h"
 #include "mem/imemoryview.h"
-#include "mem/location8.h"
 #include "mem/rest/variablelocation.h"
 #include "ops/arithmetic.h"
 #include "ops/logic.h"
@@ -14,19 +14,19 @@ ByteAluOperation::ByteAluOperation(ByteAluFunction function, Source source)
     : function_(function)
     , source_(source)
     , register_(std::nullopt)
-    , immediate_(nullptr)
+    , immediate_()
 {
   if (source == Source::None) {
     throw std::invalid_argument("source can't be None");
   }
 }
 
-void ByteAluOperation::nextOpcode(const Location8& opcode)
+void ByteAluOperation::nextOpcode(const ILocation8& opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already complete");
   }
-  immediate_ = std::make_unique<Location8>(variableLocation(opcode.get()));
+  immediate_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
 }
 
 auto ByteAluOperation::isComplete() -> bool
@@ -52,14 +52,14 @@ auto ByteAluOperation::cycles() -> unsigned
   }
 }
 
-void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memory)
+void ByteAluOperation::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
   ops::OpResult result {
     .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Reset, .c = ops::FlagResult::Reset
   };
 
-  auto regA = registers.get(ByteRegister::A);
+  auto& regA = registers.get(ByteRegister::A);
   switch (function_) {
   case ByteAluFunction::Add:
     result = ops::add(regA, getSource(registers, memory));
@@ -74,12 +74,12 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
     result = ops::sub_carry(regA, getSource(registers, memory), registers.getFlags().carry());
     break;
   case ByteAluFunction::Inc: {
-    auto loc = getSource(registers, memory);
+    auto& loc = getSource(registers, memory);
     result = ops::increment(loc);
     break;
   }
   case ByteAluFunction::Dec: {
-    auto loc = getSource(registers, memory);
+    auto& loc = getSource(registers, memory);
     result = ops::decrement(loc);
     break;
   }
@@ -103,14 +103,14 @@ void ByteAluOperation::execute(RegistersInterface& registers, IMemoryView& memor
   apply(registers.getFlags(), result);
 }
 
-auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> Location8
+auto ByteAluOperation::getSource(RegistersInterface& reg, IMemoryView& mem) -> ILocation8&
 {
   switch (source_) {
   case Source::Immediate:
     if (!immediate_) {
       throw std::invalid_argument("No immediate value configured");
     }
-    return std::move(*immediate_);
+    return *immediate_;
     break;
   case Source::Indirect:
     return mem.getLocation8(hlp::indirect(reg.get(WordRegister::HL)));

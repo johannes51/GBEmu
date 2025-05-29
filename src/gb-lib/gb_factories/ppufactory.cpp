@@ -8,26 +8,23 @@
 #include "ppu/layer/tilemap.h"
 #include "ppu/ppu.h"
 #include "ppu/ppu_constants.h"
-#include "ppuregisterfactory.h"
 
 auto PpuFactory::constructPpu() -> IPpuUP
 {
-  PpuRegisterFactory rf { ioBank_ };
+  auto result = std::make_unique<Ppu>(ioBank_, if_, std::move(vram_), std::move(oam_));
 
-  auto bgTm = std::make_unique<TileMap>(rf.get(PpuRegisters::LCDC), mem_, BgTileMapBit);
-  auto bg = std::make_shared<GbBg>(rf.get(PpuRegisters::LCDC), rf.get(PpuRegisters::SCX), rf.get(PpuRegisters::SCY),
-      rf.get(PpuRegisters::BGP), std::make_unique<TileData>(rf.get(PpuRegisters::LCDC), mem_, BgWindowTileDataBit),
-      std::move(bgTm));
+  auto bgTm = std::make_unique<TileMap>(result->getLcdc(), mem_, BgTileMapBit);
+  auto bg = std::make_unique<GbBg>(result->getLcdc(), result->getScx(), result->getScy(), result->getBgp(),
+      std::make_unique<TileData>(result->getLcdc(), mem_, BgWindowTileDataBit), std::move(bgTm));
 
-  auto winTm = std::make_unique<TileMap>(rf.get(PpuRegisters::LCDC), mem_, WindowTileMapBit);
-  auto win = std::make_shared<GbWindow>(rf.get(PpuRegisters::LCDC), rf.get(PpuRegisters::WX), rf.get(PpuRegisters::WY),
-      rf.get(PpuRegisters::BGP), std::make_unique<TileData>(rf.get(PpuRegisters::LCDC), mem_, BgWindowTileDataBit),
-      std::move(winTm));
+  auto winTm = std::make_unique<TileMap>(result->getLcdc(), mem_, WindowTileMapBit);
+  auto win = std::make_unique<GbWindow>(result->getLcdc(), result->getWx(), result->getWy(), result->getBgp(),
+      std::make_unique<TileData>(result->getLcdc(), mem_, BgWindowTileDataBit), std::move(winTm));
 
-  auto obj = std::make_shared<GbObjects>(std::make_unique<Oam>(mem_), rf.get(PpuRegisters::LCDC),
-      rf.get(PpuRegisters::OBP0), rf.get(PpuRegisters::OBP1), rf.get(PpuRegisters::BGP),
-      std::make_unique<TileData>(rf.get(PpuRegisters::LCDC), mem_));
+  auto obj = std::make_unique<GbObjects>(std::make_unique<Oam>(mem_), result->getLcdc(), result->getObp0(),
+      result->getObp1(), result->getBgp(), std::make_unique<TileData>(result->getLcdc(), mem_));
 
-  return std::make_unique<Ppu>(
-      std::make_shared<GbRenderer>(std::move(bg), std::move(win), std::move(obj)), rf.getAll(), if_);
+  result->setRenderer(std::make_unique<GbRenderer>(std::move(bg), std::move(win), std::move(obj)));
+
+  return result;
 }

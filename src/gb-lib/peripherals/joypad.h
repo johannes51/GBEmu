@@ -6,7 +6,8 @@
 #include <memory>
 #include <unordered_map>
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/fixedmaskioregister.h"
+#include "io/iobank.h"
 
 enum class Button { Up, Down, Left, Right, A, B, Start, Select };
 
@@ -19,7 +20,9 @@ constexpr uint8_t SelectAction = 0x5;
 
 class Joypad : public Tickable {
 public:
-  explicit Joypad(IRegisterAdapter& controllerRegister, IRegisterAdapter& rIf);
+  explicit Joypad(IoBank& io, IRegisterAdapter& rIf);
+  DISABLE_COPY_AND_MOVE(Joypad)
+  ~Joypad() override = default;
 
   void clock() override;
 
@@ -31,7 +34,7 @@ private:
 
   static constexpr uint8_t ControllerRegisterSetBits = 0b11000000U;
 
-  IRegisterAdapter& controllerRegister_;
+  FixedMaskIoRegister<ControllerRegisterSetBits> controllerRegister_;
   std::unordered_map<Button, bool> buttonState_;
   IRegisterAdapter& if_;
 };

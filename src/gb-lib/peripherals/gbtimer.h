@@ -5,8 +5,8 @@
 
 #include <array>
 
-#include "mem/registers/divregister.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/divregister.h"
+#include "io/ioregister.h"
 #include "util/fallingedgedetector.h"
 
 constexpr uint8_t TimerEnableBit = 2U;
@@ -23,17 +23,23 @@ constexpr std::array<std::pair<uint8_t, uint8_t>, 4U> ClockSelectBitMap = {
 
 class GbTimer : public Tickable {
 public:
-  GbTimer(DivRegisterSP div, IRegisterAdapter& div_apu, IRegisterAdapter& tima, const IRegisterAdapter& tma,
-      const IRegisterAdapter& tac, IRegisterAdapter& ifl);
+  explicit GbTimer(IoBank& io, IRegisterAdapter& div_apu, IRegisterAdapter& rIf);
+  DISABLE_COPY_AND_MOVE(GbTimer)
+  ~GbTimer() override = default;
+
+  IRegisterAdapter* getDiv() { return &div_; }
+  IRegisterAdapter* getTma() { return &tma_; }
+  IRegisterAdapter* getTima() { return &tima_; }
+  IRegisterAdapter* getTac() { return &tac_; }
 
   void clock() override;
 
 private:
-  DivRegisterSP div_;
+  DivRegister div_;
   IRegisterAdapter& div_apu_;
-  IRegisterAdapter& tima_;
-  const IRegisterAdapter& tma_;
-  const IRegisterAdapter& tac_;
+  IoRegister tima_;
+  IoRegister tma_;
+  IoRegister tac_;
   IRegisterAdapter& if_;
 
   FallingEdgeDetector<bool, false> feSystemTimerBit_;

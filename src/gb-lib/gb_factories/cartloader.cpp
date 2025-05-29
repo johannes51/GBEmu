@@ -1,8 +1,6 @@
 #include "cartloader.h"
 
-#include <algorithm>
-#include <cstring>
-
+#include "mbcbankfactory.h"
 #include "mem/ram/rambank.h"
 #include "mem/rom/rombank.h"
 
@@ -15,49 +13,53 @@ constexpr address_type EndROM1 = 0x7FFF;
 constexpr address_type StartExtRAM = 0xA000;
 constexpr address_type EndExtRAM = 0xBFFF;
 
+auto countBanks(uint8_t romSize) -> uint8_t { return 2U * (1U << romSize); }
+
 gb::CartLoader::CartLoader(const std::string& romFile, const std::string& ramFile)
     : romFile_(romFile, std::ios_base::in | std::ios_base::binary)
     , ramFile_(ramFile, std::ios_base::in | std::ios_base::out | std::ios_base::binary)
+    , topBuffer_()
 {
-}
-
-auto gb::CartLoader::calculateNeccessarySize() -> size_t // NOLINT(readability-convert-member-functions-to-static)
-{
-  return 3 * BankSize;
-}
-
-auto gb::CartLoader::constructBanks(std::span<uint8_t, std::dynamic_extent> buffer) -> std::vector<IMemoryManagerSP>
-{
-  std::vector<IMemoryManagerSP> result;
   if (romFile_.fail()) {
     throw std::runtime_error("Could not open ROM file.");
   }
 
-  auto rom0Span = std::span<uint8_t, BankSize> { buffer.subspan(0, BankSize) };
-  read16K(rom0Span, romFile_);
-  auto rom0 = std::make_shared<RomBank>(MemoryArea { StartROM0, EndROM0 }, rom0Span);
-
-  auto rom1Span = std::span<uint8_t, BankSize> { buffer.subspan(BankSize, BankSize) };
-  read16K(rom1Span, romFile_);
-  auto rom1 = std::make_shared<RomBank>(MemoryArea { StartROM1, EndROM1 }, rom1Span);
-
-  auto ram0Span = std::span<uint8_t, BankSize> { buffer.subspan(2 * BankSize, BankSize) };
-  read16K(ram0Span, romFile_); // FIXME: this is a major bug
-  auto ram0 = std::make_shared<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
-
-  result.push_back(rom0);
-  result.push_back(rom1);
-  result.push_back(ram0);
-
-  return result;
+  read<TopSize>(topBuffer_, romFile_);
 }
 
-void gb::CartLoader::read16K(std::span<uint8_t, BankSize> buffer, std::ifstream& file)
+auto gb::CartLoader::calculateNeccessarySize() -> size_t // NOLINT(readability-convert-member-functions-to-static)
 {
-  std::array<std::ifstream::char_type, BankSize> temp {};
+  const auto romSize = topBuffer_.at(RomSizeAddress);
+  if (romSize > RomSizeMax) {
+    throw std::invalid_argument("ROM file header has invalid size parameter.");
+  }
 
-  static_assert(sizeof(std::ifstream::char_type) == sizeof(uint8_t), "Non-portable if this doesn't hold");
+  return (RomBankSize * countBanks(romSize)) + RamBankSize /* 1 RAM bank for now */;
+}
 
-  std::copy_n(std::istreambuf_iterator(file), BankSize * sizeof(std::ifstream::char_type), temp.begin());
-  std::memcpy(buffer.data(), temp.data(), BankSize * sizeof(uint8_t));
+auto gb::CartLoader::constructCart(std::span<uint8_t, std::dynamic_extent> buffer) -> CartUP
+{
+  size_t accumulatedAdress = 0U;
+
+  auto rom0Span = std::span<uint8_t, RomBankSize> { buffer.subspan(accumulatedAdress, RomBankSize) };
+  accumulatedAdress += rom0Span.size();
+  std::copy_n(topBuffer_.begin(), TopSize, rom0Span.begin());
+  read<RomBankSize - TopSize>(rom0Span.subspan<TopSize, RomBankSize - TopSize>(), romFile_);
+  auto rom0 = std::make_unique<RomBank>(MemoryArea { StartROM0, EndROM0 }, rom0Span);
+
+  std::vector<RomBankUP> banks;
+  const auto banksToFill = countBanks(topBuffer_.at(RomSizeAddress));
+  for (auto banksFilled = 1U; banksFilled < banksToFill; ++banksFilled) {
+    auto romSpan = std::span<uint8_t, RomBankSize> { buffer.subspan(accumulatedAdress, RomBankSize) };
+    accumulatedAdress += romSpan.size();
+    read<RomBankSize>(romSpan, romFile_);
+    banks.push_back(std::make_unique<RomBank>(MemoryArea { StartROM1, EndROM1 }, romSpan));
+  }
+
+  auto ram0Span = std::span<uint8_t, RamBankSize> { buffer.subspan(accumulatedAdress, RamBankSize) };
+  read<RamBankSize>(ram0Span, romFile_); // FIXME: this is a major bug
+  auto ram0 = std::make_unique<RamBank>(MemoryArea { StartExtRAM, EndExtRAM }, ram0Span);
+
+  return std::make_unique<Cart>(MbcBankFactory::constructMbcBank(
+      topBuffer_.at(MbcTypeAddress), std::move(rom0), std::move(banks), std::move(ram0)));
 }

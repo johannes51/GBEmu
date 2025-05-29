@@ -1,11 +1,11 @@
 #include "gbfactory.h"
 
+#include "apu/apu.h"
 #include "apufactory.h"
-#include "cartloader.h"
 #include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
+#include "cpu/registers/cpuregisters.h"
 #include "instructionsetbuilder.h"
-#include "mem/registers/singleregisterbank.h"
+#include "mem/rest/singleregisterbank.h"
 #include "memoryfactory.h"
 #include "peripherals/gbinterrupthandler.h"
 #include "peripherals/gbtimer.h"
@@ -16,8 +16,12 @@
 
 GbFactory::GbFactory(const std::string& romFile, const std::string& ramFile)
     : buffer_()
+    , cart_(buildCart(romFile, ramFile))
+    , ioBank_()
+    , vram_()
+    , oam_()
+    , mem_(constructMemory())
 {
-  constructMemory(romFile, ramFile);
 }
 
 auto GbFactory::constructSystem() -> SystemManagerUP
@@ -25,59 +29,67 @@ auto GbFactory::constructSystem() -> SystemManagerUP
   auto cpu = constructCpu();
   auto peri = constructPeripherals();
   return std::make_unique<SystemManager>(
-      std::move(cpu), std::move(mem_), std::move(peri), peripheralRF_->getAll(), pixBuf_, std::move(buffer_));
+      std::move(cpu), std::move(mem_), std::move(cart_), std::move(peri), pixBuf_, std::move(buffer_));
 }
 
-void GbFactory::constructMemory(const std::string& romFile, const std::string& ramFile)
+auto GbFactory::buildCart(const std::string& romFile, const std::string& ramFile) -> CartUP
 {
-  auto mf = gb::MemoryFactory(std::make_unique<gb::CartLoader>(romFile, ramFile), buffer_);
-  ioBank_ = mf.getIoBank();
-  ieBank_ = mf.getIeBank();
-  peripheralRF_ = std::make_unique<PeripheralRegisterFactory>(*ioBank_);
-  mem_ = mf.releaseMemory();
+  auto loader = gb::CartLoader { romFile, ramFile };
+  buffer_.resize(loader.calculateNeccessarySize() + gb::MemoryFactory::getSize());
+  auto result = loader.constructCart(std::span { buffer_ });
+
+  return result;
 }
 
-auto GbFactory::constructCpu() -> CpuUP
+auto GbFactory::constructMemory() -> IMemoryWordViewUP
 {
-  auto ieRegister = ieBank_->asRegister();
-  auto interruptHandler
-      = std::make_unique<GbInterruptHandler>(peripheralRF_->get(PeripheralRegisters::IF), *ieRegister);
-  return { std::make_unique<Cpu>(*mem_, std::make_unique<CpuRegisters>(), std::move(ieRegister),
-      InstructionSetBuilder::construct(), std::move(interruptHandler)) };
+  auto ioBank = std::make_unique<IoBank>();
+  ioBank_ = ioBank.get();
+  auto remainingSpan
+      = std::span { buffer_ }.subspan(buffer_.size() - gb::MemoryFactory::getSize(), gb::MemoryFactory::getSize());
+  auto mf = gb::MemoryFactory(cart_->getBanks(), std::move(ioBank), remainingSpan);
+  vram_ = mf.releaseVram();
+  oam_ = mf.releaseOam();
+  return mf.releaseMemory();
 }
 
-auto GbFactory::constructPeripherals() -> std::vector<TickableSP>
+auto GbFactory::constructCpu() -> std::unique_ptr<Cpu>
 {
-  auto divApu = peripheralRF_->releaseDivApu();
-  auto& divApuRef = *divApu;
-  auto a = ApuFactory(*ioBank_, *mem_, std::move(divApu));
-  auto p = PpuFactory(*mem_, *ioBank_, peripheralRF_->get(PeripheralRegisters::IF));
+  auto interruptHandler = std::make_unique<GbInterruptHandler>(*ioBank_, mem_->getLocation8(gb::MemoryFactory::IE));
+  if_ = interruptHandler->getIf();
+  return { std::make_unique<Cpu>(
+      *mem_, std::make_unique<CpuRegisters>(), InstructionSetBuilder::construct(), std::move(interruptHandler)) };
+}
+
+auto GbFactory::constructPeripherals() -> std::vector<TickableUP>
+{
+  auto a = ApuFactory(*ioBank_, *mem_);
+  auto apu = a.constructApu();
+
+  auto t = constructTimer(apu->getDivApu());
+
+  auto p = PpuFactory(*ioBank_, *mem_, *if_, std::move(vram_), std::move(oam_));
   auto ppu = p.constructPpu();
   pixBuf_ = &ppu->getBuffer();
-  return { a.constructApu(), std::move(ppu), constructTimer(divApuRef), constructJoypad(), constructSerial(),
-    constructOamDma() };
+
+  std::vector<TickableUP> result;
+  result.push_back(std::move(apu));
+  result.push_back(std::move(ppu));
+  result.push_back(std::move(t));
+  result.push_back(constructJoypad());
+  result.push_back(constructSerial());
+  result.push_back(constructOamDma());
+
+  return result;
 }
 
-auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableSP
+auto GbFactory::constructTimer(IRegisterAdapter& divApu) -> TickableUP
 {
-  return { std::make_shared<GbTimer>(peripheralRF_->getDiv(), divApu, peripheralRF_->get(PeripheralRegisters::TIMA),
-      peripheralRF_->get(PeripheralRegisters::TMA), peripheralRF_->get(PeripheralRegisters::TAC),
-      peripheralRF_->get(PeripheralRegisters::IF)) };
+  return std::make_unique<GbTimer>(*ioBank_, divApu, *if_);
 }
 
-auto GbFactory::constructJoypad() -> TickableSP
-{
-  return std::make_shared<Joypad>(
-      peripheralRF_->get(PeripheralRegisters::JOYP), peripheralRF_->get(PeripheralRegisters::IF));
-}
+auto GbFactory::constructJoypad() -> TickableUP { return std::make_unique<Joypad>(*ioBank_, *if_); }
 
-auto GbFactory::constructSerial() -> TickableSP
-{
-  return std::make_shared<Serial>(peripheralRF_->get(PeripheralRegisters::SB),
-      peripheralRF_->get(PeripheralRegisters::SC), peripheralRF_->get(PeripheralRegisters::IF));
-}
+auto GbFactory::constructSerial() -> TickableUP { return std::make_unique<Serial>(*ioBank_, *if_); }
 
-auto GbFactory::constructOamDma() -> TickableSP
-{
-  return std::make_shared<OamDma>(peripheralRF_->get(PeripheralRegisters::DMA), *mem_);
-}
+auto GbFactory::constructOamDma() -> TickableUP { return std::make_unique<OamDma>(*ioBank_, *mem_); }

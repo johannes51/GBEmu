@@ -2,9 +2,9 @@
 
 #include <stdexcept>
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
-auto WordArithmeticDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto WordArithmeticDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   return std::make_unique<WordAluOperation>(determineFunction(opcode), determineRegister(opcode));

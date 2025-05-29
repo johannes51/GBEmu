@@ -10,10 +10,10 @@ public:
   explicit CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder);
   DISABLE_COPY_AND_MOVE(CbPrefix)
 
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   OperationUP realOp_;

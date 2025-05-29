@@ -1,16 +1,18 @@
 #ifndef HELPERS_H
 #define HELPERS_H
 
+#include <stdexcept>
+
 #include "constants.h"
-#include "mem/location16.h"
-#include "mem/location8.h"
+#include "mem/ilocation16.h"
+#include "mem/ilocation8.h"
 #include "mem/mem_defines.h"
 
 namespace hlp {
 
-address_type indirect(const Location16& location);
+address_type indirect(const ILocation16& location);
 
-address_type indirectZeroPage(const Location8& location);
+address_type indirectZeroPage(const ILocation8& location);
 
 constexpr void setBit(uint8_t& value, uint8_t pos) { value |= (1U << pos); }
 constexpr void setBit(uint16_t& value, uint8_t pos) { value |= (1U << pos); }

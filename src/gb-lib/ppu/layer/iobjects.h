@@ -13,6 +13,6 @@ protected:
   IObjects() = default;
 };
 
-using IObjectsSP = std::shared_ptr<IObjects>;
+using IObjectsUP = std::unique_ptr<IObjects>;
 
 #endif // IOBJECTS_H

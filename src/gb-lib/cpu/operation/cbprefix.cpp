@@ -3,7 +3,7 @@
 #include <stdexcept>
 
 #include "cpu/id/cbopdecoder.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
 CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
     : realOp_()
@@ -11,7 +11,7 @@ CbPrefix::CbPrefix(std::unique_ptr<InstructionDecoder>&& decoder)
 {
 }
 
-void CbPrefix::nextOpcode(const Location8& opcode) { realOp_ = decoder_->decode(opcode); }
+void CbPrefix::nextOpcode(const ILocation8& opcode) { realOp_ = decoder_->decode(opcode); }
 
 auto CbPrefix::isComplete() -> bool { return static_cast<bool>(realOp_); }
 
@@ -23,7 +23,7 @@ auto CbPrefix::cycles() -> unsigned
   return realOp_->cycles();
 }
 
-void CbPrefix::execute(RegistersInterface& registers, IMemoryView& memory)
+void CbPrefix::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   if (!isComplete()) {
     throw std::logic_error("Actual operation not yet set.");

@@ -3,8 +3,8 @@
 
 #include <memory>
 
+#include "io/iregisteradapter.h"
 #include "mem/imemoryview.h"
-#include "mem/registers/iregisteradapter.h"
 #include "tile.h"
 
 class TileData {

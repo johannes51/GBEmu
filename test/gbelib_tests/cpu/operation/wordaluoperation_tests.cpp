@@ -2,9 +2,9 @@
 
 #include "mock/testbank.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/operation/wordaluoperation.h"
-#include "mem/location8.h"
+#include "cpu/registers/cpuregisters.h"
+#include "mem/ilocation8.h"
 
 TEST(WordAluOperationTest, Inc)
 {

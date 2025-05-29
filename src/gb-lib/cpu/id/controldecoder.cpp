@@ -4,9 +4,9 @@
 
 #include "cpu/operation/control.h"
 #include "cpu/operation/operation.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
-auto ControlDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto ControlDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   switch (opcodeLocation.get()) {
   case 0x00U:

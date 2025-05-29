@@ -1,7 +1,7 @@
 #include "gtest/gtest.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/operation/wordload.h"
+#include "cpu/registers/cpuregisters.h"
 #include "mem/rest/variablelocation.h"
 
 #include "mock/testbank.h"

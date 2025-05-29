@@ -3,16 +3,19 @@
 #include "constants.h"
 #include "util/helpers.h"
 
-GbChannel3::GbChannel3(const IRegisterAdapter& nr30, const IRegisterAdapter& nr31, const IRegisterAdapter& nr32,
-    const IRegisterAdapter& nr33, const IRegisterAdapter& nr34, IRegisterAdapter& nr52, IMemoryView& waveRam)
+GbChannel3::GbChannel3(IoBank& io, IRegisterAdapter& nr52, IMemoryView& waveRam)
     : Channel(nr52)
-    , nr32_(nr32)
-    , period_(nr33, nr34)
-    , len_(nr31, nr34)
+    , period_(nr33_, nr34_)
+    , len_(nr31_, nr34_)
     , waveRam_(waveRam)
     , waveRamPtr_({ WaveRamStart, false })
 {
-  (void)nr30; // TODO: CH3 dac control
+  io.registerRegister(Nr30Adress + 0U, &nr30_);
+  io.registerRegister(Nr30Adress + 1U, &nr31_);
+  io.registerRegister(Nr30Adress + 2U, &nr32_);
+  io.registerRegister(Nr30Adress + 3U, &nr33_);
+  io.registerRegister(Nr30Adress + 4U, &nr34_);
+  // TODO: CH3 dac control
 }
 
 void GbChannel3::clock()

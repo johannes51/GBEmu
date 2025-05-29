@@ -5,7 +5,7 @@
 
 #include "colortransformation.h"
 #include "gbpalette.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 #include "tiledata.h"
 #include "tilemap.h"
 

@@ -6,7 +6,7 @@
 
 #include <cstring>
 
-auto ops::increment(Location8& location) -> ops::OpResult
+auto ops::increment(ILocation8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() + 1;
   location = numericalResult;
@@ -17,14 +17,14 @@ auto ops::increment(Location8& location) -> ops::OpResult
     .c = FlagResult::NoChange };
 }
 
-auto ops::increment(Location16& location) -> ops::OpResult
+auto ops::increment(ILocation16& location) -> ops::OpResult
 {
   const uint16_t numericalResult = location.get() + 1;
   location = numericalResult;
   return { .z = FlagResult::NoChange, .n = FlagResult::NoChange, .h = FlagResult::NoChange, .c = FlagResult::NoChange };
 }
 
-auto ops::decrement(Location8& location) -> ops::OpResult
+auto ops::decrement(ILocation8& location) -> ops::OpResult
 {
   const uint8_t numericalResult = location.get() - 1;
   location = numericalResult;
@@ -35,14 +35,14 @@ auto ops::decrement(Location8& location) -> ops::OpResult
     .c = FlagResult::NoChange };
 }
 
-auto ops::decrement(Location16& location) -> ops::OpResult
+auto ops::decrement(ILocation16& location) -> ops::OpResult
 {
   const uint16_t numericalResult = location.get() - 1;
   location = numericalResult;
   return { .z = FlagResult::NoChange, .n = FlagResult::NoChange, .h = FlagResult::NoChange, .c = FlagResult::NoChange };
 }
 
-auto ops::add(Location8& a, const Location8& b) -> ops::OpResult
+auto ops::add(ILocation8& a, const ILocation8& b) -> ops::OpResult
 {
   auto aVal = a.get();
   auto bVal = b.get();
@@ -60,7 +60,7 @@ auto ops::add(Location8& a, const Location8& b) -> ops::OpResult
     .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::add_carry(Location8& a, const Location8& b, const bool carryFlag) -> ops::OpResult
+auto ops::add_carry(ILocation8& a, const ILocation8& b, const bool carryFlag) -> ops::OpResult
 {
   const auto aVal = a.get();
   const auto bVal = b.get();
@@ -84,7 +84,7 @@ auto ops::add_carry(Location8& a, const Location8& b, const bool carryFlag) -> o
     .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::add(Location16& a, const Location16& b) -> ops::OpResult
+auto ops::add(ILocation16& a, const ILocation16& b) -> ops::OpResult
 {
   const auto aVal = a.get();
   const auto bVal = b.get();
@@ -101,7 +101,7 @@ auto ops::add(Location16& a, const Location16& b) -> ops::OpResult
     .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::addSigned(Location16& a, const uint8_t bUnsigned) -> ops::OpResult
+auto ops::addSigned(ILocation16& a, const uint8_t bUnsigned) -> ops::OpResult
 {
   int8_t operand = 0;
   std::memcpy(&operand, &bUnsigned, sizeof(operand)); // NOTE: this only works as 2's complement (so always)
@@ -119,7 +119,7 @@ auto ops::addSigned(Location16& a, const uint8_t bUnsigned) -> ops::OpResult
     .c = carry ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::sub(Location8& a, const Location8& b) -> ops::OpResult
+auto ops::sub(ILocation8& a, const ILocation8& b) -> ops::OpResult
 {
   auto borrow = a.get() < b.get();
   auto halfBorrow = (LOWER_NIBBLE_MASK & a.get()) < (LOWER_NIBBLE_MASK & b.get());
@@ -133,7 +133,7 @@ auto ops::sub(Location8& a, const Location8& b) -> ops::OpResult
     .c = borrow ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::sub_carry(Location8& a, const Location8& b, const bool carryFlag) -> ops::OpResult
+auto ops::sub_carry(ILocation8& a, const ILocation8& b, const bool carryFlag) -> ops::OpResult
 {
   auto borrow = a.get() < b.get();
   auto halfBorrow = (LOWER_NIBBLE_MASK & a.get()) < (LOWER_NIBBLE_MASK & b.get());
@@ -154,14 +154,14 @@ auto ops::sub_carry(Location8& a, const Location8& b, const bool carryFlag) -> o
     .c = borrow ? FlagResult::Set : FlagResult::Reset };
 }
 
-auto ops::complement(Location8& operand) -> ops::OpResult
+auto ops::complement(ILocation8& operand) -> ops::OpResult
 {
   operand = static_cast<uint8_t>(operand.get() ^ std::numeric_limits<uint8_t>::max());
   return { .z = FlagResult::NoChange, .n = FlagResult::Set, .h = FlagResult::Set, .c = FlagResult::NoChange };
 }
 
 auto ops::decimalAdjust(
-    Location8& operand, const bool carry, const bool halfCarry, const bool subtract) -> ops::OpResult
+    ILocation8& operand, const bool carry, const bool halfCarry, const bool subtract) -> ops::OpResult
 {
   const auto value = operand.get();
 

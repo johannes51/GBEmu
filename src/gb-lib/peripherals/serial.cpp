@@ -3,11 +3,17 @@
 #include "gbinterrupthandler.h"
 #include "ops/shiftrotate.h"
 
-Serial::Serial(IRegisterAdapter& sb, IRegisterAdapter& sc, IRegisterAdapter& rIf)
-    : sb_(sb)
-    , sc_(sc)
+constexpr address_type SbAddress = 0xFF01U;
+constexpr address_type ScAddress = 0xFF02U;
+constexpr uint8_t ScInitial = 0x7EU;
+
+Serial::Serial(IoBank& io, IRegisterAdapter& rIf)
+    : sb_()
+    , sc_(ScInitial)
     , if_(rIf)
 {
+  io.registerRegister(SbAddress, &sb_);
+  io.registerRegister(ScAddress, &sc_);
 }
 
 void Serial::clock()

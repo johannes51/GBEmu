@@ -15,6 +15,6 @@ protected:
   IRenderer() = default;
 };
 
-using IRendererSP = std::shared_ptr<IRenderer>;
+using IRendererUP = std::unique_ptr<IRenderer>;
 
 #endif // IRENDERER_H

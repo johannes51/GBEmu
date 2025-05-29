@@ -2,13 +2,15 @@
 
 #include "util/helpers.h"
 
-GbChannel4::GbChannel4(const IRegisterAdapter& nr41, const IRegisterAdapter& nr42, const IRegisterAdapter& nr43,
-    const IRegisterAdapter& nr44, IRegisterAdapter& nr52)
+GbChannel4::GbChannel4(IoBank& io, IRegisterAdapter& nr52)
     : Channel(nr52)
-    , nr43_(nr43)
-    , len_(nr41, nr44)
-    , env_(nr42)
+    , len_(nr41_, nr44_)
+    , env_(nr42_)
 {
+  io.registerRegister(Nr40Adress + 1U, &nr41_);
+  io.registerRegister(Nr40Adress + 2U, &nr42_);
+  io.registerRegister(Nr40Adress + 3U, &nr43_);
+  io.registerRegister(Nr40Adress + 4U, &nr44_);
   loadPeriod();
 }
 

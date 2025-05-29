@@ -13,6 +13,6 @@ protected:
   IBackground() = default;
 };
 
-using IBackgroundSP = std::shared_ptr<IBackground>;
+using IBackgroundUP = std::unique_ptr<IBackground>;
 
 #endif // IBACKGROUND_H

@@ -8,7 +8,7 @@ ByteLoadImmediate::~ByteLoadImmediate() = default;
 ByteLoadImmediate::ByteLoadImmediate(ByteRegister destRegister)
     : destRegister_(destRegister)
     , indirect_(false)
-    , immediate_(nullptr)
+    , immediate_()
 {
 }
 
@@ -22,12 +22,12 @@ ByteLoadImmediate::ByteLoadImmediate(WordRegister destRegister)
   }
 }
 
-void ByteLoadImmediate::nextOpcode(const Location8& opcode)
+void ByteLoadImmediate::nextOpcode(const ILocation8& opcode)
 {
   if (isComplete()) {
     throw std::logic_error("Already done");
   }
-  immediate_ = std::make_unique<Location8>(variableLocation(opcode.get()));
+  immediate_ = std::make_unique<VariableLocation8>(variableLocation(opcode.get()));
 }
 
 auto ByteLoadImmediate::isComplete() -> bool { return static_cast<bool>(immediate_); }
@@ -35,7 +35,7 @@ auto ByteLoadImmediate::isComplete() -> bool { return static_cast<bool>(immediat
 auto ByteLoadImmediate::cycles() -> unsigned { return indirect_ ? 3 : 2; }
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void ByteLoadImmediate::execute(RegistersInterface& registers, IMemoryView& memory)
+void ByteLoadImmediate::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
   if (!isComplete()) {

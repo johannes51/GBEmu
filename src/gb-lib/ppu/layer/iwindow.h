@@ -10,6 +10,6 @@ protected:
   IWindow() = default;
 };
 
-using IWindowSP = std::shared_ptr<IWindow>;
+using IWindowUP = std::unique_ptr<IWindow>;
 
 #endif // IWINDOW_H

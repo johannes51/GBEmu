@@ -1,9 +1,9 @@
 #include "gtest/gtest.h"
 
-#include "cpu/cpuregisters.h"
-#include "cpu/flagsview.h"
 #include "cpu/operation/jump.h"
-#include "mem/location8.h"
+#include "cpu/registers/cpuregisters.h"
+#include "cpu/registers/flagsview.h"
+#include "mem/ilocation8.h"
 #include "mem/rest/variablelocation.h"
 #include "mock/testbank.h"
 

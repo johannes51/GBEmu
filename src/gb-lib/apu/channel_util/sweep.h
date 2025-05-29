@@ -1,7 +1,8 @@
 #ifndef SWEEP_H
 #define SWEEP_H
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/fixedmaskioregister.h"
+#include "io/iregisteradapter.h"
 
 class Sweep {
 public:

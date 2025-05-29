@@ -3,7 +3,7 @@
 
 #include "singleop.h"
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 class ByteLoadStandard final : public SingleOp<1> {
 public:
@@ -12,7 +12,7 @@ public:
   ByteLoadStandard(ByteRegister destRegister, ByteRegister srcRegister);
   ~ByteLoadStandard() override;
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   ByteRegister destRegister_;

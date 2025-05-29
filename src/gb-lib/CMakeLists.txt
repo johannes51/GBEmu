@@ -38,15 +38,15 @@ target_sources(gbelib PRIVATE
   apu/channel_util/period.cpp
   apu/channel_util/sweep.h
   apu/channel_util/sweep.cpp
+  cart/cart.h
+  cart/cart.cpp
+  cart/mbc.h
+  cart/mbc1.h
+  cart/mbc1.cpp
+  cart/nombc.h
+  cart/nombc.cpp
   cpu/cpu.h
   cpu/cpu.cpp
-  cpu/cpu_defines.h
-  cpu/cpuflags.h
-  cpu/cpuflags.cpp
-  cpu/cpuregisters.h
-  cpu/cpuregisters.cpp
-  cpu/flagsview.h
-  cpu/registersinterface.h
   cpu/id/baseinstructiondecoder.h
   cpu/id/baseinstructiondecoder.cpp
   cpu/id/basicrotatedecoder.h
@@ -104,75 +104,73 @@ target_sources(gbelib PRIVATE
   cpu/operation/wordaluoperation.cpp
   cpu/operation/wordload.h
   cpu/operation/wordload.cpp
+  cpu/registers/cpuflags.h
+  cpu/registers/cpuflags.cpp
+  cpu/registers/cpuregisters.h
+  cpu/registers/cpuregisters.cpp
+  cpu/registers/flagsview.h
+  cpu/registers/registersinterface.h
+  cpu/registers/register8.h
+  cpu/registers/register8.cpp
+  cpu/registers/register16.h
+  cpu/registers/register16.cpp
   gb_factories/apufactory.h
   gb_factories/apufactory.cpp
-  gb_factories/apuregisterfactory.h
-  gb_factories/apuregisterfactory.cpp
   gb_factories/cartloader.h
   gb_factories/cartloader.cpp
   gb_factories/gbfactory.h
   gb_factories/gbfactory.cpp
   gb_factories/instructionsetbuilder.h
   gb_factories/instructionsetbuilder.cpp
+  gb_factories/mbcbankfactory.h
+  gb_factories/mbcbankfactory.cpp
   gb_factories/memoryfactory.h
   gb_factories/memoryfactory.cpp
-  gb_factories/peripheralregisterfactory.h
-  gb_factories/peripheralregisterfactory.cpp
   gb_factories/ppufactory.h
   gb_factories/ppufactory.cpp
-  gb_factories/ppuregisterfactory.h
-  gb_factories/ppuregisterfactory.cpp
-  gb_factories/registerfactory.h
-  mem/imemorymanager.h
+  io/iobank.h
+  io/iobank.cpp
+  io/iregisteradapter.h
+  io/divregister.h
+  io/divregister.cpp
+  io/fixedmaskioregister.h
+  io/ioregister.h
+  io/ioregister.cpp
+  mem/gbmemorymap.h
+  mem/gbmemorymap.cpp
+  mem/ilocation8.h
+  mem/ilocation16.h
   mem/imemoryview.h
-  mem/location16.h
-  mem/location8.h
-  mem/bytelocationadapter.h
+  mem/imemorywordview.h
   mem/mem_defines.h
-  mem/memoryarea.h
-  mem/memoryarea.cpp
-  mem/wordlocationadapter.h
+
+
   mem/common/bufferbank.h
-  mem/common/bufferbank.cpp
   mem/common/bufferlocation.h
   mem/common/bufferlocation.cpp
+  mem/common/bytewriterlocation16.h
+  mem/common/bytewriterlocation16.cpp
   mem/common/fusedlocation16.h
   mem/common/fusedlocation16.cpp
-  mem/common/memorymanifold.h
-  mem/common/memorymanifold.cpp
   mem/common/mem_tools.h
   mem/common/mem_tools.cpp
   mem/common/mirrorbank.h
   mem/common/mirrorbank.cpp
-  mem/common/singleareamanager.h
-  mem/common/singleareamanager.cpp
+  mem/common/singleareaview.h
+  mem/common/singleareaview.cpp
   mem/ram/ramlocation.h
   mem/ram/ramlocation.cpp
   mem/ram/rambank.h
   mem/ram/rambank.cpp
-  mem/registers/divregister.h
-  mem/registers/divregister.cpp
-  mem/registers/iobank.h
-  mem/registers/iobank.cpp
-  mem/registers/iregisteradapter.h
-  mem/registers/memoryregisteradapter.h
-  mem/registers/memoryregisteradapter.cpp
-  mem/registers/register16.h
-  mem/registers/register16.cpp
-  mem/registers/register8.h
-  mem/registers/register8.cpp
-  mem/registers/singleregisterbank.h
-  mem/registers/singleregisterbank.cpp
-  mem/registers/registerbuffer.h
-  mem/registers/registerbuffer.cpp
-  mem/rest/nullbank.h
-  mem/rest/nullbank.cpp
-  mem/rest/nulllocation.h
-  mem/rest/nulllocation.cpp
+  mem/rest/zerobank.h
+  mem/rest/zerobank.cpp
+  mem/rest/onelocation.h
+  mem/rest/onelocation.cpp
+  mem/rest/singleregisterbank.h
+  mem/rest/singleregisterbank.cpp
   mem/rest/variablelocation.h
   mem/rest/variablelocation.cpp
   mem/rest/zerolocation.h
-  mem/rest/zerolocation.cpp
   mem/rom/rombank.h
   mem/rom/rombank.cpp
   mem/rom/romlocation.h

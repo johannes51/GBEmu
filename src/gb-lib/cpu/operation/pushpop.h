@@ -3,7 +3,7 @@
 
 #include "singleop.h"
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 class PushPop final : public SingleOp<0> {
 public:
@@ -13,7 +13,7 @@ public:
   ~PushPop() override = default;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   const Direction direction_;

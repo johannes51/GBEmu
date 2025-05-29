@@ -1,8 +1,8 @@
 #include "gtest/gtest.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/operation/bytealuoperation.h"
-#include "mem/location8.h"
+#include "cpu/registers/cpuregisters.h"
+#include "mem/ilocation8.h"
 #include "mock/testbank.h"
 
 #include "mem/rest/variablelocation.h"
@@ -20,7 +20,7 @@ TEST(ByteAluOperationTest, AddImmediate)
 
   r.get(ByteRegister::A) = uint8_t { 0x05U };
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   addOp.execute(r, *m);
   EXPECT_EQ(0x53U, r.get(ByteRegister::A).get());
 }
@@ -56,7 +56,7 @@ TEST(ByteAluOperationTest, SubImmediate)
 
   r.get(ByteRegister::A) = uint8_t { 0x4EU };
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   addOp.execute(r, *m);
   EXPECT_EQ(0x00U, r.get(ByteRegister::A).get());
 }
@@ -70,14 +70,14 @@ TEST(ByteAluOperationTest, And)
   CpuRegisters r;
   EXPECT_EQ(1, andOp.cycles());
 
-  auto a = r.get(ByteRegister::A);
+  auto& a = r.get(ByteRegister::A);
   a = uint8_t { 0x9U }; // 1001
   ASSERT_EQ(0x9U, a.get());
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0x5U }; // 0101
   ASSERT_EQ(0x5U, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   andOp.execute(r, *m);
   EXPECT_EQ(0x1U, r.get(ByteRegister::A).get()); // 0001
 }
@@ -91,14 +91,14 @@ TEST(ByteAluOperationTest, Or)
   CpuRegisters r;
   EXPECT_EQ(1, orOp.cycles());
 
-  auto a = r.get(ByteRegister::A);
+  auto& a = r.get(ByteRegister::A);
   a = uint8_t { 0x9U }; // 1001
   ASSERT_EQ(0x9U, a.get());
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0x5U }; // 0101
   ASSERT_EQ(0x5U, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   orOp.execute(r, *m);
   EXPECT_EQ(0xDU, r.get(ByteRegister::A).get()); // 1100
 }
@@ -112,14 +112,14 @@ TEST(ByteAluOperationTest, Xor)
   CpuRegisters r;
   EXPECT_EQ(1, xorOp.cycles());
 
-  auto a = r.get(ByteRegister::A);
+  auto& a = r.get(ByteRegister::A);
   a = uint8_t { 0x9U }; // 1001
   ASSERT_EQ(0x9U, a.get());
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0x5U }; // 0101
   ASSERT_EQ(0x5U, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   xorOp.execute(r, *m);
   EXPECT_EQ(0xCU, r.get(ByteRegister::A).get()); // 1100
 }
@@ -133,14 +133,14 @@ TEST(ByteAluOperationTest, Cp)
   CpuRegisters r;
   EXPECT_EQ(1, cpOp.cycles());
 
-  auto a = r.get(ByteRegister::A);
+  auto& a = r.get(ByteRegister::A);
   a = uint8_t { 0x9U }; // 1001
   ASSERT_EQ(0x9U, a.get());
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0xAU }; // 1010
   ASSERT_EQ(0xAU, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   cpOp.execute(r, *m);
   EXPECT_EQ(0x9U, r.get(ByteRegister::A).get()); // 1100
   EXPECT_TRUE(r.getFlags().carry());
@@ -155,11 +155,11 @@ TEST(ByteAluOperationTest, Inc)
   CpuRegisters r;
   EXPECT_EQ(1, decOp.cycles());
 
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0x1U }; // 0001
   ASSERT_EQ(0x1U, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   decOp.execute(r, *m);
   EXPECT_EQ(0x2U, r.get(ByteRegister::B).get()); // 0010
 }
@@ -189,11 +189,11 @@ TEST(ByteAluOperationTest, Dec)
   CpuRegisters r;
   EXPECT_EQ(1, decOp.cycles());
 
-  auto b = r.get(ByteRegister::B);
+  auto& b = r.get(ByteRegister::B);
   b = uint8_t { 0x1U }; // 0001
   ASSERT_EQ(0x1U, b.get());
 
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
   decOp.execute(r, *m);
   EXPECT_EQ(0x0U, r.get(ByteRegister::B).get()); // 0000
 }
@@ -217,7 +217,7 @@ TEST(ByteAluOperationTest, DecIndirect)
 TEST(ByteAluOperationTest, Throws)
 {
   CpuRegisters r;
-  IMemoryViewUP m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
+  auto m = std::make_unique<TestBank>(MemoryArea { .from = 0x0000, .to = 0xFFFF });
 
   ByteAluOperation decOp { ByteAluFunction::Add, Source::Register };
   EXPECT_ANY_THROW(decOp.execute(r, *m));

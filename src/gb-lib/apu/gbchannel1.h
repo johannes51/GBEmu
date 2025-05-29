@@ -4,18 +4,19 @@
 #include "channel_util/gbpulsechannel.h"
 
 #include "channel_util/sweep.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/iobank.h"
+#include "io/iregisteradapter.h"
 
 class GbChannel1 : public GbPulseChannel {
 public:
-  GbChannel1(const IRegisterAdapter& nr10, const IRegisterAdapter& nr11, const IRegisterAdapter& nr12,
-      IRegisterAdapter& nr13, IRegisterAdapter& nr14, IRegisterAdapter& nr52);
+  explicit GbChannel1(IoBank& io, IRegisterAdapter& nr52);
 
   void tickApuDiv(const FrameSequence sequence) override;
 
 private:
-  const IRegisterAdapter& nr10_;
+  static constexpr address_type Nr10Adress = 0xFF10U;
 
+  FixedMaskIoRegister<0b10000000U> nr10_;
   Sweep sweep_;
 };
 

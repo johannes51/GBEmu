@@ -5,7 +5,7 @@
 #include "cpu/operation/jump.h"
 #include "mem/rest/variablelocation.h"
 
-auto JumpsCallsDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto JumpsCallsDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
   if (opcode.upperNibble() <= 0x3U) {

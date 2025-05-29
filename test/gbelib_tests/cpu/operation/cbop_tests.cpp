@@ -4,7 +4,7 @@
 
 #include "mock/testbank.h"
 
-#include "cpu/cpuregisters.h"
+#include "cpu/registers/cpuregisters.h"
 #include "mem/rest/variablelocation.h"
 
 TEST(CbOpTest, RotateRight)

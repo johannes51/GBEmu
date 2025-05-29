@@ -9,7 +9,7 @@ class BasicRotate : public SingleOp<1> {
 public:
   BasicRotate(const RotateDirection& direction, bool throughCarry);
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   RotateDirection direction_;

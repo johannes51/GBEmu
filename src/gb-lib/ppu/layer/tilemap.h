@@ -1,8 +1,8 @@
 #ifndef TILEMAP_H
 #define TILEMAP_H
 
+#include "io/iregisteradapter.h"
 #include "mem/imemoryview.h"
-#include "mem/registers/iregisteradapter.h"
 
 struct TileAddress {
   uint8_t x;

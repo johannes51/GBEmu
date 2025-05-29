@@ -1,10 +1,16 @@
 #include "bufferlocation.h"
 
 BufferLocation::BufferLocation(uint8_t& buffer)
-    : buffer_(buffer)
+    : buffer_(&buffer)
 {
 }
 
-auto BufferLocation::get() const -> const uint8_t& { return buffer_; }
+auto BufferLocation::get() const -> const uint8_t& { return *buffer_; }
 
-void BufferLocation::set(const uint8_t& value) { buffer_ = value; }
+auto BufferLocation::operator=(const uint8_t& rhs) -> BufferLocation&
+{
+  *buffer_ = rhs;
+  return *this;
+}
+
+void BufferLocation::setBuffer(uint8_t& buffer) { buffer_ = &buffer; }

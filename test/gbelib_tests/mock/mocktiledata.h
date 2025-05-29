@@ -6,10 +6,12 @@
 #include "mockregisteradapter.h"
 #include "testbank.h"
 
+#include "io/ioregister.h"
+
 class MockTileData : public TileData {
 public:
   MockTileData(Tile tile = Tile { {} })
-      : TileData(*fakeReg, TestBank::staticBank())
+      : TileData(fakeReg, TestBank::staticBank())
       , tile_(tile) {};
 
   Tile getTile(int16_t index) override
@@ -21,7 +23,7 @@ public:
 private:
   Tile tile_;
 
-  static IRegisterAdapterUP fakeReg;
+  static IoRegister fakeReg;
 };
 
 #endif // MOCKTILEDATA_H

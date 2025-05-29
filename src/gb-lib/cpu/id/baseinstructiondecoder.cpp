@@ -3,14 +3,14 @@
 #include <stdexcept>
 
 #include "cpu/operation/operation.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
 BaseInstructionDecoder::BaseInstructionDecoder()
     : decoders_()
 {
 }
 
-auto BaseInstructionDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto BaseInstructionDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   InstructionDecoder* decoder = nullptr;
   try {

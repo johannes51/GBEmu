@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 
 Oam::Oam(IMemoryView& mem)
     : mem_(mem)

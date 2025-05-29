@@ -14,7 +14,7 @@ class MiscArithmetic : public SingleOp<1> {
 public:
   MiscArithmetic(const MiscArithmeticFunction& function);
 
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   MiscArithmeticFunction function_;

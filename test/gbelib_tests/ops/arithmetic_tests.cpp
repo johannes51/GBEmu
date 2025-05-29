@@ -1,6 +1,6 @@
 #include "gtest/gtest.h"
 
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "ops/arithmetic.h"
 
 #include "mem/rest/variablelocation.h"
@@ -132,9 +132,9 @@ TEST(ArithmeticTest, AddSigned)
   EXPECT_EQ(0xFEFFU, lA.get());
 
   opSigned = int8_t { -1 };
-  lB = variableLocation(*reinterpret_cast<uint8_t*>(&opSigned)); // NOLINT
+  auto lC = variableLocation(*reinterpret_cast<uint8_t*>(&opSigned)); // NOLINT
 
-  res = ops::addSigned(lA, lB.get());
+  res = ops::addSigned(lA, lC.get());
 
   expected = ops::OpResult {
     .z = ops::FlagResult::Reset, .n = ops::FlagResult::Reset, .h = ops::FlagResult::Set, .c = ops::FlagResult::Set

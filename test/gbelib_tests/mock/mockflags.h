@@ -1,7 +1,7 @@
 #ifndef MOCKFLAGS_H
 #define MOCKFLAGS_H
 
-#include "cpu/flagsview.h"
+#include "cpu/registers/flagsview.h"
 
 class MockFlags : public FlagsView {
 public:

@@ -3,12 +3,16 @@
 #include "gbinterrupthandler.h"
 #include "util/helpers.h"
 
-Joypad::Joypad(IRegisterAdapter& controllerRegister, IRegisterAdapter& rIf)
-    : controllerRegister_(controllerRegister)
+constexpr address_type JoypAddress = 0xFF00U;
+constexpr uint8_t JoypInitial = 0xCFU;
+
+Joypad::Joypad(IoBank& io, IRegisterAdapter& rIf)
+    : controllerRegister_(JoypInitial)
     , buttonState_({ { Button::Up, false }, { Button::Down, false }, { Button::Left, false }, { Button::Right, false },
           { Button::A, false }, { Button::B, false }, { Button::Start, false }, { Button::Select, false } })
     , if_(rIf)
 {
+  io.registerRegister(JoypAddress, &controllerRegister_);
 }
 
 void Joypad::clock()
@@ -30,7 +34,7 @@ void Joypad::clock()
     hlp::setBit(ctrReg, UpOrSelect);
     hlp::setBit(ctrReg, DownOrStart);
   }
-  controllerRegister_.setByte(ctrReg | ControllerRegisterSetBits);
+  controllerRegister_.setByte(ctrReg);
 }
 
 void Joypad::press(Button button) { buttonState_[button] = true; }

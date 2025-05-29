@@ -1,24 +1,25 @@
-#ifndef BUFFER_BANK_H
-#define BUFFER_BANK_H
+#ifndef BUFFERBANK_H
+#define BUFFERBANK_H
+
+#include "../common/singleareaview.h"
 
 #include <span>
 
-#include "singleareamanager.h"
+#include "../mem_defines.h"
 
-class BufferBank : public SingleAreaManager {
+class BufferBank : public SingleAreaView {
 public:
-  friend class BufferLocation;
-
-  virtual ~BufferBank() = default;
   DISABLE_COPY_AND_MOVE(BufferBank)
+  ~BufferBank() override = default;
 
 protected:
-  explicit BufferBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer);
+  BufferBank(const MemoryArea& area, std::span<uint8_t, std::dynamic_extent> buffer)
+      : SingleAreaView(area)
+      , buffer_(std::move(buffer))
+  {
+  }
 
-  uint8_t& getByteReference(address_type address);
-
-private:
   std::span<uint8_t, std::dynamic_extent> buffer_;
 };
 
-#endif // BUFFER_BANK_H
+#endif // BUFFERBANK_H

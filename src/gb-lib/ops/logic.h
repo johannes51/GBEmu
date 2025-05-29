@@ -3,17 +3,17 @@
 
 #include "ops.h"
 
-class Location8;
+class ILocation8;
 
 namespace ops {
 
-OpResult andF(Location8& destination, const Location8& source);
+OpResult andF(ILocation8& destination, const ILocation8& source);
 
-OpResult orF(Location8& destination, const Location8& source);
+OpResult orF(ILocation8& destination, const ILocation8& source);
 
-OpResult xorF(Location8& destination, const Location8& source);
+OpResult xorF(ILocation8& destination, const ILocation8& source);
 
-OpResult cpF(Location8& destination, const Location8& source);
+OpResult cpF(ILocation8& destination, const ILocation8& source);
 
 } // namespace ops
 

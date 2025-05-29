@@ -5,12 +5,15 @@
 
 #include <limits>
 
+#include "io/iobank.h"
+#include "io/ioregister.h"
 #include "mem/imemoryview.h"
-#include "mem/registers/iregisteradapter.h"
 
 class OamDma : public Tickable {
 public:
-  explicit OamDma(IRegisterAdapter& dmaRegister, IMemoryView& mem);
+  explicit OamDma(IoBank& io, IMemoryView& mem);
+  DISABLE_COPY_AND_MOVE(OamDma)
+  ~OamDma() override = default;
 
   void clock() override;
 
@@ -23,7 +26,7 @@ private:
   static constexpr uint16_t OamStart = 0xFE00U;
   static constexpr uint16_t DmaTransferSize = 160U;
 
-  IRegisterAdapter& dmaRegister_;
+  IoRegister dmaRegister_;
   IMemoryView& mem_;
   uint16_t startAddress_ = NoTransfer;
   size_t bytesTransferred_ = 0U;

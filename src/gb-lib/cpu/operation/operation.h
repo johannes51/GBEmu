@@ -1,10 +1,11 @@
 #ifndef OPERATION_H
 #define OPERATION_H
 
-#include "cpu/cpu_defines.h"
-#include "cpu/flagsview.h"
-#include "mem/imemoryview.h"
-#include "mem/location8.h"
+#include <memory>
+
+#include "../registers/registersinterface.h"
+#include "mem/ilocation8.h"
+#include "mem/imemorywordview.h"
 #include "ops/ops.h"
 
 class Operation {
@@ -14,11 +15,11 @@ public:
   DISABLE_COPY_AND_MOVE(Operation)
 
   virtual void showFlags(const FlagsView& flags) { (void)flags; }
-  virtual void nextOpcode(const Location8& opcode) = 0;
+  virtual void nextOpcode(const ILocation8& opcode) = 0;
   virtual bool isComplete() = 0;
 
   virtual unsigned cycles() = 0;
-  virtual void execute(RegistersInterface& registers, IMemoryView& memory) = 0;
+  virtual void execute(RegistersInterface& registers, IMemoryWordView& memory) = 0;
 
 protected:
   static void apply(FlagsView& flags, const ops::OpResult& result)
@@ -45,5 +46,7 @@ protected:
     }
   }
 };
+
+using OperationUP = std::unique_ptr<Operation>;
 
 #endif // OPERATION_H

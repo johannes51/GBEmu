@@ -3,7 +3,7 @@
 
 #include "singleop.h"
 
-#include "cpu/registersinterface.h"
+#include "../registers/registersinterface.h"
 
 class CbOp : public SingleOp<0> {
 public:
@@ -26,7 +26,7 @@ public:
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
   void setAffectedBit(uint8_t value);
   static constexpr uint8_t MaxBit = 7;

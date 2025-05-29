@@ -5,13 +5,13 @@
 
 #include "cpu/id/opcodeview.h"
 #include "cpu/operation/wordaluoperation.h"
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 class WordArithmeticDecoder : public InstructionDecoder {
 public:
   WordArithmeticDecoder() = default;
 
-  OperationUP decode(const Location8& opcodeLocation) const override;
+  OperationUP decode(const ILocation8& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:

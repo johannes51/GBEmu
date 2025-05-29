@@ -1,25 +1,23 @@
 #include "mockregisters.h"
 
-#include "mem/registers/register16.h"
-
 MockRegisters::MockRegisters()
     : regs_()
 {
 }
 
-auto MockRegisters::get(ByteRegister registerName) -> Location8
+auto MockRegisters::get(ByteRegister registerName) -> ILocation8&
 {
   (void)registerName;
   throw std::logic_error("Not implemented.");
-  return { nullptr };
 }
 
-auto MockRegisters::get(WordRegister registerName) -> Location16
+auto MockRegisters::get(WordRegister registerName) -> ILocation16&
 {
   if (!regs_.contains(registerName)) {
     regs_.insert({ registerName, 0U });
   }
-  return { std::make_unique<Register16>(regs_[registerName]) };
+  reg_ = std::make_unique<Register16>(regs_[registerName]);
+  return *reg_;
 }
 
 auto MockRegisters::getFlags() -> FlagsView& { return flags_; }

@@ -4,7 +4,7 @@
 #include <optional>
 
 #include "mem/common/fusedlocation16.h"
-#include "mem/location8.h"
+#include "mem/ilocation8.h"
 #include "operation.h"
 
 enum class JumpType { Regular, Indirect, Call, Return, RetI, Reset };
@@ -25,14 +25,15 @@ public:
   ~Jump() override;
 
   void showFlags(const FlagsView& flags) override;
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
-  FusedLocation16 param_;
+  std::unique_ptr<ILocation8> immediateL_;
+  std::unique_ptr<ILocation8> immediateH_;
   const JumpType type_;
   const TargetType target_;
   const Condition condition_;

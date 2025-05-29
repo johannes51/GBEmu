@@ -5,7 +5,7 @@
 
 #include "operation.h"
 
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 #include "mem/rest/variablelocation.h"
 
 class ByteLoadImmediate final : public Operation {
@@ -15,16 +15,16 @@ public:
   ~ByteLoadImmediate() override;
   DISABLE_COPY_AND_MOVE(ByteLoadImmediate)
 
-  void nextOpcode(const Location8& opcode) override;
+  void nextOpcode(const ILocation8& opcode) override;
   bool isComplete() override;
 
   unsigned cycles() override;
-  void execute(RegistersInterface& registers, IMemoryView& memory) override;
+  void execute(RegistersInterface& registers, IMemoryWordView& memory) override;
 
 private:
   ByteRegister destRegister_;
   bool indirect_;
-  std::unique_ptr<Location8> immediate_;
+  std::unique_ptr<ILocation8> immediate_;
 };
 
 #endif // BYTE_LOAD_IMMEDIATE_H

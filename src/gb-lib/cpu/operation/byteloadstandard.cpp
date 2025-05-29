@@ -9,7 +9,7 @@ ByteLoadStandard::ByteLoadStandard(ByteRegister destRegister, ByteRegister srcRe
 ByteLoadStandard::~ByteLoadStandard() = default;
 
 // NOLINTNEXTLINE(readability-function-cognitive-complexity)
-void ByteLoadStandard::execute(RegistersInterface& registers, IMemoryView& memory)
+void ByteLoadStandard::execute(RegistersInterface& registers, IMemoryWordView& memory)
 {
   (void)memory;
   registers.get(destRegister_) = registers.get(srcRegister_).get();

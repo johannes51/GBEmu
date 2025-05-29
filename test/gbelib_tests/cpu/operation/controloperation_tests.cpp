@@ -2,11 +2,11 @@
 
 #include "mock/testbank.h"
 
-#include "cpu/cpuregisters.h"
-#include "cpu/flagsview.h"
 #include "cpu/operation/control.h"
-#include "cpu/registersinterface.h"
-#include "mem/rest/nulllocation.h"
+#include "cpu/registers/cpuregisters.h"
+#include "cpu/registers/flagsview.h"
+#include "cpu/registers/registersinterface.h"
+#include "mem/rest/zerolocation.h"
 
 TEST(ControlOperationTest, Nop)
 {
@@ -22,7 +22,8 @@ TEST(ControlOperationTest, Nop)
 TEST(NopTest, NextOpcode)
 {
   Control nop { ControlOp::Nop };
-  EXPECT_ANY_THROW(nop.nextOpcode({ std::make_unique<NullLocation>() }));
+  ZeroLocation l;
+  EXPECT_ANY_THROW(nop.nextOpcode(l));
 }
 
 TEST(ControlOperationTest, Ei)

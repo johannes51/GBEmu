@@ -135,7 +135,7 @@ auto bit(const OpcodeView& opcode) -> unsigned
   }
 }
 
-auto CbOpDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto CbOpDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   const OpcodeView opcode { opcodeLocation.get() };
 

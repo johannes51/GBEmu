@@ -2,24 +2,24 @@
 #include <string>
 #include <iostream>
 #include <iomanip>
+#include <memory>
 
 using namespace std::literals;
-
-#include "util/helpers.h"
 
 #include "gb_factories/cartloader.h"
 #include "gb_factories/instructionsetbuilder.h"
 #include "gb_factories/memoryfactory.h"
-#include "gb_factories/peripheralregisterfactory.h"
 #include "gb_factories/ppufactory.h"
 
 #include "cpu/cpu.h"
-#include "cpu/cpuregisters.h"
-#include "mem/registers/singleregisterbank.h"
+#include "cpu/registers/cpuregisters.h"
+#include "mem/rest/variablelocation.h"
 #include "peripherals/gbinterrupthandler.h"
 #include "peripherals/gbtimer.h"
 #include "peripherals/joypad.h"
 #include "peripherals/serial.h"
+#include "ppu/ppu.h"
+#include "ppu/gbrenderer.h"
 
 static const std::vector<std::pair<std::string, size_t>> romList = {
   {{"01"s}, {1256633U}} /* PASS! */,
@@ -34,8 +34,6 @@ static const std::vector<std::pair<std::string, size_t>> romList = {
   {{"10"s}, {6712461U}} /* PASS! */,
   {{"11"s}, {7427500U}} /* PASS! */,
 };
-
-static std::vector<uint8_t> buffer;
 
 void print(std::ostream& s, IMemoryView& m, RegistersInterface& r)
 {
@@ -66,48 +64,71 @@ bool runTest(const std::string& number, const size_t limit)
 
   std::cout << "Executing " << romFile<< "\n";
 
-  std::shared_ptr<Cpu> cpu;
-  std::shared_ptr<GbTimer> t;
-  std::shared_ptr<Joypad> j;
-  CpuRegisters* r = nullptr;
-  TickableSP serial;
+  std::vector<uint8_t> buffer;
+  IoRegister divApu;
 
-  auto mf = gb::MemoryFactory(std::make_unique<gb::CartLoader>(romFile, ramFile), buffer);
-  auto peripheralRF = PeripheralRegisterFactory(*mf.getIoBank());
-  auto m = mf.releaseMemory();
+  CartUP cart;
+  IMemoryWordViewUP mem;
+  IoBankUP ioBank;
+  std::unique_ptr<Cpu> cpu;
+  RegistersInterface* reg = nullptr;
+  TickableUP tim;
+  TickableUP joy;
+  TickableUP serial;
+  // TickableUP ppu;
+  IMemoryViewUP vram;
+  IMemoryViewUP oam;
+  auto ly = variableLocation(uint8_t{0x90U});
   {
-    auto r_up = std::make_unique<CpuRegisters>();
-    r = r_up.get();
+    gb::CartLoader cl{romFile, ramFile};
+    buffer.resize(cl.calculateNeccessarySize() + gb::MemoryFactory::getSize());
+    cart = cl.constructCart(buffer);
 
-    t = std::make_shared<GbTimer>(peripheralRF.getDiv(), *peripheralRF.releaseDivApu(),
-        peripheralRF.get(PeripheralRegisters::TIMA), peripheralRF.get(PeripheralRegisters::TMA),
-        peripheralRF.get(PeripheralRegisters::TAC), peripheralRF.get(PeripheralRegisters::IF));
-    j = std::make_shared<Joypad>(peripheralRF.get(PeripheralRegisters::JOYP), peripheralRF.get(PeripheralRegisters::IF));
-    auto ie = mf.getIeBank()->asRegister();
-    auto ih = std::make_unique<GbInterruptHandler>(peripheralRF.get(PeripheralRegisters::IF), *ie);
-    cpu = std::make_shared<Cpu>(*m, std::move(r_up), std::move(ie), InstructionSetBuilder::construct(), std::move(ih));
-    serial = std::make_shared<Serial>(peripheralRF.get(PeripheralRegisters::SB), peripheralRF.get(PeripheralRegisters::SC), peripheralRF.get(PeripheralRegisters::IF));
+    auto ioBank = std::make_unique<IoBank>();
+    ioBank->registerRegister(0xFF44U, &ly);
+    auto& ioBankRef = *ioBank;
+    auto mf = gb::MemoryFactory(cart->getBanks(), std::move(ioBank), std::span{buffer}.subspan(cl.calculateNeccessarySize(), gb::MemoryFactory::getSize()));
+
+    mem = mf.releaseMemory();
+
+    auto ih = std::make_unique<GbInterruptHandler>(ioBankRef, mem->getLocation8(0xFFFFU));
+
+    tim = std::make_unique<GbTimer>(ioBankRef, divApu, *ih->getIf());
+    joy = std::make_unique<Joypad>(ioBankRef, *ih->getIf());
+    serial = std::make_unique<Serial>(ioBankRef, *ih->getIf());
+
+    // PpuFactory pf{ioBankRef, *mem, *ih->getIf(), mf.releaseVram(), mf.releaseOam()};
+
+    vram = mf.releaseVram();
+    oam = mf.releaseOam();
+    // ppu = pf.constructPpu();
+
+    auto cr = std::make_unique<CpuRegisters>();
+    reg = cr.get();
+
+    cpu = std::make_unique<Cpu>(*mem, std::move(cr), InstructionSetBuilder::construct(), std::move(ih));
   }
-  m->getLocation8(0xFF44U) = 0x90U;
-  print(fileStream, *m, *r);
+
+  print(fileStream, *mem, *reg);
 
   for (size_t lineCount = 1U; lineCount < limit; ) {
     if (lineCount >= limit - 1U) {
       std::stringstream s;
-      print(s, *m, *r);
+      print(s, *mem, *reg);
       const auto state = s.str();
       std::cout << state;
     }
     try {
       if (cpu->clock()) {
         ++lineCount;
-        print(fileStream, *m, *r);
+        print(fileStream, *mem, *reg);
       }
-      t->clock();
-      j->clock();
+      tim->clock();
+      joy->clock();
       serial->clock();
+      // ppu->clock();
     } catch(...) {
-      print(fileStream, *m, *r);
+      print(fileStream, *mem, *reg);
       return false;
     }
   }

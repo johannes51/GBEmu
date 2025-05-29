@@ -2,16 +2,20 @@
 
 #include "constants.h"
 
-GbPulseChannel::GbPulseChannel(const IRegisterAdapter& nrX1, const IRegisterAdapter& nrX2, const IRegisterAdapter& nrX3,
-    const IRegisterAdapter& nrX4, IRegisterAdapter& nr52)
+GbPulseChannel::GbPulseChannel(IoBank& io, const address_type registerBaseAddress, IRegisterAdapter& nr52)
     : Channel(nr52)
-    , nrX1_(nrX1)
-    , nrX3_(nrX3)
-    , nrX4_(nrX4)
-    , env_(nrX2)
-    , len_(nrX1, nrX4)
-    , period_(nrX3, nrX4)
+    , nrX1_()
+    , nrX2_()
+    , nrX3_()
+    , nrX4_()
+    , env_(nrX2_)
+    , len_(nrX1_, nrX4_)
+    , period_(nrX3_, nrX4_)
 {
+  io.registerRegister(registerBaseAddress + 1U, &nrX1_);
+  io.registerRegister(registerBaseAddress + 2U, &nrX2_);
+  io.registerRegister(registerBaseAddress + 3U, &nrX3_);
+  io.registerRegister(registerBaseAddress + 4U, &nrX4_);
 }
 
 void GbPulseChannel::clock()

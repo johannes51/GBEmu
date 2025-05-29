@@ -8,7 +8,7 @@
 const std::vector<uint8_t> UnimplementedDecoder::decodedOpcodes_
     = { 0xD3U, 0xDBU, 0xDDU, 0xE3U, 0xE4U, 0xEBU, 0xECU, 0xEDU, 0xF4U, 0xFCU, 0xFDU };
 
-auto UnimplementedDecoder::decode(const Location8& opcodeLocation) const -> OperationUP
+auto UnimplementedDecoder::decode(const ILocation8& opcodeLocation) const -> OperationUP
 {
   (void)opcodeLocation;
   std::stringstream stream;

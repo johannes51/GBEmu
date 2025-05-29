@@ -4,8 +4,8 @@
 
 #include "cpu/operation/operation.h"
 
-#include "cpu/cpuregisters.h"
 #include "cpu/operation/control.h"
+#include "cpu/registers/cpuregisters.h"
 
 TEST(OperationTest, Direct)
 {

@@ -7,7 +7,7 @@ class BasicRotateDecoder : public InstructionDecoder {
 public:
   BasicRotateDecoder() = default;
 
-  OperationUP decode(const Location8& opcodeLocation) const override;
+  OperationUP decode(const ILocation8& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 };
 

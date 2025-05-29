@@ -4,23 +4,31 @@
 
 #include "gbinterrupthandler.h"
 
-GbTimer::GbTimer(DivRegisterSP div, IRegisterAdapter& div_apu, IRegisterAdapter& tima, const IRegisterAdapter& tma,
-    const IRegisterAdapter& tac, IRegisterAdapter& ifl)
-    : div_(std::move(div))
+constexpr address_type TimaAddress = 0xFF05U;
+constexpr address_type TmaAddress = 0xFF06U;
+constexpr address_type TacAddress = 0xFF07U;
+constexpr uint8_t TacInitial = 0xF8U;
+
+GbTimer::GbTimer(IoBank& io, IRegisterAdapter& div_apu, IRegisterAdapter& rIf)
+    : div_()
     , div_apu_(div_apu)
-    , tima_(tima)
-    , tma_(tma)
-    , tac_(tac)
-    , if_(ifl)
+    , tima_()
+    , tma_()
+    , tac_(TacInitial)
+    , if_(rIf)
     , feSystemTimerBit_()
     , feDivApuBit_()
 {
+  io.registerRegister(DivRegisterAddress, &div_);
+  io.registerRegister(TimaAddress, &tima_);
+  io.registerRegister(TmaAddress, &tma_);
+  io.registerRegister(TacAddress, &tac_);
 }
 
 void GbTimer::clock()
 {
-  div_->clock();
-  if (feSystemTimerBit_.isFallingEdge(div_->testBitSystemTimer(selectPosBit()) && tac_.testBit(TimerEnableBit))) {
+  div_.clock();
+  if (feSystemTimerBit_.isFallingEdge(div_.testBitSystemTimer(selectPosBit()) && tac_.testBit(TimerEnableBit))) {
     if (tima_.getByte() == TimaMax) {
       if_.setBit(TimerInterruptBit, true);
       tima_.setByte(tma_.getByte());
@@ -28,7 +36,7 @@ void GbTimer::clock()
       tima_.setByte(tima_.getByte() + 1);
     }
   }
-  if (feDivApuBit_.isFallingEdge(div_->testBitSystemTimer(TimerDivApuBit))) {
+  if (feDivApuBit_.isFallingEdge(div_.testBitSystemTimer(TimerDivApuBit))) {
     div_apu_.setByte(div_apu_.getByte() + 1U);
   }
 }

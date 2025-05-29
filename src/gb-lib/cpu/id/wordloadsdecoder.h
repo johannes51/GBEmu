@@ -4,13 +4,13 @@
 #include "instructiondecoder.h"
 
 #include "cpu/id/opcodeview.h"
-#include "cpu/registersinterface.h"
+#include "cpu/registers/registersinterface.h"
 
 class WordLoadsDecoder : public InstructionDecoder {
 public:
   WordLoadsDecoder() = default;
 
-  OperationUP decode(const Location8& opcodeLocation) const override;
+  OperationUP decode(const ILocation8& opcodeLocation) const override;
   std::vector<uint8_t> decodedOpcodes() const override;
 
 private:

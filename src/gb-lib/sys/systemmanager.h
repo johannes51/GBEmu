@@ -4,17 +4,17 @@
 #include <memory>
 #include <vector>
 
-#include "cpu/cpu_defines.h"
-#include "gb_factories/peripheralregisterfactory.h"
+#include "cart/cart.h"
 #include "mem/imemoryview.h"
 #include "peripherals/tickable.h"
 #include "ppu/irenderer.h"
 
+class Cpu;
+
 class SystemManager {
 public:
-  SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, std::vector<TickableSP> peripherals,
-      std::unordered_map<PeripheralRegisters, IRegisterAdapterUP>&& periRegisters, const GbPixelBuffer* pixBuffer,
-      std::vector<uint8_t>&& memBuffer);
+  SystemManager(std::unique_ptr<Cpu> cpu, IMemoryViewUP mem, CartUP cart, std::vector<TickableUP>&& peripherals,
+      const GbPixelBuffer* pixBuffer, std::vector<uint8_t>&& memBuffer);
   DISABLE_COPY_AND_MOVE(SystemManager)
   ~SystemManager();
 
@@ -22,10 +22,10 @@ public:
   const GbPixelBuffer* getPixBuffer() const;
 
 private:
-  CpuUP cpu_;
+  std::unique_ptr<Cpu> cpu_;
   IMemoryViewUP mem_;
-  std::vector<TickableSP> peripherals_;
-  std::unordered_map<PeripheralRegisters, IRegisterAdapterUP> periRegisters_;
+  CartUP cart_;
+  std::vector<TickableUP> peripherals_;
   const GbPixelBuffer* pixBuffer_;
   std::vector<uint8_t> memBuffer_;
 };

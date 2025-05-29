@@ -6,7 +6,7 @@
 #include "channel_util/dac.h"
 #include "channel_util/framesequencer.h"
 #include "defines.h"
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 
 class Channel {
 public:
@@ -30,6 +30,6 @@ protected:
   DAC dac_;
 };
 
-using ChannelSP = std::shared_ptr<Channel>;
+using ChannelUP = std::unique_ptr<Channel>;
 
 #endif // CHANNEL_H

@@ -1,7 +1,7 @@
 #ifndef ENVELOPE_H
 #define ENVELOPE_H
 
-#include "mem/registers/iregisteradapter.h"
+#include "io/iregisteradapter.h"
 
 class Envelope {
 public:

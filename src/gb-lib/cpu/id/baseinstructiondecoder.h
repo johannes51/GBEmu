@@ -9,7 +9,7 @@ class BaseInstructionDecoder : public InstructionDecoder {
 public:
   BaseInstructionDecoder();
 
-  OperationUP decode(const Location8& opcodeLocation) const override;
+  OperationUP decode(const ILocation8& opcodeLocation) const override;
 
   void registerDecoder(const InstructionDecoderSP& decoder);
 

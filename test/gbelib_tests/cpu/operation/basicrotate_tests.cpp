@@ -4,7 +4,7 @@
 
 #include "cpu/operation/basicrotate.h"
 
-#include "cpu/cpuregisters.h"
+#include "cpu/registers/cpuregisters.h"
 
 TEST(BasicRotateTest, Test1)
 {
